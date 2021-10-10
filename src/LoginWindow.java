@@ -21,7 +21,7 @@ public class LoginWindow extends JPanel implements ActionListener {
         textFieldBox = Box.createVerticalBox();
 
         usernameTextField = new JTextField(15);
-        passwordTextField = new JTextField(15);
+        passwordTextField = new JPasswordField(15);
         usernameLabel = new JLabel("Username:");
         passwordLabel = new JLabel("Password:");
         loginButton = new JButton("Enter");
