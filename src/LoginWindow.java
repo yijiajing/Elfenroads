@@ -11,7 +11,7 @@ public class LoginWindow extends JPanel implements ActionListener {
     private static Box textFieldBox;
     private static Box boxPanel;
     private static JTextField usernameTextField;
-    private static JTextField passwordTextField;
+    private static JPasswordField passwordTextField;
     private static JLabel usernameLabel;
     private static JLabel passwordLabel;
     private static JButton loginButton;
