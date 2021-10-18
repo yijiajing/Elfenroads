@@ -13,8 +13,6 @@ class Main {
         mainFrame.add(new LoginWindow());
         
         
-
-        //mainFrame.add(new LobbyWindow());
         mainFrame.setVisible(true);
         
 
