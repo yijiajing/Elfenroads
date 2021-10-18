@@ -15,6 +15,7 @@ public class LoginWindow extends JPanel implements ActionListener {
     private static JLabel usernameLabel;
     private static JLabel passwordLabel;
     private static JButton loginButton;
+    
 
     LoginWindow() {
         labelBox = Box.createVerticalBox();
@@ -25,8 +26,10 @@ public class LoginWindow extends JPanel implements ActionListener {
         usernameLabel = new JLabel("Username:");
         passwordLabel = new JLabel("Password:");
         loginButton = new JButton("Enter");
+        
 
         loginButton.addActionListener(this);
+        
 
         labelBox.add(usernameLabel);
         usernameLabel.setAlignmentX(LEFT_ALIGNMENT);
@@ -41,11 +44,14 @@ public class LoginWindow extends JPanel implements ActionListener {
         boxPanel.add(labelBox);
         boxPanel.add(textFieldBox);
         boxPanel.add(loginButton);
+        
         add(boxPanel);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+
+        
 
     }
 }
