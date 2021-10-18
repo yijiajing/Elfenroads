@@ -18,7 +18,7 @@ public class GameScreen extends JPanel
 	
 	GameScreen (JFrame mainFrame)
 	{
-		
+		//Testing with JPanel
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.RED);
 		panel.setBounds(0, 0, 1000, 500);
