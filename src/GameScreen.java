@@ -12,10 +12,6 @@ import org.minueto.MinuetoTool;
 
 public class GameScreen extends JPanel
 {
-	private JFrame screen;
-	private JPanel mainPanel;
-	private Border blackline;
-	
 	GameScreen (JFrame mainFrame)
 	{
 		//Testing with JPanel
@@ -32,9 +28,7 @@ public class GameScreen extends JPanel
 		JPanel panel3 = new JPanel();
 		panel3.setBackground(Color.GREEN);
 		panel3.setBounds(921, 501, 80, 70);
-		mainFrame.add(panel3);
-		
-		
+		mainFrame.add(panel3);		
 	}
 	
 	public static void main(String[] args) 
