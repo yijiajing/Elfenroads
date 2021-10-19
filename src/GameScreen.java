@@ -14,11 +14,20 @@ public class GameScreen extends JPanel
 {
 	GameScreen (JFrame mainFrame)
 	{
-		//Testing with JPanel
-		JPanel panel = new JPanel();
-		panel.setBackground(Color.RED);
-		panel.setBounds(0, 0, 1000, 500);
-		mainFrame.add(panel);
+		// Prepare the map image
+		ImageIcon mapImage = new ImageIcon(getClass().getResource("map.png"));
+		Image map = mapImage.getImage();
+		Image mapResized = map.getScaledInstance(1000, 500,  java.awt.Image.SCALE_SMOOTH);
+		mapImage = new ImageIcon(mapResized);
+		JLabel mapComponent = new JLabel(mapImage);
+		
+		// Add the map image to the correct JPanel
+		JPanel panel1 = new JPanel();
+		panel1.add(mapComponent);
+		panel1.setBackground(Color.BLUE);
+		panel1.setBounds(0, 0, 1000, 500);
+		revalidate();
+		mainFrame.add(panel1);	
 		
 		JPanel panel2 = new JPanel();
 		panel2.setBackground(Color.BLUE);
