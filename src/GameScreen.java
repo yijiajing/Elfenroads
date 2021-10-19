@@ -23,7 +23,7 @@ public class GameScreen extends JPanel
 		// Set Bounds for Board Game and initialize the images
 		BoardGame_Layers.setBounds(0,0,1064,564);
 		initializeMapImage();
-		initializeRounCard(1);
+		initializeRounCardImage(1);
 
 		// Add the map image to its corresponding JPanel
 		PanelForMap.setBounds(0, 0, 1064, 564);
@@ -66,7 +66,7 @@ public class GameScreen extends JPanel
 		MapImage_Layer1 = new JLabel(mapImage);
 	}
 	
-	public void initializeRounCard(int round)
+	public void initializeRounCardImage(int round)
 	{
 		String image = "R" + String.valueOf(round) + ".png";
 		ImageIcon RoundImage = new ImageIcon(getClass().getResource(image));
