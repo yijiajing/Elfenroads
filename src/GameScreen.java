@@ -6,50 +6,54 @@ import org.minueto.MinuetoTool;
 
 public class GameScreen extends JPanel
 {
-	private JFrame MainFrame;
+	private JFrame mainFrame;
+	private int width;
+	private int height;
 	
-	private JLayeredPane BoardGame_Layers = new JLayeredPane();
+	private JLayeredPane boardGame_Layers = new JLayeredPane();
 	
-	private JLabel RoundImage_Layer0;
-	private JLabel MapImage_Layer1;
+	private JLabel roundImage_Layer1;
+	private JLabel mapImage_Layer2;
 	
-	private JPanel PanelForMap = new JPanel();
-	private JPanel PanelForRound = new JPanel();
+	private JPanel panelForMap = new JPanel();
+	private JPanel panelForRound = new JPanel();
+	private JPanel panelForTransportationCounters = new JPanel();
 	
-	GameScreen (JFrame mainFrame)
+	GameScreen (JFrame frame)
 	{
-		MainFrame = mainFrame;
+		mainFrame = frame;
+		width = mainFrame.getWidth();
+		height = mainFrame.getHeight();
 		
-		// Set Bounds for Board Game and initialize the images
-		BoardGame_Layers.setBounds(0,0,1064,564);
+		// Set Bounds for entire Board Game screen and initialize the images
+		boardGame_Layers.setBounds(0,0,width,height);	
 		initializeMapImage();
 		initializeRounCardImage(1);
 
 		// Add the map image to its corresponding JPanel
-		PanelForMap.setBounds(0, 0, 1064, 564);
-		PanelForMap.setBackground(Color.BLUE);
-		PanelForMap.add(MapImage_Layer1);
-		updateScreen();
+		panelForMap.setBounds(0, 0, 1064, 564);
+		panelForMap.setBackground(Color.BLUE);
+		panelForMap.add(mapImage_Layer2);		
 		
 		// Add the Round image to its corresponding JPanel
-		PanelForRound.setBounds(932, 39, 86, 94);
-		PanelForRound.setBackground(Color.WHITE);
-		PanelForRound.add(RoundImage_Layer0);
-		updateScreen();
-		
-		// Add the elements on top of the Board Game
-		BoardGame_Layers.add(PanelForRound, 0);
-		BoardGame_Layers.add(PanelForMap, 1);
-		updateScreen();
-		
-		// Add Board Game with Round on top of it to the main screen
-		MainFrame.add(BoardGame_Layers);
-		updateScreen();
+		panelForRound.setBounds(932, 39, 86, 94);
+		panelForRound.setBackground(Color.WHITE);
+		panelForRound.add(roundImage_Layer1);
 		
 		JPanel panel2 = new JPanel();
-		panel2.setBackground(Color.BLUE);
-		panel2.setBounds(0, 565, 983, 70);
-		MainFrame.add(panel2);
+		panel2.setBackground(Color.BLACK);
+		panel2.setBounds(0, 565, 70, 50);
+		
+		panelForTransportationCounters.setBounds(0, 565, 983, 70);
+		panelForTransportationCounters.setBackground(Color.BLUE);
+		
+		boardGame_Layers.add(panelForRound, 1); 
+		boardGame_Layers.add(panel2, 1); 
+		boardGame_Layers.add(panelForTransportationCounters, 2);
+		boardGame_Layers.add(panelForMap, 2); 
+		
+		// Add Board Game with Round on top of it to the main screen
+		mainFrame.add(boardGame_Layers);
 		
 		JPanel panel3 = new JPanel();
 		panel3.setBackground(Color.GREEN);
@@ -63,23 +67,17 @@ public class GameScreen extends JPanel
 		Image map = mapImage.getImage();
 		Image mapResized = map.getScaledInstance(1064, 564,  java.awt.Image.SCALE_SMOOTH);
 		mapImage = new ImageIcon(mapResized);
-		MapImage_Layer1 = new JLabel(mapImage);
+		mapImage_Layer2 = new JLabel(mapImage);
 	}
 	
 	public void initializeRounCardImage(int round)
 	{
 		String image = "R" + String.valueOf(round) + ".png";
-		ImageIcon RoundImage = new ImageIcon(getClass().getResource(image));
-		Image Round = RoundImage.getImage();
+		ImageIcon roundImage = new ImageIcon(getClass().getResource(image));
+		Image Round = roundImage.getImage();
 		Image RoundResized = Round.getScaledInstance(90, 90,  java.awt.Image.SCALE_SMOOTH);
-		RoundImage = new ImageIcon(RoundResized);
-		RoundImage_Layer0 = new JLabel(RoundImage);
-	}
-	
-	public void updateScreen()
-	{
-		repaint();
-		revalidate();
+		roundImage = new ImageIcon(RoundResized);
+		roundImage_Layer1 = new JLabel(roundImage);
 	}
 	
 	public static void main(String[] args) 
