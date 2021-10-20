@@ -18,11 +18,13 @@ public class GameScreen extends JPanel
 	private JLabel roundImage_TopLayer;
 	private JLabel mapImage_BottomLayer;
 	
-	private JPanel panelForMap = new JPanel();
-	private JPanel panelForRound = new JPanel();
-	private JPanel backgroundPanel_ForTransportation_Counters = new JPanel();
-	private JPanel[] panelForPlayerTransportationCounters = new JPanel[5];
+	private JPanel backgroundPanel_ForMap = new JPanel();
+	private JPanel backgroundPanel_ForRound = new JPanel();
 	private JPanel backgroundPanel_ForObstacle = new JPanel();
+	private JPanel backgroundPanel_ForCards = new JPanel();
+	private JPanel backgroundPanel_ForTransportation_Counters = new JPanel();
+	
+	private JPanel[] panelForPlayerTransportationCounters = new JPanel[5];
 	private JPanel panelForObstacle = new JPanel();
 	
 	GameScreen (JFrame frame)
@@ -31,6 +33,7 @@ public class GameScreen extends JPanel
 		mainFrame = frame;
 		width = mainFrame.getWidth();
 		height = mainFrame.getHeight();
+		System.out.println(height);
 		
 		// Set Bounds for entire Board Game screen do the initialization
 		boardGame_Layers.setBounds(0,0,width,height);	
@@ -40,18 +43,24 @@ public class GameScreen extends JPanel
 		initializeBackgroundPanels();
 
 		// Add the images to their corresponding JPanel
-		panelForMap.add(mapImage_BottomLayer);		
-		panelForRound.add(roundImage_TopLayer);
+		backgroundPanel_ForMap.add(mapImage_BottomLayer);		
+		backgroundPanel_ForRound.add(roundImage_TopLayer);
 		
 		// Add the JPanels to the main JLayeredPane with their corresponding layer
-		boardGame_Layers.add(panelForRound, 0);
-		addTransportationCountersAndObstacle();
-		boardGame_Layers.add(backgroundPanel_ForTransportation_Counters, -1);
-		boardGame_Layers.add(panelForMap, -1); 
-		boardGame_Layers.add(backgroundPanel_ForObstacle,-1);
+		addPanelToScreen();
 		
 		// Add the entire structure of the UI to the main screen
 		mainFrame.add(boardGame_Layers);
+	}
+	
+	public void addPanelToScreen()
+	{
+		boardGame_Layers.add(backgroundPanel_ForRound, 0);
+		addTransportationCountersAndObstacle();
+		boardGame_Layers.add(backgroundPanel_ForTransportation_Counters, -1);
+		boardGame_Layers.add(backgroundPanel_ForMap, -1); 
+		boardGame_Layers.add(backgroundPanel_ForObstacle,-1);
+		boardGame_Layers.add(backgroundPanel_ForCards, -1);
 	}
 	
 	public void addTransportationCountersAndObstacle()
@@ -78,12 +87,16 @@ public class GameScreen extends JPanel
 		backgroundPanel_ForObstacle.setBounds(984, 565, 80, 70);
 		
 		// Set Bounds for background Image zone
-		panelForMap.setBounds(0, 0, 1064, 564);
-		panelForMap.setBackground(Color.BLUE);
+		backgroundPanel_ForMap.setBounds(0, 0, 1064, 564);
+		backgroundPanel_ForMap.setBackground(Color.BLUE);
 		
 		// Set Bounds for background Round zone
-		panelForRound.setBounds(932, 34, 86, 130);
-		panelForRound.setOpaque(false);
+		backgroundPanel_ForRound.setBounds(932, 34, 86, 130);
+		backgroundPanel_ForRound.setOpaque(false);
+		
+		// Set Bounds for background Cards
+		backgroundPanel_ForCards.setBounds(0, 566, 1064, 333);
+		backgroundPanel_ForCards.setBackground(Color.YELLOW);
 	}
 	
 	public void initializeTransportationCountersAndObstacle()
@@ -130,7 +143,8 @@ public class GameScreen extends JPanel
 	public static void main(String[] args) 
 	{
 		JFrame game_screen = new JFrame("GameScreen");
-		game_screen.setSize(MinuetoTool.getDisplayWidth() - 100, MinuetoTool.getDisplayHeight() - 100);
+		//game_screen.setSize(MinuetoTool.getDisplayWidth() - 100, MinuetoTool.getDisplayHeight() - 100);
+		game_screen.setSize(MinuetoTool.getDisplayWidth(), MinuetoTool.getDisplayHeight());
 		
 		game_screen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
