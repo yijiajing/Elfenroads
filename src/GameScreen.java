@@ -94,7 +94,7 @@ public class GameScreen extends JPanel
 	{
 		// Set Bounds for background Transportation Counter zone
 		backgroundPanel_ForTransportation_Counters.setBounds(0, 565, 983, 70);
-		backgroundPanel_ForTransportation_Counters.setBackground(Color.BLUE);
+		backgroundPanel_ForTransportation_Counters.setBackground(Color.DARK_GRAY);
 		
 		// Set Bounds for background Obstacle zone
 		backgroundPanel_ForObstacle.setBackground(Color.RED);
@@ -110,13 +110,13 @@ public class GameScreen extends JPanel
 		
 		// Set Bounds for background Cards
 		backgroundPanel_ForCards.setBounds(0, 566, 1064, 333);
-		backgroundPanel_ForCards.setBackground(Color.GREEN);
+		backgroundPanel_ForCards.setBackground(Color.DARK_GRAY);
 	}
 	
 	public void initializeCards()
 	{
 		int xCoordinate = 2;
-		Border whiteLine = BorderFactory.createLineBorder(Color.BLACK);
+		Border whiteLine = BorderFactory.createLineBorder(Color.WHITE);
 		for (int i = 0; i < 8; i++)
 		{
 			JPanel panel = new JPanel();
