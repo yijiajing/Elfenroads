@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Image;
 
 import javax.swing.*;
@@ -20,7 +21,7 @@ public class GameScreen extends JPanel
 	private JPanel panelForMap = new JPanel();
 	private JPanel panelForRound = new JPanel();
 	private JPanel panelForTransportationCounters = new JPanel();
-	private JPanel[] playerTransportationCounters = new JPanel[5];
+	private JPanel[] panelForPlayerTransportationCounters = new JPanel[5];
 	
 	GameScreen (JFrame frame)
 	{
@@ -62,15 +63,13 @@ public class GameScreen extends JPanel
 		
 		// Add the entire structure of the UI to the main screen
 		mainFrame.add(boardGame_Layers);
-		
 	}
 	
 	public void addTransportationCounters()
 	{
-		for (JPanel panel : playerTransportationCounters)
+		for (JPanel panel : panelForPlayerTransportationCounters)
 		{
 			boardGame_Layers.add(panel, 0);
-		
 		}
 	}
 	
@@ -85,7 +84,7 @@ public class GameScreen extends JPanel
 			Border blackline = BorderFactory.createLineBorder(Color.black);
 			panelForTransportationCounters.setBorder(blackline);
 			panelForTransportationCounters.setBounds(xCoordinate, 565, 80, 70);
-			playerTransportationCounters[i] = panelForTransportationCounters;
+			panelForPlayerTransportationCounters[i] = panelForTransportationCounters;
 			xCoordinate += 200;
 		}
 	}
@@ -122,3 +121,4 @@ public class GameScreen extends JPanel
 	}
 
 }
+
