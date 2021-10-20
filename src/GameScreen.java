@@ -20,8 +20,10 @@ public class GameScreen extends JPanel
 	
 	private JPanel panelForMap = new JPanel();
 	private JPanel panelForRound = new JPanel();
-	private JPanel panelForTransportationCounters = new JPanel();
+	private JPanel backgroundPanel_ForTransportation_Counters = new JPanel();
 	private JPanel[] panelForPlayerTransportationCounters = new JPanel[5];
+	private JPanel backgroundPanel_ForObstacle = new JPanel();
+	private JPanel panelForObstacle = new JPanel();
 	
 	GameScreen (JFrame frame)
 	{
@@ -34,59 +36,76 @@ public class GameScreen extends JPanel
 		boardGame_Layers.setBounds(0,0,width,height);	
 		initializeMapImage();
 		initializeRounCardImage(1);
-		initializeTransportationCounters();
+		initializeTransportationCountersAndObstacle();
+		initializeBackgroundPanels();
 
-		// Add the map image to its corresponding JPanel
-		panelForMap.setBounds(0, 0, 1064, 564);
-		panelForMap.setBackground(Color.BLUE);
+		// Add the images to their corresponding JPanel
 		panelForMap.add(mapImage_BottomLayer);		
-		
-		// Add the Round image to its corresponding JPanel
-		panelForRound.setBounds(932, 39, 86, 94);
-		panelForRound.setBackground(Color.WHITE);
 		panelForRound.add(roundImage_TopLayer);
 		
-		// Set Bound for Transportation Counter zone
-		panelForTransportationCounters.setBounds(0, 565, 983, 70);
-		panelForTransportationCounters.setBackground(Color.BLUE);
-		
-		JPanel panel3 = new JPanel();
-		panel3.setBackground(Color.GREEN);
-		panel3.setBounds(984, 565, 80, 70);
-		
-		// Add the JPanels to the main Panel with their corresponding layer
+		// Add the JPanels to the main JLayeredPane with their corresponding layer
 		boardGame_Layers.add(panelForRound, 0);
-		boardGame_Layers.add(panel3,0);
-		addTransportationCounters();
-		boardGame_Layers.add(panelForTransportationCounters, -1);
+		addTransportationCountersAndObstacle();
+		boardGame_Layers.add(backgroundPanel_ForTransportation_Counters, -1);
 		boardGame_Layers.add(panelForMap, -1); 
+		boardGame_Layers.add(backgroundPanel_ForObstacle,-1);
 		
 		// Add the entire structure of the UI to the main screen
 		mainFrame.add(boardGame_Layers);
 	}
 	
-	public void addTransportationCounters()
+	public void addTransportationCountersAndObstacle()
 	{
+		// Transportation Counters
 		for (JPanel panel : panelForPlayerTransportationCounters)
 		{
+			panel.setOpaque(false);
 			boardGame_Layers.add(panel, 0);
 		}
+		
+		// Obstacle
+		boardGame_Layers.add(panelForObstacle,0);
 	}
 	
-	public void initializeTransportationCounters()
+	public void initializeBackgroundPanels()
 	{
-		int xCoordinate = 5;
+		// Set Bounds for background Transportation Counter zone
+		backgroundPanel_ForTransportation_Counters.setBounds(0, 565, 983, 70);
+		backgroundPanel_ForTransportation_Counters.setBackground(Color.BLUE);
 		
+		// Set Bounds for background Obstacle zone
+		backgroundPanel_ForObstacle.setBackground(Color.RED);
+		backgroundPanel_ForObstacle.setBounds(984, 565, 80, 70);
+		
+		// Set Bounds for background Image zone
+		panelForMap.setBounds(0, 0, 1064, 564);
+		panelForMap.setBackground(Color.BLUE);
+		
+		// Set Bounds for background Round zone
+		panelForRound.setBounds(932, 34, 86, 130);
+		panelForRound.setOpaque(false);
+	}
+	
+	public void initializeTransportationCountersAndObstacle()
+	{
+		int xCoordinate = 10;
+		Border whiteLine = BorderFactory.createLineBorder(Color.WHITE);
+		
+		// Transportation Counters
 		for (int i = 0; i < 5; i++)
 		{
 			JPanel panelForTransportationCounters = new JPanel();
-			panelForTransportationCounters.setBackground(Color.WHITE);
-			Border blackline = BorderFactory.createLineBorder(Color.black);
-			panelForTransportationCounters.setBorder(blackline);
-			panelForTransportationCounters.setBounds(xCoordinate, 565, 80, 70);
+			panelForTransportationCounters.setOpaque(false);
+			panelForTransportationCounters.setBorder(whiteLine);
+			panelForTransportationCounters.setBounds(xCoordinate, 570, 70, 60);
 			panelForPlayerTransportationCounters[i] = panelForTransportationCounters;
 			xCoordinate += 200;
 		}
+		
+		// Obstacle
+		panelForObstacle.setOpaque(false);
+		panelForObstacle.setBorder(whiteLine);
+		panelForObstacle.setBounds(989, 570, 70, 60);
 	}
 	
 	public void initializeMapImage()
@@ -103,7 +122,7 @@ public class GameScreen extends JPanel
 		String image = "R" + String.valueOf(round) + ".png";
 		ImageIcon roundImage = new ImageIcon(getClass().getResource(image));
 		Image Round = roundImage.getImage();
-		Image RoundResized = Round.getScaledInstance(90, 90,  java.awt.Image.SCALE_SMOOTH);
+		Image RoundResized = Round.getScaledInstance(90, 130,  java.awt.Image.SCALE_SMOOTH);
 		roundImage = new ImageIcon(RoundResized);
 		roundImage_TopLayer = new JLabel(roundImage);
 	}
@@ -121,4 +140,3 @@ public class GameScreen extends JPanel
 	}
 
 }
-
