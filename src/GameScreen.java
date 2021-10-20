@@ -2,6 +2,8 @@ import java.awt.Color;
 import java.awt.Image;
 
 import javax.swing.*;
+import javax.swing.border.Border;
+
 import org.minueto.MinuetoTool;
 
 public class GameScreen extends JPanel
@@ -18,17 +20,20 @@ public class GameScreen extends JPanel
 	private JPanel panelForMap = new JPanel();
 	private JPanel panelForRound = new JPanel();
 	private JPanel panelForTransportationCounters = new JPanel();
+	private JPanel[] playerTransportationCounters = new JPanel[5];
 	
 	GameScreen (JFrame frame)
 	{
+		// Get dimensions of the full screen
 		mainFrame = frame;
 		width = mainFrame.getWidth();
 		height = mainFrame.getHeight();
 		
-		// Set Bounds for entire Board Game screen and initialize the images
+		// Set Bounds for entire Board Game screen do the initialization
 		boardGame_Layers.setBounds(0,0,width,height);	
 		initializeMapImage();
 		initializeRounCardImage(1);
+		initializeTransportationCounters();
 
 		// Add the map image to its corresponding JPanel
 		panelForMap.setBounds(0, 0, 1064, 564);
@@ -40,16 +45,14 @@ public class GameScreen extends JPanel
 		panelForRound.setBackground(Color.WHITE);
 		panelForRound.add(roundImage_Layer1);
 		
-		JPanel panel2 = new JPanel();
-		panel2.setBackground(Color.BLACK);
-		panel2.setBounds(0, 565, 70, 50);
-		
+		// Set Bound for Transportation Counter zone
 		panelForTransportationCounters.setBounds(0, 565, 983, 70);
 		panelForTransportationCounters.setBackground(Color.BLUE);
 		
+		// Add the JPanels to the main Panel
 		boardGame_Layers.add(panelForRound, 1); 
-		boardGame_Layers.add(panel2, 1); 
-		boardGame_Layers.add(panelForTransportationCounters, 2);
+		addTransportationCounters();
+		boardGame_Layers.add(panelForTransportationCounters, 6);
 		boardGame_Layers.add(panelForMap, 2); 
 		
 		// Add Board Game with Round on top of it to the main screen
@@ -59,6 +62,31 @@ public class GameScreen extends JPanel
 		panel3.setBackground(Color.GREEN);
 		panel3.setBounds(984, 565, 80, 70);
 		mainFrame.add(panel3);
+	}
+	
+	public void addTransportationCounters()
+	{
+		for (JPanel panel : playerTransportationCounters)
+		{
+			boardGame_Layers.add(panel, 1);
+		}
+	}
+	
+	public void initializeTransportationCounters()
+	{
+		int xCoordinate = 5;
+		
+		for (int i = 0; i < 5; i++)
+		{
+			JPanel panelForTransportationCounters = new JPanel();
+			panelForTransportationCounters.setBackground(Color.WHITE);
+			Border blackline = BorderFactory.createLineBorder(Color.black);
+			panelForTransportationCounters.setBorder(blackline);
+			panelForTransportationCounters.setBounds(xCoordinate, 565, 80, 70);
+			
+			playerTransportationCounters[i] = panelForTransportationCounters;
+			xCoordinate += 200;
+		}
 	}
 	
 	public void initializeMapImage()
