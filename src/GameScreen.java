@@ -69,10 +69,6 @@ public class GameScreen extends JPanel
 	{
 		for (JPanel panel : panelForPlayerCards)
 		{
-			if (panel == null)
-			{
-				System.out.println("oops");
-			}
 			boardGame_Layers.add(panel, 0);
 		}
 	}
