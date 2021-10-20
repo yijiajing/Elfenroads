@@ -14,8 +14,8 @@ public class GameScreen extends JPanel
 	
 	private JLayeredPane boardGame_Layers = new JLayeredPane();
 	
-	private JLabel roundImage_Layer1;
-	private JLabel mapImage_Layer2;
+	private JLabel roundImage_TopLayer;
+	private JLabel mapImage_BottomLayer;
 	
 	private JPanel panelForMap = new JPanel();
 	private JPanel panelForRound = new JPanel();
@@ -29,7 +29,7 @@ public class GameScreen extends JPanel
 		width = mainFrame.getWidth();
 		height = mainFrame.getHeight();
 		
-		// Set Bounds for entire Board Game screen and do the initialization
+		// Set Bounds for entire Board Game screen do the initialization
 		boardGame_Layers.setBounds(0,0,width,height);	
 		initializeMapImage();
 		initializeRounCardImage(1);
@@ -38,37 +38,39 @@ public class GameScreen extends JPanel
 		// Add the map image to its corresponding JPanel
 		panelForMap.setBounds(0, 0, 1064, 564);
 		panelForMap.setBackground(Color.BLUE);
-		panelForMap.add(mapImage_Layer2);		
+		panelForMap.add(mapImage_BottomLayer);		
 		
 		// Add the Round image to its corresponding JPanel
 		panelForRound.setBounds(932, 39, 86, 94);
 		panelForRound.setBackground(Color.WHITE);
-		panelForRound.add(roundImage_Layer1);
+		panelForRound.add(roundImage_TopLayer);
 		
 		// Set Bound for Transportation Counter zone
 		panelForTransportationCounters.setBounds(0, 565, 983, 70);
 		panelForTransportationCounters.setBackground(Color.BLUE);
 		
-		// Add the JPanels to the main Panel
-		boardGame_Layers.add(panelForRound, 1); 
-		addTransportationCounters();
-		boardGame_Layers.add(panelForTransportationCounters, 6);
-		boardGame_Layers.add(panelForMap, 2); 
-		
-		// Add Board Game with Round on top of it to the main screen
-		mainFrame.add(boardGame_Layers);
-		
 		JPanel panel3 = new JPanel();
 		panel3.setBackground(Color.GREEN);
 		panel3.setBounds(984, 565, 80, 70);
-		mainFrame.add(panel3);
+		
+		// Add the JPanels to the main Panel with their corresponding layer
+		boardGame_Layers.add(panelForRound, 0);
+		boardGame_Layers.add(panel3,0);
+		addTransportationCounters();
+		boardGame_Layers.add(panelForTransportationCounters, -1);
+		boardGame_Layers.add(panelForMap, -1); 
+		
+		// Add the entire structure of the UI to the main screen
+		mainFrame.add(boardGame_Layers);
+		
 	}
 	
 	public void addTransportationCounters()
 	{
 		for (JPanel panel : playerTransportationCounters)
 		{
-			boardGame_Layers.add(panel, 1);
+			boardGame_Layers.add(panel, 0);
+		
 		}
 	}
 	
@@ -83,7 +85,6 @@ public class GameScreen extends JPanel
 			Border blackline = BorderFactory.createLineBorder(Color.black);
 			panelForTransportationCounters.setBorder(blackline);
 			panelForTransportationCounters.setBounds(xCoordinate, 565, 80, 70);
-			
 			playerTransportationCounters[i] = panelForTransportationCounters;
 			xCoordinate += 200;
 		}
@@ -95,7 +96,7 @@ public class GameScreen extends JPanel
 		Image map = mapImage.getImage();
 		Image mapResized = map.getScaledInstance(1064, 564,  java.awt.Image.SCALE_SMOOTH);
 		mapImage = new ImageIcon(mapResized);
-		mapImage_Layer2 = new JLabel(mapImage);
+		mapImage_BottomLayer = new JLabel(mapImage);
 	}
 	
 	public void initializeRounCardImage(int round)
@@ -105,7 +106,7 @@ public class GameScreen extends JPanel
 		Image Round = roundImage.getImage();
 		Image RoundResized = Round.getScaledInstance(90, 90,  java.awt.Image.SCALE_SMOOTH);
 		roundImage = new ImageIcon(RoundResized);
-		roundImage_Layer1 = new JLabel(roundImage);
+		roundImage_TopLayer = new JLabel(roundImage);
 	}
 	
 	public static void main(String[] args) 
