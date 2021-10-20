@@ -29,7 +29,7 @@ public class GameScreen extends JPanel
 		width = mainFrame.getWidth();
 		height = mainFrame.getHeight();
 		
-		// Set Bounds for entire Board Game screen do the initialization
+		// Set Bounds for entire Board Game screen and do the initialization
 		boardGame_Layers.setBounds(0,0,width,height);	
 		initializeMapImage();
 		initializeRounCardImage(1);
