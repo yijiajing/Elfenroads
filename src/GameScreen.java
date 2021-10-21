@@ -1,6 +1,7 @@
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Image;
+import java.util.Collections;
 import java.util.Stack;
 
 import javax.swing.*;
@@ -18,15 +19,19 @@ public class GameScreen extends JPanel
 	
 	private JLabel roundImage_TopLayer;
 	private JLabel mapImage_BottomLayer;
+	private JLabel informationCardImage_TopLayer;
 	
 	private JPanel backgroundPanel_ForMap = new JPanel();
 	private JPanel backgroundPanel_ForRound = new JPanel();
 	private JPanel backgroundPanel_ForObstacle = new JPanel();
 	private JPanel backgroundPanel_ForCards = new JPanel();
-	private JPanel backgroundPanel_ForTransportation_Counters = new JPanel();
+	private JPanel backgroundPanel_ForTransportationCounters = new JPanel();
+	private JPanel backgroundPanel_ForInformationCard = new JPanel();
+	private JPanel backgroundPanel_ForDeckOfTransportationCounters = new JPanel();
 	
 	private JPanel[] panelForPlayerTransportationCounters = new JPanel[5];
 	private JPanel[] panelForPlayerCards = new JPanel[8];
+	private JPanel[] panelForDeckOfTransportationCounters = new JPanel[6];
 	private JPanel panelForObstacle = new JPanel();
 	
 	GameScreen (JFrame frame)
@@ -43,10 +48,12 @@ public class GameScreen extends JPanel
 		initializeTransportationCountersAndObstacle();
 		initializeBackgroundPanels();
 		initializeCards();
+		initializeInformationCardImage();
 
 		// Add the images to their corresponding JPanel
 		backgroundPanel_ForMap.add(mapImage_BottomLayer);		
 		backgroundPanel_ForRound.add(roundImage_TopLayer);
+		backgroundPanel_ForInformationCard.add(informationCardImage_TopLayer);
 		
 		// Add the JPanels to the main JLayeredPane with their corresponding layer
 		addPanelToScreen();
@@ -60,10 +67,12 @@ public class GameScreen extends JPanel
 		boardGame_Layers.add(backgroundPanel_ForRound, 0);
 		addTransportationCountersAndObstacle();
 		addCards();
-		boardGame_Layers.add(backgroundPanel_ForTransportation_Counters, -1);
+		boardGame_Layers.add(backgroundPanel_ForTransportationCounters, -1);
 		boardGame_Layers.add(backgroundPanel_ForMap, -1); 
 		boardGame_Layers.add(backgroundPanel_ForObstacle,-1);
 		boardGame_Layers.add(backgroundPanel_ForCards, -1);
+		boardGame_Layers.add(backgroundPanel_ForInformationCard, -1);
+		boardGame_Layers.add(backgroundPanel_ForDeckOfTransportationCounters, -1);
 	}
 	
 	public void addCards()
@@ -89,9 +98,9 @@ public class GameScreen extends JPanel
 	
 	public void initializeBackgroundPanels()
 	{
-		// Set Bounds for background Transportation Counter zone
-		backgroundPanel_ForTransportation_Counters.setBounds(0, 565, 983, 70);
-		backgroundPanel_ForTransportation_Counters.setBackground(Color.DARK_GRAY);
+		// Set Bounds for background Player Transportation Counter zone
+		backgroundPanel_ForTransportationCounters.setBounds(0, 565, 983, 70);
+		backgroundPanel_ForTransportationCounters.setBackground(Color.DARK_GRAY);
 		
 		// Set Bounds for background Obstacle zone
 		backgroundPanel_ForObstacle.setBackground(Color.RED);
@@ -108,6 +117,14 @@ public class GameScreen extends JPanel
 		// Set Bounds for background Cards zone
 		backgroundPanel_ForCards.setBounds(0, 566, 1064, 333);
 		backgroundPanel_ForCards.setBackground(Color.DARK_GRAY);
+		
+		// Set Bounds for background Information zone
+		backgroundPanel_ForInformationCard.setBounds(1065, 565, 375, 335);
+		backgroundPanel_ForInformationCard.setBackground(Color.DARK_GRAY);
+		
+		// Set Bounds for background Face Up Transportation Counter zone
+		backgroundPanel_ForDeckOfTransportationCounters.setBounds(1065, 275, 375, 289);
+		backgroundPanel_ForDeckOfTransportationCounters.setBackground(Color.DARK_GRAY);
 	}
 	
 	public void initializeCards()
@@ -165,6 +182,15 @@ public class GameScreen extends JPanel
 		roundImage = new ImageIcon(RoundResized);
 		roundImage_TopLayer = new JLabel(roundImage);
 	}
+	
+	public void initializeInformationCardImage()
+	{
+		ImageIcon gridImage = new ImageIcon(getClass().getResource("grid.png"));
+		Image grid = gridImage.getImage();
+		Image gridResized = grid.getScaledInstance(360, 325,  java.awt.Image.SCALE_SMOOTH);
+		gridImage = new ImageIcon(gridResized);
+		informationCardImage_TopLayer = new JLabel(gridImage);
+	}
 
 	public void initializeTransportationCounters()
 	{
@@ -199,7 +225,6 @@ public class GameScreen extends JPanel
 
 		game_screen.add(new GameScreen(game_screen));
 		game_screen.setVisible(true);
-		
 	}
 
 }
