@@ -183,6 +183,8 @@ public class GameScreen extends JPanel
 
 		Deck counters = new Deck(toAddToDeck);
 
+		// now we have intialized the counters and their images
+
 	}
 	
 	public static void main(String[] args) 

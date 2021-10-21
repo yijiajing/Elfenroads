@@ -1,3 +1,5 @@
+import javax.swing.*;
+import java.awt.*;
 
 public class TransportationCounter {
 
@@ -7,35 +9,26 @@ public class TransportationCounter {
 
     // will represent, for now, a Transportation Counter. It will contain information about how to display said counter.
 
-    // this is a bad constructor, but again just for the UI demo
-
     private CounterType type;
     private String imageFilepath;
+    private ImageIcon image;
 
     public TransportationCounter (CounterType pType)
     {
          this.type = pType;
 
          // find the picture of the card based on what type it is
-        if (this.type.equals(CounterType.GIANTPIG))
-        {this.imageFilepath = "M01";}
+        // since the images are named similarly and ordered the same way as they are in the enum declaration, we can get the filepath just by using the type.
 
-        else if (this.type.equals(CounterType.ELFCYCLE))
-        {this.imageFilepath = "M02";}
-
-        else if (this.type.equals(CounterType.MAGICCLOUD))
-        {this.imageFilepath = "M03";}
-
-        else if (this.type.equals(CounterType.UNICORN))
-        {this.imageFilepath = "M04";}
-
-        else if (this.type.equals(CounterType.TROLLWAGON))
-        {this.imageFilepath = "M05";}
-
-        else if (this.type.equals(CounterType.DRAGON))
-        {this.imageFilepath = "M06";}
-
+        int imageNumber = this.type.ordinal() + 1; // since the images start from M01, not M00
+        this.imageFilepath = ("M0" + imageNumber);
+        image = new ImageIcon (this.imageFilepath);
+        Image toResize = image.getImage();
+        Image resized = toResize.getScaledInstance(90, 130,  java.awt.Image.SCALE_SMOOTH);
+        image = new ImageIcon(resized);
     }
+
+    private ImageIcon getImage() {return this.image;}
 
     public CounterType getType() {return this.type;}
 

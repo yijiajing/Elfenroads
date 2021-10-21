@@ -39,6 +39,8 @@ public class Deck {
         return contents.pop();
     }
 
+    public Stack<TransportationCounter> getContents() {return this.contents;}
+
 
 
 }
