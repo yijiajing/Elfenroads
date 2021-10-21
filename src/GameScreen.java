@@ -104,7 +104,7 @@ public class GameScreen extends JPanel
 		backgroundPanel_ForRound.setBounds(932, 34, 86, 130);
 		backgroundPanel_ForRound.setOpaque(false);
 		
-		// Set Bounds for background Cards
+		// Set Bounds for background Cards zone
 		backgroundPanel_ForCards.setBounds(0, 566, 1064, 333);
 		backgroundPanel_ForCards.setBackground(Color.DARK_GRAY);
 	}
