@@ -22,10 +22,10 @@ public class TransportationCounter {
 
         int imageNumber = this.type.ordinal() + 1; // since the images start from M01, not M00
         this.imageFilepath = ("M0" + imageNumber);
-        image = new ImageIcon (this.imageFilepath);
-        Image toResize = image.getImage();
+        this.image = new ImageIcon (this.imageFilepath);
+        Image toResize = this.image.getImage();
         Image resized = toResize.getScaledInstance(90, 130,  java.awt.Image.SCALE_SMOOTH);
-        image = new ImageIcon(resized);
+        this.image = new ImageIcon(resized);
     }
 
     private ImageIcon getImage() {return this.image;}
