@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Stack;
 
 public class Deck {
 
@@ -8,11 +9,11 @@ public class Deck {
 
     // will have limited functionality for now
 
-    private ArrayList<TransportationCounter> contents;
+    private Stack<TransportationCounter> contents;
 
     public Deck()
     {
-        this.contents = new ArrayList<TransportationCounter>();
+        this.contents = new Stack<TransportationCounter>();
     }
 
     public Deck (ArrayList<TransportationCounter> pContents)
@@ -20,11 +21,14 @@ public class Deck {
         for (int i = 0; i < pContents.size(); i++)
         {
             TransportationCounter cur = pContents.get(i);
-            this.contents.set(i, cur);
+            this.contents.add(i, cur);
         }
     }
 
-    public draw ()
+    public TransportationCounter draw (Object destination)
+    {
+        return contents.pop();
+    }
 
 
 
