@@ -35,7 +35,7 @@ public class GameScreen extends JPanel
 		width = mainFrame.getWidth();
 		height = mainFrame.getHeight();
 		
-		// Set Bounds for entire Board Game screen do the initialization of the structure for the UI
+		// Set Bounds for entire Board Game screen and do the initialization of the structure for the UI
 		boardGame_Layers.setBounds(0,0,width,height);	
 		initializeMapImage();
 		initializeRoundCardImage(1);
@@ -104,7 +104,7 @@ public class GameScreen extends JPanel
 		backgroundPanel_ForRound.setBounds(932, 34, 86, 130);
 		backgroundPanel_ForRound.setOpaque(false);
 		
-		// Set Bounds for background Cards
+		// Set Bounds for background Cards zone
 		backgroundPanel_ForCards.setBounds(0, 566, 1064, 333);
 		backgroundPanel_ForCards.setBackground(Color.DARK_GRAY);
 	}
