@@ -185,6 +185,9 @@ public class GameScreen extends JPanel
 
 		// now we have intialized the counters and their images
 
+		// button to draw
+		// check if the panel is full already
+
 	}
 	
 	public static void main(String[] args) 
