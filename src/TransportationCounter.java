@@ -4,18 +4,14 @@ public class TransportationCounter {
 
     public enum CounterType {GIANTPIG, ELFCYCLE, MAGICCLOUD, UNICORN, TROLLWAGON, DRAGON, RAFT}
 
-
-
     // another rudimentary class to go along with Deck
 
     // will represent, for now, a Transportation Counter. It will contain information about how to display said counter.
-
 
     // this is a bad constructor, but again just for the UI demo
 
     private CounterType type;
     private String imageFilepath;
-
 
     public TransportationCounter (CounterType pType)
     {
