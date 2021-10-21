@@ -1,7 +1,7 @@
 
 public class TransportationCounter {
 
-    public enum CounterType {GIANTPIG, ELFCYCLE, MAGICCLOUD, UNICORN, TROLLWAGON, DRAGON, RAFT}
+    public enum CounterType {GIANTPIG, ELFCYCLE, MAGICCLOUD, UNICORN, TROLLWAGON, DRAGON}
 
     // another rudimentary class to go along with Deck
 
@@ -34,10 +34,6 @@ public class TransportationCounter {
 
         else if (this.type.equals(CounterType.DRAGON))
         {this.imageFilepath = "M06";}
-
-        else if (this.type.equals(CounterType.RAFT))
-        {this.imageFilepath = "M07";}
-
 
     }
 

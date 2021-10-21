@@ -1,6 +1,7 @@
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Image;
+import java.util.Stack;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -163,6 +164,25 @@ public class GameScreen extends JPanel
 		Image RoundResized = Round.getScaledInstance(90, 130,  java.awt.Image.SCALE_SMOOTH);
 		roundImage = new ImageIcon(RoundResized);
 		roundImage_TopLayer = new JLabel(roundImage);
+	}
+
+	public void initializeTransportationCounters()
+	{
+		// we have 8 of each counter in the game
+		Stack<TransportationCounter> toAddToDeck = new Stack<TransportationCounter>();
+
+		for (int i = 1; i <= 8; i++)
+		{
+			toAddToDeck.push(new TransportationCounter(TransportationCounter.CounterType.DRAGON));
+			toAddToDeck.push(new TransportationCounter(TransportationCounter.CounterType.GIANTPIG));
+			toAddToDeck.push(new TransportationCounter(TransportationCounter.CounterType.UNICORN));
+			toAddToDeck.push(new TransportationCounter(TransportationCounter.CounterType.TROLLWAGON));
+			toAddToDeck.push(new TransportationCounter(TransportationCounter.CounterType.ELFCYCLE));
+			toAddToDeck.push(new TransportationCounter(TransportationCounter.CounterType.MAGICCLOUD));
+		}
+
+		Deck counters = new Deck(toAddToDeck);
+
 	}
 	
 	public static void main(String[] args) 

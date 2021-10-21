@@ -21,9 +21,18 @@ public class Deck {
         for (int i = 0; i < pContents.size(); i++)
         {
             TransportationCounter cur = pContents.get(i);
-            this.contents.add(i, cur);
+            this.contents.push(cur);
         }
     }
+
+    public Deck (Stack<TransportationCounter> pContents)
+    {
+        for (TransportationCounter cur : pContents)
+        {
+            this.contents.push(cur);
+        }
+    }
+
 
     public TransportationCounter draw (Object destination)
     {
