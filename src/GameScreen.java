@@ -1,3 +1,5 @@
+package testing;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Image;
@@ -166,7 +168,7 @@ public class GameScreen extends JPanel
 	
 	public void initializeMapImage()
 	{
-		ImageIcon mapImage = new ImageIcon(getClass().getResource("map.png"));
+		ImageIcon mapImage = new ImageIcon("/Users/charlescouture/eclipse-workspace/COMP361/assets/sprites/map.png");
 		Image map = mapImage.getImage();
 		Image mapResized = map.getScaledInstance(width*1064/1440, height*564/900,  java.awt.Image.SCALE_SMOOTH);
 		mapImage = new ImageIcon(mapResized);
@@ -176,7 +178,7 @@ public class GameScreen extends JPanel
 	public void initializeRoundCardImage(int round)
 	{
 		String image = "R" + String.valueOf(round) + ".png";
-		ImageIcon roundImage = new ImageIcon(getClass().getResource(image));
+		ImageIcon roundImage = new ImageIcon("/Users/charlescouture/eclipse-workspace/COMP361/assets/sprites/R1.png");
 		Image Round = roundImage.getImage();
 		Image RoundResized = Round.getScaledInstance(width*90/1440, height*130/900,  java.awt.Image.SCALE_SMOOTH);
 		roundImage = new ImageIcon(RoundResized);
@@ -185,7 +187,7 @@ public class GameScreen extends JPanel
 	
 	public void initializeInformationCardImage()
 	{
-		ImageIcon gridImage = new ImageIcon(getClass().getResource("grid.png"));
+		ImageIcon gridImage = new ImageIcon("/Users/charlescouture/eclipse-workspace/COMP361/assets/sprites/grid.png");
 		Image grid = gridImage.getImage();
 		Image gridResized = grid.getScaledInstance(width*360/1440, height*325/900,  java.awt.Image.SCALE_SMOOTH);
 		gridImage = new ImageIcon(gridResized);
@@ -211,7 +213,9 @@ public class GameScreen extends JPanel
 
 		// now we have intialized the counters and their images
 
-		// button to draw
+		JButton drawButton = new DrawButton(counters);
+		drawButton.addActionListener(new DrawListener(counters, panelForPlayerTransportationCounters));
+		mainFrame.add(drawButton);
 		// check if the panel is full already
 
 	}
