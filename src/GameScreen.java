@@ -99,52 +99,52 @@ public class GameScreen extends JPanel
 	public void initializeBackgroundPanels()
 	{
 		// Set Bounds for background Player Transportation Counter zone
-		backgroundPanel_ForTransportationCounters.setBounds(0, 565, 983, 70);
+		backgroundPanel_ForTransportationCounters.setBounds(width*0/1440, height*565/900, width*983/1440, height*70/900);
 		backgroundPanel_ForTransportationCounters.setBackground(Color.DARK_GRAY);
 		
 		// Set Bounds for background Obstacle zone
 		backgroundPanel_ForObstacle.setBackground(Color.RED);
-		backgroundPanel_ForObstacle.setBounds(984, 565, 80, 70);
+		backgroundPanel_ForObstacle.setBounds(width*984/1440, height*565/900, width*80/1440, height*70/900);
 		
 		// Set Bounds for background Image zone
-		backgroundPanel_ForMap.setBounds(0, 0, 1064, 564);
+		backgroundPanel_ForMap.setBounds(width*0/1440, height*0/900, width*1064/1440, height*564/900);
 		backgroundPanel_ForMap.setBackground(Color.BLUE);
 		
 		// Set Bounds for background Round zone
-		backgroundPanel_ForRound.setBounds(932, 34, 86, 130);
+		backgroundPanel_ForRound.setBounds(width*932/1440, height*34/900, width*86/1440, height*130/900);
 		backgroundPanel_ForRound.setOpaque(false);
 		
 		// Set Bounds for background Cards zone
-		backgroundPanel_ForCards.setBounds(0, 566, 1064, 333);
+		backgroundPanel_ForCards.setBounds(width*0/1440, height*566/900, width*1064/1440, height*333/900);
 		backgroundPanel_ForCards.setBackground(Color.DARK_GRAY);
 		
 		// Set Bounds for background Information zone
-		backgroundPanel_ForInformationCard.setBounds(1065, 565, 375, 335);
+		backgroundPanel_ForInformationCard.setBounds(width*1065/1440, height*565/900, width*375/1440, height*335/900);
 		backgroundPanel_ForInformationCard.setBackground(Color.DARK_GRAY);
 		
 		// Set Bounds for background Face Up Transportation Counter zone
-		backgroundPanel_ForDeckOfTransportationCounters.setBounds(1065, 275, 375, 289);
+		backgroundPanel_ForDeckOfTransportationCounters.setBounds(width*1065/1440, height*275/900, width*375/1440, height*289/900);
 		backgroundPanel_ForDeckOfTransportationCounters.setBackground(Color.DARK_GRAY);
 	}
 	
 	public void initializeCards()
 	{
-		int xCoordinate = 2;
+		int xCoordinate = width*2/1440;
 		Border whiteLine = BorderFactory.createLineBorder(Color.WHITE);
 		for (int i = 0; i < 8; i++)
 		{
 			JPanel panel = new JPanel();
 			panel.setOpaque(false);
 			panel.setBorder(whiteLine);
-			panel.setBounds(xCoordinate, 637, 130, 260);
+			panel.setBounds(xCoordinate, height*637/900, width*130/1440, height*260/900);
 			panelForPlayerCards[i] = panel;
-			xCoordinate += 133;
+			xCoordinate += width*133/1440;
 		}
 	}
 	
 	public void initializeTransportationCountersAndObstacle()
 	{
-		int xCoordinate = 10;
+		int xCoordinate = width*10/1440;
 		Border whiteLine = BorderFactory.createLineBorder(Color.WHITE);
 		
 		// Transportation Counters
@@ -153,22 +153,22 @@ public class GameScreen extends JPanel
 			JPanel panel= new JPanel();
 			panel.setOpaque(false);
 			panel.setBorder(whiteLine);
-			panel.setBounds(xCoordinate, 570, 70, 60);
+			panel.setBounds(xCoordinate, height*570/900, width*70/1440, height*60/900);
 			panelForPlayerTransportationCounters[i] = panel;
-			xCoordinate += 200;
+			xCoordinate += width*200/1440;
 		}
 		
 		// Obstacle
 		panelForObstacle.setOpaque(false);
 		panelForObstacle.setBorder(whiteLine);
-		panelForObstacle.setBounds(989, 570, 70, 60);
+		panelForObstacle.setBounds(width*989/1440, height*570/900, width*70/1440, height*60/900);
 	}
 	
 	public void initializeMapImage()
 	{
 		ImageIcon mapImage = new ImageIcon(getClass().getResource("map.png"));
 		Image map = mapImage.getImage();
-		Image mapResized = map.getScaledInstance(1064, 564,  java.awt.Image.SCALE_SMOOTH);
+		Image mapResized = map.getScaledInstance(width*1064/1440, height*564/900,  java.awt.Image.SCALE_SMOOTH);
 		mapImage = new ImageIcon(mapResized);
 		mapImage_BottomLayer = new JLabel(mapImage);
 	}
@@ -178,7 +178,7 @@ public class GameScreen extends JPanel
 		String image = "R" + String.valueOf(round) + ".png";
 		ImageIcon roundImage = new ImageIcon(getClass().getResource(image));
 		Image Round = roundImage.getImage();
-		Image RoundResized = Round.getScaledInstance(90, 130,  java.awt.Image.SCALE_SMOOTH);
+		Image RoundResized = Round.getScaledInstance(width*90/1440, height*130/900,  java.awt.Image.SCALE_SMOOTH);
 		roundImage = new ImageIcon(RoundResized);
 		roundImage_TopLayer = new JLabel(roundImage);
 	}
@@ -187,7 +187,7 @@ public class GameScreen extends JPanel
 	{
 		ImageIcon gridImage = new ImageIcon(getClass().getResource("grid.png"));
 		Image grid = gridImage.getImage();
-		Image gridResized = grid.getScaledInstance(360, 325,  java.awt.Image.SCALE_SMOOTH);
+		Image gridResized = grid.getScaledInstance(width*360/1440, height*325/900,  java.awt.Image.SCALE_SMOOTH);
 		gridImage = new ImageIcon(gridResized);
 		informationCardImage_TopLayer = new JLabel(gridImage);
 	}
