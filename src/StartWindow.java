@@ -1,6 +1,11 @@
 import javax.swing.*;
+import java.awt.Component;
+import java.awt.Image;
+
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import org.minueto.*;
 
 public class StartWindow extends JPanel{
 
@@ -19,19 +24,37 @@ public class StartWindow extends JPanel{
     private JButton aboutButton;
     private JButton exitButton;
 
+    
+
     StartWindow(){
         startFrame = new JFrame("StartScreen");
         width = startFrame.getWidth();
         height = startFrame.getHeight();
 
         startFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        StartScreen();
 
     }
 
     private void StartScreen(){
     
         mainPanel = new JPanel();
+        mainPanel.setBackground(Color.BLACK);
+        mainPanel.setBounds(0, 0, width, height);
+        startFrame.add(mainPanel);
 
+        menuPanel = new JPanel();
+        ImageIcon background_image = new ImageIcon("C:/Users/philb/Documents/McGill/U3 Fall/COMP 361/elfenroads.jpeg");
+        Image background = background_image.getImage();
+
+    }
+
+    public static void main(String[] args){
+        JFrame startWindow = new JFrame("StartScreen");
+        //startWindow.setSize(MinuetoTool.getDisplayWidth(), MinuetoTool.getDisplayHeight());
+        //startWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        startWindow.add(new StartWindow());
+        startWindow.setVisible(true);
     }
 
 
