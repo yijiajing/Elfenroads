@@ -28,11 +28,11 @@ public class LobbyWindow extends JPanel implements ActionListener{
         boxPanel.add(createButton);
         boxPanel.add(loadButton);
         boxPanel.add(gamesButton);
-        //boxPanel.setAlignmentX(-10);
+        
 
-        //add(createButton);
-        //add(loadButton);
-        //add(gamesButton);
+        add(createButton);
+        add(loadButton);
+        add(gamesButton);
 
     }
 
