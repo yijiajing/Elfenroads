@@ -8,7 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import org.minueto.*;
 
-public class StartWindow extends JPanel{
+public class StartWindow extends JPanel implements ActionListener{
     
     
     private JLabel background_elvenroads;
@@ -19,35 +19,38 @@ public class StartWindow extends JPanel{
     private JButton exitButton;
 
     StartWindow(){
-        startFrame = new JFrame();
+        //startFrame = new JFrame();
         ImageIcon background_image = 
         new ImageIcon("C:/Users/philb/Documents/GitHub/f2021-hexanome-12/assets/sprites/elfenroads.jpeg");
         background_elvenroads = new JLabel(background_image);
         // startButton config
         startButton = new JButton("Start");
-        startButton.setForeground(Color.BLACK);
-        startButton.setOpaque(false);
-        startButton.setContentAreaFilled(false);
-        startButton.setBorderPainted(false);
-        startButton.setFocusPainted(false);
+        startButton.addActionListener(this);
+        //startButton.setForeground(Color.BLACK);
+        //startButton.setOpaque(false);
+        //startButton.setContentAreaFilled(false);
+        //startButton.setBorderPainted(false);
+        //startButton.setFocusPainted(false);
 
 
 
         // aboutButton config
         aboutButton = new JButton("About");
-        aboutButton.setForeground(Color.BLACK);
-        aboutButton.setOpaque(false);
-        aboutButton.setContentAreaFilled(false);
-        aboutButton.setBorderPainted(false);
-        aboutButton.setFocusPainted(false);
+        aboutButton.addActionListener(this);
+        //aboutButton.setForeground(Color.BLACK);
+        //aboutButton.setOpaque(false);
+        //aboutButton.setContentAreaFilled(false);
+        //aboutButton.setBorderPainted(false);
+        //aboutButton.setFocusPainted(false);
 
         // exitButton config
         exitButton = new JButton("Exit");
-        exitButton.setForeground(Color.BLACK);
-        exitButton.setOpaque(false);
-        exitButton.setContentAreaFilled(false);
-        exitButton.setBorderPainted(false);
-        exitButton.setFocusPainted(false);
+        exitButton.addActionListener(this);
+        //exitButton.setForeground(Color.BLACK);
+        //exitButton.setOpaque(false);
+        //exitButton.setContentAreaFilled(false);
+        //exitButton.setBorderPainted(false);
+        //exitButton.setFocusPainted(false);
 
         
         buttons = new JPanel();
@@ -65,6 +68,12 @@ public class StartWindow extends JPanel{
         background_elvenroads.add(buttons,gbc);
 
         add(background_elvenroads);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        // TODO Auto-generated method stub
+        
     }
 
     
