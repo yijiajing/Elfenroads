@@ -35,6 +35,8 @@ public class GameScreen extends JPanel
 	private JPanel[] panelForDeckOfTransportationCounters = new JPanel[6];
 	private JPanel panelForObstacle = new JPanel();
 	
+	private JTable leaderboeard = new JTable();
+	
 	GameScreen (JFrame frame)
 	{
 		// Get dimensions of the full screen
@@ -44,20 +46,10 @@ public class GameScreen extends JPanel
 		
 		// Set Bounds for entire Board Game screen and do the initialization of the structure for the UI
 		boardGame_Layers.setBounds(0,0,width,height);	
-		initializeMapImage();
-		initializeRoundCardImage(1);
-		initializeTransportationCountersAndObstacle();
-		initializeBackgroundPanels();
-		initializeCards();
-		initializeInformationCardImage();
-		initializeDeckOfTransportationCounters();
-		initializeDeckOfTransportationCountersImage();
+		initialization();
 
 		// Add the images to their corresponding JPanel
-		backgroundPanel_ForMap.add(mapImage_BottomLayer);		
-		backgroundPanel_ForRound.add(roundImage_TopLayer);
-		backgroundPanel_ForInformationCard.add(informationCardImage_TopLayer);
-		panelForDeckOfTransportationCounters[0].add(deckOfTransportationCountersImage_TopLayer);
+		addImages();
 		
 		// Add the JPanels to the main JLayeredPane with their corresponding layer
 		addPanelToScreen();
@@ -66,47 +58,17 @@ public class GameScreen extends JPanel
 		mainFrame.add(boardGame_Layers);
 	}
 	
-	public void addPanelToScreen()
+	public void initialization()
 	{
-		boardGame_Layers.add(backgroundPanel_ForRound, 0);
-		addDeckOfTransportationCounters();
-		addTransportationCountersAndObstacle();
-		addCards();
-		boardGame_Layers.add(backgroundPanel_ForTransportationCounters, -1);
-		boardGame_Layers.add(backgroundPanel_ForMap, -1); 
-		boardGame_Layers.add(backgroundPanel_ForObstacle,-1);
-		boardGame_Layers.add(backgroundPanel_ForCards, -1);
-		boardGame_Layers.add(backgroundPanel_ForInformationCard, -1);
-		boardGame_Layers.add(backgroundPanel_ForDeckOfTransportationCounters, -1);
-	}
-	
-	public void addDeckOfTransportationCounters()
-	{	
-		for (JPanel panel : panelForDeckOfTransportationCounters)
-		{
-			boardGame_Layers.add(panel, 0);
-		}
-	}
-	
-	public void addCards()
-	{	
-		for (JPanel panel : panelForPlayerCards)
-		{
-			boardGame_Layers.add(panel, 0);
-		}
-	}
-	
-	public void addTransportationCountersAndObstacle()
-	{
-		// Transportation Counters
-		for (JPanel panel : panelForPlayerTransportationCounters)
-		{
-			panel.setOpaque(false);
-			boardGame_Layers.add(panel, 0);
-		}
-		
-		// Obstacle
-		boardGame_Layers.add(panelForObstacle,0);
+		initializeMapImage();
+		initializeRoundCardImage(1);
+		initializeTransportationCountersAndObstacle();
+		initializeBackgroundPanels();
+		initializeCards();
+		initializeInformationCardImage();
+		initializeDeckOfTransportationCounters();
+		initializeDeckOfTransportationCountersImage();
+		initializeLeaderboard();
 	}
 	
 	public void initializeBackgroundPanels()
@@ -181,6 +143,11 @@ public class GameScreen extends JPanel
 		panelForDeckOfTransportationCounters[5] = panel6;
 	}
 	
+	public void initializeLeaderboard()
+	{
+		
+	}
+	
 	public void initializeCards()
 	{
 		int xCoordinate = width*2/1440;
@@ -253,6 +220,57 @@ public class GameScreen extends JPanel
 		Image gridResized = grid.getScaledInstance(width*67/1440, height*52/900,  java.awt.Image.SCALE_SMOOTH);
 		gridImage = new ImageIcon(gridResized);
 		deckOfTransportationCountersImage_TopLayer = new JLabel(gridImage);
+	}
+	
+	public void addImages()
+	{
+		backgroundPanel_ForMap.add(mapImage_BottomLayer);		
+		backgroundPanel_ForRound.add(roundImage_TopLayer);
+		backgroundPanel_ForInformationCard.add(informationCardImage_TopLayer);
+		panelForDeckOfTransportationCounters[0].add(deckOfTransportationCountersImage_TopLayer);
+	}
+	
+	public void addPanelToScreen()
+	{
+		boardGame_Layers.add(backgroundPanel_ForRound, 0);
+		addDeckOfTransportationCounters();
+		addTransportationCountersAndObstacle();
+		addCards();
+		boardGame_Layers.add(backgroundPanel_ForTransportationCounters, -1);
+		boardGame_Layers.add(backgroundPanel_ForMap, -1); 
+		boardGame_Layers.add(backgroundPanel_ForObstacle,-1);
+		boardGame_Layers.add(backgroundPanel_ForCards, -1);
+		boardGame_Layers.add(backgroundPanel_ForInformationCard, -1);
+		boardGame_Layers.add(backgroundPanel_ForDeckOfTransportationCounters, -1);
+	}
+	
+	public void addDeckOfTransportationCounters()
+	{	
+		for (JPanel panel : panelForDeckOfTransportationCounters)
+		{
+			boardGame_Layers.add(panel, 0);
+		}
+	}
+	
+	public void addCards()
+	{	
+		for (JPanel panel : panelForPlayerCards)
+		{
+			boardGame_Layers.add(panel, 0);
+		}
+	}
+	
+	public void addTransportationCountersAndObstacle()
+	{
+		// Transportation Counters
+		for (JPanel panel : panelForPlayerTransportationCounters)
+		{
+			panel.setOpaque(false);
+			boardGame_Layers.add(panel, 0);
+		}
+		
+		// Obstacle
+		boardGame_Layers.add(panelForObstacle,0);
 	}
 
 	public void initializeTransportationCounters()
