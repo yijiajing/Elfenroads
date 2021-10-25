@@ -41,6 +41,8 @@ public class GameScreen extends JPanel
 	private JTable leaderboeard = new JTable();
 	
 	private Deck transportationCountersToDraw;
+
+	private String filepathToRepo = "/Users/charlescouture/eclipse-workspace/COMP361"; // change this depending on whose machine we are using
 	
 	GameScreen (JFrame frame)
 	{
@@ -199,7 +201,7 @@ public class GameScreen extends JPanel
 	
 	public void initializeMapImage()
 	{
-		ImageIcon mapImage = new ImageIcon("/Users/charlescouture/eclipse-workspace/COMP361/assets/sprites/map.png");
+		ImageIcon mapImage = new ImageIcon(filepathToRepo + "/assets/sprites/map.png");
 		Image map = mapImage.getImage();
 		Image mapResized = map.getScaledInstance(width*1064/1440, height*564/900,  java.awt.Image.SCALE_SMOOTH);
 		mapImage = new ImageIcon(mapResized);
@@ -208,8 +210,8 @@ public class GameScreen extends JPanel
 	
 	public void initializeRoundCardImage(int round)
 	{
-		String image = "R" + String.valueOf(round) + ".png";
-		ImageIcon roundImage = new ImageIcon("/Users/charlescouture/eclipse-workspace/COMP361/assets/sprites/R1.png");
+		String image = filepathToRepo + "R" + String.valueOf(round) + ".png";
+		ImageIcon roundImage = new ImageIcon(filepathToRepo + "/assets/sprites/R1.png");
 		Image Round = roundImage.getImage();
 		Image RoundResized = Round.getScaledInstance(width*90/1440, height*130/900,  java.awt.Image.SCALE_SMOOTH);
 		roundImage = new ImageIcon(RoundResized);
@@ -218,7 +220,7 @@ public class GameScreen extends JPanel
 	
 	public void initializeInformationCardImage()
 	{
-		ImageIcon gridImage = new ImageIcon("/Users/charlescouture/eclipse-workspace/COMP361/assets/sprites/grid.png");
+		ImageIcon gridImage = new ImageIcon(filepathToRepo + "/assets/sprites/grid.png");
 		Image grid = gridImage.getImage();
 		Image gridResized = grid.getScaledInstance(width*360/1440, height*325/900,  java.awt.Image.SCALE_SMOOTH);
 		gridImage = new ImageIcon(gridResized);
@@ -227,7 +229,7 @@ public class GameScreen extends JPanel
 	
 	public void initializeDeckOfTransportationCountersImage()
 	{
-		ImageIcon gridImage = new ImageIcon("/Users/charlescouture/eclipse-workspace/COMP361/assets/sprites/M08.png");
+		ImageIcon gridImage = new ImageIcon(filepathToRepo + "/assets/sprites/M08.png");
 		Image grid = gridImage.getImage();
 		Image gridResized = grid.getScaledInstance(width*67/1440, height*52/900,  java.awt.Image.SCALE_SMOOTH);
 		gridImage = new ImageIcon(gridResized);
