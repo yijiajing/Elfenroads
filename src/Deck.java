@@ -12,7 +12,7 @@ public class Deck {
 
     // will have limited functionality for now
 
-    private Stack<TransportationCounter> contents = new Stack<TransportationCounter>();;
+    private Stack<TransportationCounter> contents = new Stack<TransportationCounter>();
 
     public Deck()
     {
@@ -26,6 +26,7 @@ public class Deck {
             TransportationCounter cur = pContents.get(i);
             this.contents.push(cur);
         }
+        shuffle();
     }
 
     public Deck (Stack<TransportationCounter> pContents)
