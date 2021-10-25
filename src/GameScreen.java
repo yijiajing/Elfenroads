@@ -1,6 +1,8 @@
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Collections;
 import java.util.Stack;
 
@@ -38,6 +40,8 @@ public class GameScreen extends JPanel
 	
 	private JTable leaderboeard = new JTable();
 	
+	private Deck transportationCountersToDraw;
+	
 	GameScreen (JFrame frame)
 	{
 		// Get dimensions of the full screen
@@ -51,6 +55,7 @@ public class GameScreen extends JPanel
 
 		// Add the images to their corresponding JPanel
 		addImages();
+		intializeListenerToDraw();
 		
 		// Add the JPanels to the main JLayeredPane with their corresponding layer
 		addPanelToScreen();
@@ -71,6 +76,7 @@ public class GameScreen extends JPanel
 		initializeDeckOfTransportationCounters();
 		initializeDeckOfTransportationCountersImage();
 		initializeLeaderboard();
+		initializeTransportationCounters();
 	}
 	
 	public void initializeBackgroundPanels()
@@ -287,23 +293,37 @@ public class GameScreen extends JPanel
 
 		for (int i = 1; i <= 8; i++)
 		{
-			toAddToDeck.push(new TransportationCounter(TransportationCounter.CounterType.DRAGON));
-			toAddToDeck.push(new TransportationCounter(TransportationCounter.CounterType.GIANTPIG));
-			toAddToDeck.push(new TransportationCounter(TransportationCounter.CounterType.UNICORN));
-			toAddToDeck.push(new TransportationCounter(TransportationCounter.CounterType.TROLLWAGON));
-			toAddToDeck.push(new TransportationCounter(TransportationCounter.CounterType.ELFCYCLE));
-			toAddToDeck.push(new TransportationCounter(TransportationCounter.CounterType.MAGICCLOUD));
+			toAddToDeck.push(new TransportationCounter(TransportationCounter.CounterType.DRAGON, width, height));
+			toAddToDeck.push(new TransportationCounter(TransportationCounter.CounterType.GIANTPIG, width, height));
+			toAddToDeck.push(new TransportationCounter(TransportationCounter.CounterType.UNICORN, width, height));
+			toAddToDeck.push(new TransportationCounter(TransportationCounter.CounterType.TROLLWAGON, width, height));
+			toAddToDeck.push(new TransportationCounter(TransportationCounter.CounterType.ELFCYCLE, width, height));
+			toAddToDeck.push(new TransportationCounter(TransportationCounter.CounterType.MAGICCLOUD, width, height));
 		}
 
-		Deck counters = new Deck(toAddToDeck);
+		transportationCountersToDraw = new Deck(toAddToDeck);
+	}
+	
+	public void intializeListenerToDraw()
+	{
+		// here we will add a MouseListener to deckOfTransportationCountersImage_TopLayer
 
-		// now we have intialized the counters and their images
-
-		JButton drawButton = new DrawButton(counters);
-		drawButton.addActionListener(new DrawListener(counters, panelForPlayerTransportationCounters));
-		mainFrame.add(drawButton);
-		// check if the panel is full already
-
+		deckOfTransportationCountersImage_TopLayer.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				TransportationCounter drawn = transportationCountersToDraw.draw(); // draw a counter
+				for (int i = 0; i < 5; i++)
+				{
+					if (panelForPlayerTransportationCounters[i].getComponentCount() == 0) // if spot is empty, put card there
+					{
+						panelForPlayerTransportationCounters[i].add(drawn.getDisplay());
+						mainFrame.repaint();
+						mainFrame.revalidate();
+					}
+					// if we don't find an open spot, we do nothing. we can't put the counter anywhere.
+				}
+			}
+		});
 	}
 	
 	public static void main(String[] args) 
