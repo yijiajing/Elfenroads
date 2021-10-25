@@ -11,7 +11,14 @@ public class LobbyWindow extends JPanel implements ActionListener{
     private static JButton loadButton;
     private static JButton gamesButton;
     private JPanel buttons;
-    
+    private JPanel sessions;
+    private JLabel gameToJoin;
+    private JLabel available;
+    private JLabel gameName;
+    private JLabel creator;
+    private JLabel numPlayers;
+    private Box gameInfo;
+
     LobbyWindow(){
         
         createButton = new JButton("CREATE NEW SESSION");
@@ -20,11 +27,26 @@ public class LobbyWindow extends JPanel implements ActionListener{
         ImageIcon background_image = 
         new ImageIcon("C:/Users/philb/Documents/GitHub/f2021-hexanome-12/assets/sprites/elfenroads.jpeg");
         background_elvenroads = new JLabel(background_image);
-        
+        gameToJoin = new JLabel();
+        gameToJoin.setText("");
+        sessions = new JPanel(new BorderLayout());
+        available = new JLabel();
+        available.setText("Avalable Sessions");
+        sessions.add(available,BorderLayout.PAGE_START);
+        gameInfo= Box.createVerticalBox();
+        gameName = new JLabel("GAME NAME: Sample");
+        creator = new JLabel("CREATOR: John");
+        numPlayers = new JLabel("PLAYERS: 4");
+        gameInfo.add(gameName);
+        gameInfo.add(creator);
+        gameInfo.add(numPlayers);
+        gameInfo.add(gamesButton);
+        sessions.add(gameInfo,BorderLayout.LINE_START);
 
 
         createButton.addActionListener(this);
         loadButton.addActionListener(this);
+        gamesButton.addActionListener(this);
 
 
         buttons = new JPanel();
@@ -39,6 +61,7 @@ public class LobbyWindow extends JPanel implements ActionListener{
         gbc.gridheight= 3;
         background_elvenroads.setLayout(layout);
         background_elvenroads.add(buttons,gbc);
+        background_elvenroads.add(sessions);
 
         add(background_elvenroads);
 
