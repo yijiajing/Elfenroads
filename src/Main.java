@@ -11,8 +11,7 @@ class Main {
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         mainFrame.add(new LoginWindow());
-        //mainFrame.add(new StartWindow());
-        //mainFrame.add(new LobbyWindow());
+        
         
         
         mainFrame.setVisible(true);

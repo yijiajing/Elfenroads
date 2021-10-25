@@ -11,7 +11,7 @@ public class LobbyWindow extends JPanel implements ActionListener{
     private static JButton loadButton;
     private static JButton gamesButton;
     private JPanel buttons;
-
+    
     LobbyWindow(){
         
         createButton = new JButton("CREATE NEW SESSION");
