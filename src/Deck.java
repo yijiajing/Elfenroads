@@ -1,5 +1,8 @@
+import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Stack;
+
 
 public class Deck {
 
@@ -34,13 +37,16 @@ public class Deck {
     }
 
 
-    public TransportationCounter draw (Object destination)
+    public TransportationCounter draw () {return contents.pop();}
+
+    /* public void drawToDestination(Container toPut)
     {
-        return contents.pop();
+        toPut.add(this.draw());
     }
+    */
 
     public Stack<TransportationCounter> getContents() {return this.contents;}
 
-
+    public void shuffle() {Collections.shuffle(this.contents);}
 
 }
