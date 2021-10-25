@@ -57,11 +57,12 @@ public class LobbyWindow extends JPanel implements ActionListener{
         gbc.gridx = 0;
         gbc.gridy = 0;
 
-        gbc.gridwidth = 1;
+        gbc.gridwidth = 3;
         gbc.gridheight= 3;
         background_elvenroads.setLayout(layout);
         background_elvenroads.add(buttons,gbc);
-        background_elvenroads.add(sessions);
+        gbc.gridy = 3;
+        background_elvenroads.add(sessions,gbc);
 
         add(background_elvenroads);
 
