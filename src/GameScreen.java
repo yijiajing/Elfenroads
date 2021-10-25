@@ -1,4 +1,3 @@
-
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Image;
@@ -21,6 +20,7 @@ public class GameScreen extends JPanel
 	private JLabel roundImage_TopLayer;
 	private JLabel mapImage_BottomLayer;
 	private JLabel informationCardImage_TopLayer;
+	private JLabel deckOfTransportationCountersImage_TopLayer;
 	
 	private JPanel backgroundPanel_ForMap = new JPanel();
 	private JPanel backgroundPanel_ForRound = new JPanel();
@@ -50,11 +50,14 @@ public class GameScreen extends JPanel
 		initializeBackgroundPanels();
 		initializeCards();
 		initializeInformationCardImage();
+		initializeDeckOfTransportationCounters();
+		initializeDeckOfTransportationCountersImage();
 
 		// Add the images to their corresponding JPanel
 		backgroundPanel_ForMap.add(mapImage_BottomLayer);		
 		backgroundPanel_ForRound.add(roundImage_TopLayer);
 		backgroundPanel_ForInformationCard.add(informationCardImage_TopLayer);
+		panelForDeckOfTransportationCounters[0].add(deckOfTransportationCountersImage_TopLayer);
 		
 		// Add the JPanels to the main JLayeredPane with their corresponding layer
 		addPanelToScreen();
@@ -66,6 +69,7 @@ public class GameScreen extends JPanel
 	public void addPanelToScreen()
 	{
 		boardGame_Layers.add(backgroundPanel_ForRound, 0);
+		addDeckOfTransportationCounters();
 		addTransportationCountersAndObstacle();
 		addCards();
 		boardGame_Layers.add(backgroundPanel_ForTransportationCounters, -1);
@@ -76,8 +80,16 @@ public class GameScreen extends JPanel
 		boardGame_Layers.add(backgroundPanel_ForDeckOfTransportationCounters, -1);
 	}
 	
+	public void addDeckOfTransportationCounters()
+	{	
+		for (JPanel panel : panelForDeckOfTransportationCounters)
+		{
+			boardGame_Layers.add(panel, 0);
+		}
+	}
+	
 	public void addCards()
-	{
+	{	
 		for (JPanel panel : panelForPlayerCards)
 		{
 			boardGame_Layers.add(panel, 0);
@@ -126,6 +138,47 @@ public class GameScreen extends JPanel
 		// Set Bounds for background Face Up Transportation Counter zone
 		backgroundPanel_ForDeckOfTransportationCounters.setBounds(width*1065/1440, height*275/900, width*375/1440, height*289/900);
 		backgroundPanel_ForDeckOfTransportationCounters.setBackground(Color.DARK_GRAY);
+	}
+	
+	public void initializeDeckOfTransportationCounters()
+	{
+		Border whiteLine = BorderFactory.createLineBorder(Color.WHITE);
+		
+		JPanel panel1 = new JPanel();
+		panel1.setBounds(width*1170/1440, height*290/900, width*70/1440, height*60/900);
+		panel1.setOpaque(false);
+		panel1.setBorder(whiteLine);
+		panelForDeckOfTransportationCounters[0] = panel1;
+		
+		JPanel panel2 = new JPanel();
+		panel2.setBounds(width*1280/1440, height*290/900, width*70/1440, height*60/900);
+		panel2.setOpaque(false);
+		panel2.setBorder(whiteLine);
+		panelForDeckOfTransportationCounters[1] = panel2;
+		
+		JPanel panel3 = new JPanel();
+		panel3.setBounds(width*1170/1440, height*390/900, width*70/1440, height*60/900);
+		panel3.setOpaque(false);
+		panel3.setBorder(whiteLine);
+		panelForDeckOfTransportationCounters[2] = panel3;
+		
+		JPanel panel4 = new JPanel();
+		panel4.setBounds(width*1280/1440, height*390/900, width*70/1440, height*60/900);
+		panel4.setOpaque(false);
+		panel4.setBorder(whiteLine);
+		panelForDeckOfTransportationCounters[3] = panel4;
+		
+		JPanel panel5 = new JPanel();
+		panel5.setBounds(width*1170/1440, height*490/900, width*70/1440, height*60/900);
+		panel5.setOpaque(false);
+		panel5.setBorder(whiteLine);
+		panelForDeckOfTransportationCounters[4] = panel5;
+		
+		JPanel panel6 = new JPanel();
+		panel6.setBounds(width*1280/1440, height*490/900, width*70/1440, height*60/900);
+		panel6.setOpaque(false);
+		panel6.setBorder(whiteLine);
+		panelForDeckOfTransportationCounters[5] = panel6;
 	}
 	
 	public void initializeCards()
@@ -191,6 +244,15 @@ public class GameScreen extends JPanel
 		Image gridResized = grid.getScaledInstance(width*360/1440, height*325/900,  java.awt.Image.SCALE_SMOOTH);
 		gridImage = new ImageIcon(gridResized);
 		informationCardImage_TopLayer = new JLabel(gridImage);
+	}
+	
+	public void initializeDeckOfTransportationCountersImage()
+	{
+		ImageIcon gridImage = new ImageIcon("/Users/charlescouture/eclipse-workspace/COMP361/assets/sprites/M08.png");
+		Image grid = gridImage.getImage();
+		Image gridResized = grid.getScaledInstance(width*67/1440, height*52/900,  java.awt.Image.SCALE_SMOOTH);
+		gridImage = new ImageIcon(gridResized);
+		deckOfTransportationCountersImage_TopLayer = new JLabel(gridImage);
 	}
 
 	public void initializeTransportationCounters()
