@@ -1,6 +1,8 @@
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Collections;
 import java.util.Stack;
 
@@ -32,10 +34,13 @@ public class GameScreen extends JPanel
 	
 	private JPanel[] panelForPlayerTransportationCounters = new JPanel[5];
 	private JPanel[] panelForPlayerCards = new JPanel[8];
-	private JPanel[] panelForDeckOfTransportationCounters = new JPanel[6];
+	private JPanel[] panelForFaceUpTransportationCounters = new JPanel[5];
+	private JPanel panelForDeckOfTransportationCounters = new JPanel();
 	private JPanel panelForObstacle = new JPanel();
 	
 	private JTable leaderboeard = new JTable();
+	
+	private Deck transportationCountersToDraw;
 	
 	GameScreen (JFrame frame)
 	{
@@ -50,6 +55,7 @@ public class GameScreen extends JPanel
 
 		// Add the images to their corresponding JPanel
 		addImages();
+		intializeListenerToDraw();
 		
 		// Add the JPanels to the main JLayeredPane with their corresponding layer
 		addPanelToScreen();
@@ -66,9 +72,11 @@ public class GameScreen extends JPanel
 		initializeBackgroundPanels();
 		initializeCards();
 		initializeInformationCardImage();
+		initializeFaceUpTransportationCounters();
 		initializeDeckOfTransportationCounters();
 		initializeDeckOfTransportationCountersImage();
 		initializeLeaderboard();
+		initializeTransportationCounters();
 	}
 	
 	public void initializeBackgroundPanels()
@@ -110,37 +118,41 @@ public class GameScreen extends JPanel
 		panel1.setBounds(width*1170/1440, height*290/900, width*70/1440, height*60/900);
 		panel1.setOpaque(false);
 		panel1.setBorder(whiteLine);
-		panelForDeckOfTransportationCounters[0] = panel1;
-		
+		panelForDeckOfTransportationCounters = panel1;
+	}
+	
+	public void initializeFaceUpTransportationCounters()
+	{
+		Border whiteLine = BorderFactory.createLineBorder(Color.WHITE);
 		JPanel panel2 = new JPanel();
 		panel2.setBounds(width*1280/1440, height*290/900, width*70/1440, height*60/900);
 		panel2.setOpaque(false);
 		panel2.setBorder(whiteLine);
-		panelForDeckOfTransportationCounters[1] = panel2;
+		panelForFaceUpTransportationCounters[0] = panel2;
 		
 		JPanel panel3 = new JPanel();
 		panel3.setBounds(width*1170/1440, height*390/900, width*70/1440, height*60/900);
 		panel3.setOpaque(false);
 		panel3.setBorder(whiteLine);
-		panelForDeckOfTransportationCounters[2] = panel3;
+		panelForFaceUpTransportationCounters[1] = panel3;
 		
 		JPanel panel4 = new JPanel();
 		panel4.setBounds(width*1280/1440, height*390/900, width*70/1440, height*60/900);
 		panel4.setOpaque(false);
 		panel4.setBorder(whiteLine);
-		panelForDeckOfTransportationCounters[3] = panel4;
+		panelForFaceUpTransportationCounters[2] = panel4;
 		
 		JPanel panel5 = new JPanel();
 		panel5.setBounds(width*1170/1440, height*490/900, width*70/1440, height*60/900);
 		panel5.setOpaque(false);
 		panel5.setBorder(whiteLine);
-		panelForDeckOfTransportationCounters[4] = panel5;
+		panelForFaceUpTransportationCounters[3] = panel5;
 		
 		JPanel panel6 = new JPanel();
 		panel6.setBounds(width*1280/1440, height*490/900, width*70/1440, height*60/900);
 		panel6.setOpaque(false);
 		panel6.setBorder(whiteLine);
-		panelForDeckOfTransportationCounters[5] = panel6;
+		panelForFaceUpTransportationCounters[4] = panel6;
 	}
 	
 	public void initializeLeaderboard()
@@ -227,13 +239,14 @@ public class GameScreen extends JPanel
 		backgroundPanel_ForMap.add(mapImage_BottomLayer);		
 		backgroundPanel_ForRound.add(roundImage_TopLayer);
 		backgroundPanel_ForInformationCard.add(informationCardImage_TopLayer);
-		panelForDeckOfTransportationCounters[0].add(deckOfTransportationCountersImage_TopLayer);
+		panelForDeckOfTransportationCounters.add(deckOfTransportationCountersImage_TopLayer);
 	}
 	
 	public void addPanelToScreen()
 	{
 		boardGame_Layers.add(backgroundPanel_ForRound, 0);
-		addDeckOfTransportationCounters();
+		boardGame_Layers.add(panelForDeckOfTransportationCounters,0);
+		addFaceUpTransportationCounters();
 		addTransportationCountersAndObstacle();
 		addCards();
 		boardGame_Layers.add(backgroundPanel_ForTransportationCounters, -1);
@@ -244,9 +257,9 @@ public class GameScreen extends JPanel
 		boardGame_Layers.add(backgroundPanel_ForDeckOfTransportationCounters, -1);
 	}
 	
-	public void addDeckOfTransportationCounters()
+	public void addFaceUpTransportationCounters()
 	{	
-		for (JPanel panel : panelForDeckOfTransportationCounters)
+		for (JPanel panel : panelForFaceUpTransportationCounters)
 		{
 			boardGame_Layers.add(panel, 0);
 		}
@@ -280,23 +293,37 @@ public class GameScreen extends JPanel
 
 		for (int i = 1; i <= 8; i++)
 		{
-			toAddToDeck.push(new TransportationCounter(TransportationCounter.CounterType.DRAGON));
-			toAddToDeck.push(new TransportationCounter(TransportationCounter.CounterType.GIANTPIG));
-			toAddToDeck.push(new TransportationCounter(TransportationCounter.CounterType.UNICORN));
-			toAddToDeck.push(new TransportationCounter(TransportationCounter.CounterType.TROLLWAGON));
-			toAddToDeck.push(new TransportationCounter(TransportationCounter.CounterType.ELFCYCLE));
-			toAddToDeck.push(new TransportationCounter(TransportationCounter.CounterType.MAGICCLOUD));
+			toAddToDeck.push(new TransportationCounter(TransportationCounter.CounterType.DRAGON, width, height));
+			toAddToDeck.push(new TransportationCounter(TransportationCounter.CounterType.GIANTPIG, width, height));
+			toAddToDeck.push(new TransportationCounter(TransportationCounter.CounterType.UNICORN, width, height));
+			toAddToDeck.push(new TransportationCounter(TransportationCounter.CounterType.TROLLWAGON, width, height));
+			toAddToDeck.push(new TransportationCounter(TransportationCounter.CounterType.ELFCYCLE, width, height));
+			toAddToDeck.push(new TransportationCounter(TransportationCounter.CounterType.MAGICCLOUD, width, height));
 		}
 
-		Deck counters = new Deck(toAddToDeck);
+		transportationCountersToDraw = new Deck(toAddToDeck);
+	}
+	
+	public void intializeListenerToDraw()
+	{
+		// here we will add a MouseListener to deckOfTransportationCountersImage_TopLayer
 
-		// now we have intialized the counters and their images
-
-		JButton drawButton = new DrawButton(counters);
-		drawButton.addActionListener(new DrawListener(counters, panelForPlayerTransportationCounters));
-		mainFrame.add(drawButton);
-		// check if the panel is full already
-
+		deckOfTransportationCountersImage_TopLayer.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				TransportationCounter drawn = transportationCountersToDraw.draw(); // draw a counter
+				for (int i = 0; i < 5; i++)
+				{
+					if (panelForPlayerTransportationCounters[i].getComponentCount() == 0) // if spot is empty, put card there
+					{
+						panelForPlayerTransportationCounters[i].add(drawn.getDisplay());
+						mainFrame.repaint();
+						mainFrame.revalidate();
+					}
+					// if we don't find an open spot, we do nothing. we can't put the counter anywhere.
+				}
+			}
+		});
 	}
 	
 	public static void main(String[] args) 
