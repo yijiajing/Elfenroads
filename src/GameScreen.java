@@ -1,5 +1,8 @@
+
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -8,6 +11,7 @@ import java.util.Stack;
 
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.border.TitledBorder;
 
 import org.minueto.MinuetoTool;
 
@@ -31,6 +35,7 @@ public class GameScreen extends JPanel
 	private JPanel backgroundPanel_ForTransportationCounters = new JPanel();
 	private JPanel backgroundPanel_ForInformationCard = new JPanel();
 	private JPanel backgroundPanel_ForDeckOfTransportationCounters = new JPanel();
+	private JPanel backgroundPanel_ForLeaderboard = new JPanel();
 	
 	private JPanel[] panelForPlayerTransportationCounters = new JPanel[5];
 	private JPanel[] panelForPlayerCards = new JPanel[8];
@@ -38,7 +43,8 @@ public class GameScreen extends JPanel
 	private JPanel panelForDeckOfTransportationCounters = new JPanel();
 	private JPanel panelForObstacle = new JPanel();
 	
-	private JTable leaderboeard = new JTable();
+	private JTable leaderboard = new JTable();
+	//private JPanel leaderboard = new JPanel();
 	
 	private Deck transportationCountersToDraw;
 
@@ -79,6 +85,7 @@ public class GameScreen extends JPanel
 		initializeDeckOfTransportationCountersImage();
 		initializeLeaderboard();
 		initializeTransportationCounters();
+		initializeLeaderboard();
 	}
 	
 	public void initializeBackgroundPanels()
@@ -110,6 +117,9 @@ public class GameScreen extends JPanel
 		// Set Bounds for background Face Up Transportation Counter zone
 		backgroundPanel_ForDeckOfTransportationCounters.setBounds(width*1065/1440, height*275/900, width*375/1440, height*289/900);
 		backgroundPanel_ForDeckOfTransportationCounters.setBackground(Color.DARK_GRAY);
+		
+		backgroundPanel_ForLeaderboard.setBounds(width*1065/1440, height*0/900, width*375/1440, height*274/900);
+		backgroundPanel_ForLeaderboard.setBackground(Color.DARK_GRAY);
 	}
 	
 	public void initializeDeckOfTransportationCounters()
@@ -158,8 +168,26 @@ public class GameScreen extends JPanel
 	}
 	
 	public void initializeLeaderboard()
-	{
+	{	
+		String[][] players = 
+		{
+				{"1", "0"},
+				{"2", "0"},
+				{"3", "0"},
+				{"4", "0"},
+				{"5", "0"},
+				{"6", "0"},
+		};
+		String[] titles = {"PLAYERS", "POINTS"};
 		
+		leaderboard = new JTable (players, titles);
+		leaderboard.setRowHeight(40);
+		
+		backgroundPanel_ForLeaderboard.setLayout(new BorderLayout());
+		backgroundPanel_ForLeaderboard.add(leaderboard.getTableHeader(), BorderLayout.PAGE_START);
+		backgroundPanel_ForLeaderboard.add(leaderboard, BorderLayout.CENTER);
+		
+		backgroundPanel_ForLeaderboard.add(leaderboard);
 	}
 	
 	public void initializeCards()
@@ -257,6 +285,7 @@ public class GameScreen extends JPanel
 		boardGame_Layers.add(backgroundPanel_ForCards, -1);
 		boardGame_Layers.add(backgroundPanel_ForInformationCard, -1);
 		boardGame_Layers.add(backgroundPanel_ForDeckOfTransportationCounters, -1);
+		boardGame_Layers.add(backgroundPanel_ForLeaderboard,-1);
 	}
 	
 	public void addFaceUpTransportationCounters()
