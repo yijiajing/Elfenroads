@@ -321,6 +321,7 @@ public class GameScreen extends JPanel
 						panelForPlayerTransportationCounters[i].add(drawn.getDisplay());
 						mainFrame.repaint();
 						mainFrame.revalidate();
+						break;
 					}
 					// if we don't find an open spot, we do nothing. we can't put the counter anywhere.
 				}
