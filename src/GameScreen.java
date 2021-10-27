@@ -47,8 +47,10 @@ public class GameScreen extends JPanel
 	//private JPanel leaderboard = new JPanel();
 	
 	private Deck transportationCountersToDraw;
+	private String filepathToRepo = "/Users/nicktriantos/Desktop/f2021-hexanome-12"; // change this depending on whose machine we are using
 
-	private String filepathToRepo = "/Users/charlescouture/eclipse-workspace/COMP361"; // change this depending on whose machine we are using
+	private boolean elfBootSelected; // this is for our rudimentary implementation of moving the elf boot
+	private JLabel elfBoot;
 	
 	GameScreen (JFrame frame)
 	{
@@ -262,6 +264,13 @@ public class GameScreen extends JPanel
 		Image gridResized = grid.getScaledInstance(width*67/1440, height*52/900,  java.awt.Image.SCALE_SMOOTH);
 		gridImage = new ImageIcon(gridResized);
 		deckOfTransportationCountersImage_TopLayer = new JLabel(gridImage);
+	}
+
+	public void intializeElfBoot() // for demo
+	{
+		// we will represent the ElfBoot as a JLabel with a ClickAdapter
+
+
 	}
 	
 	public void addImages()
