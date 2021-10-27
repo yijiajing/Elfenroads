@@ -269,8 +269,7 @@ public class GameScreen extends JPanel
 	public void intializeElfBoot() // for demo
 	{
 		// we will represent the ElfBoot as a JLabel with a ClickAdapter
-
-
+		elfBoot = new JLabel("Adding the picture later");
 	}
 	
 	public void addImages()
