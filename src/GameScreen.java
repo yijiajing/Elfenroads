@@ -277,9 +277,11 @@ public class GameScreen extends JPanel
 		ImageIcon blackBootIcon = new ImageIcon(filepathToRepo + "/assets/böppels-and-boots/boot-black.png");
 		// Image blackBoot = blackBootIcon.getImage();
 		// should resize here
+		Image blackBootImage = blackBootIcon.getImage();
+		Image blackBootResized = blackBootImage.getScaledInstance(width*90/1440, height*130/900,  java.awt.Image.SCALE_SMOOTH);
+		ImageIcon blackBootResizedIcon = new ImageIcon(blackBootResized);
 
-
-		elfBoot = new JLabel(blackBootIcon);
+		elfBoot = new JLabel(blackBootResizedIcon);
 		elfBoot.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -289,8 +291,10 @@ public class GameScreen extends JPanel
 		});
 
 		panelForElfBoot.add(elfBoot);
+		panelForElfBoot.setOpaque(false);
+		panelForElfBoot.setBounds(0, 0, 30, 30);
 
-
+		// boardGame_Layers.add(elfBoot, 0); // add the elf boot to the visible UI
 
 	}
 	
@@ -316,6 +320,7 @@ public class GameScreen extends JPanel
 		boardGame_Layers.add(backgroundPanel_ForInformationCard, -1);
 		boardGame_Layers.add(backgroundPanel_ForDeckOfTransportationCounters, -1);
 		boardGame_Layers.add(backgroundPanel_ForLeaderboard,-1);
+		boardGame_Layers.add(panelForElfBoot, 0);
 	}
 	
 	public void addFaceUpTransportationCounters()
