@@ -36,7 +36,8 @@ public class GameScreen extends JPanel
 	private JPanel backgroundPanel_ForInformationCard = new JPanel();
 	private JPanel backgroundPanel_ForDeckOfTransportationCounters = new JPanel();
 	private JPanel backgroundPanel_ForLeaderboard = new JPanel();
-	
+
+	private JPanel panelForElfBoot = new JPanel();
 	private JPanel[] panelForPlayerTransportationCounters = new JPanel[5];
 	private JPanel[] panelForPlayerCards = new JPanel[8];
 	private JPanel[] panelForFaceUpTransportationCounters = new JPanel[5];
@@ -72,6 +73,8 @@ public class GameScreen extends JPanel
 		
 		// Add the entire structure of the UI to the main screen
 		mainFrame.add(boardGame_Layers);
+
+		elfBootSelected = false; // default value
 	}
 	
 	public void initialization()
@@ -88,6 +91,7 @@ public class GameScreen extends JPanel
 		initializeLeaderboard();
 		initializeTransportationCounters();
 		initializeLeaderboard();
+		initializeElfBoot();
 	}
 	
 	public void initializeBackgroundPanels()
@@ -266,10 +270,28 @@ public class GameScreen extends JPanel
 		deckOfTransportationCountersImage_TopLayer = new JLabel(gridImage);
 	}
 
-	public void intializeElfBoot() // for demo
+	public void initializeElfBoot() // for demo
 	{
 		// we will represent the ElfBoot as a JLabel with a ClickAdapter
-		elfBoot = new JLabel("Adding the picture later");
+
+		ImageIcon blackBootIcon = new ImageIcon(filepathToRepo + "/assets/böppels-and-boots/boot-black.png");
+		// Image blackBoot = blackBootIcon.getImage();
+		// should resize here
+
+
+		elfBoot = new JLabel(blackBootIcon);
+		elfBoot.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// this toggles the elfBootSelected to determine if it is possible to move a boot
+				elfBootSelected = !elfBootSelected;
+			}
+		});
+
+		panelForElfBoot.add(elfBoot);
+
+
+
 	}
 	
 	public void addImages()
