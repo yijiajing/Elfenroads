@@ -21,6 +21,7 @@ public class LoadGameWindow extends JPanel implements ActionListener{
         backButton = new JButton("Back");
         gamePanel.add(loadButton, BorderLayout.LINE_START);
         gameInfo = Box.createVerticalBox();
+        
         //gameInfo
         fileName = new JLabel();
         fileName.setText("FILE NAME: AAA");

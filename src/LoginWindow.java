@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -7,6 +8,7 @@ import static javax.swing.Box.createVerticalStrut;
 
 public class LoginWindow extends JPanel implements ActionListener {
 
+    private JLabel background_elvenroads;
     private static Box labelBox;
     private static Box textFieldBox;
     private static Box boxPanel;
@@ -15,16 +17,33 @@ public class LoginWindow extends JPanel implements ActionListener {
     private static JLabel usernameLabel;
     private static JLabel passwordLabel;
     private static JButton loginButton;
+    private JPanel infoPanel;
     
 
     LoginWindow() {
+
+        infoPanel = new JPanel(new BorderLayout());
+
+        ImageIcon background_image = 
+        new ImageIcon("C:/Users/philb/Documents/GitHub/f2021-hexanome-12/assets/sprites/elfenroads.jpeg");
+        background_elvenroads = new JLabel(background_image);
+        GridBagLayout layout = new GridBagLayout();
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+
+        gbc.gridwidth = 1;
+        gbc.gridheight= 3;
+
         labelBox = Box.createVerticalBox();
         textFieldBox = Box.createVerticalBox();
 
         usernameTextField = new JTextField(15);
         passwordTextField = new JPasswordField(15);
-        usernameLabel = new JLabel("Username:");
-        passwordLabel = new JLabel("Password:");
+        usernameLabel = new JLabel();
+        passwordLabel = new JLabel();
+        usernameLabel.setText("Username:");
+        passwordLabel.setText("Password:");
         loginButton = new JButton("Enter");
         
 
@@ -44,8 +63,12 @@ public class LoginWindow extends JPanel implements ActionListener {
         boxPanel.add(labelBox);
         boxPanel.add(textFieldBox);
         boxPanel.add(loginButton);
+        infoPanel.add(boxPanel,BorderLayout.CENTER);
         
-        add(boxPanel);
+        background_elvenroads.setLayout(layout);
+        background_elvenroads.add(infoPanel,gbc);
+
+        add(background_elvenroads);
     }
 
     @Override

@@ -11,7 +11,7 @@ class Main {
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         mainFrame.add(new LoginWindow());
-        
+        //mainFrame.add(new LoadGameWindow());
         
         
         mainFrame.setVisible(true);
