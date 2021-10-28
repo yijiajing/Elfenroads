@@ -50,9 +50,8 @@ public class LobbyWindow extends JPanel implements ActionListener{
             public void actionPerformed(ActionEvent e) {
                 remove(background_elvenroads);
                 Main.setScreen(new VersionToPlayWindow());
-                
-            }
             
+            }
         });
         loadButton.addActionListener(this);
         gamesButton.addActionListener(this);

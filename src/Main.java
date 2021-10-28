@@ -1,6 +1,7 @@
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
 import org.minueto.*;
-import javax.swing.*;
-import java.awt.*;
 
 class Main {
     static JFrame startFrame;
