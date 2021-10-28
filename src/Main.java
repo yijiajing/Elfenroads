@@ -3,19 +3,29 @@ import javax.swing.*;
 import java.awt.*;
 
 class Main {
-
+    static JFrame startFrame;
+    static JPanel currentPanel;
+    
     public static void main(String[] args){
-
-        JFrame mainFrame = new JFrame("Login");
-        mainFrame.setSize(MinuetoTool.getDisplayWidth() - 100, MinuetoTool.getDisplayHeight() - 100);
-        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        mainFrame.add(new LoginWindow());
+        startFrame = new JFrame("Elfenroads");
+        JFrame loginFrame = new JFrame("Login");
         
-        
-        mainFrame.setVisible(true);
+        startFrame.setSize(MinuetoTool.getDisplayWidth() - 100, MinuetoTool.getDisplayHeight() - 100);
+        startFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        currentPanel = new StartWindow();
+        startFrame.add(currentPanel);
+        startFrame.setVisible(true);
         
 
+        
+
+    }
+
+    public static void setScreen(JPanel panel){
+        //startFrame.setVisible(false);
+        Main.currentPanel = panel;
+        startFrame.add(currentPanel);
+        startFrame.setVisible(true);
     }
 }
 
