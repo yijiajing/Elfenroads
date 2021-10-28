@@ -1,0 +1,6 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "c:\\Users\\philb\\Documents\\McGill\\U3 Fall\\COMP 361\\Minueto\\minueto.jar"
+    ]
+}
