@@ -8,6 +8,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Collections;
 import java.util.Stack;
+import java.awt.*;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -54,6 +55,8 @@ public class GameScreen extends JPanel
 	private boolean elfBootSelected = false; // this is for our rudimentary implementation of moving the elf boot
 	private JPanel currentPanelOfElfBoot = panelForElfboot_TownOfElvenhold; // starting position
 
+	//private JLabel completeScreen;
+
 	private JTable leaderboard = new JTable();
 	
 	private Deck transportationCountersToDraw;
@@ -81,6 +84,7 @@ public class GameScreen extends JPanel
 		addPanelToScreen();
 		
 		// Add the entire structure of the UI to the main screen
+		
 		mainFrame.add(boardGame_Layers);
 	}
 
@@ -469,7 +473,7 @@ public class GameScreen extends JPanel
 		});
 	}
 	
-	public static void main(String[] args) 
+	/*public static void main(String[] args) 
 	{
 		JFrame game_screen = new JFrame("GameScreen");
 		
@@ -478,6 +482,6 @@ public class GameScreen extends JPanel
 
 		game_screen.add(new GameScreen(game_screen));
 		game_screen.setVisible(true);
-	}
+	}*/
 
 }

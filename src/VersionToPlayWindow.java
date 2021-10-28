@@ -41,6 +41,16 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
         elfengoldText = new JLabel("Elfengold");
 
         classicGame1 = new JButton("Classic");
+        classicGame1.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                remove(background_elvenroads);
+                Main.setScreen(new GameScreen(Main.startFrame));
+                
+            }
+            
+        });
         longGame = new JButton("Long Game");
         destinationTown = new JButton("Destination Town");
 
