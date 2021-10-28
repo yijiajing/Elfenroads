@@ -14,7 +14,7 @@ public class TransportationCounter {
     private ImageIcon image;
     private JLabel display;
     private String filepathToRepo = "/Users/nicktriantos/Desktop/f2021-hexanome-12" ; // change this depending on whose machine we are using
-    // add JLabel
+    // private String filepathToRepo = "/Users/charlescouture/eclipse-workspace/COMP361" ;
 
     public TransportationCounter (CounterType pType, int width, int height)
     {
