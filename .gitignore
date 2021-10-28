@@ -9,3 +9,10 @@ tmp/nanoc/
 # Crash Log
 crash.log
 
+# Nick's IDE-specific files
+.idea/
+project.iml
+
+# Phillipe's vscode files
+.vscode
+
