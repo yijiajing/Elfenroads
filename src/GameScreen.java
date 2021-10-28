@@ -60,8 +60,9 @@ public class GameScreen extends JPanel
 	private JTable leaderboard = new JTable();
 	
 	private Deck transportationCountersToDraw;
-	private String filepathToRepo = "/Users/nicktriantos/Desktop/f2021-hexanome-12"; // change this depending on whose machine we are using
+	//private String filepathToRepo = "/Users/nicktriantos/Desktop/f2021-hexanome-12"; // change this depending on whose machine we are using
 	// private String filepathToRepo = "/Users/charlescouture/eclipse-workspace/COMP361";
+	private String filepathToRepo = "C:/Users/philb/Documents/GitHub/f2021-hexanome-12";
 
 
 	
@@ -473,7 +474,7 @@ public class GameScreen extends JPanel
 		});
 	}
 	
-	/*public static void main(String[] args) 
+	public static void main(String[] args) 
 	{
 		JFrame game_screen = new JFrame("GameScreen");
 		
@@ -482,6 +483,6 @@ public class GameScreen extends JPanel
 
 		game_screen.add(new GameScreen(game_screen));
 		game_screen.setVisible(true);
-	}*/
+	}
 
 }
