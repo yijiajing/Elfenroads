@@ -36,7 +36,8 @@ public class GameScreen extends JPanel
 	private JPanel backgroundPanel_ForInformationCard = new JPanel();
 	private JPanel backgroundPanel_ForDeckOfTransportationCounters = new JPanel();
 	private JPanel backgroundPanel_ForLeaderboard = new JPanel();
-	
+
+	private JPanel panelForElfBoot = new JPanel();
 	private JPanel[] panelForPlayerTransportationCounters = new JPanel[5];
 	private JPanel[] panelForPlayerCards = new JPanel[8];
 	private JPanel[] panelForFaceUpTransportationCounters = new JPanel[5];
@@ -47,8 +48,10 @@ public class GameScreen extends JPanel
 	//private JPanel leaderboard = new JPanel();
 	
 	private Deck transportationCountersToDraw;
+	private String filepathToRepo = "/Users/nicktriantos/Desktop/f2021-hexanome-12"; // change this depending on whose machine we are using
 
-	private String filepathToRepo = "/Users/charlescouture/eclipse-workspace/COMP361"; // change this depending on whose machine we are using
+	private boolean elfBootSelected; // this is for our rudimentary implementation of moving the elf boot
+	private JLabel elfBoot;
 	
 	GameScreen (JFrame frame)
 	{
@@ -70,6 +73,8 @@ public class GameScreen extends JPanel
 		
 		// Add the entire structure of the UI to the main screen
 		mainFrame.add(boardGame_Layers);
+
+		elfBootSelected = false; // default value
 	}
 	
 	public void initialization()
@@ -86,6 +91,7 @@ public class GameScreen extends JPanel
 		initializeLeaderboard();
 		initializeTransportationCounters();
 		initializeLeaderboard();
+		initializeElfBoot();
 	}
 	
 	public void initializeBackgroundPanels()
@@ -263,6 +269,36 @@ public class GameScreen extends JPanel
 		gridImage = new ImageIcon(gridResized);
 		deckOfTransportationCountersImage_TopLayer = new JLabel(gridImage);
 	}
+
+	public void initializeElfBoot() // for demo
+	{
+		// we will represent the ElfBoot as a JLabel with a ClickAdapter
+
+		ImageIcon blackBootIcon = new ImageIcon(filepathToRepo + "/assets/boppels-and-boots/boot-black.png");
+		// Image blackBoot = blackBootIcon.getImage();
+		// should resize here
+		Image blackBootImage = blackBootIcon.getImage();
+		Image blackBootResized = blackBootImage.getScaledInstance(width*90/1440, height*130/900,  java.awt.Image.SCALE_SMOOTH);
+		// TODO: need to adjust size of boot
+		ImageIcon blackBootResizedIcon = new ImageIcon(blackBootResized);
+
+		elfBoot = new JLabel(blackBootResizedIcon);
+		elfBoot.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// this toggles the elfBootSelected to determine if it is possible to move a boot
+				elfBootSelected = !elfBootSelected;
+			}
+		});
+
+		panelForElfBoot.add(elfBoot);
+		panelForElfBoot.setOpaque(false);
+		panelForElfBoot.setBounds(1000, 300, 200, 200);
+		// TODO: need to adjust bounds to get the boot to start in the first city
+
+		// boardGame_Layers.add(elfBoot, 0); // add the elf boot to the visible UI
+
+	}
 	
 	public void addImages()
 	{
@@ -286,6 +322,7 @@ public class GameScreen extends JPanel
 		boardGame_Layers.add(backgroundPanel_ForInformationCard, -1);
 		boardGame_Layers.add(backgroundPanel_ForDeckOfTransportationCounters, -1);
 		boardGame_Layers.add(backgroundPanel_ForLeaderboard,-1);
+		boardGame_Layers.add(panelForElfBoot, 0);
 	}
 	
 	public void addFaceUpTransportationCounters()
