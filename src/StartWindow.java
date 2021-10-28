@@ -1,12 +1,12 @@
 import javax.swing.*;
-import java.awt.Component;
-import java.awt.Image;
+
+
 import java.awt.*;
 
-import java.awt.Color;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import org.minueto.*;
+
 
 public class StartWindow extends JPanel implements ActionListener{
     
