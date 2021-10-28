@@ -22,11 +22,14 @@ public class GameScreen extends JPanel
 	private int height;
 	
 	private JLayeredPane boardGame_Layers = new JLayeredPane();
+
+	private Border whiteLine = BorderFactory.createLineBorder(Color.WHITE);
 	
 	private JLabel roundImage_TopLayer;
 	private JLabel mapImage_BottomLayer;
 	private JLabel informationCardImage_TopLayer;
 	private JLabel deckOfTransportationCountersImage_TopLayer;
+	private JLabel elfBootImage_TopLayer;
 	
 	private JPanel backgroundPanel_ForMap = new JPanel();
 	private JPanel backgroundPanel_ForRound = new JPanel();
@@ -43,15 +46,21 @@ public class GameScreen extends JPanel
 	private JPanel[] panelForFaceUpTransportationCounters = new JPanel[5];
 	private JPanel panelForDeckOfTransportationCounters = new JPanel();
 	private JPanel panelForObstacle = new JPanel();
-	
+
+	private JPanel panelForTownOfBeata = new JPanel();
+	private JPanel panelForElfBoot_TownOfBeata = new JPanel();
+	private JPanel panelForTownOfElvenhold = new JPanel();
+	private JPanel panelForElfboot_TownOfElvenhold = new JPanel();
+	private boolean elfBootSelected = false; // this is for our rudimentary implementation of moving the elf boot
+	private JPanel currentPanelOfElfBoot = panelForElfboot_TownOfElvenhold; // starting position
+
 	private JTable leaderboard = new JTable();
-	//private JPanel leaderboard = new JPanel();
 	
 	private Deck transportationCountersToDraw;
 	private String filepathToRepo = "/Users/nicktriantos/Desktop/f2021-hexanome-12"; // change this depending on whose machine we are using
+	// private String filepathToRepo = "/Users/charlescouture/eclipse-workspace/COMP361";
 
-	private boolean elfBootSelected; // this is for our rudimentary implementation of moving the elf boot
-	private JLabel elfBoot;
+
 	
 	GameScreen (JFrame frame)
 	{
@@ -73,10 +82,14 @@ public class GameScreen extends JPanel
 		
 		// Add the entire structure of the UI to the main screen
 		mainFrame.add(boardGame_Layers);
-
-		elfBootSelected = false; // default value
 	}
-	
+
+	public void update(JPanel panel)
+	{
+		panel.repaint();
+		panel.revalidate();
+	}
+
 	public void initialization()
 	{
 		initializeMapImage();
@@ -91,7 +104,9 @@ public class GameScreen extends JPanel
 		initializeLeaderboard();
 		initializeTransportationCounters();
 		initializeLeaderboard();
-		initializeElfBoot();
+		initializeElfBootImage();
+		initializeTownOfBeata();
+		initializeTownOfElvenhold();
 	}
 	
 	public void initializeBackgroundPanels()
@@ -187,7 +202,7 @@ public class GameScreen extends JPanel
 		String[] titles = {"PLAYERS", "POINTS"};
 		
 		leaderboard = new JTable (players, titles);
-		leaderboard.setRowHeight(40);
+		leaderboard.setRowHeight(height*40/900);
 		
 		backgroundPanel_ForLeaderboard.setLayout(new BorderLayout());
 		backgroundPanel_ForLeaderboard.add(leaderboard.getTableHeader(), BorderLayout.PAGE_START);
@@ -199,7 +214,7 @@ public class GameScreen extends JPanel
 	public void initializeCards()
 	{
 		int xCoordinate = width*2/1440;
-		Border whiteLine = BorderFactory.createLineBorder(Color.WHITE);
+
 		for (int i = 0; i < 8; i++)
 		{
 			JPanel panel = new JPanel();
@@ -214,7 +229,6 @@ public class GameScreen extends JPanel
 	public void initializeTransportationCountersAndObstacle()
 	{
 		int xCoordinate = width*10/1440;
-		Border whiteLine = BorderFactory.createLineBorder(Color.WHITE);
 		
 		// Transportation Counters
 		for (int i = 0; i < 5; i++)
@@ -231,6 +245,70 @@ public class GameScreen extends JPanel
 		panelForObstacle.setOpaque(false);
 		panelForObstacle.setBorder(whiteLine);
 		panelForObstacle.setBounds(width*989/1440, height*570/900, width*70/1440, height*60/900);
+	}
+
+	public void initializeTownOfBeata()
+	{
+		// Town panel
+		panelForTownOfBeata.setBounds(width*940/1440, height*392/900, width*74/1440, height*37/900);
+		panelForTownOfBeata.setOpaque(false);
+		panelForTownOfBeata.setBorder(whiteLine);
+
+		panelForTownOfBeata.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseClicked(MouseEvent e)
+			{
+				if (elfBootSelected)
+				{
+					currentPanelOfElfBoot.removeAll();
+					update(currentPanelOfElfBoot);
+
+					panelForElfBoot_TownOfBeata.add(elfBootImage_TopLayer);
+					update(panelForElfBoot_TownOfBeata);
+
+					currentPanelOfElfBoot = panelForElfBoot_TownOfBeata;
+					elfBootSelected = false;
+				}
+			}
+		});
+
+		// Boot panel
+		panelForElfBoot_TownOfBeata.setBounds(width*935/1440, height*430/900, width*24/1440, height*24/900);
+		panelForElfBoot_TownOfBeata.setOpaque(false);
+		panelForElfBoot_TownOfBeata.setBorder(whiteLine);
+	}
+
+	private void initializeTownOfElvenhold()
+	{
+		// Town panel
+		panelForTownOfElvenhold.setBounds(width*750/1440, height*275/900, width*115/1440, height*70/900);
+		panelForTownOfElvenhold.setOpaque(false);
+		panelForTownOfElvenhold.setBorder(whiteLine);
+
+		panelForTownOfElvenhold.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseClicked(MouseEvent e)
+			{
+				if (elfBootSelected)
+				{
+					currentPanelOfElfBoot.removeAll();
+					update(currentPanelOfElfBoot);
+
+					panelForElfboot_TownOfElvenhold.add(elfBootImage_TopLayer);
+					update(panelForElfboot_TownOfElvenhold);
+
+					currentPanelOfElfBoot = panelForElfboot_TownOfElvenhold;
+					elfBootSelected = false;
+				}
+			}
+		});
+
+		// Boot panel
+		panelForElfboot_TownOfElvenhold.setBounds(width*750/1440, height*346/900, width*24/1440, height*24/900);
+		panelForElfboot_TownOfElvenhold.setOpaque(false);
+		panelForElfboot_TownOfElvenhold.setBorder(whiteLine);
 	}
 	
 	public void initializeMapImage()
@@ -270,33 +348,24 @@ public class GameScreen extends JPanel
 		deckOfTransportationCountersImage_TopLayer = new JLabel(gridImage);
 	}
 
-	public void initializeElfBoot() // for demo
+	public void initializeElfBootImage() // for demo
 	{
 		// we will represent the ElfBoot as a JLabel with a ClickAdapter
-
-		ImageIcon blackBootIcon = new ImageIcon(filepathToRepo + "/assets/boppels-and-boots/boppel-black.png");
-		// Image blackBoot = blackBootIcon.getImage();
-		// should resize here
+		ImageIcon blackBootIcon = new ImageIcon(filepathToRepo + "/assets/boppels-and-boots/böppel-black.png");
 		Image blackBootImage = blackBootIcon.getImage();
-		// Image blackBootResized = blackBootImage.getScaledInstance(width*90/1440, height*130/900,  java.awt.Image.SCALE_SMOOTH);
-		// TODO: need to adjust size of boot
-		ImageIcon blackBootResizedIcon = new ImageIcon(blackBootImage);
+		Image blackBootResized = blackBootImage.getScaledInstance(width*15/1440, height*15/900,  java.awt.Image.SCALE_SMOOTH);
+		blackBootIcon = new ImageIcon(blackBootResized);
+		elfBootImage_TopLayer = new JLabel(blackBootIcon);
 
-		elfBoot = new JLabel(blackBootResizedIcon);
-		elfBoot.addMouseListener(new MouseAdapter() {
+		elfBootImage_TopLayer.addMouseListener(new MouseAdapter()
+		{
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mouseClicked(MouseEvent e)
+			{
 				// this toggles the elfBootSelected to determine if it is possible to move a boot
-				elfBootSelected = !elfBootSelected;
+				elfBootSelected = true;
 			}
 		});
-
-		panelForElfBoot.add(elfBoot);
-		panelForElfBoot.setOpaque(false);
-		panelForElfBoot.setBounds(1030, 310, 100, 100);
-		// TODO: need to adjust bounds to get the boot to start in the first city
-
-		// boardGame_Layers.add(elfBoot, 0); // add the elf boot to the visible UI
 
 	}
 	
@@ -306,6 +375,7 @@ public class GameScreen extends JPanel
 		backgroundPanel_ForRound.add(roundImage_TopLayer);
 		backgroundPanel_ForInformationCard.add(informationCardImage_TopLayer);
 		panelForDeckOfTransportationCounters.add(deckOfTransportationCountersImage_TopLayer);
+		panelForElfboot_TownOfElvenhold.add(elfBootImage_TopLayer);
 	}
 	
 	public void addPanelToScreen()
@@ -321,8 +391,12 @@ public class GameScreen extends JPanel
 		boardGame_Layers.add(backgroundPanel_ForCards, -1);
 		boardGame_Layers.add(backgroundPanel_ForInformationCard, -1);
 		boardGame_Layers.add(backgroundPanel_ForDeckOfTransportationCounters, -1);
+
 		boardGame_Layers.add(backgroundPanel_ForLeaderboard,-1);
-		boardGame_Layers.add(panelForElfBoot, 0);
+		boardGame_Layers.add(panelForElfBoot_TownOfBeata, 0);
+		boardGame_Layers.add(panelForTownOfBeata,0);
+		boardGame_Layers.add(panelForTownOfElvenhold,0);
+		boardGame_Layers.add(panelForElfboot_TownOfElvenhold,0);
 	}
 	
 	public void addFaceUpTransportationCounters()
