@@ -44,7 +44,16 @@ public class LobbyWindow extends JPanel implements ActionListener{
         sessions.add(gameInfo,BorderLayout.LINE_START);
 
 
-        createButton.addActionListener(this);
+        createButton.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                remove(background_elvenroads);
+                Main.setScreen(new VersionToPlayWindow());
+                
+            }
+            
+        });
         loadButton.addActionListener(this);
         gamesButton.addActionListener(this);
 

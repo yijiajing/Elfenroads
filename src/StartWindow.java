@@ -8,7 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 
-public class StartWindow extends JPanel implements ActionListener{
+public class StartWindow extends JPanel {
     
     
     private JLabel background_elvenroads;
@@ -26,19 +26,35 @@ public class StartWindow extends JPanel implements ActionListener{
 
         // startButton config
         startButton = new JButton("Start");
-        startButton.addActionListener(this);
+        startButton.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                remove(background_elvenroads);
+                Main.setScreen(new LoginWindow());
+            }
+            
+        });
         
 
 
 
         // aboutButton config
         aboutButton = new JButton("About");
-        aboutButton.addActionListener(this);
+        //aboutButton.addActionListener(this);
         
 
         // exitButton config
         exitButton = new JButton("Exit");
-        exitButton.addActionListener(this);
+        exitButton.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);;
+                
+            }
+            
+        });
         
 
         
@@ -59,11 +75,7 @@ public class StartWindow extends JPanel implements ActionListener{
         add(background_elvenroads);
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        
-        
-    }
+   
 
     
 

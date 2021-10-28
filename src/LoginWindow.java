@@ -47,7 +47,16 @@ public class LoginWindow extends JPanel implements ActionListener {
         loginButton = new JButton("Enter");
         
 
-        loginButton.addActionListener(this);
+        loginButton.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                remove(background_elvenroads);
+                Main.setScreen(new LobbyWindow());
+                
+            }
+            
+        });
         
 
         labelBox.add(usernameLabel);
