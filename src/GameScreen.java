@@ -274,11 +274,12 @@ public class GameScreen extends JPanel
 	{
 		// we will represent the ElfBoot as a JLabel with a ClickAdapter
 
-		ImageIcon blackBootIcon = new ImageIcon(filepathToRepo + "/assets/böppels-and-boots/boot-black.png");
+		ImageIcon blackBootIcon = new ImageIcon(filepathToRepo + "/assets/boppels-and-boots/boot-black.png");
 		// Image blackBoot = blackBootIcon.getImage();
 		// should resize here
 		Image blackBootImage = blackBootIcon.getImage();
 		Image blackBootResized = blackBootImage.getScaledInstance(width*90/1440, height*130/900,  java.awt.Image.SCALE_SMOOTH);
+		// TODO: need to adjust size of boot
 		ImageIcon blackBootResizedIcon = new ImageIcon(blackBootResized);
 
 		elfBoot = new JLabel(blackBootResizedIcon);
@@ -292,7 +293,8 @@ public class GameScreen extends JPanel
 
 		panelForElfBoot.add(elfBoot);
 		panelForElfBoot.setOpaque(false);
-		panelForElfBoot.setBounds(0, 0, 30, 30);
+		panelForElfBoot.setBounds(1000, 300, 200, 200);
+		// TODO: need to adjust bounds to get the boot to start in the first city
 
 		// boardGame_Layers.add(elfBoot, 0); // add the elf boot to the visible UI
 
