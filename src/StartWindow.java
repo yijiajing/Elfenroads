@@ -21,7 +21,7 @@ public class StartWindow extends JPanel {
     StartWindow(){
         
         ImageIcon background_image = 
-        new ImageIcon("C:/Users/philb/Documents/GitHub/f2021-hexanome-12/assets/sprites/elfenroads.jpeg");
+        new ImageIcon("./assets/sprites/elfenroads.jpeg");
         background_elvenroads = new JLabel(background_image);
 
         // startButton config
@@ -31,13 +31,11 @@ public class StartWindow extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 remove(background_elvenroads);
-                Main.setScreen(new LoginWindow());
+                MainFrame.cardLayout.show(MainFrame.mainPanel,"login");
             }
             
         });
         
-
-
 
         // aboutButton config
         aboutButton = new JButton("About");

@@ -1,3 +1,5 @@
+import org.minueto.MinuetoTool;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -22,7 +24,7 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
 
     VersionToPlayWindow(){
         ImageIcon background_image = 
-        new ImageIcon("C:/Users/philb/Documents/GitHub/f2021-hexanome-12/assets/sprites/elfenroads.jpeg");
+        new ImageIcon("./assets/sprites/elfenroads.jpeg");
         background_elvenroads = new JLabel(background_image);
         GridBagLayout layout = new GridBagLayout();
         GridBagConstraints gbc = new GridBagConstraints();
@@ -43,6 +45,15 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
         classicGame1 = new JButton("Classic");
         longGame = new JButton("Long Game");
         destinationTown = new JButton("Destination Town");
+
+        classicGame1.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                MainFrame.cardLayout.show(MainFrame.mainPanel,"gameScreen");
+            }
+        });
 
         classicGame2 = new JButton("Classic");
         travelCards = new JButton("Travel Cards");

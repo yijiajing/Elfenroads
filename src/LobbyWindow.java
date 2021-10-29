@@ -25,7 +25,7 @@ public class LobbyWindow extends JPanel implements ActionListener{
         loadButton = new JButton("LOAD SAVED SESSION");
         gamesButton = new JButton("JOIN");
         ImageIcon background_image = 
-        new ImageIcon("C:/Users/philb/Documents/GitHub/f2021-hexanome-12/assets/sprites/elfenroads.jpeg");
+        new ImageIcon("./assets/sprites/elfenroads.jpeg");
         background_elvenroads = new JLabel(background_image);
         gameToJoin = new JLabel();
         gameToJoin.setText("");
@@ -49,7 +49,7 @@ public class LobbyWindow extends JPanel implements ActionListener{
             @Override
             public void actionPerformed(ActionEvent e) {
                 remove(background_elvenroads);
-                Main.setScreen(new VersionToPlayWindow());
+                MainFrame.cardLayout.show(MainFrame.mainPanel,"version");
                 
             }
             
