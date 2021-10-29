@@ -24,8 +24,7 @@ public class LoginWindow extends JPanel implements ActionListener {
 
         infoPanel = new JPanel(new BorderLayout());
 
-        ImageIcon background_image = 
-        new ImageIcon("C:/Users/philb/Documents/GitHub/f2021-hexanome-12/assets/sprites/elfenroads.jpeg");
+        ImageIcon background_image = new ImageIcon("./assets/sprites/elfenroads.jpeg");
         background_elvenroads = new JLabel(background_image);
         GridBagLayout layout = new GridBagLayout();
         GridBagConstraints gbc = new GridBagConstraints();
@@ -52,8 +51,7 @@ public class LoginWindow extends JPanel implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 remove(background_elvenroads);
-                Main.setScreen(new LobbyWindow());
-                
+                MainFrame.cardLayout.show(MainFrame.mainPanel,"lobby");
             }
             
         });

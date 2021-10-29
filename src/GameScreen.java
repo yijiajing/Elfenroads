@@ -1,9 +1,5 @@
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Collections;
@@ -21,7 +17,7 @@ public class GameScreen extends JPanel
 	private int width;
 	private int height;
 	
-	private JLayeredPane boardGame_Layers = new JLayeredPane();
+	private JLayeredPane boardGame_Layers;
 
 	private Border whiteLine = BorderFactory.createLineBorder(Color.WHITE);
 	
@@ -57,20 +53,24 @@ public class GameScreen extends JPanel
 	private JTable leaderboard = new JTable();
 	
 	private Deck transportationCountersToDraw;
-	private String filepathToRepo = "/Users/nicktriantos/Desktop/f2021-hexanome-12"; // change this depending on whose machine we are using
+	//private String filepathToRepo = "/Users/nicktriantos/Desktop/f2021-hexanome-12"; // change this depending on whose machine we are using
 	// private String filepathToRepo = "/Users/charlescouture/eclipse-workspace/COMP361";
-
+	private String filepathToRepo = ".";
 
 	
 	GameScreen (JFrame frame)
 	{
+		// layout is necessary for JLayeredPane to be added to the JPanel
+		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+
 		// Get dimensions of the full screen
 		mainFrame = frame;
 		width = mainFrame.getWidth();
 		height = mainFrame.getHeight();
-		
+
 		// Set Bounds for entire Board Game screen and do the initialization of the structure for the UI
-		boardGame_Layers.setBounds(0,0,width,height);	
+		boardGame_Layers = new JLayeredPane();
+		boardGame_Layers.setBounds(0,0,width,height);
 		initialization();
 
 		// Add the images to their corresponding JPanel
@@ -80,8 +80,8 @@ public class GameScreen extends JPanel
 		// Add the JPanels to the main JLayeredPane with their corresponding layer
 		addPanelToScreen();
 		
-		// Add the entire structure of the UI to the main screen
-		mainFrame.add(boardGame_Layers);
+		// Add the entire structure of the UI to the panel
+		this.add(boardGame_Layers);
 	}
 
 	public void update(JPanel panel)
