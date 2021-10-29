@@ -19,6 +19,15 @@ public class LoadGameWindow extends JPanel implements ActionListener{
         gamePanel = new JPanel(new BorderLayout());
         loadButton = new JButton("Load");
         backButton = new JButton("Back");
+
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                remove(background_elvenroads);
+                MainFrame.cardLayout.show(MainFrame.mainPanel,"lobbyAfterBack");
+            }
+        });
+
         gamePanel.add(loadButton, BorderLayout.LINE_START);
         gameInfo = Box.createVerticalBox();
         

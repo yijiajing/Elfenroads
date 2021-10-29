@@ -54,7 +54,13 @@ public class LobbyWindow extends JPanel implements ActionListener{
             }
             
         });
-        loadButton.addActionListener(this);
+        loadButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                remove(background_elvenroads);
+                MainFrame.cardLayout.show(MainFrame.mainPanel,"load");
+            }
+        });
         gamesButton.addActionListener(this);
 
 

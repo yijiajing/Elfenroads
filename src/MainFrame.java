@@ -10,6 +10,7 @@ public class MainFrame extends JFrame {
     StartWindow start;
     LoginWindow login;
     LobbyWindow lobby;
+    LobbyWindow lobbyAfterBack;
     VersionToPlayWindow version;
     LoadGameWindow load;
     GameScreen gameScreen;
@@ -25,6 +26,7 @@ public class MainFrame extends JFrame {
         start = new StartWindow();
         login = new LoginWindow();
         lobby = new LobbyWindow();
+        lobbyAfterBack = new LobbyWindow();
         version = new VersionToPlayWindow();
         load = new LoadGameWindow();
         gameScreen = new GameScreen(this);
@@ -32,6 +34,7 @@ public class MainFrame extends JFrame {
         mainPanel.add(start, "start");
         mainPanel.add(login, "login");
         mainPanel.add(lobby, "lobby");
+        mainPanel.add(lobbyAfterBack, "lobbyAfterBack");
         mainPanel.add(version, "version");
         mainPanel.add(load, "load");
         mainPanel.add(gameScreen, "gameScreen");
@@ -41,7 +44,7 @@ public class MainFrame extends JFrame {
 
         cardLayout.show(mainPanel, "start");
     }
-    
+
     public static void main(String[] args){
         MainFrame mainFrame = new MainFrame();
     }
