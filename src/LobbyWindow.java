@@ -31,7 +31,7 @@ public class LobbyWindow extends JPanel implements ActionListener{
         gameToJoin.setText("");
         sessions = new JPanel(new BorderLayout());
         available = new JLabel();
-        available.setText("Avalable Sessions");
+        available.setText("Available Sessions");
         sessions.add(available,BorderLayout.PAGE_START);
         gameInfo= Box.createVerticalBox();
         gameName = new JLabel("GAME NAME: Sample");

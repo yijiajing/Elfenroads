@@ -19,6 +19,7 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
     private JButton travelCards;
     private JButton rgtDistribution;
     private JButton elvenWitch;
+    private JButton backButton;
     private JLabel elfenlandText;
     private JLabel elfengoldText;
 
@@ -60,6 +61,15 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
         rgtDistribution = new JButton("Random Gold Token Distribution");
         elvenWitch = new JButton("The Elven Witch");
 
+        backButton = new JButton("Back");
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                remove(background_elvenroads);
+                MainFrame.cardLayout.show(MainFrame.mainPanel,"lobbyAfterBack");
+            }
+        });
+
         elfenlandChoice.add(elfenlandText);
         elfenlandText.setAlignmentY(TOP_ALIGNMENT);
         elfenlandText.setAlignmentX(CENTER_ALIGNMENT);
@@ -91,6 +101,7 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
         background_elvenroads.setLayout(layout);
         background_elvenroads.add(choicesPanel,gbc);
 
+        background_elvenroads.add(backButton);
         add(background_elvenroads);
 
     }
