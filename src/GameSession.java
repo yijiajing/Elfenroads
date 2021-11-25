@@ -16,10 +16,10 @@ public class GameSession {
     private String username;
     private String password;
     private String accessToken;
-    // URL lobbyService = new URL ("http://127.0.0.1:4242/api/");
+    private String sessionName;
 
 
-    public GameSession(String pUsername, String pPassword) throws IOException {
+    public GameSession(String pUsername, String pPassword, String pSessionName) throws IOException {
 
         // first, try to authenticate the user
         // check if the username and password belongs to an existing user
@@ -31,7 +31,11 @@ public class GameSession {
 
         username = pUsername;
         password = pPassword;
-        String tokenResponse = authenticate();
+        sessionName = pSessionName;
+
+        accessToken = authenticate();
+
+
 
 
 
@@ -65,7 +69,50 @@ public class GameSession {
 
     }
 
-    public String createNewSession;
+    public String createNewSession() throws IOException {
+        // make an API call to create a new session
+        // to create a new session:
+        // request parameters: access_token=...
+        // header parameters: Content-Type: application/json
+        /* request body: {
+            "creator": "maex",
+            "game": "DummyGame1",
+            "savegame": "funnysavegameid42"
+         }
+         */
+
+        URL url = new URL("http://127.0.0.1:4242/api/sessions?access_token=" + accessToken);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("POST");
+        con.setRequestProperty("Content-Type", "application/json");
+
+        /* Payload support */
+        con.setDoOutput(true);
+        DataOutputStream out = new DataOutputStream(con.getOutputStream());
+        out.writeBytes("{\n");
+        out.writeBytes("    \"creator\": \"" + username + "\",\n");
+        out.writeBytes("    \"game\": \"" + sessionName + "\",\n");
+        out.writeBytes("    \"savegame\": \"\"\n");
+        out.writeBytes("}");
+        out.flush();
+        out.close();
+
+        int status = con.getResponseCode();
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer content = new StringBuffer();
+        while((inputLine = in.readLine()) != null) {
+            content.append(inputLine);
+        }
+        in.close();
+        con.disconnect();
+        System.out.println("Response status: " + status);
+        System.out.println(content.toString());
+
+        String response = content.toString();
+
+        return response;
+    }
 
 
 
