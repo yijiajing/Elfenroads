@@ -11,7 +11,8 @@ public class TestUser {
 
         User newUser = new User(username, password);
 
-        GameService dumbGame = new GameService(newUser, "poop", "Cheese12345", 5, 10, "poop");
+        // System.out.println(User.doesUserExist("nick2", newUser));
+        GameService dumbGame = new GameService(newUser, "gamenick", "nicksgame", "Cheese12345", 5, 10);
     }
 
 

@@ -17,12 +17,12 @@ public class GameService {
     private String gameServicePassword;
     private String gameServiceColor = "01FFFF";
     private String gameServiceName;
-    private String gameDisplayName;
     private int minSessionPlayers;
     private int maxSessionPlayers;
+    private String gameDisplayName;
 
 
-    public GameService (User pAdminUser, String pGameServiceName, String pGameServicePassword, int pMinSessionPlayers, int pMaxSessionPlayers, String pGameDisplayName) throws IOException
+    public GameService (User pAdminUser, String pGameServiceName, String pGameDisplayName, String pGameServicePassword, int pMinSessionPlayers, int pMaxSessionPlayers) throws IOException
     {
         // first, we need to create a user to manage the GameService
         adminUser = pAdminUser;
@@ -75,6 +75,7 @@ public class GameService {
 
         User gameServiceUser = new User(gameServiceName, gameServicePassword);
         this.gameServiceUser = gameServiceUser;
+        System.out.println("The token for the gameServiceUser is: " + this.gameServiceUser.getAccessToken());
     }
 
     public void createGameService() throws IOException
@@ -91,7 +92,7 @@ public class GameService {
         out.writeBytes("{\n");
         out.writeBytes("    \"location\": \"\",\n");
         out.writeBytes("    \"maxSessionPlayers\": \"" + maxSessionPlayers + "\",\n");
-        out.writeBytes("    \"" + minSessionPlayers + "\": \"3\",\n");
+        out.writeBytes("    \"minSessionPlayers\": \"" + minSessionPlayers + "\",\n");
         out.writeBytes("    \"name\": \"" + gameServiceName + "\",\n");
         out.writeBytes("    \"displayName\": \"" + gameDisplayName + "\",\n");
         out.writeBytes("    \"webSupport\": \"true\"\n");

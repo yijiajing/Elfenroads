@@ -2,6 +2,7 @@ import com.google.gson.Gson;
 import org.json.*;
 
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -100,6 +101,12 @@ public class User {
     {
         String returnVal = token.replace("+", "%2B");
         return returnVal;
+    }
+
+    // TODO: need to implement this method
+    public static boolean doesUserExist(String username, User adminUser) throws IOException
+    {
+       return false;
     }
 
 }
