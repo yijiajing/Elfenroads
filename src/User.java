@@ -68,8 +68,8 @@ public class User {
         // returns the JSON object containing the bearer and refresh tokens. See API docs for details
         // set the fields using the JSON info
 
-        accessToken = json.get("access_token").toString();
-        refreshToken = json.get("refresh_token").toString();
+        accessToken = escapePlusSign(json.get("access_token").toString());
+        refreshToken = escapePlusSign(json.get("refresh_token").toString());
         isAuthenticated = true;
 
         // System.out.println("The access token is " + accessToken + " and the refresh token is " + refreshToken);
@@ -95,4 +95,11 @@ public class User {
     public String getUsername() {
         return username;
     }
+
+    private String escapePlusSign(String token)
+    {
+        String returnVal = token.replace("+", "%2B");
+        return returnVal;
+    }
+
 }

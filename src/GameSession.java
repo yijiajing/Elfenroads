@@ -11,6 +11,7 @@ import java.util.Base64;
 public class GameSession {
 
     private User creator;
+    private User gameServiceUser;
     private JSONObject info;
     private ArrayList<User> players;
     private boolean launched;
@@ -26,7 +27,7 @@ public class GameSession {
         creator = pCreator;
         sessionName = pSessionName;
         saveGameName = pSaveName;
-        createGame(creator, sessionName, saveGameName);
+        createGameSession(creator, sessionName, saveGameName);
     }
 
     // if no save game name is provided to the constructor, we save the game under its session name
@@ -35,10 +36,10 @@ public class GameSession {
         creator = pCreator;
         sessionName = pSessionName;
         saveGameName = pSessionName;
-        createGame(creator, sessionName, saveGameName);
+        createGameSession(creator, sessionName, saveGameName);
     }
 
-    private void createGame(User creator, String pSessionName, String pSaveGameName) throws IOException
+    private void createGameSession(User serviceAccount, String pSessionName, String pSaveGameName) throws IOException
     {
         if (creator.isAuthenticated()) {
             URL url = new URL("http://127.0.0.1:4242/api/sessions?access_token=" + creator.getAccessToken());
@@ -70,6 +71,12 @@ public class GameSession {
             System.out.println(content.toString());
         }
     }
+
+
+
+
+
+
 
 
 
