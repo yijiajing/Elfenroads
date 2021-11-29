@@ -1,5 +1,5 @@
-import org.apache.hc.client5.http.async.methods.SimpleRequestBuilder;
-import org.apache.hc.client5.http.classic.HttpClient;
+// import org.apache.hc.client5.http.async.methods.SimpleRequestBuilder;
+// import org.apache.hc.client5.http.classic.HttpClient;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -7,8 +7,6 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.util.Base64;
-
-import org.apache.*;
 
 public class GameSession {
 
@@ -38,7 +36,7 @@ public class GameSession {
         password = pPassword;
         sessionName = pSessionName;
         basicAuthenticationCredentials = "bgp-client-name:bgp-client-pw";
-        basicAuthEncoded = new String(Base64.getEncoder().encode(basicAuthenticationCredentials.getBytes()));
+        basicAuthEncoded = Base64.getEncoder().encodeToString(basicAuthenticationCredentials.getBytes());
 
         accessToken = authenticate();
 
@@ -52,16 +50,12 @@ public class GameSession {
         URL url = new URL("http://127.0.0.1:4242/oauth/token?grant_type=password&username=" + username + "&password=" + password);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setDoOutput(true);
-        con.setDoInput(true);
+        // con.setDoInput(true);
         con.setRequestMethod("POST");
-        con.addRequestProperty("Authorization", basicAuthEncoded);
+        con.setRequestProperty("Authorization", "Basic " + basicAuthEncoded);
 
-        // write the body into the request
-        OutputStream body = con.getOutputStream();
-        OutputStreamWriter bodyWriter = new OutputStreamWriter(body, "UTF-8");
-        bodyWriter.write("user_oauth_approval=true&_csrf=19beb2db-3807-4dd5-9f64-6c733462281b&authorize=true");
 
-        con.connect();
+        // con.connect();
 
         int status = con.getResponseCode();
         BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));

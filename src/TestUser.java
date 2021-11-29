@@ -1,6 +1,6 @@
 import java.io.IOException;
 
-public class TestGameSession {
+public class TestUser {
 
 
     public static void main (String [] args) throws IOException
@@ -9,7 +9,8 @@ public class TestGameSession {
         String password = "Nick12345";
         String sessionName = "Nick's game";
 
-        GameSession game = new GameSession(username, password, sessionName);
+        User newUser = new User(username, password);
+        newUser.authenticate();
     }
 
 
