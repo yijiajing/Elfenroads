@@ -1,4 +1,5 @@
-import org.json.JSONObject;
+import com.google.gson.Gson;
+import org.json.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -17,6 +18,7 @@ public class User {
     private String basicAuthCredentials;
     private String basicAuthEncoded;
     private boolean isAuthenticated;
+    private String refreshToken;
 
 
     public User(String pUsername, String pPassword)
@@ -36,6 +38,7 @@ public class User {
         con.setDoOutput(true);
         con.setRequestMethod("POST");
         con.setRequestProperty("Authorization", "Basic " + basicAuthEncoded);
+        con.setRequestProperty("Content-Type", "application/json");
 
         int status = con.getResponseCode();
         BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
@@ -49,15 +52,25 @@ public class User {
         System.out.println("Response status: " + status);
         System.out.println(content.toString());
 
-        // try reading the stuff into a JSON object
-        JSONObject tokens = new JSONObject(content);
+        // trying to read the stuff into a JSON file using GSON
+        String contentAsString = content.toString();
+        JSONObject json = new JSONObject(contentAsString);
+        // now we have the json as an object
+
+
 
         // System.out.println("The fields in the file received are: " + JSONObject.getNames(content));
         // accessToken = (String) tokens.get("access_token");
         // System.out.println("The access token is: " + accessToken);
 
         // returns the JSON object containing the bearer and refresh tokens. See API docs for details
+        // set the fields using the JSON info
+
+        accessToken = json.get("access_token").toString();
+        refreshToken = json.get("refresh_token").toString();
         isAuthenticated = true;
+
+        System.out.println("The access token is " + accessToken + " and the refresh token is " + refreshToken);
         return content.toString();
     }
 
