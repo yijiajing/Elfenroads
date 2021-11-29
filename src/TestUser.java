@@ -11,7 +11,7 @@ public class TestUser {
 
         User newUser = new User(username, password);
 
-        GameService dumbGame = new GameService(newUser, "Dumbgamemadebynick", "cheese", 5, 10, "Nick's game");
+        GameService dumbGame = new GameService(newUser, "poop", "Cheese12345", 5, 10, "poop");
     }
 
 

@@ -44,7 +44,7 @@ public class GameService {
         // if a user does not already exist, we will just create one
 
         // this method will make a call to Users and create a user with the service role
-        URL url = new URL("http://127.0.0.1:4242/api/users/" + gameServiceName + "?access_token" + adminUser.getAccessToken());
+        URL url = new URL("http://127.0.0.1:4242/api/users/" + gameServiceName + "?access_token=" + adminUser.getAccessToken());
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("PUT");
         con.setRequestProperty("Content-Type", "application/json");
@@ -54,8 +54,8 @@ public class GameService {
         DataOutputStream out = new DataOutputStream(con.getOutputStream());
         out.writeBytes("{\n");
         out.writeBytes("    \"name\": \"" + gameServiceName + "\",\n");
-        out.writeBytes("    \"preferredColour\": \"01FFFF\", \n");
-        out.writeBytes("    \"" + gameServiceColor + "\": \"01FFFF\",\n");
+        out.writeBytes("    \"password\": \"" + gameServicePassword + "\",\n");
+        out.writeBytes("    \"preferredColour\": \"01FFFF\",\n");
         out.writeBytes("    \"role\": \"ROLE_SERVICE\"\n");
         out.writeBytes("}");
         out.flush();
@@ -80,7 +80,7 @@ public class GameService {
     public void createGameService() throws IOException
     {
         String token = gameServiceUser.getAccessToken();
-        URL url = new URL("http://127.0.0.1:4242/api/gameservices/" + gameServiceName + "?access_token=" + gameServiceUser.getAccessToken());
+        URL url = new URL("http://127.0.0.1:4242/api/gameservices/" + gameServiceName + "?access_token=" + token);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("PUT");
         con.setRequestProperty("Content-Type", "application/json");
