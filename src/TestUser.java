@@ -10,7 +10,8 @@ public class TestUser {
         String sessionName = "Nick's game";
 
         User newUser = new User(username, password);
-        newUser.authenticate();
+
+        GameSession newSession = new GameSession(newUser, "game session 1", "save game 1");
     }
 
 

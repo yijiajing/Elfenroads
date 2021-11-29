@@ -1,122 +1,76 @@
-// import org.apache.hc.client5.http.async.methods.SimpleRequestBuilder;
-// import org.apache.hc.client5.http.classic.HttpClient;
+import org.json.JSONObject;
 
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Base64;
 
 public class GameSession {
 
-    // this class represents the game session for Elfenroads (or whatever variant)
-    // its constructor connects to the LobbyService
-    // each GameSession
-
-    private String username;
-    private String password;
-    private String accessToken;
+    private User creator;
+    private JSONObject info;
+    private ArrayList<User> players;
+    private boolean launched;
+    private ArrayList<String> playerLocations;
     private String sessionName;
-    private String basicAuthenticationCredentials;
-    private String basicAuthEncoded;
+    private String saveGameName;
 
 
-    public GameSession(String pUsername, String pPassword, String pSessionName) throws IOException {
-
-        // first, try to authenticate the user
-        // check if the username and password belongs to an existing user
-        // if not, either prompt the user to make a new account, or do it automatically??
-
-        // record some information from the api to the GameSession (players and such)
-        // TODO: authenticate the user so that we can view and add sessions
-        // we need to add parameters to the POST request in order to get an OAuth2 token
-
-        username = pUsername;
-        password = pPassword;
+    public GameSession(User pCreator, String pSessionName, String pSaveName) throws IOException
+    {
+        // this constructor will use the provided User to create a new game session
+        // the User must have the appropriate (admin) permissions
+        creator = pCreator;
         sessionName = pSessionName;
-        basicAuthenticationCredentials = "bgp-client-name:bgp-client-pw";
-        basicAuthEncoded = Base64.getEncoder().encodeToString(basicAuthenticationCredentials.getBytes());
-
-        accessToken = authenticate();
-
-
-
-
-
+        saveGameName = pSaveName;
+        createGame(creator, sessionName, saveGameName);
     }
 
-    public String authenticate() throws IOException {
-        URL url = new URL("http://127.0.0.1:4242/oauth/token?grant_type=password&username=" + username + "&password=" + password);
-        HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        con.setDoOutput(true);
-        // con.setDoInput(true);
-        con.setRequestMethod("POST");
-        con.setRequestProperty("Authorization", "Basic " + basicAuthEncoded);
+    // if no save game name is provided to the constructor, we save the game under its session name
+    public GameSession (User pCreator, String pSessionName) throws IOException
+    {
+        creator = pCreator;
+        sessionName = pSessionName;
+        saveGameName = pSessionName;
+        createGame(creator, sessionName, saveGameName);
+    }
 
+    private void createGame(User creator, String pSessionName, String pSaveGameName) throws IOException
+    {
+        if (creator.isAuthenticated()) {
+            URL url = new URL("http://127.0.0.1:4242/api/sessions?access_token=" + creator.getAccessToken());
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("POST");
+            con.setRequestProperty("Content-Type", "application/json");
 
-        // con.connect();
+            /* Payload support */
+            con.setDoOutput(true);
+            DataOutputStream out = new DataOutputStream(con.getOutputStream());
+            out.writeBytes("{\n");
+            out.writeBytes("    \"creator\": \"" + creator.getUsername() + "\",\n");
+            out.writeBytes("    \"game\": \"" +pSessionName + "\",\n");
+            out.writeBytes("    \"savegame\": \"" + pSaveGameName + "\"\n");
+            out.writeBytes("}");
+            out.flush();
+            out.close();
 
-        int status = con.getResponseCode();
-        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-        String inputLine;
-        StringBuffer content = new StringBuffer();
-        while((inputLine = in.readLine()) != null) {
-            content.append(inputLine);
+            int status = con.getResponseCode();
+            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            String inputLine;
+            StringBuffer content = new StringBuffer();
+            while ((inputLine = in.readLine()) != null) {
+                content.append(inputLine);
+            }
+            in.close();
+            con.disconnect();
+            System.out.println("Response status: " + status);
+            System.out.println(content.toString());
         }
-        in.close();
-        con.disconnect();
-        System.out.println("Response status: " + status);
-        System.out.println(content.toString());
-
-        return content.toString();
-
     }
 
-    public String createNewSession() throws IOException {
-        // make an API call to create a new session
-        // to create a new session:
-        // request parameters: access_token=...
-        // header parameters: Content-Type: application/json
-        /* request body: {
-            "creator": "maex",
-            "game": "DummyGame1",
-            "savegame": "funnysavegameid42"
-         }
-         */
-
-        URL url = new URL("http://127.0.0.1:4242/api/sessions?access_token=" + accessToken);
-        HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        con.setRequestMethod("POST");
-        con.setRequestProperty("Content-Type", "application/json");
-
-        /* Payload support */
-        con.setDoOutput(true);
-        DataOutputStream out = new DataOutputStream(con.getOutputStream());
-        out.writeBytes("{\n");
-        out.writeBytes("    \"creator\": \"" + username + "\",\n");
-        out.writeBytes("    \"game\": \"" + sessionName + "\",\n");
-        out.writeBytes("    \"savegame\": \"\"\n");
-        out.writeBytes("}");
-        out.flush();
-        out.close();
-
-        int status = con.getResponseCode();
-        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-        String inputLine;
-        StringBuffer content = new StringBuffer();
-        while((inputLine = in.readLine()) != null) {
-            content.append(inputLine);
-        }
-        in.close();
-        con.disconnect();
-        System.out.println("Response status: " + status);
-        System.out.println(content.toString());
-
-        String response = content.toString();
-
-        return response;
-    }
 
 
 

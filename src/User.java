@@ -19,19 +19,21 @@ public class User {
     private String basicAuthEncoded;
     private boolean isAuthenticated;
     private String refreshToken;
+    private int tokenExpiresIn;
 
 
-    public User(String pUsername, String pPassword)
+    public User(String pUsername, String pPassword) throws IOException
     {
         username = pUsername;
         password = pPassword;
         basicAuthCredentials = "bgp-client-name:bgp-client-pw";
         basicAuthEncoded = Base64.getEncoder().encodeToString(basicAuthCredentials.getBytes());
         isAuthenticated = false;
+        authenticate();
 
     }
 
-    public String authenticate() throws IOException
+    public int authenticate() throws IOException
     {
         URL url = new URL("http://127.0.0.1:4242/oauth/token?grant_type=password&username=" + username + "&password=" + password);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -70,18 +72,27 @@ public class User {
         refreshToken = json.get("refresh_token").toString();
         isAuthenticated = true;
 
-        System.out.println("The access token is " + accessToken + " and the refresh token is " + refreshToken);
-        return content.toString();
+        // System.out.println("The access token is " + accessToken + " and the refresh token is " + refreshToken);
+        return status;
     }
 
+    public String getAccessToken() {
+        return accessToken;
+    }
 
+    public boolean isAuthenticated() {
+        return isAuthenticated;
+    }
 
+    public String getRefreshToken() {
+        return refreshToken;
+    }
 
+    public int getTokenExpiresIn() {
+        return tokenExpiresIn;
+    }
 
-
-
-
-
-
-
+    public String getUsername() {
+        return username;
+    }
 }
