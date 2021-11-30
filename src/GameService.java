@@ -35,7 +35,6 @@ public class GameService {
         // now, we have created the game service user and we can go on to create the actual game session (using that user)
         createGameService();
 
-
     }
 
     public void createGameServiceUser() throws IOException

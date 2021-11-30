@@ -52,8 +52,8 @@ public class User {
         }
         in.close();
         con.disconnect();
-        System.out.println("Response status: " + status);
-        System.out.println(content.toString());
+        // System.out.println("Response status: " + status);
+        // System.out.println(content.toString());
 
         // trying to read the stuff into a JSON file using GSON
         String contentAsString = content.toString();
@@ -77,7 +77,9 @@ public class User {
         return status;
     }
 
-    public String getAccessToken() {
+    public String getAccessToken() throws IOException
+    {
+        authenticate();
         return accessToken;
     }
 
@@ -104,9 +106,48 @@ public class User {
     }
 
     // TODO: need to implement this method
-    public static boolean doesUserExist(String username, User adminUser) throws IOException
+    public static boolean doesUserExist(String username) throws IOException
     {
+        User admin = new User("maex", "abc123_ABC123");
+        String token = admin.getAccessToken();
+        // do a get request to api/users and look at all users, see if our username is there
+        JSONObject allUsers = getAllUsers(token);
+
+
        return false;
     }
+
+    public static JSONObject getAllUsers(String adminToken) throws IOException
+    {
+        URL url = new URL("http://127.0.0.1:4242/api/users?access_token=" + adminToken);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("GET");
+
+        /* Payload support */
+        con.setDoOutput(true);
+        DataOutputStream out = new DataOutputStream(con.getOutputStream());
+        out.writeBytes("user_oauth_approval=true&_csrf=19beb2db-3807-4dd5-9f64-6c733462281b&authorize=true");
+        out.flush();
+        out.close();
+
+        int status = con.getResponseCode();
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer content = new StringBuffer();
+        while((inputLine = in.readLine()) != null) {
+            content.append(inputLine);
+        }
+        in.close();
+        con.disconnect();
+        System.out.println("Response status: " + status);
+        System.out.println(content.toString());
+
+        String allUsers = content.toString(); // this is the data exactly as the lobby service sent it to us
+        JSONObject usersAsJSON = new JSONObject(allUsers);
+        System.out.println(usersAsJSON);
+        return usersAsJSON;
+    }
+
+
 
 }

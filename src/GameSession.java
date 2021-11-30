@@ -39,37 +39,10 @@ public class GameSession {
         createGameSession(creator, sessionName, saveGameName);
     }
 
-    private void createGameSession(User serviceAccount, String pSessionName, String pSaveGameName) throws IOException
+    private void createGameSession(User admin, String pSessionName, String pSaveGameName) throws IOException
     {
-        if (creator.isAuthenticated()) {
-            URL url = new URL("http://127.0.0.1:4242/api/sessions?access_token=" + creator.getAccessToken());
-            HttpURLConnection con = (HttpURLConnection) url.openConnection();
-            con.setRequestMethod("POST");
-            con.setRequestProperty("Content-Type", "application/json");
+        // create a new game session with the specifications
 
-            /* Payload support */
-            con.setDoOutput(true);
-            DataOutputStream out = new DataOutputStream(con.getOutputStream());
-            out.writeBytes("{\n");
-            out.writeBytes("    \"creator\": \"" + creator.getUsername() + "\",\n");
-            out.writeBytes("    \"game\": \"" +pSessionName + "\",\n");
-            out.writeBytes("    \"savegame\": \"" + pSaveGameName + "\"\n");
-            out.writeBytes("}");
-            out.flush();
-            out.close();
-
-            int status = con.getResponseCode();
-            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-            String inputLine;
-            StringBuffer content = new StringBuffer();
-            while ((inputLine = in.readLine()) != null) {
-                content.append(inputLine);
-            }
-            in.close();
-            con.disconnect();
-            System.out.println("Response status: " + status);
-            System.out.println(content.toString());
-        }
     }
 
 
