@@ -165,6 +165,7 @@ public class User {
         	if (flag == 1)
         	{
         		user += contentAsString.charAt(i);
+                continue;
         	}
         	
         	if (contentAsString.charAt(i) == '{')
