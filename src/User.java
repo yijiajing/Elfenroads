@@ -3,7 +3,6 @@
 import org.json.*;
 
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -11,6 +10,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class User {
 
@@ -110,7 +110,7 @@ public class User {
     }
 
     // TODO: need to implement this method
-    public static boolean doesUserExist(String username) throws IOException
+    public static boolean doesUsernameExist(String username) throws IOException
     {
         User admin = new User("maex", "abc123_ABC123");
         String token = admin.getAccessToken();
@@ -119,6 +119,7 @@ public class User {
         List<JSONObject> allUsers = getAllUsers(token);
         for (JSONObject json : allUsers)
         {
+        	
         	if (json.get("name").toString().equals(username))
         	{
         		return true;
@@ -126,6 +127,11 @@ public class User {
         }
 
        return false;
+    }
+    
+    public static boolean doesPasswordExist(String password)
+    {
+    	return Pattern.compile("(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,32}").matcher(password).find();
     }
 
     public static List<JSONObject> getAllUsers(String adminToken) throws IOException
