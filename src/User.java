@@ -129,6 +129,7 @@ public class User {
        return false;
     }
     
+    // from Max's code
     public static boolean doesPasswordExist(String password)
     {
     	return Pattern.compile("(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,32}").matcher(password).find();
