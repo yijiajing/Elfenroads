@@ -117,7 +117,13 @@ public class User {
         // do a get request to api/users and look at all users, see if our username is there
         //JSONObject allUsers = getAllUsers(token);
         List<JSONObject> allUsers = getAllUsers(token);
-
+        for (JSONObject json : allUsers)
+        {
+        	if (json.get("name").toString().equals(username))
+        	{
+        		return true;
+        	}
+        }
 
        return false;
     }
@@ -184,4 +190,5 @@ public class User {
     	
     	return allUsers;
     }
+
 }
