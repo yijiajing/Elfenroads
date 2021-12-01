@@ -14,20 +14,20 @@ public class GameService {
 
     private User gameServiceUser;
     private User adminUser;
-    private String gameServicePassword;
-    private String gameServiceColor = "01FFFF";
+    private String gameServiceAccountPassword;
+    private String gameServiceAccountColor = "01FFFF";
     private String gameServiceName;
     private int minSessionPlayers;
     private int maxSessionPlayers;
     private String gameDisplayName;
 
 
-    public GameService (User pAdminUser, String pGameServiceName, String pGameDisplayName, String pGameServicePassword, int pMinSessionPlayers, int pMaxSessionPlayers) throws IOException
+    public GameService (User pAdminUser, String pGameServiceName, String pGameDisplayName, String pGameServiceAccountPassword, int pMinSessionPlayers, int pMaxSessionPlayers) throws IOException
     {
         // first, we need to create a user to manage the GameService
         adminUser = pAdminUser;
         gameServiceName = pGameServiceName;
-        gameServicePassword = pGameServicePassword;
+        gameServiceAccountPassword = pGameServiceAccountPassword;
         minSessionPlayers = pMinSessionPlayers;
         maxSessionPlayers = pMaxSessionPlayers;
         gameDisplayName = pGameDisplayName;
@@ -53,7 +53,7 @@ public class GameService {
         DataOutputStream out = new DataOutputStream(con.getOutputStream());
         out.writeBytes("{\n");
         out.writeBytes("    \"name\": \"" + gameServiceName + "\",\n");
-        out.writeBytes("    \"password\": \"" + gameServicePassword + "\",\n");
+        out.writeBytes("    \"password\": \"" + gameServiceAccountPassword + "\",\n");
         out.writeBytes("    \"preferredColour\": \"01FFFF\",\n");
         out.writeBytes("    \"role\": \"ROLE_SERVICE\"\n");
         out.writeBytes("}");
@@ -72,9 +72,9 @@ public class GameService {
         System.out.println("Response status: " + status);
         System.out.println(content.toString());
 
-        User gameServiceUser = new User(gameServiceName, gameServicePassword);
+        User gameServiceUser = new User(gameServiceName, gameServiceAccountPassword);
         this.gameServiceUser = gameServiceUser;
-        System.out.println("The token for the gameServiceUser is: " + this.gameServiceUser.getAccessToken());
+        // System.out.println("The token for the gameServiceUser is: " + this.gameServiceUser.getAccessToken());
     }
 
     public void createGameService() throws IOException
@@ -111,9 +111,9 @@ public class GameService {
         System.out.println("Response status: " + status);
         System.out.println(content.toString());
 
-
-
     }
+
+
 
 
 

@@ -23,6 +23,12 @@ public class User {
     private int tokenExpiresIn;
 
 
+    /**
+     * @pre user already exists in LS
+     * @param pUsername
+     * @param pPassword
+     * @throws IOException
+     */
     public User(String pUsername, String pPassword) throws IOException
     {
         username = pUsername;
@@ -117,6 +123,7 @@ public class User {
        return false;
     }
 
+    // TODO: implement this method
     public static JSONObject getAllUsers(String adminToken) throws IOException
     {
         URL url = new URL("http://127.0.0.1:4242/api/users?access_token=" + adminToken);
