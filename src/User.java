@@ -183,40 +183,67 @@ public class User {
         }
     	
     	return allUsers;
-    	
-    	
-    	
-    	
-    	
-    	/*
-    	URL url = new URL("http://127.0.0.1:4242/api/users?access_token=" + adminToken);
-        HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        con.setRequestMethod("GET");
+    }
+    
+    public static List<JSONObject> getSessions() throws IOException
+    {
+    	URL url = new URL("http://127.0.0.1:4242/api/gameservices");
+    	HttpURLConnection con = (HttpURLConnection) url.openConnection();
+    	con.setRequestMethod("GET");
 
-        /* Payload support 
-        con.setDoOutput(true);
-        DataOutputStream out = new DataOutputStream(con.getOutputStream());
-        out.writeBytes("user_oauth_approval=true&_csrf=19beb2db-3807-4dd5-9f64-6c733462281b&authorize=true");
-        out.flush();
-        out.close();
-
-        int status = con.getResponseCode();
-        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-        String inputLine;
-        StringBuffer content = new StringBuffer();
-        while((inputLine = in.readLine()) != null) {
-            content.append(inputLine);
+    	int status = con.getResponseCode();
+    	BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+    	String inputLine;
+    	StringBuffer content = new StringBuffer();
+    	while((inputLine = in.readLine()) != null) {
+    		content.append(inputLine);
+    	}
+    	in.close();
+    	con.disconnect();
+    	System.out.println("Response status: " + status);
+    	//System.out.println(content.toString());
+    	
+    	// Start here
+        String session = "";
+        List<JSONObject> allSessions = new ArrayList<>();
+        String sessionAsString = content.toString();
+        
+        int flag = 0;
+        for (int i = 0; i < content.length(); i++)
+        {
+        	if (sessionAsString.charAt(i) == '}')
+        	{
+        		session += sessionAsString.charAt(i);
+        		flag = 0;
+        		
+        		String str = session.toString();
+        		JSONObject json = new JSONObject(str);
+        		session = "";
+        		allSessions.add(json);
+        		continue;
+        	}
+        	
+        	if (flag == 1)
+        	{
+        		session += sessionAsString.charAt(i);
+        		continue;
+        	}
+        	
+        	if (sessionAsString.charAt(i) == '{')
+        	{
+        		session += sessionAsString.charAt(i);
+        		flag = 1;
+        		continue;
+        	}
+        	
         }
-        in.close();
-        con.disconnect();
-        System.out.println("Response status: " + status);
-        System.out.println(content.toString());
-
-        String allUsers = content.toString(); // this is the data exactly as the lobby service sent it to us
-        JSONObject usersAsJSON = new JSONObject(allUsers);
-        System.out.println(usersAsJSON);
-        return usersAsJSON;
-        */
+        
+        for (JSONObject j : allSessions)
+        {
+        	System.out.println(j.toString());
+        }
+    	
+    	return allSessions;
     }
 
 
