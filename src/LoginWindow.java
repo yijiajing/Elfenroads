@@ -62,13 +62,13 @@ public class LoginWindow extends JPanel implements ActionListener {
             	boolean u = false;
             	try 
             	{
-					u = User.doesUserExist(username);
+					u = User.doesUsernameExist(username);
 				} 
             	catch (IOException e1) 
             	{
 					e1.printStackTrace();
 				}
-            	boolean p = Pattern.compile("(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,32}").matcher(password).find();
+            	boolean p = User.doesPasswordExist(password);
             	if (u && p)
             	{
             		remove(background_elvenroads);
