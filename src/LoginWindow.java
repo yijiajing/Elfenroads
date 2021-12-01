@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.regex.Pattern;
 
 import static javax.swing.Box.createVerticalStrut;
 
@@ -19,12 +21,14 @@ public class LoginWindow extends JPanel implements ActionListener {
     private static JButton loginButton;
     private JPanel infoPanel;
     
+    private String filepathToRepo = "/Users/charlescouture/eclipse-workspace/COMP361/src";
+    
 
     LoginWindow() {
 
         infoPanel = new JPanel(new BorderLayout());
 
-        ImageIcon background_image = new ImageIcon("./assets/sprites/elfenroads.jpeg");
+        ImageIcon background_image = new ImageIcon(filepathToRepo + "/assets/sprites/elfenroads.jpeg");
         background_elvenroads = new JLabel(background_image);
         GridBagLayout layout = new GridBagLayout();
         GridBagConstraints gbc = new GridBagConstraints();
@@ -46,12 +50,31 @@ public class LoginWindow extends JPanel implements ActionListener {
         loginButton = new JButton("Enter");
         
 
-        loginButton.addActionListener(new ActionListener(){
+        loginButton.addActionListener(new ActionListener()
+        {
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                remove(background_elvenroads);
-                MainFrame.cardLayout.show(MainFrame.mainPanel,"lobby");
+            @SuppressWarnings("deprecation")
+			@Override
+            public void actionPerformed(ActionEvent e) 
+            {
+            	String username = usernameTextField.getText();
+            	String password = passwordTextField.getText();
+            	boolean u = false;
+            	try 
+            	{
+					u = User.doesUserExist(username);
+				} 
+            	catch (IOException e1) 
+            	{
+					e1.printStackTrace();
+				}
+            	boolean p = Pattern.compile("(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,32}").matcher(password).find();
+            	if (u && p)
+            	{
+            		remove(background_elvenroads);
+                    MainFrame.cardLayout.show(MainFrame.mainPanel,"lobby");
+            	}
+                
             }
             
         });
