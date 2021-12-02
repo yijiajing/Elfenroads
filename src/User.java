@@ -82,6 +82,7 @@ public class User {
         accessToken = escapePlusSign(json.get("access_token").toString());
         refreshToken = escapePlusSign(json.get("refresh_token").toString());
         tokenExpiryAsString = json.get("expires_in").toString();
+        tokenExpiresIn = Integer.parseInt(tokenExpiryAsString);
 
         tokenTimeUpdate();
         isAuthenticated = true;
