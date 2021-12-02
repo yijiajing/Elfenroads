@@ -13,9 +13,11 @@ public class TestUser {
         User maex = new User(username, password); // authenticates test user
         // System.out.println(maex.getAccessToken());
 
+        System.out.println(User.getAllUsers(maex.getAccessToken()));
+
         // System.out.println(User.doesUserExist("nick2", newUser));
         // GameService elfenlands = new GameService(maex, "ElfenlandsGame", "Elfenlands", "Cheese12345", 5, 10);
-        GameSession session = new GameSession(maex, "ElfenlandsGame" , "savegame12");
+        // GameSession session = new GameSession(maex, "ElfenlandsGame" , "savegame12");
         // System.out.println(GameSession.getAllSessions("Elfenlands"));
 
         String charlesUsername = "charles";

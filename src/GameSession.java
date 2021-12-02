@@ -80,7 +80,9 @@ public class GameSession {
 
     public String getSaveGameName() {
         return saveGameName;
-=======
+
+    }
+
     
     public static List<JSONObject> getSessions() throws IOException
     {
