@@ -31,6 +31,7 @@ public class StartWindow extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 remove(background_elvenroads);
+                MainFrame.mainPanel.add(new LoginWindow(), "login");
                 MainFrame.cardLayout.show(MainFrame.mainPanel,"login");
             }
             

@@ -21,7 +21,7 @@ public class LoginWindow extends JPanel implements ActionListener {
     private static JButton loginButton;
     private JPanel infoPanel;
     
-    private String filepathToRepo = "/Users/charlescouture/eclipse-workspace/COMP361/src";
+    private String filepathToRepo = ".";
     
 
     LoginWindow() {
@@ -72,6 +72,7 @@ public class LoginWindow extends JPanel implements ActionListener {
             	if (u && p)
             	{
             		remove(background_elvenroads);
+                    MainFrame.mainPanel.add(new LobbyWindow(), "lobby");
                     MainFrame.cardLayout.show(MainFrame.mainPanel,"lobby");
             	}
                 
