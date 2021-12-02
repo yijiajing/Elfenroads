@@ -2,8 +2,10 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.*;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 
-public class LobbyWindow extends JPanel implements ActionListener{
+public class LobbyWindow extends JPanel implements ActionListener {
     
     //private static Box boxPanel;
     private JLabel background_elvenroads;
@@ -43,12 +45,12 @@ public class LobbyWindow extends JPanel implements ActionListener{
         gameInfo.add(gamesButton);
         sessions.add(gameInfo,BorderLayout.LINE_START);
 
-
         createButton.addActionListener(new ActionListener(){
 
             @Override
             public void actionPerformed(ActionEvent e) {
                 remove(background_elvenroads);
+                MainFrame.mainPanel.add(new VersionToPlayWindow(), "version");
                 MainFrame.cardLayout.show(MainFrame.mainPanel,"version");
                 
             }
@@ -58,6 +60,7 @@ public class LobbyWindow extends JPanel implements ActionListener{
             @Override
             public void actionPerformed(ActionEvent e) {
                 remove(background_elvenroads);
+                MainFrame.mainPanel.add(new LoadGameWindow(), "load");
                 MainFrame.cardLayout.show(MainFrame.mainPanel,"load");
             }
         });
@@ -88,5 +91,4 @@ public class LobbyWindow extends JPanel implements ActionListener{
         
         
     }
-    
 }

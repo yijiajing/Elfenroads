@@ -1,12 +1,15 @@
+
 import org.json.*;
 
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
+import java.util.regex.Pattern;
 
 public class User {
 
@@ -63,6 +66,7 @@ public class User {
         // trying to read the stuff into a JSON file using GSON
         String contentAsString = content.toString();
         JSONObject json = new JSONObject(contentAsString);
+        
         // now we have the json as an object
 
 
@@ -111,49 +115,93 @@ public class User {
     }
 
     // TODO: need to implement this method
-    public static boolean doesUserExist(String username) throws IOException
+    public static boolean doesUsernameExist(String username) throws IOException
     {
         User admin = new User("maex", "abc123_ABC123");
         String token = admin.getAccessToken();
         // do a get request to api/users and look at all users, see if our username is there
-        JSONObject allUsers = getAllUsers(token);
-
+        //JSONObject allUsers = getAllUsers(token);
+        List<JSONObject> allUsers = getAllUsers(token);
+        for (JSONObject json : allUsers)
+        {
+        	
+        	if (json.get("name").toString().equals(username))
+        	{
+        		return true;
+        	}
+        }
 
        return false;
     }
-
-    // TODO: implement this method
-    public static JSONObject getAllUsers(String adminToken) throws IOException
+    
+    // from Max's code
+    public static boolean doesPasswordExist(String password)
     {
-        URL url = new URL("http://127.0.0.1:4242/api/users?access_token=" + adminToken);
+    	return Pattern.compile("(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,32}").matcher(password).find();
+    }
+
+    public static List<JSONObject> getAllUsers(String adminToken) throws IOException
+
+    {
+        
+    	URL url = new URL("http://127.0.0.1:4242/api/users?access_token=" + adminToken);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
-
-        /* Payload support */
-        con.setDoOutput(true);
-        DataOutputStream out = new DataOutputStream(con.getOutputStream());
-        out.writeBytes("user_oauth_approval=true&_csrf=19beb2db-3807-4dd5-9f64-6c733462281b&authorize=true");
-        out.flush();
-        out.close();
 
         int status = con.getResponseCode();
         BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
         String inputLine;
         StringBuffer content = new StringBuffer();
         while((inputLine = in.readLine()) != null) {
-            content.append(inputLine);
+        	content.append(inputLine);
         }
         in.close();
         con.disconnect();
         System.out.println("Response status: " + status);
-        System.out.println(content.toString());
-
-        String allUsers = content.toString(); // this is the data exactly as the lobby service sent it to us
-        JSONObject usersAsJSON = new JSONObject(allUsers);
-        System.out.println(usersAsJSON);
-        return usersAsJSON;
+        //System.out.println(content.toString());
+        
+        
+        // Start here
+        String user = "";
+        List<JSONObject> allUsers = new ArrayList<>();
+        String contentAsString = content.toString();
+        
+        int flag = 0;
+        for (int i = 0; i < content.length(); i++)
+        {
+        	if (contentAsString.charAt(i) == '}')
+        	{
+        		user += contentAsString.charAt(i);
+        		flag = 0;
+        		
+        		String str = user.toString();
+        		JSONObject json = new JSONObject(str);
+        		user = "";
+        		allUsers.add(json);
+        		continue;
+        	}
+        	
+        	if (flag == 1)
+        	{
+        		user += contentAsString.charAt(i);
+        		continue;
+        	}
+        	
+        	if (contentAsString.charAt(i) == '{')
+        	{
+        		user += contentAsString.charAt(i);
+        		flag = 1;
+        		continue;
+        	}
+        	
+        }
+        
+        for (JSONObject j : allUsers)
+        {
+        	System.out.println(j.toString());
+        }
+    	
+    	return allUsers;
     }
-
-
 
 }
