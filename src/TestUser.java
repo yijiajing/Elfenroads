@@ -20,8 +20,9 @@ public class TestUser {
         // GameSession session = new GameSession(maex, "ElfenlandsGame" , "savegame12");
         // System.out.println(GameSession.getAllSessions("Elfenlands"));
 
-        String charlesUsername = "charles";
-        String charlesPassword = "Password1234";
+       // test the access token validity thing
+
+        maex.printTokenRelatedFields();
 
         // User charles = new User(charlesUsername, charlesPassword);
     }
