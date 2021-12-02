@@ -31,12 +31,6 @@ public class GameSession {
         createNewSession();
     }
 
-    public GameSession(JSONObject info)
-    {
-        // creates a GameSession from JSON object returned from a GET call
-    }
-
-
 
 
     private void createNewSession() throws IOException
