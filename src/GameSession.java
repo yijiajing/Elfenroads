@@ -1,3 +1,4 @@
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.*;
@@ -30,6 +31,7 @@ public class GameSession {
         locationIP = ip.getHostAddress();
         createNewSession();
     }
+
 
 
     private void createNewSession() throws IOException
@@ -65,9 +67,20 @@ public class GameSession {
         System.out.println("Response status: " + status);
         System.out.println(content.toString());
 
-
-
     }
+
+
+    public User getCreator() {
+        return creator;
+    }
+
+    public String getGameName() {
+        return gameName;
+    }
+
+    public String getSaveGameName() {
+        return saveGameName;
+=======
     
     public static List<JSONObject> getSessions() throws IOException
     {
@@ -128,6 +141,10 @@ public class GameSession {
         }
     	
     	return allSessions;
+  
     }
 
+    public String getLocationIP() {
+        return locationIP;
+    }
 }
