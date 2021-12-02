@@ -351,7 +351,7 @@ public class GameScreen extends JPanel
 	public void initializeElfBootImage() // for demo
 	{
 		// we will represent the ElfBoot as a JLabel with a ClickAdapter
-		ImageIcon blackBootIcon = new ImageIcon(filepathToRepo + "/assets/boppels-and-boots/böppel-black.png");
+		ImageIcon blackBootIcon = new ImageIcon(filepathToRepo + "/assets/boppels-and-boots/boppel-black.png");
 		Image blackBootImage = blackBootIcon.getImage();
 		Image blackBootResized = blackBootImage.getScaledInstance(width*15/1440, height*15/900,  java.awt.Image.SCALE_SMOOTH);
 		blackBootIcon = new ImageIcon(blackBootResized);
