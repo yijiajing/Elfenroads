@@ -12,7 +12,7 @@ crash.log
 
 # Nick's IDE-specific files
 .idea/
-project.iml
+*.iml
 
 # Phillipe's vscode files
 .vscode/
