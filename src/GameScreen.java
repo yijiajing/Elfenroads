@@ -72,7 +72,7 @@ public class GameScreen extends JPanel implements Serializable
 	private boolean isOurTurn;
 
 	// TODO: change this on the other computer
-	private String otherPlayerIP = "10.0.0.244";
+	private String otherPlayerIP = "10.122.175.220"; // Nick's IP address
 
 	
 	// alternate constructor for networking demo

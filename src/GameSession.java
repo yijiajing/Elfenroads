@@ -43,7 +43,7 @@ public class GameSession {
 
         // TODO: change that line back after testing
         // URL url = new URL("http://127.0.0.1:4242/api/sessions?access_token=" + token + "&location=" + locationIP);
-        URL url = new URL("http://127.0.0.1:4242/api/sessions?access_token=" + token + "&location=10.0.0.244");
+        URL url = new URL("http://10.122.175.220:4242/api/sessions?access_token=" + token + "&location=10.0.0.244");
 
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("POST");
@@ -81,7 +81,7 @@ public class GameSession {
     {
         String creatorToken = creator.getAccessToken();
 
-        URL url = new URL("http://127.0.0.1:4242/api/sessions/" + id + "?access_token=" + creatorToken);
+        URL url = new URL("http://10.122.175.220:4242/api/sessions/" + id + "?access_token=" + creatorToken);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("POST");
 
@@ -138,7 +138,7 @@ public class GameSession {
 
     public static JSONObject getSessionDetails(String id) throws IOException
     {
-        URL url = new URL("http://127.0.0.1:4242/api/sessions/" + id);
+        URL url = new URL("http://10.122.175.220:4242/api/sessions/" + id);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
 
@@ -164,6 +164,8 @@ public class GameSession {
     {
         JSONObject gameDetails = getSessionDetails(id);
         JSONObject parameters = new JSONObject(gameDetails.get("gameParameters").toString());
+
+
         return parameters;
     }
 
@@ -191,7 +193,7 @@ public class GameSession {
 
     public static JSONObject getSessions() throws IOException
     {
-        URL url = new URL("http://127.0.0.1:4242/api/sessions");
+        URL url = new URL("http://10.122.175.220:4242/api/sessions");
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
 
@@ -295,7 +297,7 @@ public class GameSession {
         // we need to join this session with the chosen user, so we will
         String token = joiner.getAccessToken();
 
-        URL url = new URL("http://127.0.0.1:4242/api/sessions" + sessionID +"/players/" + joiner.getUsername() + "?location=" + joinerIP + "&access_token=" + token);
+        URL url = new URL("http://10.122.175.220:4242/api/sessions" + sessionID +"/players/" + joiner.getUsername() + "?location=" + joinerIP + "&access_token=" + token);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("PUT");
 

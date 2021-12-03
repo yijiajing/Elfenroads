@@ -28,8 +28,8 @@ public class GameService {
         adminUser = pAdminUser;
         gameServiceName = pGameServiceName;
         gameServiceAccountPassword = pGameServiceAccountPassword;
-        minSessionPlayers = pMinSessionPlayers;
-        maxSessionPlayers = pMaxSessionPlayers;
+        minSessionPlayers = 2;
+        maxSessionPlayers = 2;
         gameDisplayName = pGameDisplayName;
         createGameServiceUser();
         // now, we have created the game service user and we can go on to create the actual game session (using that user)
@@ -43,7 +43,7 @@ public class GameService {
         // if a user does not already exist, we will just create one
 
         // this method will make a call to Users and create a user with the service role
-        URL url = new URL("http://127.0.0.1:4242/api/users/" + gameServiceName + "?access_token=" + adminUser.getAccessToken());
+        URL url = new URL("http://10.122.175.220:4242/api/users/" + gameServiceName + "?access_token=" + adminUser.getAccessToken());
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("PUT");
         con.setRequestProperty("Content-Type", "application/json");
@@ -80,7 +80,7 @@ public class GameService {
     public void createGameService() throws IOException
     {
         String token = gameServiceUser.getAccessToken();
-        URL url = new URL("http://127.0.0.1:4242/api/gameservices/" + gameServiceName + "?access_token=" + token);
+        URL url = new URL("http://10.122.175.220/api/gameservices/" + gameServiceName + "?access_token=" + token);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("PUT");
         con.setRequestProperty("Content-Type", "application/json");
