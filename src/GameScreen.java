@@ -45,12 +45,15 @@ public class GameScreen extends JPanel
 	private JPanel panelForObstacle = new JPanel();
 
 	private JPanel panelForTownOfBeata = new JPanel();
-	private JPanel panelForElfBoot_TownOfBeata = new JPanel();
+	private JPanel panelForElfBoot1_TownOfBeata = new JPanel();
+	private JPanel panelForElfBoot2_TownOfBeata = new JPanel();
 	private JPanel panelForTownOfElvenhold = new JPanel();
-	private JPanel panelForElfboot_TownOfElvenhold = new JPanel();
+	private JPanel panelForElfBoot1_TownOfElvenhold = new JPanel();
+	private JPanel panelForElfBoot2_TownOfElvenhold = new JPanel();
 	private boolean elfBoot1Selected = false; // this is for our rudimentary implementation of moving the elf boot
 	private boolean elfBoot2Selected = false; // this is for our rudimentary implementation of moving the second elf boot
-	private JPanel currentPanelOfElfBoot = panelForElfboot_TownOfElvenhold; // starting position
+	private JPanel currentPanelOfElfBoot1 = panelForElfBoot1_TownOfElvenhold; // starting position
+	private JPanel currentPanelOfElfBoot2 = panelForElfBoot2_TownOfElvenhold;
 
 	private JTable leaderboard = new JTable();
 	
@@ -249,6 +252,7 @@ public class GameScreen extends JPanel
 		panelForObstacle.setBounds(width*989/1440, height*570/900, width*70/1440, height*60/900);
 	}
 
+
 	public void initializeTownOfBeata()
 	{
 		// Town panel
@@ -261,24 +265,41 @@ public class GameScreen extends JPanel
 			@Override
 			public void mouseClicked(MouseEvent e)
 			{
-				if (elfBootSelected)
+				if (elfBoot1Selected)
 				{
-					currentPanelOfElfBoot.removeAll();
-					update(currentPanelOfElfBoot);
+					currentPanelOfElfBoot1.removeAll();
+					update(currentPanelOfElfBoot1);
 
-					panelForElfBoot_TownOfBeata.add(elfBootImage_TopLayer);
-					update(panelForElfBoot_TownOfBeata);
+					panelForElfBoot1_TownOfBeata.add(elfBoot1Image_TopLayer);
+					update(panelForElfBoot1_TownOfBeata);
 
-					currentPanelOfElfBoot = panelForElfBoot_TownOfBeata;
-					elfBootSelected = false;
+					currentPanelOfElfBoot1 = panelForElfBoot1_TownOfBeata;
+					elfBoot1Selected = false;
 				}
+				else if (elfBoot2Selected)
+				{
+					currentPanelOfElfBoot2.removeAll();
+					update(currentPanelOfElfBoot2);
+
+					panelForElfBoot2_TownOfBeata.add(elfBoot2Image_TopLayer);
+					update(panelForElfBoot2_TownOfBeata);
+
+					currentPanelOfElfBoot2 = panelForElfBoot2_TownOfBeata;
+					elfBoot2Selected = false;
+
+
+				}
+
 			}
 		});
 
-		// Boot panel
-		panelForElfBoot_TownOfBeata.setBounds(width*935/1440, height*430/900, width*24/1440, height*24/900);
-		panelForElfBoot_TownOfBeata.setOpaque(false);
-		panelForElfBoot_TownOfBeata.setBorder(whiteLine);
+		// Boot panel for boot 1
+		panelForElfBoot1_TownOfBeata.setBounds(width*935/1440, height*430/900, width*24/1440, height*24/900);
+		panelForElfBoot1_TownOfBeata.setOpaque(false);
+		panelForElfBoot1_TownOfBeata.setBorder(whiteLine);
+
+		// Boot panel for boot 2
+		// TODO: write the code for this, play with the positioning a bit
 	}
 
 	private void initializeTownOfElvenhold()
@@ -293,24 +314,41 @@ public class GameScreen extends JPanel
 			@Override
 			public void mouseClicked(MouseEvent e)
 			{
-				if (elfBootSelected)
+				if (elfBoot1Selected)
 				{
-					currentPanelOfElfBoot.removeAll();
-					update(currentPanelOfElfBoot);
+					currentPanelOfElfBoot1.removeAll();
+					update(currentPanelOfElfBoot1);
 
-					panelForElfboot_TownOfElvenhold.add(elfBootImage_TopLayer);
-					update(panelForElfboot_TownOfElvenhold);
+					panelForElfBoot1_TownOfElvenhold.add(elfBoot1Image_TopLayer);
+					update(panelForElfBoot1_TownOfElvenhold);
 
-					currentPanelOfElfBoot = panelForElfboot_TownOfElvenhold;
-					elfBootSelected = false;
+					currentPanelOfElfBoot1 = panelForElfBoot1_TownOfElvenhold;
+					elfBoot1Selected = false;
+				}
+
+				else if (elfBoot2Selected)
+				{
+					currentPanelOfElfBoot2.removeAll();
+					update(currentPanelOfElfBoot2);
+
+					panelForElfBoot2_TownOfBeata.add(elfBoot2Image_TopLayer);
+					update(panelForElfBoot2_TownOfBeata);
+
+					currentPanelOfElfBoot2 = panelForElfBoot2_TownOfBeata;
+					elfBoot2Selected = false;
+
+
 				}
 			}
 		});
 
 		// Boot panel
-		panelForElfboot_TownOfElvenhold.setBounds(width*750/1440, height*346/900, width*24/1440, height*24/900);
-		panelForElfboot_TownOfElvenhold.setOpaque(false);
-		panelForElfboot_TownOfElvenhold.setBorder(whiteLine);
+		panelForElfBoot1_TownOfElvenhold.setBounds(width*750/1440, height*346/900, width*24/1440, height*24/900);
+		panelForElfBoot1_TownOfElvenhold.setOpaque(false);
+		panelForElfBoot1_TownOfElvenhold.setBorder(whiteLine);
+
+		// Boot panel for second boot
+		// TODO: write the code to intialize this, play around with the dimensions
 	}
 	
 	public void initializeMapImage()
@@ -371,13 +409,13 @@ public class GameScreen extends JPanel
 			public void mouseClicked(MouseEvent e)
 			{
 				// this toggles the elfBootSelected to determine if it is possible to move a boot
-				elfBootSelected = true;
+				elfBoot1Selected = true;
 			}
 		});
 
 		// now we will initialize the second boot (blue)
 
-		ImageIcon blueBootIcon = new ImageIcon(filepathToRepo + "/assets/boppels-and-boots/boppel-black.png");
+		ImageIcon blueBootIcon = new ImageIcon(filepathToRepo + "/assets/boppels-and-boots/boppel-blue.png");
 		Image blueBootImage = blueBootIcon.getImage();
 		Image blueBootResized = blueBootImage.getScaledInstance(width*15/1440, height*15/900,  java.awt.Image.SCALE_SMOOTH);
 		blueBootIcon = new ImageIcon (blueBootResized);
@@ -389,7 +427,7 @@ public class GameScreen extends JPanel
 			public void mouseClicked(MouseEvent e)
 			{
 				// this toggles the elfBootSelected to determine if it is possible to move a boot
-				elfBootSelected = true;
+				elfBoot2Selected = true;
 			}
 		});
 
@@ -407,8 +445,8 @@ public class GameScreen extends JPanel
 		backgroundPanel_ForRound.add(roundImage_TopLayer);
 		backgroundPanel_ForInformationCard.add(informationCardImage_TopLayer);
 		panelForDeckOfTransportationCounters.add(deckOfTransportationCountersImage_TopLayer);
-		panelForElfboot_TownOfElvenhold.add(elfBoot1Image_TopLayer);
-		panelForElfboot_TownOfElvenhold.add(elfBoot2Image_TopLayer);
+		panelForElfBoot1_TownOfElvenhold.add(elfBoot1Image_TopLayer);
+		panelForElfBoot2_TownOfElvenhold.add(elfBoot2Image_TopLayer);
 	}
 	
 	public void addPanelToScreen()
@@ -426,10 +464,12 @@ public class GameScreen extends JPanel
 		boardGame_Layers.add(backgroundPanel_ForDeckOfTransportationCounters, -1);
 
 		boardGame_Layers.add(backgroundPanel_ForLeaderboard,-1);
-		boardGame_Layers.add(panelForElfBoot_TownOfBeata, 0);
+		boardGame_Layers.add(panelForElfBoot1_TownOfBeata, 0);
+		boardGame_Layers.add(panelForElfBoot2_TownOfBeata, 0);
 		boardGame_Layers.add(panelForTownOfBeata,0);
 		boardGame_Layers.add(panelForTownOfElvenhold,0);
-		boardGame_Layers.add(panelForElfboot_TownOfElvenhold,0);
+		boardGame_Layers.add(panelForElfBoot1_TownOfElvenhold,0);
+		boardGame_Layers.add(panelForElfBoot2_TownOfElvenhold);
 	}
 	
 	public void addFaceUpTransportationCounters()
