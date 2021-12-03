@@ -28,18 +28,3 @@ public class TestSockets
     }
 
     }
-
-
-
-    private static ServerSocket serverSide(int port) throws IOException
-
-    {
-
-        ServerSocket listener = new ServerSocket(port);
-        Socket accepted = listener.accept();
-
-
-
-
-
-    }

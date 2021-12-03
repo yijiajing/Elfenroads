@@ -70,7 +70,11 @@ public class GameScreen extends JPanel implements java.io.Serializable
 	private String filepathToRepo = ".";
 	private boolean isOurTurn;
 
+	// TODO: change this on the other computer
+	private String otherPlayerIP = "10.0.0.244";
+
 	
+	// alternate constructor for networking demo
 	GameScreen (JFrame frame, boolean isTurn)
 	{
 		// layout is necessary for JLayeredPane to be added to the JPanel
@@ -98,6 +102,32 @@ public class GameScreen extends JPanel implements java.io.Serializable
 
 		// doing this for the demo
 		isOurTurn = isTurn;
+	}
+
+	GameScreen (JFrame frame)
+	{
+		// layout is necessary for JLayeredPane to be added to the JPanel
+		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+
+		// Get dimensions of the full screen
+		mainFrame = frame;
+		width = mainFrame.getWidth();
+		height = mainFrame.getHeight();
+
+		// Set Bounds for entire Board Game screen and do the initialization of the structure for the UI
+		boardGame_Layers = new JLayeredPane();
+		boardGame_Layers.setBounds(0,0,width,height);
+		initialization();
+
+		// Add the images to their corresponding JPanel
+		addImages();
+		intializeListenerToDraw();
+
+		// Add the JPanels to the main JLayeredPane with their corresponding layer
+		addPanelToScreen();
+
+		// Add the entire structure of the UI to the panel
+		this.add(boardGame_Layers);
 	}
 
 
@@ -278,9 +308,8 @@ public class GameScreen extends JPanel implements java.io.Serializable
 		panelForTownOfBeata.addMouseListener(new MouseAdapter()
 		{
 			@Override
-			public void mouseClicked(MouseEvent e)
-			{
-				if (elfBoot1Selected)
+			public void mouseClicked(MouseEvent e) {
+				if (elfBoot1Selected && isOurTurn)
 				{
 					currentPanelOfElfBoot1.removeAll();
 					update(currentPanelOfElfBoot1);
@@ -290,8 +319,20 @@ public class GameScreen extends JPanel implements java.io.Serializable
 
 					currentPanelOfElfBoot1 = panelForElfBoot1_TownOfBeata;
 					elfBoot1Selected = false;
+
+					isOurTurn = !isOurTurn;
+
+					try
+					{
+						sendGameState();
+					}
+
+					catch (IOException problem)
+					{
+						// do nothing. we are screwed
+					}
 				}
-				else if (elfBoot2Selected)
+				else if (elfBoot2Selected && isOurTurn)
 				{
 					currentPanelOfElfBoot2.removeAll();
 					update(currentPanelOfElfBoot2);
@@ -302,6 +343,17 @@ public class GameScreen extends JPanel implements java.io.Serializable
 					currentPanelOfElfBoot2 = panelForElfBoot2_TownOfBeata;
 					elfBoot2Selected = false;
 
+					isOurTurn = !isOurTurn;
+
+					try
+					{
+						sendGameState();
+					}
+
+					catch (IOException problem)
+					{
+						// do nothing. we are screwed
+					}
 
 				}
 
@@ -329,7 +381,7 @@ public class GameScreen extends JPanel implements java.io.Serializable
 			@Override
 			public void mouseClicked(MouseEvent e)
 			{
-				if (elfBoot1Selected)
+				if (elfBoot1Selected && isOurTurn)
 				{
 					currentPanelOfElfBoot1.removeAll();
 					update(currentPanelOfElfBoot1);
@@ -339,9 +391,20 @@ public class GameScreen extends JPanel implements java.io.Serializable
 
 					currentPanelOfElfBoot1 = panelForElfBoot1_TownOfElvenhold;
 					elfBoot1Selected = false;
+
+					isOurTurn = !isOurTurn;
+					try
+					{
+						sendGameState();
+					}
+
+					catch (IOException problem)
+					{
+						// do nothing. we are screwed
+					}
 				}
 
-				else if (elfBoot2Selected)
+				else if (elfBoot2Selected && isOurTurn)
 				{
 					currentPanelOfElfBoot2.removeAll();
 					update(currentPanelOfElfBoot2);
@@ -351,6 +414,17 @@ public class GameScreen extends JPanel implements java.io.Serializable
 
 					currentPanelOfElfBoot2 = panelForElfBoot2_TownOfBeata;
 					elfBoot2Selected = false;
+
+					isOurTurn = !isOurTurn;
+					try
+					{
+						sendGameState();
+					}
+
+					catch (IOException problem)
+					{
+						// do nothing. we are screwed
+					}
 
 
 				}
@@ -561,13 +635,13 @@ public class GameScreen extends JPanel implements java.io.Serializable
 		game_screen.setSize(MinuetoTool.getDisplayWidth(), MinuetoTool.getDisplayHeight());
 		game_screen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		game_screen.add(new GameScreen(game_screen));
+		game_screen.add(new GameScreen(game_screen, true));
 		game_screen.setVisible(true);
 	}
 
-	public void sendGameState(String otherPlayerIP, int port) throws IOException
+	public void sendGameState() throws IOException
 	{
-		Socket connection = new Socket(otherPlayerIP, port); // start up the connection
+		Socket connection = new Socket(otherPlayerIP, 4444); // start up the connection
 		GameScreen toSend = this;
 		OutputStream out = connection.getOutputStream();
 		ObjectOutputStream payload = new ObjectOutputStream(out);

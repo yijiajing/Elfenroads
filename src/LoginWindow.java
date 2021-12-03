@@ -72,8 +72,8 @@ public class LoginWindow extends JPanel implements ActionListener {
             	if (u && p)
             	{
             		remove(background_elvenroads);
-                    MainFrame.mainPanel.add(new LobbyWindow(), "lobby");
-                    MainFrame.cardLayout.show(MainFrame.mainPanel,"lobby");
+                    MainFrameCopy.mainPanel.add(new LobbyWindow(), "lobby");
+                    MainFrameCopy.cardLayout.show(MainFrameCopy.mainPanel,"lobby");
             	}
                 
             }

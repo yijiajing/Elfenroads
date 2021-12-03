@@ -5,6 +5,7 @@ import java.awt.*;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.concurrent.TimeUnit;
 
 public class MainFrameCopy extends JFrame {
 
@@ -18,10 +19,8 @@ public class MainFrameCopy extends JFrame {
     LoadGameWindow load;
     GameScreen gameScreen;
 
-    //TODO: make sure to hardcode this
-    private String otherPlayerIP = "10.0.4.244";
 
-    MainFrameCopy() throws IOException, ClassNotFoundException {
+    MainFrameCopy() throws IOException, ClassNotFoundException, InterruptedException {
 
         setSize(MinuetoTool.getDisplayWidth(), MinuetoTool.getDisplayHeight());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -44,6 +43,8 @@ public class MainFrameCopy extends JFrame {
             setVisible(true);
 
             cardLayout.show(mainPanel, "start");
+
+            TimeUnit.MINUTES.sleep(20);
 
             // this code here is gonna be dumb
 
@@ -88,7 +89,7 @@ public class MainFrameCopy extends JFrame {
 
     }
 
-    public static void main(String[] args) throws IOException, ClassNotFoundException{
+    public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException{
         MainFrameCopy mainFrame = new MainFrameCopy();
     }
 }
