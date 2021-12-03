@@ -638,9 +638,17 @@ public class GameScreen extends JPanel implements Serializable
 		});
 	}
 
-	public void setCurrentPanelOfElfBoot1(JPanel currentPanel)
+	public void moveElfBoot1(JPanel newCurrentPanel)
 	{
-		currentPanelOfElfBoot1 = currentPanel;
+		// this is what we will use to update the game state based on the information sent over the network
+
+		currentPanelOfElfBoot1.remove(elfBoot1Image_TopLayer);
+		update(currentPanelOfElfBoot1);
+
+		// now switch the current panel
+
+		currentPanelOfElfBoot1 = newCurrentPanel;
+		newCurrentPanel.add(elfBoot1Image_TopLayer);
 	}
 
 	public void setCurrentPanelOfElfBoot2(JPanel currentPanel)
@@ -683,6 +691,8 @@ public class GameScreen extends JPanel implements Serializable
 		System.out.println("Payload has been flushed.");
 		connection.close();
 		System.out.print("Done. connection has been closed.");
+
+
 	}
 
 	public void listen(int port) throws IOException
@@ -692,6 +702,7 @@ public class GameScreen extends JPanel implements Serializable
 
 	public boolean isItOurTurn()
 	{return isOurTurn;}
+
 
 
 	// only using this for the demo. See MainFrameCopy loop

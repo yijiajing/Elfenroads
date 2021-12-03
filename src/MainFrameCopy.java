@@ -60,7 +60,6 @@ public class MainFrameCopy extends JFrame {
                 JPanel newSpot = (JPanel) in.readObject();
 
                 // it is now our turn, so we need to change the value of that field
-               //  newScreen.reverseTurn();
 
                 // close the sockets
                 listening.close();
@@ -71,7 +70,7 @@ public class MainFrameCopy extends JFrame {
                 // let's set our game screen to this and then update it
                 // we need to use it to reinitialize the game screen
 
-                mainPanel.remove(ourScreen);
+                ourScreen.moveElfBoot1(newSpot);
                 // mainPanel.add(newScreen, "gameScreen");
 
                 for (Component toUpdate : mainPanel.getComponents())
@@ -80,13 +79,11 @@ public class MainFrameCopy extends JFrame {
                     toUpdate.revalidate();
                 }
 
-                /* for (Component toUpdate : newScreen.getComponents())
+                for (Component toUpdate : ourScreen.getComponents())
                 {
                     toUpdate.repaint();
                     toUpdate.revalidate();
                 }
-
-                 */
 
                 mainPanel.repaint();
                 mainPanel.revalidate();
