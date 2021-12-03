@@ -25,7 +25,8 @@ public class GameScreen extends JPanel
 	private JLabel mapImage_BottomLayer;
 	private JLabel informationCardImage_TopLayer;
 	private JLabel deckOfTransportationCountersImage_TopLayer;
-	private JLabel elfBootImage_TopLayer;
+	private JLabel elfBoot1Image_TopLayer;
+	private JLabel elfBoot2Image_TopLayer;
 	
 	private JPanel backgroundPanel_ForMap = new JPanel();
 	private JPanel backgroundPanel_ForRound = new JPanel();
@@ -47,7 +48,8 @@ public class GameScreen extends JPanel
 	private JPanel panelForElfBoot_TownOfBeata = new JPanel();
 	private JPanel panelForTownOfElvenhold = new JPanel();
 	private JPanel panelForElfboot_TownOfElvenhold = new JPanel();
-	private boolean elfBootSelected = false; // this is for our rudimentary implementation of moving the elf boot
+	private boolean elfBoot1Selected = false; // this is for our rudimentary implementation of moving the elf boot
+	private boolean elfBoot2Selected = false; // this is for our rudimentary implementation of moving the second elf boot
 	private JPanel currentPanelOfElfBoot = panelForElfboot_TownOfElvenhold; // starting position
 
 	private JTable leaderboard = new JTable();
@@ -348,16 +350,22 @@ public class GameScreen extends JPanel
 		deckOfTransportationCountersImage_TopLayer = new JLabel(gridImage);
 	}
 
+	/**
+	 * editing this method to initialize EXACTLY two elf boots for the networking demo
+	 * we will have to change it later
+	 */
 	public void initializeElfBootImage() // for demo
 	{
+
 		// we will represent the ElfBoot as a JLabel with a ClickAdapter
+		// initializing (black) boot 1 here
 		ImageIcon blackBootIcon = new ImageIcon(filepathToRepo + "/assets/boppels-and-boots/boppel-black.png");
 		Image blackBootImage = blackBootIcon.getImage();
 		Image blackBootResized = blackBootImage.getScaledInstance(width*15/1440, height*15/900,  java.awt.Image.SCALE_SMOOTH);
 		blackBootIcon = new ImageIcon(blackBootResized);
-		elfBootImage_TopLayer = new JLabel(blackBootIcon);
+		elfBoot1Image_TopLayer = new JLabel(blackBootIcon);
 
-		elfBootImage_TopLayer.addMouseListener(new MouseAdapter()
+		elfBoot1Image_TopLayer.addMouseListener(new MouseAdapter()
 		{
 			@Override
 			public void mouseClicked(MouseEvent e)
@@ -367,6 +375,30 @@ public class GameScreen extends JPanel
 			}
 		});
 
+		// now we will initialize the second boot (blue)
+
+		ImageIcon blueBootIcon = new ImageIcon(filepathToRepo + "/assets/boppels-and-boots/boppel-black.png");
+		Image blueBootImage = blueBootIcon.getImage();
+		Image blueBootResized = blueBootImage.getScaledInstance(width*15/1440, height*15/900,  java.awt.Image.SCALE_SMOOTH);
+		blueBootIcon = new ImageIcon (blueBootResized);
+		elfBoot2Image_TopLayer = new JLabel(blueBootIcon);
+
+		elfBoot2Image_TopLayer.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseClicked(MouseEvent e)
+			{
+				// this toggles the elfBootSelected to determine if it is possible to move a boot
+				elfBootSelected = true;
+			}
+		});
+
+
+
+
+		{}
+
+
 	}
 	
 	public void addImages()
@@ -375,7 +407,8 @@ public class GameScreen extends JPanel
 		backgroundPanel_ForRound.add(roundImage_TopLayer);
 		backgroundPanel_ForInformationCard.add(informationCardImage_TopLayer);
 		panelForDeckOfTransportationCounters.add(deckOfTransportationCountersImage_TopLayer);
-		panelForElfboot_TownOfElvenhold.add(elfBootImage_TopLayer);
+		panelForElfboot_TownOfElvenhold.add(elfBoot1Image_TopLayer);
+		panelForElfboot_TownOfElvenhold.add(elfBoot2Image_TopLayer);
 	}
 	
 	public void addPanelToScreen()
