@@ -31,7 +31,7 @@ public class MainFrameCopy extends JFrame {
         mainPanel.add(new StartWindow(), "start");
 
         // TODO: update this when testing on the other computer
-        boolean isOurTurn = true;
+        boolean isOurTurn = false;
 
         // while (true)
          // {
