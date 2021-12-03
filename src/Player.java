@@ -8,9 +8,17 @@ public class Player {
 
     private String location; // will represent the player's IP
     private ArrayList<Player> connectedPlayers;
-    private ArrayList<Socket> connections;
+    private ArrayList<Socket> in; // connections in
+    private ArrayList<Socket> out; // connections out
 
+    // TODO: implement the constructor
     public Player()
+    {
+
+    }
+
+    // TODO: implement this once I finish up with P2Pconnection
+    public void addConnection(P2PConnection conWithPlayer)
     {
 
     }
