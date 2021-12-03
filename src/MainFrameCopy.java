@@ -59,6 +59,9 @@ public class MainFrameCopy extends JFrame {
                 ObjectInputStream in = new ObjectInputStream(inbound.getInputStream());
                 GameScreen newScreen = (GameScreen) in.readObject();
 
+                // it is now our turn, so we need to change the value of that field
+                newScreen.reverseTurn();
+
 
                 // we now have the new screen info
                 // let's set our game screen to this and then update it
@@ -78,6 +81,9 @@ public class MainFrameCopy extends JFrame {
                     toUpdate.repaint();
                     toUpdate.revalidate();
                 }
+
+                mainPanel.repaint();
+                mainPanel.revalidate();
 
                 isOurTurn = true;
             }

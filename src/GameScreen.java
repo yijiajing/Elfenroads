@@ -140,6 +140,7 @@ public class GameScreen extends JPanel implements java.io.Serializable
 
 
 
+
 	public void initialization()
 	{
 		initializeMapImage();
@@ -330,6 +331,7 @@ public class GameScreen extends JPanel implements java.io.Serializable
 					catch (IOException problem)
 					{
 						// do nothing. we are screwed
+						System.out.println("We ran into an IOException when trying to send the game state over to teh other player.");
 					}
 				}
 				else if (elfBoot2Selected && isOurTurn)
@@ -353,6 +355,7 @@ public class GameScreen extends JPanel implements java.io.Serializable
 					catch (IOException problem)
 					{
 						// do nothing. we are screwed
+						System.out.println("We ran into an IOException when trying to send the game state over to teh other player.");
 					}
 
 				}
@@ -401,6 +404,7 @@ public class GameScreen extends JPanel implements java.io.Serializable
 					catch (IOException problem)
 					{
 						// do nothing. we are screwed
+						System.out.println("We ran into an IOException when trying to send the game state over to teh other player.");
 					}
 				}
 
@@ -424,6 +428,7 @@ public class GameScreen extends JPanel implements java.io.Serializable
 					catch (IOException problem)
 					{
 						// do nothing. we are screwed
+						System.out.println("We ran into an IOException when trying to send the game state over to teh other player.");
 					}
 
 
@@ -656,5 +661,12 @@ public class GameScreen extends JPanel implements java.io.Serializable
 
 	public boolean isItOurTurn()
 	{return isOurTurn;}
+
+
+	// only using this for the demo. See MainFrameCopy loop
+	public void reverseTurn()
+	{
+		isOurTurn = !isOurTurn;
+	}
 
 }
