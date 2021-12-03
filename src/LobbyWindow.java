@@ -28,7 +28,7 @@ public class LobbyWindow extends JPanel implements ActionListener {
     private JLabel numPlayers;
     private Box gameInfo;
 
-    private String filepathToRepo = "/Users/charlescouture/eclipse-workspace/COMP361/src";
+    private String filepathToRepo = "";
 
     LobbyWindow(){
 

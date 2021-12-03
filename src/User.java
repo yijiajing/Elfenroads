@@ -189,7 +189,7 @@ public class User {
 
     {
         
-    	URL url = new URL("http:/10.122.175.220:4242/api/users?access_token=" + adminToken);
+    	URL url = new URL("http://10.122.175.220:4242/api/users?access_token=" + adminToken);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
 
