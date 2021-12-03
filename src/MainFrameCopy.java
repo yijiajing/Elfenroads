@@ -44,7 +44,7 @@ public class MainFrameCopy extends JFrame {
 
             cardLayout.show(mainPanel, "start");
 
-            TimeUnit.MINUTES.sleep(20);
+            TimeUnit.SECONDS.sleep(20);
 
             // this code here is gonna be dumb
 

@@ -5,6 +5,7 @@ import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.io.Serializable;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Collections;
@@ -17,11 +18,11 @@ import javax.swing.border.TitledBorder;
 import org.json.JSONObject;
 import org.minueto.MinuetoTool;
 
-public class GameScreen extends JPanel implements java.io.Serializable
+public class GameScreen extends JPanel implements Serializable
 {
 	private JFrame mainFrame;
-	private int width;
-	private int height;
+	private Integer width;
+	private Integer height;
 	
 	private JLayeredPane boardGame_Layers;
 
@@ -57,8 +58,8 @@ public class GameScreen extends JPanel implements java.io.Serializable
 	private JPanel panelForTownOfElvenhold = new JPanel();
 	private JPanel panelForElfBoot1_TownOfElvenhold = new JPanel();
 	private JPanel panelForElfBoot2_TownOfElvenhold = new JPanel();
-	private boolean elfBoot1Selected = false; // this is for our rudimentary implementation of moving the elf boot
-	private boolean elfBoot2Selected = false; // this is for our rudimentary implementation of moving the second elf boot
+	private Boolean elfBoot1Selected = false; // this is for our rudimentary implementation of moving the elf boot
+	private Boolean elfBoot2Selected = false; // this is for our rudimentary implementation of moving the second elf boot
 	private JPanel currentPanelOfElfBoot1 = panelForElfBoot1_TownOfElvenhold; // starting position
 	private JPanel currentPanelOfElfBoot2 = panelForElfBoot2_TownOfElvenhold;
 
@@ -650,12 +651,18 @@ public class GameScreen extends JPanel implements java.io.Serializable
 
 	public void sendGameState() throws IOException
 	{
+		System.out.println("Sending the game state...");
 		Socket connection = new Socket(otherPlayerIP, 4444); // start up the connection
+		System.out.println("Outwards socket is up and running...");
 		GameScreen toSend = this;
 		OutputStream out = connection.getOutputStream();
 		ObjectOutputStream payload = new ObjectOutputStream(out);
 		payload.writeObject(toSend);
+		System.out.println("Done writing the game state into payload...");
+		payload.flush();
+		System.out.println("Payload has been flushed.");
 		connection.close();
+		System.out.print("Done. connection has been closed.");
 	}
 
 	public void listen(int port) throws IOException
