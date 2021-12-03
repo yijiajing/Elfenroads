@@ -62,6 +62,10 @@ public class MainFrameCopy extends JFrame {
                 // it is now our turn, so we need to change the value of that field
                 newScreen.reverseTurn();
 
+                // close the sockets
+                listening.close();
+                inbound.close();
+
 
                 // we now have the new screen info
                 // let's set our game screen to this and then update it
