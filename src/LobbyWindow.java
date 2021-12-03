@@ -68,6 +68,18 @@ public class LobbyWindow extends JPanel implements ActionListener {
                 MainFrameCopy.mainPanel.add(new VersionToPlayWindow(), "version");
                 MainFrameCopy.cardLayout.show(MainFrameCopy.mainPanel,"version");
 
+                // create a new session
+
+                try
+                {
+                    User maex = new User("maex", "abc123_ABC123");
+                    GameSession newGame = new GameSession(maex, "Elfenlands", "savegame2");
+                }
+
+                catch (Exception problem)
+                {
+                    problem.printStackTrace();
+                }
 
 
             }
