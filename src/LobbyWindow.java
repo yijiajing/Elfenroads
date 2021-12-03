@@ -1,17 +1,24 @@
+import org.json.JSONObject;
+
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.awt.*;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
+import java.io.IOException;
 
 public class LobbyWindow extends JPanel implements ActionListener {
     
     //private static Box boxPanel;
+
+    // private String creator;
+    // private String numPlayers;
+    // TODO: fill out the other fields to represent any info we need to see about a game
+
+
     private JLabel background_elvenroads;
     private static JButton createButton;
     private static JButton loadButton;
     private static JButton gamesButton;
+    private static JButton refreshButton;
     private JPanel buttons;
     private JPanel sessions;
     private JLabel gameToJoin;
@@ -26,6 +33,12 @@ public class LobbyWindow extends JPanel implements ActionListener {
         createButton = new JButton("CREATE NEW SESSION");
         loadButton = new JButton("LOAD SAVED SESSION");
         gamesButton = new JButton("JOIN");
+
+        refreshButton = new JButton("REFRESH");
+
+        // add an action listener
+
+
         ImageIcon background_image = 
         new ImageIcon("./assets/sprites/elfenroads.jpeg");
         background_elvenroads = new JLabel(background_image);
@@ -66,10 +79,24 @@ public class LobbyWindow extends JPanel implements ActionListener {
         });
         gamesButton.addActionListener(this);
 
+        refreshButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // TODO: get info about game
+                /* JSONObject allSessions = GameSession.getSessions();
+                String firstSessionID = GameSession.getFirstSessionID(allSessions);
+                JSONObject sessionDetails = GameSession.getSessionDetails(firstSessionID);
+
+                 */
+
+            }
+        });
+
 
         buttons = new JPanel();
         buttons.add(createButton);
         buttons.add(loadButton);
+        buttons.add(refreshButton);
         GridBagLayout layout = new GridBagLayout();
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
