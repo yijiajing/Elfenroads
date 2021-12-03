@@ -33,8 +33,8 @@ public class MainFrameCopy extends JFrame {
         // TODO: update this when testing on the other computer
         boolean isOurTurn = true;
 
-        while (true)
-        {
+        // while (true)
+         // {
             GameScreen ourScreen = new GameScreen(this, isOurTurn);
 
             mainPanel.add(ourScreen, "gameScreen");
@@ -44,7 +44,7 @@ public class MainFrameCopy extends JFrame {
 
             cardLayout.show(mainPanel, "start");
 
-            TimeUnit.SECONDS.sleep(20);
+            // TimeUnit.SECONDS.sleep(20);
 
             // this code here is gonna be dumb
 
@@ -95,7 +95,7 @@ public class MainFrameCopy extends JFrame {
 
 
 
-        }
+        // }
 
     }
 
