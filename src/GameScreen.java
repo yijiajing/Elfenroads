@@ -37,6 +37,7 @@ public class GameScreen extends JPanel
 	private JPanel backgroundPanel_ForDeckOfTransportationCounters = new JPanel();
 	private JPanel backgroundPanel_ForLeaderboard = new JPanel();
 
+	// TODO: add a second one for the second boot and initialize it properly
 	private JPanel panelForElfBoot = new JPanel();
 	private JPanel[] panelForPlayerTransportationCounters = new JPanel[5];
 	private JPanel[] panelForPlayerCards = new JPanel[8];
@@ -469,7 +470,7 @@ public class GameScreen extends JPanel
 		boardGame_Layers.add(panelForTownOfBeata,0);
 		boardGame_Layers.add(panelForTownOfElvenhold,0);
 		boardGame_Layers.add(panelForElfBoot1_TownOfElvenhold,0);
-		boardGame_Layers.add(panelForElfBoot2_TownOfElvenhold);
+		boardGame_Layers.add(panelForElfBoot2_TownOfElvenhold, 0);
 	}
 	
 	public void addFaceUpTransportationCounters()
