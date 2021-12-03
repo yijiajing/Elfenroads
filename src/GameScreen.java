@@ -2,6 +2,11 @@
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.Collections;
 import java.util.Stack;
 
@@ -12,7 +17,7 @@ import javax.swing.border.TitledBorder;
 import org.json.JSONObject;
 import org.minueto.MinuetoTool;
 
-public class GameScreen extends JPanel
+public class GameScreen extends JPanel implements java.io.Serializable
 {
 	private JFrame mainFrame;
 	private int width;
@@ -99,11 +104,7 @@ public class GameScreen extends JPanel
 		panel.revalidate();
 	}
 
-	public void updateGameState(JSONObject receivedFromOtherPlayer)
-	{
-		// create a new GameScreen based on the field values we get from the JSONObject
 
-	}
 
 	public void initialization()
 	{
@@ -560,6 +561,19 @@ public class GameScreen extends JPanel
 		game_screen.setVisible(true);
 	}
 
+	public void sendGameState(String otherPlayerIP, int port) throws IOException
+	{
+		Socket connection = new Socket(otherPlayerIP, port); // start up the connection
+		GameScreen toSend = this;
+		OutputStream out = connection.getOutputStream();
+		ObjectOutputStream payload = new ObjectOutputStream(out);
+		payload.writeObject(toSend);
+		connection.close();
+	}
 
+	public void listen(int port) throws IOException
+	{
+		ServerSocket listener = new ServerSocket(port);
+	}
 
 }

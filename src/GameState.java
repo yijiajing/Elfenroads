@@ -14,13 +14,11 @@ public class GameState {
      */
 
     private GameScreen screen;
+    private JSONObject serialized;
 
-
-
-
-    public GameState ()
+    public GameState (GameScreen input)
     {
-
+        this.screen = input;
 
     }
 
@@ -31,7 +29,9 @@ public class GameState {
     {
         // we will call the JSONObject constructor with the GameState object as an argument
         // that class comes from org.json (see documentation for details)
-        return new JSONObject(this);
+        JSONObject serializedVersion = new JSONObject(this);
+        serialized = serializedVersion;
+        return serialized;
     }
 
 
