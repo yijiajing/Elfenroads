@@ -11,8 +11,9 @@ public class GameState {
     1. which Elfen towns have been visited (show on the UI by the town pieces)
     2. where each player's boot is
     3.
-
      */
+
+    private GameScreen screen;
 
 
 

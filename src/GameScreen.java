@@ -9,6 +9,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
+import org.json.JSONObject;
 import org.minueto.MinuetoTool;
 
 public class GameScreen extends JPanel
@@ -90,10 +91,18 @@ public class GameScreen extends JPanel
 		this.add(boardGame_Layers);
 	}
 
+
+
 	public void update(JPanel panel)
 	{
 		panel.repaint();
 		panel.revalidate();
+	}
+
+	public void updateGameState(JSONObject receivedFromOtherPlayer)
+	{
+		// create a new GameScreen based on the field values we get from the JSONObject
+
 	}
 
 	public void initialization()
@@ -435,9 +444,6 @@ public class GameScreen extends JPanel
 
 
 
-		{}
-
-
 	}
 	
 	public void addImages()
@@ -553,5 +559,7 @@ public class GameScreen extends JPanel
 		game_screen.add(new GameScreen(game_screen));
 		game_screen.setVisible(true);
 	}
+
+
 
 }
