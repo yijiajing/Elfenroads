@@ -28,7 +28,7 @@ public class LobbyWindow extends JPanel implements ActionListener {
     private JLabel numPlayers;
     private Box gameInfo;
 
-    private String filepathToRepo = "";
+    private String filepathToRepo = ".";
 
     LobbyWindow(){
 
@@ -65,8 +65,10 @@ public class LobbyWindow extends JPanel implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 remove(background_elvenroads);
-                MainFrame.mainPanel.add(new VersionToPlayWindow(), "version");
-                MainFrame.cardLayout.show(MainFrame.mainPanel,"version");
+                MainFrameCopy.mainPanel.add(new VersionToPlayWindow(), "version");
+                MainFrameCopy.cardLayout.show(MainFrameCopy.mainPanel,"version");
+
+
 
             }
 
@@ -75,8 +77,8 @@ public class LobbyWindow extends JPanel implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 remove(background_elvenroads);
-                MainFrame.mainPanel.add(new LoadGameWindow(), "load");
-                MainFrame.cardLayout.show(MainFrame.mainPanel,"load");
+                MainFrameCopy.mainPanel.add(new LoadGameWindow(), "load");
+                MainFrameCopy.cardLayout.show(MainFrameCopy.mainPanel,"load");
             }
         });
         //gamesButton.addActionListener(this);
