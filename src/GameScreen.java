@@ -68,9 +68,10 @@ public class GameScreen extends JPanel implements java.io.Serializable
 	//private String filepathToRepo = "/Users/nicktriantos/Desktop/f2021-hexanome-12"; // change this depending on whose machine we are using
 	// private String filepathToRepo = "/Users/charlescouture/eclipse-workspace/COMP361";
 	private String filepathToRepo = ".";
+	private boolean isOurTurn;
 
 	
-	GameScreen (JFrame frame)
+	GameScreen (JFrame frame, boolean isTurn)
 	{
 		// layout is necessary for JLayeredPane to be added to the JPanel
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
@@ -94,6 +95,9 @@ public class GameScreen extends JPanel implements java.io.Serializable
 		
 		// Add the entire structure of the UI to the panel
 		this.add(boardGame_Layers);
+
+		// doing this for the demo
+		isOurTurn = isTurn;
 	}
 
 
@@ -575,5 +579,8 @@ public class GameScreen extends JPanel implements java.io.Serializable
 	{
 		ServerSocket listener = new ServerSocket(port);
 	}
+
+	public boolean isItOurTurn()
+	{return isOurTurn;}
 
 }

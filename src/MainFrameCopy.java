@@ -36,7 +36,7 @@ public class MainFrameCopy extends JFrame {
 
         while (true)
         {
-            GameScreen ourScreen = new GameScreen(this);
+            GameScreen ourScreen = new GameScreen(this, isOurTurn);
 
             mainPanel.add(ourScreen, "gameScreen");
 
