@@ -48,7 +48,7 @@ public class MainFrameCopy extends JFrame {
 
             // this code here is gonna be dumb
 
-            // here, let's listen for a response from the socketserver
+            // here, let's listen for a response from the ServerSocket
 
             while (!isOurTurn)
             {
@@ -57,10 +57,10 @@ public class MainFrameCopy extends JFrame {
                 ServerSocket listening = new ServerSocket(4444);
                 Socket inbound = listening.accept();
                 ObjectInputStream in = new ObjectInputStream(inbound.getInputStream());
-                GameScreen newScreen = (GameScreen) in.readObject();
+                JPanel newSpot = (JPanel) in.readObject();
 
                 // it is now our turn, so we need to change the value of that field
-                newScreen.reverseTurn();
+               //  newScreen.reverseTurn();
 
                 // close the sockets
                 listening.close();
@@ -72,7 +72,7 @@ public class MainFrameCopy extends JFrame {
                 // we need to use it to reinitialize the game screen
 
                 mainPanel.remove(ourScreen);
-                mainPanel.add(newScreen, "gameScreen");
+                // mainPanel.add(newScreen, "gameScreen");
 
                 for (Component toUpdate : mainPanel.getComponents())
                 {
@@ -80,11 +80,13 @@ public class MainFrameCopy extends JFrame {
                     toUpdate.revalidate();
                 }
 
-                for (Component toUpdate : newScreen.getComponents())
+                /* for (Component toUpdate : newScreen.getComponents())
                 {
                     toUpdate.repaint();
                     toUpdate.revalidate();
                 }
+
+                 */
 
                 mainPanel.repaint();
                 mainPanel.revalidate();
@@ -101,5 +103,7 @@ public class MainFrameCopy extends JFrame {
 
     public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException{
         MainFrameCopy mainFrame = new MainFrameCopy();
+
+
     }
 }

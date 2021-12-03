@@ -326,7 +326,7 @@ public class GameScreen extends JPanel implements Serializable
 
 					try
 					{
-						sendGameState();
+						sendGameState(currentPanelOfElfBoot1);
 					}
 
 					catch (IOException problem)
@@ -351,7 +351,7 @@ public class GameScreen extends JPanel implements Serializable
 
 					try
 					{
-						sendGameState();
+						sendGameState(currentPanelOfElfBoot2);
 					}
 
 					catch (IOException problem)
@@ -401,7 +401,7 @@ public class GameScreen extends JPanel implements Serializable
 					isOurTurn = !isOurTurn;
 					try
 					{
-						sendGameState();
+						sendGameState(currentPanelOfElfBoot1);
 					}
 
 					catch (IOException problem)
@@ -426,7 +426,7 @@ public class GameScreen extends JPanel implements Serializable
 					isOurTurn = !isOurTurn;
 					try
 					{
-						sendGameState();
+						sendGameState(currentPanelOfElfBoot2);
 					}
 
 					catch (IOException problem)
@@ -637,7 +637,25 @@ public class GameScreen extends JPanel implements Serializable
 			}
 		});
 	}
-	
+
+	public void setCurrentPanelOfElfBoot1(JPanel currentPanel)
+	{
+		currentPanelOfElfBoot1 = currentPanel;
+	}
+
+	public void setCurrentPanelOfElfBoot2(JPanel currentPanel)
+	{
+		currentPanelOfElfBoot2 = currentPanel;
+	}
+
+	/*
+	public void setOurTurn()
+	{
+
+	}
+
+	 */
+
 	public static void main(String[] args) 
 	{
 		JFrame game_screen = new JFrame("GameScreen");
@@ -649,16 +667,18 @@ public class GameScreen extends JPanel implements Serializable
 		game_screen.setVisible(true);
 	}
 
-	public void sendGameState() throws IOException
+	public void sendGameState(JPanel elfBootLocation) throws IOException
 	{
 		System.out.println("Sending the game state...");
 		Socket connection = new Socket(otherPlayerIP, 4444); // start up the connection
 		System.out.println("Outwards socket is up and running...");
-		GameScreen toSend = this;
+
+		// send the Elf boot's new location
+		JPanel toSend = elfBootLocation;
 		OutputStream out = connection.getOutputStream();
 		ObjectOutputStream payload = new ObjectOutputStream(out);
 		payload.writeObject(toSend);
-		System.out.println("Done writing the game state into payload...");
+		System.out.println("Done writing the elf boot current location into payload...");
 		payload.flush();
 		System.out.println("Payload has been flushed.");
 		connection.close();
