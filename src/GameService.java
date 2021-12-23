@@ -43,7 +43,7 @@ public class GameService {
         // if a user does not already exist, we will just create one
 
         // this method will make a call to Users and create a user with the service role
-        URL url = new URL("http://10.122.175.220/api/users/" + gameServiceName + "?access_token=" + adminUser.getAccessToken());
+        URL url = new URL("http://10.122.175.220:4242/api/users/" + gameServiceName + "?access_token=" + adminUser.getAccessToken());
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("PUT");
         con.setRequestProperty("Content-Type", "application/json");

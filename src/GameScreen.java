@@ -72,7 +72,7 @@ public class GameScreen extends JPanel implements Serializable
 	private boolean isOurTurn;
 
 	// TODO: change this on the other computer
-	private String otherPlayerIP = "10.0.0.244";
+	private String otherPlayerIP = "10.121.81.29";
 
 	
 	// alternate constructor for networking demo
@@ -648,7 +648,8 @@ public class GameScreen extends JPanel implements Serializable
 		// now switch the current panel
 
 		currentPanelOfElfBoot1 = newCurrentPanel;
-		newCurrentPanel.add(elfBoot1Image_TopLayer);
+		currentPanelOfElfBoot1.add(elfBoot1Image_TopLayer);
+		update(currentPanelOfElfBoot1);
 	}
 
 	public void setCurrentPanelOfElfBoot2(JPanel currentPanel)

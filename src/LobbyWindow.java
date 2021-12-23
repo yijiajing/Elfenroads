@@ -70,10 +70,14 @@ public class LobbyWindow extends JPanel implements ActionListener {
 
                 // create a new session
 
+                // first, create the gameService
+
                 try
                 {
-                    User maex = new User("maex", "abc123_ABC123");
-                    GameSession newGame = new GameSession(maex, "Elfenlands", "savegame2");
+                    // User maex = new User("maex", "abc123_ABC123");
+                    // GameService elfenlands = new GameService (maex, "Elfenlands", "Elfenlands", "Password1", 2, 2);
+                    // GameSession newGame = new GameSession(maex, "Elfenlands", "savegame2");
+
                 }
 
                 catch (Exception problem)
