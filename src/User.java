@@ -48,6 +48,7 @@ public class User {
     public int authenticate() throws IOException
     {
         URL url = new URL("http://" + lsHostIP + ":4242/oauth/token?grant_type=password&username=" + username + "&password=" + password);
+
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setDoOutput(true);
         con.setRequestMethod("POST");

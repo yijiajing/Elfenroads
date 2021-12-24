@@ -28,7 +28,8 @@ public class LobbyWindow extends JPanel implements ActionListener {
     private JLabel numPlayers;
     private Box gameInfo;
 
-    private String filepathToRepo = "/Users/charlescouture/eclipse-workspace/COMP361/src";
+
+    private String filepathToRepo = ".";
 
     LobbyWindow(){
 
@@ -65,8 +66,31 @@ public class LobbyWindow extends JPanel implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 remove(background_elvenroads);
+
                 MainFrame.mainPanel.add(new VersionToPlayWindow(), "version");
                 MainFrame.cardLayout.show(MainFrame.mainPanel,"version");
+
+                NetworkDemoPlayer1.mainPanel.add(new VersionToPlayWindow(), "version");
+                NetworkDemoPlayer1.cardLayout.show(NetworkDemoPlayer1.mainPanel,"version");
+
+                // create a new session
+
+                // first, create the gameService
+
+                try
+                {
+                    // User maex = new User("maex", "abc123_ABC123");
+                    // GameService elfenlands = new GameService (maex, "Elfenlands", "Elfenlands", "Password1", 2, 2);
+                    // GameSession newGame = new GameSession(maex, "Elfenlands", "savegame2");
+
+                }
+
+                catch (Exception problem)
+                {
+                    problem.printStackTrace();
+                }
+
+
 
             }
 
@@ -75,8 +99,9 @@ public class LobbyWindow extends JPanel implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 remove(background_elvenroads);
-                MainFrame.mainPanel.add(new LoadGameWindow(), "load");
-                MainFrame.cardLayout.show(MainFrame.mainPanel,"load");
+                NetworkDemoPlayer1.mainPanel.add(new LoadGameWindow(), "load");
+                NetworkDemoPlayer1.cardLayout.show(NetworkDemoPlayer1.mainPanel,"load");
+
             }
         });
         //gamesButton.addActionListener(this);

@@ -80,7 +80,7 @@ public class GameService {
     public void createGameService() throws IOException
     {
         String token = gameServiceUser.getAccessToken();
-        URL url = new URL("http://10.122.175.220/api/gameservices/" + gameServiceName + "?access_token=" + token);
+        URL url = new URL("http://10.122.175.220:4242/api/gameservices/" + gameServiceName + "?access_token=" + token);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("PUT");
         con.setRequestProperty("Content-Type", "application/json");

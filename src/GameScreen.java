@@ -648,7 +648,8 @@ public class GameScreen extends JPanel implements Serializable
 		// now switch the current panel
 
 		currentPanelOfElfBoot1 = newCurrentPanel;
-		newCurrentPanel.add(elfBoot1Image_TopLayer);
+		currentPanelOfElfBoot1.add(elfBoot1Image_TopLayer);
+		update(currentPanelOfElfBoot1);
 	}
 
 	public void setCurrentPanelOfElfBoot2(JPanel currentPanel)
@@ -702,6 +703,7 @@ public class GameScreen extends JPanel implements Serializable
 
 	public boolean isItOurTurn()
 	{return isOurTurn;}
+
 
 
 

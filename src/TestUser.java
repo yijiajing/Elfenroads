@@ -10,12 +10,10 @@ public class TestUser {
     public static void main (String [] args) throws IOException
     {
 
-        // JSONObject allSessions = GameSession.getSessions();
-        // String firstSessionID = GameSession.getFirstSessionID(allSessions);
-        // JSONObject sessionDetails = GameSession.getSessionDetails(firstSessionID);
-        // JSONObject sessionParameters = GameSession.getGameParameters(firstSessionID);
-        // System.out.println("The creator of the session is: " + sessionDetails.get("creator"));
-        // System.out.println("The minimum number of players in the session is " + sessionParameters.get("minSessionPlayers"));
+
+        User maex = new User("maex", "abc123_ABC123");
+        GameService elfenlands = new GameService (maex, "Elfenlands", "Elfenlands", "Password1", 2, 2);
+        GameSession newGame = new GameSession(maex, "Elfenlands", "savegame2");
 
 
 
@@ -74,6 +72,8 @@ public class TestUser {
 
 
         // User charles = new User(charlesUsername, charlesPassword);
+
+         */
     }
 
 
