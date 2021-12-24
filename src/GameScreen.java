@@ -705,7 +705,7 @@ public class GameScreen extends JPanel implements Serializable
 
 
 
-	// only using this for the demo. See MainFrameCopy loop
+	// only using this for the demo. See NetworkDemoPlayer2 loop
 	public void reverseTurn()
 	{
 		isOurTurn = !isOurTurn;
