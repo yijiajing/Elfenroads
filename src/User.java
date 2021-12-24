@@ -6,9 +6,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
+import java.sql.Timestamp;
+import java.util.*;
 import java.util.regex.Pattern;
 
 public class User {
@@ -23,6 +22,11 @@ public class User {
     private boolean isAuthenticated;
     private String refreshToken;
     private int tokenExpiresIn;
+    private Calendar authTokenExpiresAt;
+    private Calendar authTokenIssued;
+    private String tokenExpiryAsString;
+
+    private String lsHostIP = "10.122.175.220"; // Nick's IP because he is hosting the ls
 
 
     /**
@@ -39,12 +43,12 @@ public class User {
         basicAuthEncoded = Base64.getEncoder().encodeToString(basicAuthCredentials.getBytes());
         isAuthenticated = false;
         authenticate();
-
     }
 
     public int authenticate() throws IOException
     {
-        URL url = new URL("http://127.0.0.1:4242/oauth/token?grant_type=password&username=" + username + "&password=" + password);
+        URL url = new URL("http://" + lsHostIP + ":4242/oauth/token?grant_type=password&username=" + username + "&password=" + password);
+
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setDoOutput(true);
         con.setRequestMethod("POST");
@@ -80,6 +84,10 @@ public class User {
 
         accessToken = escapePlusSign(json.get("access_token").toString());
         refreshToken = escapePlusSign(json.get("refresh_token").toString());
+        tokenExpiryAsString = json.get("expires_in").toString();
+        tokenExpiresIn = Integer.parseInt(tokenExpiryAsString);
+
+        tokenTimeUpdate();
         isAuthenticated = true;
 
         // System.out.println("The access token is " + accessToken + " and the refresh token is " + refreshToken);
@@ -88,12 +96,52 @@ public class User {
 
     public String getAccessToken() throws IOException
     {
-        authenticate();
+        // if the access token is still valid, then return it and update the value of expires_in
+        // else use the api with the refresh token to get a new one
+
+        if (!accessTokenValid())
+        {
+            accessToken = refreshToken;
+            authenticate();
+        }
+
         return accessToken;
     }
 
-    public boolean isAuthenticated() {
-        return isAuthenticated;
+    public boolean accessTokenValid() {
+        // the access token is valid iff it has not expired
+        // we will check if it is still valid by evaluating     tokenIssuedTime + expires_In <= currentTime
+
+        Date currentTime = new Date();
+        Calendar currentCal = Calendar.getInstance();
+        currentCal.setTime(currentTime);
+
+        if (currentCal.before(authTokenExpiresAt))
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    // this method is designed to be called whenever we (re)authenticate and obtain a token
+    // we have to set the values of the fields we use to determine whether an access token is expired
+    // we will use Calendar because we want to be able to use its add function
+    private void tokenTimeUpdate()
+    {
+        Date currentTime = new Date(); // current time to add to expiry time
+        Calendar current = Calendar.getInstance(); // Calendar is an abstract class. That's why we don't use the constructor
+        current.setTime(currentTime);
+
+        // add the expiry time (as seconds) to the current time to see when it will expire
+        Calendar expiryTime = Calendar.getInstance();
+        expiryTime.setTime(currentTime); // we will add the seconds after
+        expiryTime.add(Calendar.SECOND, tokenExpiresIn);
+
+        // now update the field values
+        authTokenIssued = current;
+        authTokenExpiresAt = expiryTime;
+
     }
 
     public String getRefreshToken() {
@@ -144,7 +192,7 @@ public class User {
 
     {
         
-    	URL url = new URL("http://127.0.0.1:4242/api/users?access_token=" + adminToken);
+    	URL url = new URL("http://10.122.175.220:4242/api/users?access_token=" + adminToken);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
 
@@ -202,6 +250,18 @@ public class User {
         }
     	
     	return allUsers;
+    }
+
+    // FOR TESTING PURPOSES ONLY
+    public void printTokenRelatedFields() throws IOException {
+        String token = getAccessToken();
+        String refreshToken = getRefreshToken();
+
+        System.out.println("The current access token is " + token);
+        System.out.println("The current refresh token is " + refreshToken);
+
+        System.out.println("The token was obtained at " + authTokenIssued);
+        System.out.println("The token expires at " + authTokenExpiresAt + ", which should be " + tokenExpiresIn + " seconds from the time it was obtained.");
     }
 
 }
