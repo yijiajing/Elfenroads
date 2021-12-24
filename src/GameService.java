@@ -28,8 +28,8 @@ public class GameService {
         adminUser = pAdminUser;
         gameServiceName = pGameServiceName;
         gameServiceAccountPassword = pGameServiceAccountPassword;
-        minSessionPlayers = pMinSessionPlayers;
-        maxSessionPlayers = pMaxSessionPlayers;
+        minSessionPlayers = 2;
+        maxSessionPlayers = 2;
         gameDisplayName = pGameDisplayName;
         createGameServiceUser();
         // now, we have created the game service user and we can go on to create the actual game session (using that user)

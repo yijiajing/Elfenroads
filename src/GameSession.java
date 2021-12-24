@@ -164,6 +164,8 @@ public class GameSession {
     {
         JSONObject gameDetails = getSessionDetails(id);
         JSONObject parameters = new JSONObject(gameDetails.get("gameParameters").toString());
+
+
         return parameters;
     }
 

@@ -10,20 +10,10 @@ public class TestUser {
     public static void main (String [] args) throws IOException
     {
 
+
         User maex = new User("maex", "abc123_ABC123");
         GameService elfenlands = new GameService (maex, "Elfenlands", "Elfenlands", "Password1", 2, 2);
         GameSession newGame = new GameSession(maex, "Elfenlands", "savegame2");
-
-
-
-
-
-        /* JSONObject allSessions = GameSession.getSessions();
-        String firstSessionID = GameSession.getFirstSessionID(allSessions);
-        JSONObject sessionDetails = GameSession.getSessionDetails(firstSessionID);
-        JSONObject sessionParameters = GameSession.getGameParameters(firstSessionID);
-        System.out.println("The creator of the session is: " + sessionDetails.get("creator"));
-        System.out.println("The minimum number of players in the session is " + sessionParameters.get("minSessionPlayers"));
 
 
 
@@ -34,11 +24,11 @@ public class TestUser {
 
 
 
-        System.out.println("The ID of the first session is: " + GameSession.getFirstSessionID(allSessions));
+        // System.out.println("The ID of the first session is: " + GameSession.getFirstSessionID(allSessions));
 
         String username = "maex";
         String password = "abc123_ABC123";
-        String sessionName = "Nick's game";
+        // String sessionName = "Nick's game";
 
         User maex = new User(username, password); // authenticates test user
         User nick = new User("nick", "Nicholas1234");
@@ -47,7 +37,7 @@ public class TestUser {
         // System.out.println(User.getAllUsers(maex.getAccessToken()));
 
         // System.out.println(User.doesUserExist("nick2", newUser));
-        // GameService elfenlands = new GameService(maex, "ElfenlandsGame", "Elfenlands", "Cheese12345", 5, 10);
+        GameService elfenlands = new GameService(maex, "ElfenlandsGame", "Elfenlands", "Cheese12345", 5, 10);
         GameSession session = new GameSession(maex, "ElfenlandsGame" , "savegame12");
         System.out.println("Nick's access token is: " + nick.getAccessToken());
         // System.out.println(GameSession.getAllSessions("Elfenlands"));
@@ -74,6 +64,10 @@ public class TestUser {
 
         System.out.println("Joining nick into the new session... with id = " + sessionID);
         GameSession.joinSession(nick, sessionID, newMacIP);
+
+
+
+
 
 
 
