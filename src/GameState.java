@@ -6,6 +6,8 @@ public class GameState {
     // created this class so that I can easily serialize and send important info to each computer
     // for now, this will only keep track of boot locations and towns visited because that's all we need for the demo
 
+    // TODO: probably get rid of this class entirely, for now
+
 
     /* as of now, we need to keep track of and be able to serialize:
     1. which Elfen towns have been visited (show on the UI by the town pieces)

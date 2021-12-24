@@ -5,9 +5,8 @@ import java.awt.*;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.concurrent.TimeUnit;
 
-public class MainFrameCopy extends JFrame {
+public class NetworkDemoPlayer1 extends JFrame {
 
     static CardLayout cardLayout;
     static JPanel mainPanel;
@@ -20,7 +19,7 @@ public class MainFrameCopy extends JFrame {
     GameScreen gameScreen;
 
 
-    MainFrameCopy() throws IOException, ClassNotFoundException, InterruptedException {
+    NetworkDemoPlayer1() throws IOException, ClassNotFoundException, InterruptedException {
 
         setSize(MinuetoTool.getDisplayWidth(), MinuetoTool.getDisplayHeight());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -99,7 +98,7 @@ public class MainFrameCopy extends JFrame {
     }
 
     public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException{
-        MainFrameCopy mainFrame = new MainFrameCopy();
+        NetworkDemoPlayer1 mainFrame = new NetworkDemoPlayer1();
 
 
     }

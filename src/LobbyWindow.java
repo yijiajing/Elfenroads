@@ -65,8 +65,8 @@ public class LobbyWindow extends JPanel implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 remove(background_elvenroads);
-                MainFrameCopy.mainPanel.add(new VersionToPlayWindow(), "version");
-                MainFrameCopy.cardLayout.show(MainFrameCopy.mainPanel,"version");
+                NetworkDemoPlayer1.mainPanel.add(new VersionToPlayWindow(), "version");
+                NetworkDemoPlayer1.cardLayout.show(NetworkDemoPlayer1.mainPanel,"version");
 
                 // create a new session
 
@@ -93,8 +93,8 @@ public class LobbyWindow extends JPanel implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 remove(background_elvenroads);
-                MainFrameCopy.mainPanel.add(new LoadGameWindow(), "load");
-                MainFrameCopy.cardLayout.show(MainFrameCopy.mainPanel,"load");
+                NetworkDemoPlayer1.mainPanel.add(new LoadGameWindow(), "load");
+                NetworkDemoPlayer1.cardLayout.show(NetworkDemoPlayer1.mainPanel,"load");
             }
         });
         //gamesButton.addActionListener(this);

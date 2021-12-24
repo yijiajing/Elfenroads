@@ -10,6 +10,8 @@ public class TestSockets
 
 // main computer version
 
+// TODO: get rid of this class
+
 {
     public static void main (String [] args) throws IOException
 

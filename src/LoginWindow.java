@@ -3,7 +3,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.util.regex.Pattern;
 
 import static javax.swing.Box.createVerticalStrut;
 
@@ -72,8 +71,8 @@ public class LoginWindow extends JPanel implements ActionListener {
             	if (u && p)
             	{
             		remove(background_elvenroads);
-                    MainFrameCopy.mainPanel.add(new LobbyWindow(), "lobby");
-                    MainFrameCopy.cardLayout.show(MainFrameCopy.mainPanel,"lobby");
+                    NetworkDemoPlayer1.mainPanel.add(new LobbyWindow(), "lobby");
+                    NetworkDemoPlayer1.cardLayout.show(NetworkDemoPlayer1.mainPanel,"lobby");
             	}
                 
             }

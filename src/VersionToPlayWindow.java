@@ -1,5 +1,3 @@
-import org.minueto.MinuetoTool;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -51,7 +49,7 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                MainFrameCopy.cardLayout.show(MainFrameCopy.mainPanel,"gameScreen");
+                NetworkDemoPlayer1.cardLayout.show(NetworkDemoPlayer1.mainPanel,"gameScreen");
             }
         });
 
@@ -65,8 +63,8 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
             @Override
             public void actionPerformed(ActionEvent e) {
                 remove(background_elvenroads);
-                MainFrameCopy.mainPanel.add(new LobbyWindow(), "lobby");
-                MainFrameCopy.cardLayout.show(MainFrameCopy.mainPanel,"lobby");
+                NetworkDemoPlayer1.mainPanel.add(new LobbyWindow(), "lobby");
+                NetworkDemoPlayer1.cardLayout.show(NetworkDemoPlayer1.mainPanel,"lobby");
             }
         });
 
