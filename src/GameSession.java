@@ -12,7 +12,7 @@ import java.util.List;
 import java.net.InetAddress;
 import java.util.Set;
 
-public class GameSession {
+public class GameSession extends APIObject {
 
     private User creator;
     private String gameName; // matches up to a GameService object, but we will not use a GameService object because we just need the name
@@ -24,8 +24,9 @@ public class GameSession {
     // its constructor will intialize a GameSession
 
 
-    public GameSession(User pCreator, String pGameName, String pSaveGameName) throws IOException
+    public GameSession(User pCreator, String pGameName, String pSaveGameName, String lsHostIP) throws IOException
     {
+        super(lsHostIP);
         creator = pCreator;
         gameName = pGameName;
         saveGameName = pSaveGameName;
@@ -43,7 +44,7 @@ public class GameSession {
 
         // TODO: change that line back after testing
         // URL url = new URL("http://127.0.0.1:4242/api/sessions?access_token=" + token + "&location=" + locationIP);
-        URL url = new URL("http://10.122.175.220:4242/api/sessions?access_token=" + token + "&location=10.0.0.244");
+        URL url = new URL("http://" + this.getHostIPWithPort() + "/api/sessions?access_token=" + token + locationIP);
 
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("POST");
@@ -81,7 +82,7 @@ public class GameSession {
     {
         String creatorToken = creator.getAccessToken();
 
-        URL url = new URL("http://10.122.175.220:4242/api/sessions/" + id + "?access_token=" + creatorToken);
+        URL url = new URL("http://" + this.getHostIPWithPort() + "/api/sessions/" + id + "?access_token=" + creatorToken);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("POST");
 
@@ -114,14 +115,14 @@ public class GameSession {
     }
 
     // TODO: implement
-    public static ArrayList<String> getPlayerAddresses(String id) throws IOException
+    public static ArrayList<String> getPlayerAddresses(String id, String hostIPWithPort) throws IOException
     {
         // parse the session info to get enough info about the players
         // we only really need their IPs
 
         ArrayList<String> addresses = new ArrayList<String>();
 
-        JSONObject details = getSessionDetails(id);
+        JSONObject details = getSessionDetails(id, hostIPWithPort);
         // JSONObject
 
         JSONObject playersAndIPS = new JSONObject(details.get("playerLocations").toString());
@@ -136,9 +137,9 @@ public class GameSession {
     }
 
 
-    public static JSONObject getSessionDetails(String id) throws IOException
+    public static JSONObject getSessionDetails(String id, String hostIPWithPort) throws IOException
     {
-        URL url = new URL("http://10.122.175.220:4242/api/sessions/" + id);
+        URL url = new URL("http://" + hostIPWithPort + "/api/sessions/" + id);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
 
@@ -160,9 +161,9 @@ public class GameSession {
 
     }
 
-    public static JSONObject getGameParameters(String id) throws IOException
+    public static JSONObject getGameParameters(String id, String hostIPWithPort) throws IOException
     {
-        JSONObject gameDetails = getSessionDetails(id);
+        JSONObject gameDetails = getSessionDetails(id, hostIPWithPort);
         JSONObject parameters = new JSONObject(gameDetails.get("gameParameters").toString());
 
 
@@ -191,9 +192,9 @@ public class GameSession {
         return "000000000000";
     }
 
-    public static JSONObject getSessions() throws IOException
+    public static JSONObject getSessions(String hostIPWithPort) throws IOException
     {
-        URL url = new URL("http://10.122.175.220:4242/api/sessions");
+        URL url = new URL("http://" + hostIPWithPort + "/api/sessions");
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
 
@@ -292,12 +293,12 @@ public class GameSession {
      *
      * @param joiner
      */
-    public static void joinSession(User joiner, String sessionID, String joinerIP) throws IOException
+    public static void joinSession(User joiner, String sessionID, String joinerIP, String hostIPWithPort) throws IOException
     {
         // we need to join this session with the chosen user, so we will
         String token = joiner.getAccessToken();
 
-        URL url = new URL("http://10.122.175.220:4242/api/sessions" + sessionID +"/players/" + joiner.getUsername() + "?location=" + joinerIP + "&access_token=" + token);
+        URL url = new URL("http://" + hostIPWithPort + "/api/sessions" + sessionID +"/players/" + joiner.getUsername() + "?location=" + joinerIP + "&access_token=" + token);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("PUT");
 
