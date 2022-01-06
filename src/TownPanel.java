@@ -87,7 +87,7 @@ public class TownPanel extends JPanel {
 
                     try
                     {
-                        gameScreen.sendGameState(elfBoot2_panelSpot);
+                        gameScreen.sendGameState(newPanelSpot);
                     }
 
                     catch (IOException problem)
