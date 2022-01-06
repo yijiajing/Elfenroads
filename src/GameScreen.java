@@ -32,8 +32,8 @@ public class GameScreen extends JPanel implements Serializable
 	private JLabel mapImage_BottomLayer;
 	private JLabel informationCardImage_TopLayer;
 	private JLabel deckOfTransportationCountersImage_TopLayer;
-	private JLabel elfBoot1Image_TopLayer;
-	private JLabel elfBoot2Image_TopLayer;
+	private ElfBoot elfBoot1;
+	private ElfBoot elfBoot2;
 	
 	private JPanel backgroundPanel_ForMap = new JPanel();
 	private JPanel backgroundPanel_ForRound = new JPanel();
@@ -44,24 +44,14 @@ public class GameScreen extends JPanel implements Serializable
 	private JPanel backgroundPanel_ForDeckOfTransportationCounters = new JPanel();
 	private JPanel backgroundPanel_ForLeaderboard = new JPanel();
 
-	// TODO: add a second one for the second boot and initialize it properly
-	private JPanel panelForElfBoot = new JPanel();
 	private JPanel[] panelForPlayerTransportationCounters = new JPanel[5];
 	private JPanel[] panelForPlayerCards = new JPanel[8];
 	private JPanel[] panelForFaceUpTransportationCounters = new JPanel[5];
 	private JPanel panelForDeckOfTransportationCounters = new JPanel();
 	private JPanel panelForObstacle = new JPanel();
 
-	private JPanel panelForTownOfBeata = new JPanel();
-	private JPanel panelForElfBoot1_TownOfBeata = new JPanel();
-	private JPanel panelForElfBoot2_TownOfBeata = new JPanel();
-	private JPanel panelForTownOfElvenhold = new JPanel();
-	private JPanel panelForElfBoot1_TownOfElvenhold = new JPanel();
-	private JPanel panelForElfBoot2_TownOfElvenhold = new JPanel();
-	private Boolean elfBoot1Selected = false; // this is for our rudimentary implementation of moving the elf boot
-	private Boolean elfBoot2Selected = false; // this is for our rudimentary implementation of moving the second elf boot
-	private JPanel currentPanelOfElfBoot1 = panelForElfBoot1_TownOfElvenhold; // starting position
-	private JPanel currentPanelOfElfBoot2 = panelForElfBoot2_TownOfElvenhold;
+	private TownPanel townOfBeata;
+	private TownPanel townOfElvenhold;
 
 	private JTable leaderboard = new JTable();
 	
@@ -69,10 +59,10 @@ public class GameScreen extends JPanel implements Serializable
 	//private String filepathToRepo = "/Users/nicktriantos/Desktop/f2021-hexanome-12"; // change this depending on whose machine we are using
 	// private String filepathToRepo = "/Users/charlescouture/eclipse-workspace/COMP361";
 	private String filepathToRepo = ".";
-	private boolean isOurTurn;
+	private boolean myTurn;
 
 	// TODO: change this on the other computer
-	private String otherPlayerIP = "10.122.175.220"; // Nick's IP address
+	private String otherPlayerIP = "192.168.2.253"; // Nick's IP address
 
 	
 	// alternate constructor for networking demo
@@ -89,11 +79,20 @@ public class GameScreen extends JPanel implements Serializable
 		// Set Bounds for entire Board Game screen and do the initialization of the structure for the UI
 		boardGame_Layers = new JLayeredPane();
 		boardGame_Layers.setBounds(0,0,width,height);
+
+		// initialize town panels
+		townOfBeata = new TownPanel("Beata", width*940/1440, height*392/900, width*74/1440, height*37/900, this);
+		townOfElvenhold = new TownPanel("Elvenhold", width*750/1440, height*275/900, width*115/1440, height*70/900, this);
+
+		// initialize elf boots
+		elfBoot1 = new ElfBoot("black", this.width, this.height, townOfElvenhold.getElfBootPanel(), 0);
+		elfBoot2 = new ElfBoot("blue", this.width, this.height, townOfElvenhold.getElfBootPanel(), 1);
+
 		initialization();
 
 		// Add the images to their corresponding JPanel
 		addImages();
-		intializeListenerToDraw();
+		initializeListenerToDraw();
 		
 		// Add the JPanels to the main JLayeredPane with their corresponding layer
 		addPanelToScreen();
@@ -102,7 +101,7 @@ public class GameScreen extends JPanel implements Serializable
 		this.add(boardGame_Layers);
 
 		// doing this for the demo
-		isOurTurn = isTurn;
+		myTurn = isTurn;
 	}
 
 	GameScreen (JFrame frame)
@@ -118,11 +117,20 @@ public class GameScreen extends JPanel implements Serializable
 		// Set Bounds for entire Board Game screen and do the initialization of the structure for the UI
 		boardGame_Layers = new JLayeredPane();
 		boardGame_Layers.setBounds(0,0,width,height);
+
+		// initialize town panels
+		townOfBeata = new TownPanel("Beata", width*940/1440, height*392/900, width*74/1440, height*37/900, this);
+		townOfElvenhold = new TownPanel("Elvenhold", width*750/1440, height*275/900, width*115/1440, height*70/900, this);
+
+		// initialize elf boots
+		elfBoot1 = new ElfBoot("black", this.width, this.height, townOfElvenhold.getElfBootPanel(), 0);
+		elfBoot2 = new ElfBoot("blue", this.width, this.height, townOfElvenhold.getElfBootPanel(), 1);
+
 		initialization();
 
 		// Add the images to their corresponding JPanel
 		addImages();
-		intializeListenerToDraw();
+		initializeListenerToDraw();
 
 		// Add the JPanels to the main JLayeredPane with their corresponding layer
 		addPanelToScreen();
@@ -132,14 +140,11 @@ public class GameScreen extends JPanel implements Serializable
 	}
 
 
-
 	public void update(JPanel panel)
 	{
 		panel.repaint();
 		panel.revalidate();
 	}
-
-
 
 
 	public void initialization()
@@ -156,9 +161,6 @@ public class GameScreen extends JPanel implements Serializable
 		initializeLeaderboard();
 		initializeTransportationCounters();
 		initializeLeaderboard();
-		initializeElfBootImage();
-		initializeTownOfBeata();
-		initializeTownOfElvenhold();
 	}
 	
 	public void initializeBackgroundPanels()
@@ -298,157 +300,6 @@ public class GameScreen extends JPanel implements Serializable
 		panelForObstacle.setBorder(whiteLine);
 		panelForObstacle.setBounds(width*989/1440, height*570/900, width*70/1440, height*60/900);
 	}
-
-
-	public void initializeTownOfBeata()
-	{
-		// Town panel
-		panelForTownOfBeata.setBounds(width*940/1440, height*392/900, width*74/1440, height*37/900);
-		panelForTownOfBeata.setOpaque(false);
-		panelForTownOfBeata.setBorder(whiteLine);
-
-		panelForTownOfBeata.addMouseListener(new MouseAdapter()
-		{
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if (elfBoot1Selected && isOurTurn)
-				{
-					currentPanelOfElfBoot1.removeAll();
-					update(currentPanelOfElfBoot1);
-
-					panelForElfBoot1_TownOfBeata.add(elfBoot1Image_TopLayer);
-					update(panelForElfBoot1_TownOfBeata);
-
-					currentPanelOfElfBoot1 = panelForElfBoot1_TownOfBeata;
-					elfBoot1Selected = false;
-
-					isOurTurn = !isOurTurn;
-
-					try
-					{
-						sendGameState(currentPanelOfElfBoot1);
-					}
-
-					catch (IOException problem)
-					{
-						// do nothing. we are screwed
-						System.out.println("We ran into an IOException when trying to send the game state over to the other player.");
-						problem.printStackTrace();
-					}
-				}
-				else if (elfBoot2Selected && isOurTurn)
-				{
-					currentPanelOfElfBoot2.removeAll();
-					update(currentPanelOfElfBoot2);
-
-					panelForElfBoot2_TownOfBeata.add(elfBoot2Image_TopLayer);
-					update(panelForElfBoot2_TownOfBeata);
-
-					currentPanelOfElfBoot2 = panelForElfBoot2_TownOfBeata;
-					elfBoot2Selected = false;
-
-					isOurTurn = !isOurTurn;
-
-					try
-					{
-						sendGameState(currentPanelOfElfBoot2);
-					}
-
-					catch (IOException problem)
-					{
-						// do nothing. we are screwed
-						System.out.println("We ran into an IOException when trying to send the game state over to the other player.");
-						problem.printStackTrace();
-					}
-
-				}
-
-			}
-		});
-
-		// Boot panel for boot 1
-		panelForElfBoot1_TownOfBeata.setBounds(width*935/1440, height*430/900, width*24/1440, height*24/900);
-		panelForElfBoot1_TownOfBeata.setOpaque(false);
-		panelForElfBoot1_TownOfBeata.setBorder(whiteLine);
-
-		// Boot panel for boot 2
-		// TODO: write the code for this, play with the positioning a bit
-	}
-
-	private void initializeTownOfElvenhold()
-	{
-		// Town panel
-		panelForTownOfElvenhold.setBounds(width*750/1440, height*275/900, width*115/1440, height*70/900);
-		panelForTownOfElvenhold.setOpaque(false);
-		panelForTownOfElvenhold.setBorder(whiteLine);
-
-		panelForTownOfElvenhold.addMouseListener(new MouseAdapter()
-		{
-			@Override
-			public void mouseClicked(MouseEvent e)
-			{
-				if (elfBoot1Selected && isOurTurn)
-				{
-					currentPanelOfElfBoot1.removeAll();
-					update(currentPanelOfElfBoot1);
-
-					panelForElfBoot1_TownOfElvenhold.add(elfBoot1Image_TopLayer);
-					update(panelForElfBoot1_TownOfElvenhold);
-
-					currentPanelOfElfBoot1 = panelForElfBoot1_TownOfElvenhold;
-					elfBoot1Selected = false;
-
-					isOurTurn = !isOurTurn;
-					try
-					{
-						sendGameState(currentPanelOfElfBoot1);
-					}
-
-					catch (IOException problem)
-					{
-						// do nothing. we are screwed
-						System.out.println("We ran into an IOException when trying to send the game state over to the other player.");
-						problem.printStackTrace();
-					}
-				}
-
-				else if (elfBoot2Selected && isOurTurn)
-				{
-					currentPanelOfElfBoot2.removeAll();
-					update(currentPanelOfElfBoot2);
-
-					panelForElfBoot2_TownOfBeata.add(elfBoot2Image_TopLayer);
-					update(panelForElfBoot2_TownOfBeata);
-
-					currentPanelOfElfBoot2 = panelForElfBoot2_TownOfBeata;
-					elfBoot2Selected = false;
-
-					isOurTurn = !isOurTurn;
-					try
-					{
-						sendGameState(currentPanelOfElfBoot2);
-					}
-
-					catch (IOException problem)
-					{
-						// do nothing. we are screwed
-						System.out.println("We ran into an IOException when trying to send the game state over to the other player.");
-						problem.printStackTrace();
-					}
-
-
-				}
-			}
-		});
-
-		// Boot panel
-		panelForElfBoot1_TownOfElvenhold.setBounds(width*750/1440, height*346/900, width*24/1440, height*24/900);
-		panelForElfBoot1_TownOfElvenhold.setOpaque(false);
-		panelForElfBoot1_TownOfElvenhold.setBorder(whiteLine);
-
-		// Boot panel for second boot
-		// TODO: write the code to intialize this, play around with the dimensions
-	}
 	
 	public void initializeMapImage()
 	{
@@ -486,54 +337,6 @@ public class GameScreen extends JPanel implements Serializable
 		gridImage = new ImageIcon(gridResized);
 		deckOfTransportationCountersImage_TopLayer = new JLabel(gridImage);
 	}
-
-	/**
-	 * editing this method to initialize EXACTLY two elf boots for the networking demo
-	 * we will have to change it later
-	 */
-	public void initializeElfBootImage() // for demo
-	{
-
-		// we will represent the ElfBoot as a JLabel with a ClickAdapter
-		// initializing (black) boot 1 here
-		ImageIcon blackBootIcon = new ImageIcon(filepathToRepo + "/assets/boppels-and-boots/boppel-black.png");
-		Image blackBootImage = blackBootIcon.getImage();
-		Image blackBootResized = blackBootImage.getScaledInstance(width*15/1440, height*15/900,  java.awt.Image.SCALE_SMOOTH);
-		blackBootIcon = new ImageIcon(blackBootResized);
-		elfBoot1Image_TopLayer = new JLabel(blackBootIcon);
-
-		elfBoot1Image_TopLayer.addMouseListener(new MouseAdapter()
-		{
-			@Override
-			public void mouseClicked(MouseEvent e)
-			{
-				// this toggles the elfBootSelected to determine if it is possible to move a boot
-				elfBoot1Selected = true;
-			}
-		});
-
-		// now we will initialize the second boot (blue)
-
-		ImageIcon blueBootIcon = new ImageIcon(filepathToRepo + "/assets/boppels-and-boots/boppel-blue.png");
-		Image blueBootImage = blueBootIcon.getImage();
-		Image blueBootResized = blueBootImage.getScaledInstance(width*15/1440, height*15/900,  java.awt.Image.SCALE_SMOOTH);
-		blueBootIcon = new ImageIcon (blueBootResized);
-		elfBoot2Image_TopLayer = new JLabel(blueBootIcon);
-
-		elfBoot2Image_TopLayer.addMouseListener(new MouseAdapter()
-		{
-			@Override
-			public void mouseClicked(MouseEvent e)
-			{
-				// this toggles the elfBootSelected to determine if it is possible to move a boot
-				elfBoot2Selected = true;
-			}
-		});
-
-
-
-
-	}
 	
 	public void addImages()
 	{
@@ -541,8 +344,8 @@ public class GameScreen extends JPanel implements Serializable
 		backgroundPanel_ForRound.add(roundImage_TopLayer);
 		backgroundPanel_ForInformationCard.add(informationCardImage_TopLayer);
 		panelForDeckOfTransportationCounters.add(deckOfTransportationCountersImage_TopLayer);
-		panelForElfBoot1_TownOfElvenhold.add(elfBoot1Image_TopLayer);
-		panelForElfBoot2_TownOfElvenhold.add(elfBoot2Image_TopLayer);
+		elfBoot1.getCurSpotInPanel().add(elfBoot1.getImage());
+		elfBoot2.getCurSpotInPanel().add(elfBoot2.getImage());
 	}
 	
 	public void addPanelToScreen()
@@ -558,14 +361,18 @@ public class GameScreen extends JPanel implements Serializable
 		boardGame_Layers.add(backgroundPanel_ForCards, -1);
 		boardGame_Layers.add(backgroundPanel_ForInformationCard, -1);
 		boardGame_Layers.add(backgroundPanel_ForDeckOfTransportationCounters, -1);
-
 		boardGame_Layers.add(backgroundPanel_ForLeaderboard,-1);
-		boardGame_Layers.add(panelForElfBoot1_TownOfBeata, 0);
-		boardGame_Layers.add(panelForElfBoot2_TownOfBeata, 0);
-		boardGame_Layers.add(panelForTownOfBeata,0);
-		boardGame_Layers.add(panelForTownOfElvenhold,0);
-		boardGame_Layers.add(panelForElfBoot1_TownOfElvenhold,0);
-		boardGame_Layers.add(panelForElfBoot2_TownOfElvenhold, 0);
+
+		boardGame_Layers.add(townOfBeata,0);
+		boardGame_Layers.add(townOfElvenhold,0);
+		boardGame_Layers.add(townOfBeata.getElfBootPanel() ,0);
+		boardGame_Layers.add(townOfElvenhold.getElfBootPanel(), 0);
+
+		// add the JPanels for every spot on every elf boot panel
+		for (int spot=0; spot<6; spot++){
+			boardGame_Layers.add(townOfElvenhold.getElfBootPanel().getSpotByNumber(spot), 0);
+			boardGame_Layers.add(townOfBeata.getElfBootPanel().getSpotByNumber(spot), 0);
+		}
 	}
 	
 	public void addFaceUpTransportationCounters()
@@ -615,7 +422,7 @@ public class GameScreen extends JPanel implements Serializable
 		transportationCountersToDraw = new Deck(toAddToDeck);
 	}
 	
-	public void intializeListenerToDraw()
+	public void initializeListenerToDraw()
 	{
 		// here we will add a MouseListener to deckOfTransportationCountersImage_TopLayer
 
@@ -641,29 +448,30 @@ public class GameScreen extends JPanel implements Serializable
 	public void moveElfBoot1(JPanel newCurrentPanel)
 	{
 		// this is what we will use to update the game state based on the information sent over the network
-
-		currentPanelOfElfBoot1.remove(elfBoot1Image_TopLayer);
-		update(currentPanelOfElfBoot1);
+		elfBoot1.getCurSpotInPanel().remove(elfBoot1.getImage());
+		elfBoot1.getCurPanel().setSpotAvailability(elfBoot1.getCurSpotInPanel(), true);
+		update(elfBoot1.getCurSpotInPanel());
 
 		// now switch the current panel
+		elfBoot1.setCurPanelAndSpot((ElfBootPanel) newCurrentPanel);
+		elfBoot1.getCurSpotInPanel().add(elfBoot1.getImage());
+		update(elfBoot1.getCurSpotInPanel());
 
-		currentPanelOfElfBoot1 = newCurrentPanel;
-		currentPanelOfElfBoot1.add(elfBoot1Image_TopLayer);
-		update(currentPanelOfElfBoot1);
 	}
 
-	public void setCurrentPanelOfElfBoot2(JPanel currentPanel)
+	public void setCurrentPanelOfElfBoot2(JPanel newCurrentPanel)
 	{
-		currentPanelOfElfBoot2 = currentPanel;
+		// this is what we will use to update the game state based on the information sent over the network
+		elfBoot2.getCurSpotInPanel().remove(elfBoot2.getImage());
+		elfBoot2.getCurPanel().setSpotAvailability(elfBoot2.getCurSpotInPanel(), true);
+		update(elfBoot2.getCurSpotInPanel());
+
+		// now switch the current panel
+		elfBoot2.setCurPanelAndSpot((ElfBootPanel) newCurrentPanel);
+		elfBoot2.getCurSpotInPanel().add(elfBoot2.getImage());
+		update(elfBoot2.getCurSpotInPanel());
+
 	}
-
-	/*
-	public void setOurTurn()
-	{
-
-	}
-
-	 */
 
 	public static void main(String[] args) 
 	{
@@ -692,8 +500,6 @@ public class GameScreen extends JPanel implements Serializable
 		System.out.println("Payload has been flushed.");
 		connection.close();
 		System.out.print("Done. connection has been closed.");
-
-
 	}
 
 	public void listen(int port) throws IOException
@@ -701,16 +507,21 @@ public class GameScreen extends JPanel implements Serializable
 		ServerSocket listener = new ServerSocket(port);
 	}
 
-	public boolean isItOurTurn()
-	{return isOurTurn;}
+	public boolean getMyTurn() {return myTurn;}
 
-
-
+	public void setMyTurn(boolean pMyTurn) { this.myTurn = pMyTurn; }
 
 	// only using this for the demo. See NetworkDemoPlayer2 loop
 	public void reverseTurn()
 	{
-		isOurTurn = !isOurTurn;
+		myTurn = !myTurn;
 	}
 
+	public ElfBoot getElfBoot1() { return this.elfBoot1; }
+
+	public ElfBoot getElfBoot2() { return this.elfBoot2; }
+
+	public int getWidth() { return this.width; }
+
+	public int getHeight() { return this.height; }
 }

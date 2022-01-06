@@ -11,9 +11,9 @@ public class TestUser {
     {
 
 
-        User maex = new User("maex", "abc123_ABC123");
-        GameService elfenlands = new GameService (maex, "Elfenlands", "Elfenlands", "Password1", 2, 2);
-        GameSession newGame = new GameSession(maex, "Elfenlands", "savegame2");
+        //User maex = new User("maex", "abc123_ABC123");
+        //GameService elfenlands = new GameService (maex, "Elfenlands", "Elfenlands", "Password1", 2, 2);
+        //GameSession newGame = new GameSession(maex, "Elfenlands", "savegame2");
 
 
 
@@ -73,7 +73,6 @@ public class TestUser {
 
         // User charles = new User(charlesUsername, charlesPassword);
 
-         */
     }
 
 
