@@ -50,8 +50,7 @@ public class GameScreen extends JPanel implements Serializable
 	private JPanel panelForDeckOfTransportationCounters = new JPanel();
 	private JPanel panelForObstacle = new JPanel();
 
-	private TownPanel townOfBeata;
-	private TownPanel townOfElvenhold;
+	private GameMap gameMap;
 
 	private JTable leaderboard = new JTable();
 	
@@ -80,13 +79,12 @@ public class GameScreen extends JPanel implements Serializable
 		boardGame_Layers = new JLayeredPane();
 		boardGame_Layers.setBounds(0,0,width,height);
 
-		// initialize town panels
-		townOfBeata = new TownPanel("Beata", width*940/1440, height*392/900, width*74/1440, height*37/900, this);
-		townOfElvenhold = new TownPanel("Elvenhold", width*750/1440, height*275/900, width*115/1440, height*70/900, this);
+		// initialize town and road panels
+		gameMap = new GameMap(this);
 
 		// initialize elf boots
-		elfBoot1 = new ElfBoot("black", this.width, this.height, townOfElvenhold.getElfBootPanel(), 0);
-		elfBoot2 = new ElfBoot("blue", this.width, this.height, townOfElvenhold.getElfBootPanel(), 1);
+		elfBoot1 = new ElfBoot("black", this.width, this.height, gameMap.getTown("Elvenhold").getPanel().getElfBootPanel(), 0);
+		elfBoot2 = new ElfBoot("blue", this.width, this.height, gameMap.getTown("Elvenhold").getPanel().getElfBootPanel(), 1);
 
 		initialization();
 
@@ -118,13 +116,12 @@ public class GameScreen extends JPanel implements Serializable
 		boardGame_Layers = new JLayeredPane();
 		boardGame_Layers.setBounds(0,0,width,height);
 
-		// initialize town panels
-		townOfBeata = new TownPanel("Beata", width*940/1440, height*392/900, width*74/1440, height*37/900, this);
-		townOfElvenhold = new TownPanel("Elvenhold", width*750/1440, height*275/900, width*115/1440, height*70/900, this);
+		// initialize town and road panels
+		gameMap = new GameMap(this);
 
 		// initialize elf boots
-		elfBoot1 = new ElfBoot("black", this.width, this.height, townOfElvenhold.getElfBootPanel(), 0);
-		elfBoot2 = new ElfBoot("blue", this.width, this.height, townOfElvenhold.getElfBootPanel(), 1);
+		elfBoot1 = new ElfBoot("black", this.width, this.height, gameMap.getTown("Elvenhold").getPanel().getElfBootPanel(), 0);
+		elfBoot2 = new ElfBoot("blue", this.width, this.height, gameMap.getTown("Elvenhold").getPanel().getElfBootPanel(), 1);
 
 		initialization();
 
@@ -363,15 +360,14 @@ public class GameScreen extends JPanel implements Serializable
 		boardGame_Layers.add(backgroundPanel_ForDeckOfTransportationCounters, -1);
 		boardGame_Layers.add(backgroundPanel_ForLeaderboard,-1);
 
-		boardGame_Layers.add(townOfBeata,0);
-		boardGame_Layers.add(townOfElvenhold,0);
-		boardGame_Layers.add(townOfBeata.getElfBootPanel() ,0);
-		boardGame_Layers.add(townOfElvenhold.getElfBootPanel(), 0);
+		for (Town town: gameMap.getTownList()) {
+			boardGame_Layers.add(town.getPanel(), 0);
+			boardGame_Layers.add(town.getPanel().getElfBootPanel(), 0);
 
-		// add the JPanels for every spot on every elf boot panel
-		for (int spot=0; spot<6; spot++){
-			boardGame_Layers.add(townOfElvenhold.getElfBootPanel().getSpotByNumber(spot), 0);
-			boardGame_Layers.add(townOfBeata.getElfBootPanel().getSpotByNumber(spot), 0);
+			// add the JPanels for every spot on every elf boot panel
+			for (int spot = 0; spot < 6; spot++) {
+				boardGame_Layers.add(town.getPanel().getElfBootPanel().getSpotByNumber(spot), 0);
+			}
 		}
 	}
 	
@@ -411,12 +407,12 @@ public class GameScreen extends JPanel implements Serializable
 
 		for (int i = 1; i <= 8; i++)
 		{
-			toAddToDeck.push(new TransportationCounter(TransportationCounter.CounterType.DRAGON, width, height));
-			toAddToDeck.push(new TransportationCounter(TransportationCounter.CounterType.GIANTPIG, width, height));
-			toAddToDeck.push(new TransportationCounter(TransportationCounter.CounterType.UNICORN, width, height));
-			toAddToDeck.push(new TransportationCounter(TransportationCounter.CounterType.TROLLWAGON, width, height));
-			toAddToDeck.push(new TransportationCounter(TransportationCounter.CounterType.ELFCYCLE, width, height));
-			toAddToDeck.push(new TransportationCounter(TransportationCounter.CounterType.MAGICCLOUD, width, height));
+			toAddToDeck.push(new TransportationCounter(TransportationCounter.CounterType.DRAGON, width*67/1440, height*52/900));
+			toAddToDeck.push(new TransportationCounter(TransportationCounter.CounterType.GIANTPIG, width*67/1440, height*52/900));
+			toAddToDeck.push(new TransportationCounter(TransportationCounter.CounterType.UNICORN, width*67/1440, height*52/900));
+			toAddToDeck.push(new TransportationCounter(TransportationCounter.CounterType.TROLLWAGON, width*67/1440, height*52/900));
+			toAddToDeck.push(new TransportationCounter(TransportationCounter.CounterType.ELFCYCLE, width*67/1440, height*52/900));
+			toAddToDeck.push(new TransportationCounter(TransportationCounter.CounterType.MAGICCLOUD, width*67/1440, height*52/900));
 		}
 
 		transportationCountersToDraw = new Deck(toAddToDeck);
@@ -524,4 +520,10 @@ public class GameScreen extends JPanel implements Serializable
 	public int getWidth() { return this.width; }
 
 	public int getHeight() { return this.height; }
+
+	public void addElement(JPanel panel) {
+		boardGame_Layers.add(panel);
+		mainFrame.repaint();
+		mainFrame.revalidate();
+	}
 }
