@@ -17,12 +17,13 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
     private JButton travelCards;
     private JButton rgtDistribution;
     private JButton elvenWitch;
+    private JButton backButton;
     private JLabel elfenlandText;
     private JLabel elfengoldText;
 
     VersionToPlayWindow(){
         ImageIcon background_image = 
-        new ImageIcon("C:/Users/philb/Documents/GitHub/f2021-hexanome-12/assets/sprites/elfenroads.jpeg");
+        new ImageIcon("./assets/sprites/elfenroads.jpeg");
         background_elvenroads = new JLabel(background_image);
         GridBagLayout layout = new GridBagLayout();
         GridBagConstraints gbc = new GridBagConstraints();
@@ -54,10 +55,28 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
         longGame = new JButton("Long Game");
         destinationTown = new JButton("Destination Town");
 
+        classicGame1.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                NetworkDemoPlayer1.cardLayout.show(NetworkDemoPlayer1.mainPanel,"gameScreen");
+            }
+        });
+
         classicGame2 = new JButton("Classic");
         travelCards = new JButton("Travel Cards");
         rgtDistribution = new JButton("Random Gold Token Distribution");
         elvenWitch = new JButton("The Elven Witch");
+
+        backButton = new JButton("Back");
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                remove(background_elvenroads);
+                NetworkDemoPlayer1.mainPanel.add(new LobbyWindow(), "lobby");
+                NetworkDemoPlayer1.cardLayout.show(NetworkDemoPlayer1.mainPanel,"lobby");
+            }
+        });
 
         elfenlandChoice.add(elfenlandText);
         elfenlandText.setAlignmentY(TOP_ALIGNMENT);
@@ -90,6 +109,7 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
         background_elvenroads.setLayout(layout);
         background_elvenroads.add(choicesPanel,gbc);
 
+        background_elvenroads.add(backButton);
         add(background_elvenroads);
 
     }

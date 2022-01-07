@@ -19,6 +19,16 @@ public class LoadGameWindow extends JPanel implements ActionListener{
         gamePanel = new JPanel(new BorderLayout());
         loadButton = new JButton("Load");
         backButton = new JButton("Back");
+
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                remove(background_elvenroads);
+                MainFrame.mainPanel.add(new LobbyWindow(), "lobby");
+                MainFrame.cardLayout.show(MainFrame.mainPanel, "lobby");
+            }
+        });
+
         gamePanel.add(loadButton, BorderLayout.LINE_START);
         gameInfo = Box.createVerticalBox();
         
@@ -41,7 +51,7 @@ public class LoadGameWindow extends JPanel implements ActionListener{
         gamesPanel.add(gamePanel, BorderLayout.LINE_START);
 
         ImageIcon background_image = 
-        new ImageIcon("C:/Users/philb/Documents/GitHub/f2021-hexanome-12/assets/sprites/elfenroads.jpeg");
+        new ImageIcon("./assets/sprites/elfenroads.jpeg");
         background_elvenroads = new JLabel(background_image);
         GridBagLayout layout = new GridBagLayout();
         GridBagConstraints gbc = new GridBagConstraints();

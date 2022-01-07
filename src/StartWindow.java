@@ -7,7 +7,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
 public class StartWindow extends JPanel {
     
     
@@ -21,7 +20,7 @@ public class StartWindow extends JPanel {
     StartWindow(){
         
         ImageIcon background_image = 
-        new ImageIcon("C:/Users/philb/Documents/GitHub/f2021-hexanome-12/assets/sprites/elfenroads.jpeg");
+        new ImageIcon("./assets/sprites/elfenroads.jpeg");
         background_elvenroads = new JLabel(background_image);
 
         // startButton config
@@ -31,13 +30,12 @@ public class StartWindow extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 remove(background_elvenroads);
-                Main.setScreen(new LoginWindow());
+                NetworkDemoPlayer1.mainPanel.add(new LoginWindow(), "login");
+                NetworkDemoPlayer1.cardLayout.show(NetworkDemoPlayer1.mainPanel,"login");
             }
             
         });
         
-
-
 
         // aboutButton config
         aboutButton = new JButton("About");

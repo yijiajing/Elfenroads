@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import static javax.swing.Box.createVerticalStrut;
 
@@ -19,13 +20,14 @@ public class LoginWindow extends JPanel implements ActionListener {
     private static JButton loginButton;
     private JPanel infoPanel;
     
+    private String filepathToRepo = ".";
+    
 
     LoginWindow() {
 
         infoPanel = new JPanel(new BorderLayout());
 
-        ImageIcon background_image = 
-        new ImageIcon("C:/Users/philb/Documents/GitHub/f2021-hexanome-12/assets/sprites/elfenroads.jpeg");
+        ImageIcon background_image = new ImageIcon(filepathToRepo + "/assets/sprites/elfenroads.jpeg");
         background_elvenroads = new JLabel(background_image);
         GridBagLayout layout = new GridBagLayout();
         GridBagConstraints gbc = new GridBagConstraints();
@@ -47,12 +49,31 @@ public class LoginWindow extends JPanel implements ActionListener {
         loginButton = new JButton("Enter");
         
 
-        loginButton.addActionListener(new ActionListener(){
+        loginButton.addActionListener(new ActionListener()
+        {
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                remove(background_elvenroads);
-                Main.setScreen(new LobbyWindow());
+            @SuppressWarnings("deprecation")
+			@Override
+            public void actionPerformed(ActionEvent e) 
+            {
+            	String username = usernameTextField.getText();
+            	String password = passwordTextField.getText();
+            	boolean u = false;
+            	try 
+            	{
+					u = User.doesUsernameExist(username);
+				} 
+            	catch (IOException e1) 
+            	{
+					e1.printStackTrace();
+				}
+            	boolean p = User.doesPasswordExist(password);
+            	if (u && p)
+            	{
+            		remove(background_elvenroads);
+                    NetworkDemoPlayer1.mainPanel.add(new LobbyWindow(), "lobby");
+                    NetworkDemoPlayer1.cardLayout.show(NetworkDemoPlayer1.mainPanel,"lobby");
+            	}
                 
             }
             

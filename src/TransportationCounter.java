@@ -13,10 +13,11 @@ public class TransportationCounter {
     private String imageFilepath;
     private ImageIcon image;
     private JLabel display;
-    private String filepathToRepo = "/Users/nicktriantos/Desktop/f2021-hexanome-12" ; // change this depending on whose machine we are using
+    //private String filepathToRepo = "/Users/nicktriantos/Desktop/f2021-hexanome-12" ; // change this depending on whose machine we are using
     // private String filepathToRepo = "/Users/charlescouture/eclipse-workspace/COMP361" ;
+    private String filepathToRepo = ".";
 
-    public TransportationCounter (CounterType pType, int width, int height)
+    public TransportationCounter (CounterType pType, int resizeWidth, int resizeHeight)
     {
          this.type = pType;
 
@@ -27,7 +28,7 @@ public class TransportationCounter {
         this.imageFilepath = (filepathToRepo + "/assets/sprites/M0" + imageNumber + ".png");
         this.image = new ImageIcon (this.imageFilepath);
         Image toResize = this.image.getImage();
-        Image resized = toResize.getScaledInstance(width*67/1440, height*52/900,  java.awt.Image.SCALE_SMOOTH);
+        Image resized = toResize.getScaledInstance(resizeWidth, resizeHeight,  java.awt.Image.SCALE_SMOOTH);
         this.image = new ImageIcon(resized);
 
         // add JLabel
