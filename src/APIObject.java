@@ -15,6 +15,10 @@ public abstract class APIObject {
     private String port;
     private String IPWithPort;
 
+    // use default admin credentials for all operations of subclasses
+    private String adminUser = "maex";
+    private String adminPass = "abc123_ABC123";
+
     protected APIObject (String pHostIP)
     {
         hostIP = pHostIP;

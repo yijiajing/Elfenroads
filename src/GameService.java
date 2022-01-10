@@ -5,7 +5,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class GameService {
+public class GameService extends APIObject {
 
     // this class represents a GameService on the lobby system
     // this is different from a GameSession.
@@ -22,8 +22,10 @@ public class GameService {
     private String gameDisplayName;
 
 
-    public GameService (User pAdminUser, String pGameServiceName, String pGameDisplayName, String pGameServiceAccountPassword, int pMinSessionPlayers, int pMaxSessionPlayers) throws IOException
+    public GameService (User pAdminUser, String pGameServiceName, String pGameDisplayName, String pGameServiceAccountPassword, int pMinSessionPlayers, int pMaxSessionPlayers, String lsHostIP) throws IOException
     {
+        super(lsHostIP);
+
         // first, we need to create a user to manage the GameService
         adminUser = pAdminUser;
         gameServiceName = pGameServiceName;
