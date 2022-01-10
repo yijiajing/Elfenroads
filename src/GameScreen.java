@@ -676,6 +676,7 @@ public class GameScreen extends JPanel implements Serializable
 		game_screen.setVisible(true);
 	}
 
+	// TODO: move this method
 	public void sendGameState(JPanel elfBootLocation) throws IOException
 	{
 		System.out.println("Sending the game state...");
