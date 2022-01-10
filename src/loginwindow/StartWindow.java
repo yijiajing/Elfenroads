@@ -9,6 +9,8 @@ import java.awt.*;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 
 public class StartWindow extends JPanel {
     
@@ -19,6 +21,7 @@ public class StartWindow extends JPanel {
     private JButton startButton;
     private JButton aboutButton;
     private JButton exitButton;
+    private Font font;
 
     public StartWindow(){
         
@@ -42,9 +45,21 @@ public class StartWindow extends JPanel {
 
         // aboutButton config
         aboutButton = new JButton("About");
-        //aboutButton.addActionListener(this);
+        aboutButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //remove(background_elvenroads);
+                if (Desktop.isDesktopSupported()) {
+                    try {
+                        File myFile = new File("./assets/rules/Elfengold Rules.pdf");
+                        Desktop.getDesktop().open(myFile);
+                    } catch (IOException ex) {
+                        // no application registered for PDFs
+                    }
+                }
+            }
+        });
         
-
         // exitButton config
         exitButton = new JButton("Exit");
         exitButton.addActionListener(new ActionListener(){
@@ -58,8 +73,11 @@ public class StartWindow extends JPanel {
         });
         
 
-        
+        Font font = new Font("Arial", Font.BOLD, 16);
         buttons = new JPanel();
+        startButton.setFont(font);
+        aboutButton.setFont(font);
+        exitButton.setFont(font);
         buttons.add(startButton);
         buttons.add(aboutButton);
         buttons.add(exitButton);
