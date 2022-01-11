@@ -26,7 +26,6 @@ public class User {
     private Calendar authTokenIssued;
     private String tokenExpiryAsString;
 
-    // private String lsHostIP = "192.168.2.17"; // Nick's IP because he is hosting the ls
 
 
     /**
