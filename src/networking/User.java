@@ -26,7 +26,7 @@ public class User {
     private Calendar authTokenIssued;
     private String tokenExpiryAsString;
 
-    private String lsHostIP = "192.168.2.17"; // Nick's IP because he is hosting the ls
+    // private String lsHostIP = "192.168.2.17"; // Nick's IP because he is hosting the ls
 
 
     /**
@@ -47,7 +47,7 @@ public class User {
 
     public int authenticate() throws IOException
     {
-        URL url = new URL("http://" + lsHostIP + ":4242/oauth/token?grant_type=password&username=" + username + "&password=" + password);
+        URL url = new URL("http://ec2-3-96-55-178.ca-central-1.compute.amazonaws.com:4242/oauth/token?grant_type=password&username=" + username + "&password=" + password);
 
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setDoOutput(true);
@@ -192,7 +192,7 @@ public class User {
 
     {
         
-    	URL url = new URL("http://10.122.175.220:4242/api/users?access_token=" + adminToken);
+    	URL url = new URL("http://ec2-3-96-55-178.ca-central-1.compute.amazonaws.com:4242/api/users?access_token=" + adminToken);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
 
