@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 import java.util.*;
 import java.util.regex.Pattern;
 
-public class User extends APIObject {
+public class User{
 
     // this class represents a user of the lobby service
 
@@ -35,9 +35,8 @@ public class User extends APIObject {
      * @param pPassword
      * @throws IOException
      */
-    public User(String pUsername, String pPassword, String lsHostIP) throws IOException
+    public User(String pUsername, String pPassword) throws IOException
     {
-        super(lsHostIP);
         username = pUsername;
         password = pPassword;
         basicAuthCredentials = "bgp-client-name:bgp-client-pw";

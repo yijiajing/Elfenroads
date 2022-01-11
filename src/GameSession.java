@@ -12,7 +12,7 @@ import java.util.List;
 import java.net.InetAddress;
 import java.util.Set;
 
-public class GameSession extends APIObject {
+public class GameSession {
 
     private User creator;
     private String gameName; // matches up to a GameService object, but we will not use a GameService object because we just need the name
@@ -24,9 +24,8 @@ public class GameSession extends APIObject {
     // its constructor will intialize a GameSession
 
 
-    public GameSession(User pCreator, String pGameName, String pSaveGameName, String lsHostIP) throws IOException
+    public GameSession(User pCreator, String pGameName, String pSaveGameName) throws IOException
     {
-        super(lsHostIP);
         creator = pCreator;
         gameName = pGameName;
         saveGameName = pSaveGameName;
@@ -43,8 +42,7 @@ public class GameSession extends APIObject {
 
 
         // TODO: change that line back after testing
-        // URL url = new URL("http://127.0.0.1:4242/api/sessions?access_token=" + token + "&location=" + locationIP);
-        URL url = new URL("http://" + this.getHostIPWithPort() + "/api/sessions?access_token=" + token + locationIP);
+        URL url = new URL("http://127.0.0.1:4242/api/sessions?access_token=" + token + "&location=" + locationIP);
 
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("POST");
@@ -82,7 +80,7 @@ public class GameSession extends APIObject {
     {
         String creatorToken = creator.getAccessToken();
 
-        URL url = new URL("http://" + this.getHostIPWithPort() + "/api/sessions/" + id + "?access_token=" + creatorToken);
+        URL url = new URL("http://" + "/api/sessions/" + id + "?access_token=" + creatorToken);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("POST");
 
