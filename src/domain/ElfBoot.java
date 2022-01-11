@@ -2,10 +2,14 @@ package domain;
 
 import panel.ElfBootPanel;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
+import java.io.File;
 
 public class ElfBoot extends JLabel {
 
@@ -29,12 +33,10 @@ public class ElfBoot extends JLabel {
         this.curSpotNumInPanel = pCurSpot;
         this.curSpotInPanel = pCurPanel.getSpotByNumber(curSpotNumInPanel);
 
-        ImageIcon bootIcon = new ImageIcon(filepathToRepo + "/assets/boppels-and-boots/boppel-" + this.colour + ".png");
+        ImageIcon bootIcon = new ImageIcon(filepathToRepo + "/assets/boppels-and-boots/boot-" + this.colour + ".png");
         Image bootImage = bootIcon.getImage();
         Image bootResized = bootImage.getScaledInstance(width*15/1440, height*15/900,  java.awt.Image.SCALE_SMOOTH);
         this.bootImage = new JLabel(new ImageIcon(bootResized));
-
-        super.setIcon(bootIcon);
 
         this.bootImage.addMouseListener(new MouseAdapter()
         {
