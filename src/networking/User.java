@@ -60,11 +60,15 @@ public class User {
      * @return
      * @throws IOException
      */
-    public static User createNewUser(String newUsername, String newPassword) throws IOException
+    public static User createNewUser(String newUsername, String newPassword) throws Exception
     {
 
         // check to make sure that password is acceptable by LS
-
+        // throw an exception with method if it is not
+        if (!isValidPassword(newPassword))
+        {
+            throw new Exception("This password does not fit the LS criteria. Please try a different password.");
+        }
 
 
 

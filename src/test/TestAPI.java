@@ -6,7 +6,7 @@ import java.io.IOException;
 
 public class TestAPI {
 
-    public static void main (String [] args) throws IOException
+    public static void main (String [] args) throws IOException, Exception
 
     {
         String username = "fuck_this";
@@ -19,7 +19,7 @@ public class TestAPI {
 
     }
 
-    public static void testCreateUser(String username, String password) throws IOException {
+    public static void testCreateUser(String username, String password) throws IOException, Exception {
 
         User createNew = User.createNewUser(username, password);
         createNew.printTokenRelatedFields();
