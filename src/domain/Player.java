@@ -13,7 +13,7 @@ public class Player {
 
     // basic info
     private String name;
-    private String color; // TODO: write enum for colors instead
+    private String bootColor; // TODO: write enum for colors instead
     private int score; // we might want to do this somewhere else instead, but for now I will store score in here
 
 
@@ -33,7 +33,7 @@ public class Player {
 
     public String getName() {return name;}
 
-    public String getColor() {return color;}
+    public String getBootColor() {return bootColor;}
 
     public int getScore() {return score;}
 
