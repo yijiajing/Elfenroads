@@ -21,9 +21,6 @@ public class User {
         PLAYER, SERVICE, ADMIN
     }
 
-
-
-
     // this class represents a user of the lobby service
 
 
@@ -40,6 +37,7 @@ public class User {
     private Calendar authTokenExpiresAt;
     private Calendar authTokenIssued;
     private String tokenExpiryAsString;
+    private Role role;
 
 
 
@@ -59,9 +57,6 @@ public class User {
         authenticate();
     }
 
-
-    // TODO: make sure the password is legit so we don't have to worry about the user messing it up
-
     /**
      * creates a new User in the LS with ROLE_PLAYER
      * @pre user does not yet exist in LS
@@ -71,7 +66,7 @@ public class User {
      * @return
      * @throws IOException
      */
-    public static User createNewUser(String newUsername, String newPassword) throws Exception
+    public static User createNewUser(String newUsername, String newPassword, Role newRole) throws Exception
     {
 
         // check to make sure that password is acceptable by LS
@@ -231,6 +226,8 @@ public class User {
     public String getUsername() {
         return username;
     }
+
+    public Role getRole() {return role;}
 
     private String escapePlusSign(String token)
     {

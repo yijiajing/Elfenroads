@@ -21,7 +21,7 @@ public class TestAPI {
 
     public static void testCreateUser(String username, String password) throws IOException, Exception {
 
-        User createNew = User.createNewUser(username, password);
+        User createNew = User.createNewUser(username, password, User.Role.PLAYER);
         createNew.printTokenRelatedFields();
     }
 
