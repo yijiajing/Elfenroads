@@ -70,7 +70,7 @@ public class LoginWindow extends JPanel implements ActionListener {
             	{
 					e1.printStackTrace();
 				}
-            	boolean p = User.doesPasswordExist(password);
+            	boolean p = User.isValidPassword(password);
             	if (u && p)
             	{
             		remove(background_elvenroads);

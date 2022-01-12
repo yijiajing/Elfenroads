@@ -67,6 +67,7 @@ public class User {
 
 
 
+
         User admin = new User (adminUsername, adminPassword);
         String adminToken = admin.getAccessToken();
 
@@ -243,7 +244,7 @@ public class User {
     }
     
     // from Max's code
-    public static boolean doesPasswordExist(String password)
+    public static boolean isValidPassword(String password)
     {
     	return Pattern.compile("(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,32}").matcher(password).find();
     }
