@@ -10,11 +10,6 @@ public class TestAPI {
 
     {
 
-
-
-
-
-
     }
 
     public static void testCreateUser(String username, String password) throws IOException, Exception {
