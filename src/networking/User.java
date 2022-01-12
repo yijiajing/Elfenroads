@@ -13,6 +13,17 @@ import java.util.regex.Pattern;
 
 public class User {
 
+
+    // enum used for roles as they appear in the LS
+
+    public enum Role
+    {
+        PLAYER, SERVICE, ADMIN
+    }
+
+
+
+
     // this class represents a user of the lobby service
 
 
@@ -315,6 +326,27 @@ public class User {
         }
     	
     	return allUsers;
+    }
+
+    // used to help us convert the text description of a user's role to a value from our Role enum
+    public Role interpretRole(String role) throws Exception
+    {
+        if (role.equalsIgnoreCase("ROLE_PLAYER"))
+        {
+            return Role.PLAYER;
+        }
+
+        else if (role.equalsIgnoreCase("ROLE_ADMIN"))
+        {
+            return Role.ADMIN;
+        }
+
+        else if (role.equalsIgnoreCase("ROLE_SERVICE"))
+        {
+            return Role.SERVICE;
+        }
+
+        throw new Exception(role + " is not a valid role!");
     }
 
     // FOR TESTING PURPOSES ONLY
