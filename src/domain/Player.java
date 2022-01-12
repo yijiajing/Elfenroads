@@ -11,15 +11,33 @@ public class Player {
     // this represents a player in a game
     // there may be some overlap between this and the networking.User class, but I thought it would be a good idea to keep them separated for now
 
-    private InetAddress location; // will be used to connect a player
-    private String locationAsString; // will represent the player's IP
-    private ArrayList<Player> connectedPlayers;
-    private ArrayList<Socket> in; // connections in
-    private ArrayList<Socket> out; // connections out
-
-   // TODO: delete this class if I don't use it
+    // basic info
+    private String name;
+    private String color; // TODO: write enum for colors instead
+    private int score; // we might want to do this somewhere else instead, but for now I will store score in here
 
 
+    // networking stuff
+    private User associated;
+    private String IP;
 
+    /**
+     * constructs a player from a User object (designed to be called after login)
+     * @param loggedIn the LS account the player is currently signed into
+     */
+    public Player (User loggedIn)
+    {
+        associated = loggedIn;
+        name = loggedIn.getUsername();
+    }
 
+    public String getName() {return name;}
+
+    public String getColor() {return color;}
+
+    public int getScore() {return score;}
+
+    public User getAssociated() {return associated;}
+
+    public String getIP() {return IP;}
 }
