@@ -15,6 +15,7 @@ public class Player {
     private String name;
     private String bootColor; // TODO: write enum for colors instead
     private int score; // we might want to do this somewhere else instead, but for now I will store score in here
+    private int gold; // will only be used in Elfengold
 
 
     // networking stuff
@@ -23,10 +24,15 @@ public class Player {
 
     /**
      * constructs a player from a User object (designed to be called after login)
-     * @param loggedIn the LS account the player is currently signed into
+     * @param loggedIn the LS account the player is currently signed into. must be of role Player
      */
-    public Player (User loggedIn)
+    public Player (User loggedIn) throws Exception
     {
+        if (!loggedIn.getRole().equals(User.Role.PLAYER))
+        {
+            throw new Exception("The user associated with the Player must have Player role in the LS!");
+        }
+
         associated = loggedIn;
         name = loggedIn.getUsername();
     }
