@@ -65,7 +65,7 @@ public class User {
 
         // check to make sure that password is acceptable by LS
         // throw an exception with method if it is not
-        if (!isValidPassword(newPassword))
+        if (!isValidPassword(newPassword)) // calls the method we took from Max's code
         {
             throw new Exception("This password does not fit the LS criteria. Please try a different password.");
         }
