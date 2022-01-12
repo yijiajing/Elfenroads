@@ -34,7 +34,7 @@ public class GameService {
         maxSessionPlayers = 2;
         gameDisplayName = pGameDisplayName;
         createGameServiceUser();
-        // now, we have created the game service user and we can go on to create the actual game session (using that user)
+        // now, we have created the game service user and we can go on to create the actual game service (using that user)
         createGameService();
 
     }
