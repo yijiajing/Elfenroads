@@ -9,10 +9,8 @@ public class TestAPI {
     public static void main (String [] args) throws IOException, Exception
 
     {
-        String username = "fuck_this";
-        String password = "abc123_ABC123";
 
-        testCreateUser(username, password);
+
 
 
 
