@@ -3,6 +3,7 @@ package networking;
 import org.json.*;
 
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -14,10 +15,13 @@ public class User {
 
     // this class represents a user of the lobby service
 
+
     private String username;
     private String password;
     private String accessToken;
-    private String basicAuthCredentials;
+    private static final String basicAuthCredentials = "bgp-client-name:bgp-client-pw";
+    private static final String adminUsername = "maex";
+    private static final String adminPassword = "abc123_ABC123";
     private String basicAuthEncoded;
     private boolean isAuthenticated;
     private String refreshToken;
@@ -38,15 +42,72 @@ public class User {
     {
         username = pUsername;
         password = pPassword;
-        basicAuthCredentials = "bgp-client-name:bgp-client-pw";
+        // basicAuthCredentials = "bgp-client-name:bgp-client-pw";
         basicAuthEncoded = Base64.getEncoder().encodeToString(basicAuthCredentials.getBytes());
         isAuthenticated = false;
         authenticate();
     }
 
+
+    // TODO: make sure the password is legit so we don't have to worry about the user messing it up
+
+    /**
+     * creates a new User in the LS with ROLE_PLAYER
+     * @pre user does not yet exist in LS
+     * @pre the password must comply to the password policy, or the request throw an exception
+     * @param newUsername the username for the new user
+     * @param newPassword the password for the new user
+     * @return
+     * @throws IOException
+     */
+    public static User createNewUser(String newUsername, String newPassword) throws IOException
+    {
+
+        // check to make sure that password is acceptable by LS
+
+
+
+        User admin = new User (adminUsername, adminPassword);
+        String adminToken = admin.getAccessToken();
+
+        URL url = new URL("http://35.182.122.111:4242/api/users/" + newUsername + "?access_token=" + adminToken);
+
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("PUT");
+        con.setRequestProperty("Content-Type", "application/json");
+
+        /* Payload support */
+        con.setDoOutput(true);
+        DataOutputStream out = new DataOutputStream(con.getOutputStream());
+        out.writeBytes("{\n");
+        out.writeBytes("    \"name\": \"" + newUsername + "\",\n");
+        out.writeBytes("    \"password\": \"" + newPassword + "\",\n");
+        out.writeBytes("    \"preferredColour\": \"01FFFF\",\n");
+        out.writeBytes("    \"role\": \"ROLE_PLAYER\"\n");
+        out.writeBytes("}");
+        out.flush();
+        out.close();
+
+        int status = con.getResponseCode();
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer content = new StringBuffer();
+        while((inputLine = in.readLine()) != null) {
+            content.append(inputLine);
+        }
+        in.close();
+        con.disconnect();
+        System.out.println("Response status: " + status);
+        System.out.println(content.toString());
+
+        User created = new User(newUsername, newPassword);
+        return created;
+    }
+
+
     public int authenticate() throws IOException
     {
-        URL url = new URL("http://ec2-3-96-55-178.ca-central-1.compute.amazonaws.com:4242/oauth/token?grant_type=password&username=" + username + "&password=" + password);
+        URL url = new URL("http://35.182.122.111:4242/oauth/token?grant_type=password&username=" + username + "&password=" + password);
 
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setDoOutput(true);
@@ -191,7 +252,7 @@ public class User {
 
     {
         
-    	URL url = new URL("http://ec2-3-96-55-178.ca-central-1.compute.amazonaws.com:4242/api/users?access_token=" + adminToken);
+    	URL url = new URL("http://35.182.122.111:4242/api/users?access_token=" + adminToken);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
 

@@ -17,18 +17,7 @@ public class Player {
     private ArrayList<Socket> in; // connections in
     private ArrayList<Socket> out; // connections out
 
-    // TODO: implement the constructor
-    public Player(String IP)
-    {
-
-    }
-
-
-    // TODO: implement this once I finish up with P2Pconnection
-    public void addConnection(P2PConnection conWithPlayer)
-    {
-
-    }
+   // TODO: delete this class if I don't use it
 
 
 

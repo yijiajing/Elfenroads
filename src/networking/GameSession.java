@@ -39,7 +39,7 @@ public class GameSession {
 
 
         // TODO: change that line back after testing
-        URL url = new URL("http:/ec2-3-96-55-178.ca-central-1.compute.amazonaws.com:4242/api/sessions?access_token=" + token + "&location=" + locationIP);
+        URL url = new URL("http://35.182.122.111:4242/api/sessions?access_token=" + token + "&location=" + locationIP);
 
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("POST");
@@ -77,7 +77,7 @@ public class GameSession {
     {
         String creatorToken = creator.getAccessToken();
 
-        URL url = new URL("http:/ec2-3-96-55-178.ca-central-1.compute.amazonaws.com:4242/api/sessions/" + id + "?access_token=" + creatorToken);
+        URL url = new URL("http://35.182.122.111:4242/api/sessions/" + id + "?access_token=" + creatorToken);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("POST");
 
@@ -134,7 +134,7 @@ public class GameSession {
 
     public static JSONObject getSessionDetails(String id) throws IOException
     {
-        URL url = new URL("http:/ec2-3-96-55-178.ca-central-1.compute.amazonaws.com:4242/api/sessions/" + id);
+        URL url = new URL("http://35.182.122.111:4242/api/sessions/" + id);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
 
@@ -189,7 +189,7 @@ public class GameSession {
 
     public static JSONObject getSessions() throws IOException
     {
-        URL url = new URL("http:/ec2-3-96-55-178.ca-central-1.compute.amazonaws.com:4242/api/sessions");
+        URL url = new URL("http://35.182.122.111:4242/api/sessions");
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
 
@@ -293,7 +293,7 @@ public class GameSession {
         // we need to join this session with the chosen user, so we will
         String token = joiner.getAccessToken();
 
-        URL url = new URL("http:/ec2-3-96-55-178.ca-central-1.compute.amazonaws.com:4242/api/sessions" + sessionID +"/players/" + joiner.getUsername() + "?location=" + joinerIP + "&access_token=" + token);
+        URL url = new URL("http://35.182.122.111:4242/api/sessions" + sessionID +"/players/" + joiner.getUsername() + "?location=" + joinerIP + "&access_token=" + token);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("PUT");
 
