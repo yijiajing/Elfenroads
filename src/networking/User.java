@@ -24,8 +24,13 @@ public class User {
     // this class represents a user of the lobby service
 
 
+    // basic info
     private String username;
     private String password;
+    private Role role;
+    private String preferredColor; // we probably won't need this, but I set it anyway
+
+    // oauth stuff
     private String accessToken;
     private static final String basicAuthCredentials = "bgp-client-name:bgp-client-pw";
     private static final String adminUsername = "maex";
@@ -37,7 +42,9 @@ public class User {
     private Calendar authTokenExpiresAt;
     private Calendar authTokenIssued;
     private String tokenExpiryAsString;
-    private Role role;
+
+    // for reference
+    private JSONObject infoFromAPI;
 
 
 
@@ -47,7 +54,9 @@ public class User {
      * @param pPassword
      * @throws IOException
      */
-    public User(String pUsername, String pPassword) throws IOException
+
+    // TODO: read in role from the API
+    public User(String pUsername, String pPassword) throws IOException, Exception
     {
         username = pUsername;
         password = pPassword;
@@ -55,6 +64,7 @@ public class User {
         basicAuthEncoded = Base64.getEncoder().encodeToString(basicAuthCredentials.getBytes());
         isAuthenticated = false;
         authenticate();
+        retrieveUserInfo();
     }
 
     /**
@@ -215,6 +225,52 @@ public class User {
 
     }
 
+    /**
+     * makes an API call to get details about a user on the LS and to set the relevant fields
+     * */
+    private void retrieveUserInfo() throws IOException, Exception
+    {
+        // this operation requires admin permissions
+        User admin = new User(adminUsername, adminPassword);
+        String adminToken = admin.getAccessToken();
+
+        // now make the main API call
+        URL url = new URL("http://35.182.122.111:4242/api/users/maex?access_token=" + adminToken);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("GET");
+
+        /* Payload support */
+        con.setDoOutput(true);
+        DataOutputStream out = new DataOutputStream(con.getOutputStream());
+        out.writeBytes("user_oauth_approval=true&_csrf=19beb2db-3807-4dd5-9f64-6c733462281b&authorize=true");
+        out.flush();
+        out.close();
+
+        int status = con.getResponseCode();
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer content = new StringBuffer();
+        while((inputLine = in.readLine()) != null) {
+            content.append(inputLine);
+        }
+        in.close();
+        con.disconnect();
+
+        // now, take the output and turn it into a JSON
+
+        JSONObject response = new JSONObject(content.toString());
+        infoFromAPI = response;
+        // we already have username and password, so we don't need to do anything to those.
+
+        // we are, however, interested in preferred color and role
+        preferredColor = response.get("preferredColour").toString();
+        String roleString = response.get("role").toString();
+
+        role = interpretRole(roleString); // see line 386
+
+
+    }
+
     public String getRefreshToken() {
         return refreshToken;
     }
@@ -236,7 +292,7 @@ public class User {
     }
 
     // TODO: need to implement this method
-    public static boolean doesUsernameExist(String username) throws IOException
+    public static boolean doesUsernameExist(String username) throws IOException, Exception
     {
         User admin = new User("maex", "abc123_ABC123");
         String token = admin.getAccessToken();
