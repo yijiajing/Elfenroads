@@ -26,7 +26,7 @@ public class User {
     private Calendar authTokenIssued;
     private String tokenExpiryAsString;
 
-    private String lsHostIP = "192.168.2.17"; // Nick's IP because he is hosting the ls
+    private String lsHostIP = "35.182.122.111"; // Nick's IP because he is hosting the ls
 
 
     /**
@@ -192,7 +192,7 @@ public class User {
 
     {
         
-    	URL url = new URL("http://10.122.175.220:4242/api/users?access_token=" + adminToken);
+    	URL url = new URL("http://35.182.122.111:4242/api/users?access_token=" + adminToken);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
 
