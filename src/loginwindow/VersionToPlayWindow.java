@@ -50,9 +50,10 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
         classicGame1.addActionListener(new ActionListener(){
 
             @Override
-            public void actionPerformed(ActionEvent e) {
-                remove(background_elvenroads);
-                // Main.setScreen(new GameScreen(Main.startFrame));
+            public void actionPerformed(ActionEvent e) 
+            {
+                //remove(background_elvenroads);
+                MainFrame.cardLayout.show(MainFrame.mainPanel, "gameScreen");
             }
             
         });
@@ -63,7 +64,7 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                NetworkDemoPlayer1.cardLayout.show(NetworkDemoPlayer1.mainPanel,"gameScreen");
+                MainFrame.cardLayout.show(MainFrame.mainPanel,"gameScreen");
             }
         });
 
@@ -77,8 +78,8 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
             @Override
             public void actionPerformed(ActionEvent e) {
                 remove(background_elvenroads);
-                NetworkDemoPlayer1.mainPanel.add(new LobbyWindow(), "lobby");
-                NetworkDemoPlayer1.cardLayout.show(NetworkDemoPlayer1.mainPanel,"lobby");
+                MainFrame.mainPanel.add(new LobbyWindow(), "lobby");
+                MainFrame.cardLayout.show(MainFrame.mainPanel,"lobby");
             }
         });
 

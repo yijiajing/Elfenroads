@@ -64,7 +64,7 @@ public class User {
         basicAuthEncoded = Base64.getEncoder().encodeToString(basicAuthCredentials.getBytes());
         isAuthenticated = false;
         authenticate();
-        retrieveUserInfo();
+        //retrieveUserInfo();
     }
 
     /**
