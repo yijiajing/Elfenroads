@@ -36,8 +36,8 @@ public class StartWindow extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 remove(background_elvenroads);
-                NetworkDemoPlayer1.mainPanel.add(new LoginWindow(), "login");
-                NetworkDemoPlayer1.cardLayout.show(NetworkDemoPlayer1.mainPanel,"login");
+                MainFrame.mainPanel.add(new LoginWindow(), "login");
+                MainFrame.cardLayout.show(MainFrame.mainPanel,"login");
             }
             
         });
