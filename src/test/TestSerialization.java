@@ -15,7 +15,7 @@ public class TestSerialization {
     public static void serializeGameScreen()
     {
         MainFrame main = new MainFrame();
-        GameScreen screen = GameScreen.getInstance(main, true);
+        GameScreen screen = GameScreen.getInstance(main);
 
         GameState test = new GameState(screen);
         System.out.println(test.serialize());

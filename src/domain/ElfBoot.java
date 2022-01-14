@@ -23,7 +23,6 @@ public class ElfBoot extends JLabel {
     private int curSpotNumInPanel;
     private JLabel bootImage;
 
-
     public ElfBoot(String pColour, int pWidth, int pHeight, ElfBootPanel pCurPanel, int pCurSpot) {
 
         this.colour = pColour;
@@ -49,7 +48,7 @@ public class ElfBoot extends JLabel {
         });
     }
 
-    public boolean getSelected() { return this.selected; }
+    public boolean isSelected() { return this.selected; }
 
     public void setSelected(boolean pSelected) {
         this.selected = pSelected;

@@ -27,7 +27,7 @@ public class MainFrame extends JFrame {
         mainPanel = new JPanel(cardLayout);
 
         mainPanel.add(new StartWindow(), "start");
-        mainPanel.add(GameScreen.getInstance(this, true), "gameScreen");
+        mainPanel.add(GameScreen.getInstance(this), "gameScreen");
 
         add(mainPanel);
         setVisible(true);

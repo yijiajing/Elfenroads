@@ -5,7 +5,7 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.util.Arrays;
 
-public class ElfBootPanel extends JPanel {
+public class ElfBootPanel extends JPanel implements ObserverPanel {
 
     private TownPanel townPanel;
     private int x;
@@ -14,21 +14,24 @@ public class ElfBootPanel extends JPanel {
     private int height;
     private JPanel[] spots;
     private boolean[] spotsAvailability;
+    private GameScreen gameScreen;
 
-
-    public ElfBootPanel(TownPanel pTownPanel, int x, int y, int pWidth, int pHeight) {
+    public ElfBootPanel(TownPanel pTownPanel, int x, int y, int pWidth, int pHeight, GameScreen pGameScreen) {
         this.townPanel = pTownPanel;
         this.x = x;
         this.y = y;
         this.width = pWidth;
         this.height = pHeight;
         this.spots = new JPanel[6];
+        this.gameScreen = pGameScreen;
 
         this.setBounds(this.x, this.y, this.width, this.height);
         this.setOpaque(false);
         this.setBorder(BorderFactory.createLineBorder(Color.WHITE));
 
         initializeSpotsOnPanel();
+
+        this.addMouseListener(new ElfBootController(gameScreen, this));
     }
 
     private void initializeSpotsOnPanel() {

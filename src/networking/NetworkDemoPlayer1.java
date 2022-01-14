@@ -38,7 +38,7 @@ public class NetworkDemoPlayer1 extends JFrame {
 
         // while (true)
          // {
-            GameScreen ourScreen = GameScreen.getInstance(this, isOurTurn);
+            GameScreen ourScreen = GameScreen.getInstance(this);
 
             mainPanel.add(ourScreen, "gameScreen");
 
@@ -73,7 +73,7 @@ public class NetworkDemoPlayer1 extends JFrame {
                 // let's set our game screen to this and then update it
                 // we need to use it to reinitialize the game screen
 
-                ourScreen.moveElfBoot1(newSpot);
+                ourScreen.moveBlackBoot(newSpot);
                 // mainPanel.add(newScreen, "gameScreen");
 
                 for (Component toUpdate : mainPanel.getComponents())

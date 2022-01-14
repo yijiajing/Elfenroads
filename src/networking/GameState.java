@@ -1,7 +1,11 @@
 package networking;
 
+import domain.ElfBoot;
 import org.json.JSONObject;
 import panel.GameScreen;
+
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class GameState {
 
@@ -20,11 +24,12 @@ public class GameState {
 
     private GameScreen screen;
     private JSONObject serialized;
+    private ArrayList<ElfBoot> elfBoots;
 
     public GameState (GameScreen input)
     {
         this.screen = input;
-
+        this.elfBoots = new ArrayList<>();
     }
 
     // TODO: implement this second constructor
@@ -39,8 +44,13 @@ public class GameState {
         return serialized;
     }
 
+    public void addElfBoot(ElfBoot pElfBoot) {
+        elfBoots.add(pElfBoot);
+    }
 
-
+    public ArrayList<ElfBoot> getElfBoots() {
+        return elfBoots;
+    }
 
 
 }
