@@ -53,7 +53,7 @@ public class TownPanel extends JPanel {
                     update(newPanelSpot);
 
                     gameScreen.getElfBoot1().setSelected(false);
-
+                    /*
                     gameScreen.reverseTurn();
 
                     try
@@ -66,7 +66,7 @@ public class TownPanel extends JPanel {
                         // do nothing. we are screwed
                         System.out.println("We ran into an IOException when trying to send the game state over to the other player.");
                         problem.printStackTrace();
-                    }
+                    }*/
                 }
 
                 else if (gameScreen.getElfBoot2().getSelected() && gameScreen.getMyTurn())
@@ -82,7 +82,7 @@ public class TownPanel extends JPanel {
                     update(newPanelSpot);
 
                     gameScreen.getElfBoot2().setSelected(false);
-
+                    /*
                     gameScreen.reverseTurn();
 
                     try
@@ -96,7 +96,7 @@ public class TownPanel extends JPanel {
                         System.out.println("We ran into an IOException when trying to send the game state over to the other player.");
                         problem.printStackTrace();
                     }
-
+                    */
 
                 }
             }

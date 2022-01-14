@@ -17,9 +17,14 @@ import javax.swing.border.Border;
 import domain.*;
 import org.minueto.MinuetoTool;
 
+/**
+ * A Singleton class that represents the main GameScreen in which the board game is played
+ */
 public class GameScreen extends JPanel implements Serializable
 {
-	private JFrame mainFrame;
+	private static GameScreen INSTANCE; // Singleton instance 
+
+	private JFrame mainframe;
 	private Integer width;
 	private Integer height;
 	
@@ -64,15 +69,15 @@ public class GameScreen extends JPanel implements Serializable
 
 	
 	// alternate constructor for networking demo
-	public GameScreen (JFrame frame, boolean isTurn)
+	private GameScreen(JFrame frame, boolean isTurn)
 	{
 		// layout is necessary for JLayeredPane to be added to the JPanel
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
 		// Get dimensions of the full screen
-		mainFrame = frame;
-		width = mainFrame.getWidth();
-		height = mainFrame.getHeight();
+		mainframe = frame;
+		width = mainframe.getWidth();
+		height = mainframe.getHeight();
 
 		// Set Bounds for entire Board Game screen and do the initialization of the structure for the UI
 		boardGame_Layers = new JLayeredPane();
@@ -101,15 +106,16 @@ public class GameScreen extends JPanel implements Serializable
 		myTurn = isTurn;
 	}
 
-	public GameScreen (JFrame frame)
+	/*
+	private GameScreen (JFrame frame)
 	{
 		// layout is necessary for JLayeredPane to be added to the JPanel
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
 		// Get dimensions of the full screen
-		mainFrame = frame;
-		width = mainFrame.getWidth();
-		height = mainFrame.getHeight();
+		mainframe = frame;
+		width = mainframe.getWidth();
+		height = mainframe.getHeight();
 
 		// Set Bounds for entire Board Game screen and do the initialization of the structure for the UI
 		boardGame_Layers = new JLayeredPane();
@@ -133,6 +139,18 @@ public class GameScreen extends JPanel implements Serializable
 
 		// Add the entire structure of the UI to the panel
 		this.add(boardGame_Layers);
+	} */
+
+	/**
+	 * @param frame - the main frame that is nested in this JPanel
+	 * @param isTurn - indicates if it is the current player's turn
+	 * @return the Singleton instance of the GameScreen 
+	 */
+	public static GameScreen getInstance(JFrame frame, boolean isTurn) {
+		if (INSTANCE == null) {
+			INSTANCE = new GameScreen(frame, isTurn);
+		}
+		return INSTANCE; 
 	}
 
 
@@ -430,8 +448,8 @@ public class GameScreen extends JPanel implements Serializable
 					if (panelForPlayerTransportationCounters[i].getComponentCount() == 0) // if spot is empty, put card there
 					{
 						panelForPlayerTransportationCounters[i].add(drawn.getDisplay());
-						mainFrame.repaint();
-						mainFrame.revalidate();
+						mainframe.repaint();
+						mainframe.revalidate();
 						break;
 					}
 					// if we don't find an open spot, we do nothing. we can't put the counter anywhere.
@@ -522,7 +540,7 @@ public class GameScreen extends JPanel implements Serializable
 
 	public void addElement(JPanel panel) {
 		boardGame_Layers.add(panel);
-		mainFrame.repaint();
-		mainFrame.revalidate();
+		mainframe.repaint();
+		mainframe.revalidate();
 	}
 }
