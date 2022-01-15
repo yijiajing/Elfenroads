@@ -5,15 +5,19 @@ import java.io.*;
 
 public class PlayerServer 
 {
+    //Global variable to wait for all threads to finish exectuting
+    public static int wait;
+
     private int aConnections;
     private ServerSocket serverSocket;
-    String message = "allo\n";
+    private String message = "This is server!";
 
     /* Once the PlayerServer object is created, simply use start(), stop() and sendMessage() methods to communicate */
 
     public PlayerServer(int pConnections)
     {
         aConnections = pConnections;
+        wait = pConnections;
     }
 
     public void start(int port)
@@ -30,11 +34,19 @@ public class PlayerServer
                 aConnections--;
             }
 
+            while(wait != 0)
+            {
+                // Wait for all threads just in case
+                Thread.sleep(1000);
+            }
+
+            // Reinitialize wait variable to the number of connections for futur message
+            wait = aConnections;
             stop();
         }
         catch (Exception e)
         {
-            System.out.println(e);
+            System.out.println(e.getStackTrace());
         }
     }
 
@@ -58,7 +70,7 @@ public class PlayerServer
 
     public static void main(String[] args)
     {
-        PlayerServer server = new PlayerServer(1);
+        PlayerServer server = new PlayerServer(8);
         server.start(6666);
     }
     

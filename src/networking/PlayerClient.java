@@ -22,11 +22,17 @@ public class PlayerClient extends Thread
         {
             out = new PrintWriter(aClientSocket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(aClientSocket.getInputStream()));
-
-            String input = in.readLine();
-            System.out.println("the message was: " + input);
+     
+            System.out.println("The client received: " + message + " from thread: " + PlayerServer.wait);
 
             done();
+            synchronized(this)    
+            {
+                PlayerServer.wait--;
+            }
+
+            // kill the thread when it is done executing (maybe will need to find a safer way to kill a thread)
+            this.stop();    
         }
         catch(Exception e)
         {
@@ -37,15 +43,14 @@ public class PlayerClient extends Thread
     public void done() 
     {
         try
-        {
-            out.println("1");   
+        { 
             in.close();
             out.close();
             aClientSocket.close();
         }
         catch(Exception e)
         {
-            System.out.println(e);
+            System.out.println(e.getStackTrace());
         }
     }
 
