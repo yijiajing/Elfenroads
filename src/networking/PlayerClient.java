@@ -26,6 +26,7 @@ public class PlayerClient extends Thread
             System.out.println("The client received: " + message + " from thread: " + PlayerServer.wait);
 
             done();
+            // make sure only one thread at a time is decrementing the global vairable
             synchronized(this)    
             {
                 PlayerServer.wait--;
