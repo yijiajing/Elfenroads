@@ -13,9 +13,7 @@ public class testP2P
     {
         try 
         {
-            PlayerClient client = new PlayerClient();
-            client.startConnection("127.0.0.1", 6666);
-            client.sendMessage("allo\n");
+            
 
         } 
         catch (Exception e) 

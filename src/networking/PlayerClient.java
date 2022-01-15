@@ -2,57 +2,47 @@ package networking;
 import java.net.*;
 import java.io.*;
 
-public class PlayerClient 
+public class PlayerClient extends Thread
 {
-    private Socket clientSocket;
+    private Socket aClientSocket;
     private PrintWriter out;
     private BufferedReader in;
 
-    public void startConnection(String ip, int port) 
+    public PlayerClient(Socket pClientSocket)
+    {
+        aClientSocket = pClientSocket;
+        run();
+    }
+
+    public void run()
     {
         try
         {
-            clientSocket = new Socket(ip, port);
-            out = new PrintWriter(clientSocket.getOutputStream(), true);
-            in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            out = new PrintWriter(aClientSocket.getOutputStream(), true);
+            in = new BufferedReader(new InputStreamReader(aClientSocket.getInputStream()));
+
+            String input = in.readLine();
+            System.out.println("the message was: " + input);
+
+            done();
         }
         catch(Exception e)
         {
             System.out.println(e);
         }
-
     }
 
-    public String sendMessage(String msg) 
+    public void done() 
     {
         try
         {
-            out.println(msg);
-            String resp = in.readLine();
-            return resp;
-            
+            out.println("1");    
         }
         catch(Exception e)
         {
             System.out.println(e);
         }
-
-        return null;
-        
     }
 
-    public void stopConnection() 
-    {
-        try
-        {
-            in.close();
-            out.close();
-            clientSocket.close();
-        }
-        catch(Exception e)
-        {
-            System.out.println(e);
-        }
-        
-    }
+    
 }

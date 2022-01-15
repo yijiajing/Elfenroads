@@ -1,41 +1,50 @@
 package networking;
 import java.net.*;
+import java.nio.channels.ServerSocketChannel;
 import java.io.*;
 //Use port > 1024
 
 public class PlayerServer 
 {
-    int aPort;
+    private int aConnections;
     private ServerSocket serverSocket;
-    private Socket clientSocket;
     private PrintWriter out;
     private BufferedReader in;
 
-    // just for testing 
-    String r = "";
+    /* Once the PlayerServer object is created, simply use start(), stop() and sendMessage() methods to communicate */
 
-    public void start(int pPort)
+    public PlayerServer(int pConnections)
     {
-        aPort = pPort;
+        aConnections = pConnections;
+    }
+
+    public void start(int port)
+    {
         try
         { 
-            serverSocket = new ServerSocket(aPort);
-            clientSocket = serverSocket.accept();
+            serverSocket = new ServerSocket(port);
 
-            System.out.println("Connection found!");
+            while(aConnections != 0)
+            {
+                // create a thread for another player and start up the connection
+                Socket client = serverSocket.accept();
+                sendMessage("Hi from the Server!");
 
-            out = new PrintWriter(clientSocket.getOutputStream(), true);
-            in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream())); 
-            
-            String greeting = in.readLine();
-            r = greeting;
-            System.out.println(greeting);
+                new PlayerClient(client).start();
+                aConnections--;
+            }
+
             stop();
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             System.out.println(e);
         }
+    }
+
+    public void sendMessage(String msg)
+    {
+        out.println(msg);
     }
 
     public void stop()
@@ -44,7 +53,6 @@ public class PlayerServer
         {
             in.close();
             out.close();
-            clientSocket.close();
             serverSocket.close();
         }
         catch(IOException e)
@@ -56,7 +64,7 @@ public class PlayerServer
 
     public static void main(String[] args)
     {
-        PlayerServer server = new PlayerServer();
+        PlayerServer server = new PlayerServer(1);
         server.start(6666);
     }
     
