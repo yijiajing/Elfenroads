@@ -36,7 +36,7 @@ public class PlayerServer
 
             while(wait != 0)
             {
-                // Wait for all threads just in case
+                // Wait for all threads just in case and sleep to use less cpu while waiting
                 Thread.sleep(1000);
             }
 
