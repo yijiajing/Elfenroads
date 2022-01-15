@@ -12,7 +12,7 @@ public class PlayerServer
     private ServerSocket serverSocket;
     private String message = "This is server!";
 
-    /* Once the PlayerServer object is created, simply use start(), stop() and sendMessage() methods to communicate */
+    /* Once the PlayerServer object is created, simply use start(), stop() and setMessage() methods to communicate */
 
     public PlayerServer(int pConnections)
     {
