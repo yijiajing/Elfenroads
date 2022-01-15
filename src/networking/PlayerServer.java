@@ -1,6 +1,5 @@
 package networking;
 import java.net.*;
-import java.nio.channels.ServerSocketChannel;
 import java.io.*;
 //Use port > 1024
 
@@ -8,8 +7,7 @@ public class PlayerServer
 {
     private int aConnections;
     private ServerSocket serverSocket;
-    private PrintWriter out;
-    private BufferedReader in;
+    String message = "allo\n";
 
     /* Once the PlayerServer object is created, simply use start(), stop() and sendMessage() methods to communicate */
 
@@ -23,14 +21,12 @@ public class PlayerServer
         try
         { 
             serverSocket = new ServerSocket(port);
+            setMessage("It worked from the Server!!");
 
             while(aConnections != 0)
             {
                 // create a thread for another player and start up the connection
-                Socket client = serverSocket.accept();
-                sendMessage("Hi from the Server!");
-
-                new PlayerClient(client).start();
+                new PlayerClient(serverSocket.accept(), message).start();
                 aConnections--;
             }
 
@@ -42,17 +38,15 @@ public class PlayerServer
         }
     }
 
-    public void sendMessage(String msg)
+    public void setMessage(String msg)
     {
-        out.println(msg);
+        message = msg;
     }
 
     public void stop()
     {
         try
         {
-            in.close();
-            out.close();
             serverSocket.close();
         }
         catch(IOException e)

@@ -7,10 +7,12 @@ public class PlayerClient extends Thread
     private Socket aClientSocket;
     private PrintWriter out;
     private BufferedReader in;
+    private String message;
 
-    public PlayerClient(Socket pClientSocket)
+    public PlayerClient(Socket pClientSocket, String msg)
     {
         aClientSocket = pClientSocket;
+        message = msg;
         run();
     }
 
@@ -36,7 +38,10 @@ public class PlayerClient extends Thread
     {
         try
         {
-            out.println("1");    
+            out.println("1");   
+            in.close();
+            out.close();
+            aClientSocket.close();
         }
         catch(Exception e)
         {
