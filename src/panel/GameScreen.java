@@ -9,17 +9,24 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Stack;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 
 import domain.*;
+import networking.GameState;
 import org.minueto.MinuetoTool;
 
+/**
+ * A Singleton class that represents the main GameScreen in which the board game is played
+ */
 public class GameScreen extends JPanel implements Serializable
 {
-	private JFrame mainFrame;
+	private static GameScreen INSTANCE; // Singleton instance 
+
+	private JFrame mainframe;
 	private Integer width;
 	private Integer height;
 	
@@ -31,8 +38,13 @@ public class GameScreen extends JPanel implements Serializable
 	private JLabel mapImage_BottomLayer;
 	private JLabel informationCardImage_TopLayer;
 	private JLabel deckOfTransportationCountersImage_TopLayer;
-	private ElfBoot elfBoot1;
-	private ElfBoot elfBoot2;
+	
+	private ElfBoot blackBoot;
+	private ElfBoot blueBoot;
+	private ElfBoot greenBoot;
+	private ElfBoot purpleBoot;
+	private ElfBoot redBoot;
+	private ElfBoot yellowBoot;
 	
 	private JPanel backgroundPanel_ForMap = new JPanel();
 	private JPanel backgroundPanel_ForRound = new JPanel();
@@ -49,6 +61,8 @@ public class GameScreen extends JPanel implements Serializable
 	private JPanel panelForDeckOfTransportationCounters = new JPanel();
 	private JPanel panelForObstacle = new JPanel();
 
+	private ArrayList<ObserverPanel> observerPanels = new ArrayList<>();
+
 	private GameMap gameMap;
 
 	private JTable leaderboard = new JTable();
@@ -59,31 +73,28 @@ public class GameScreen extends JPanel implements Serializable
 	private String filepathToRepo = ".";
 	private boolean myTurn;
 
+	// not sure if this makes sense ?
+	// perhaps we can use setGameState() method when a new game state is loaded onto the game screen
+	private GameState gameState = new GameState(this);
+
 	// TODO: change this on the other computer
 	private String otherPlayerIP = "192.168.2.253"; // Nick's IP address
 
 	
 	// alternate constructor for networking demo
-	public GameScreen (JFrame frame, boolean isTurn)
+	private GameScreen(JFrame frame, boolean isTurn)
 	{
 		// layout is necessary for JLayeredPane to be added to the JPanel
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
 		// Get dimensions of the full screen
-		mainFrame = frame;
-		width = mainFrame.getWidth();
-		height = mainFrame.getHeight();
+		mainframe = frame;
+		width = mainframe.getWidth();
+		height = mainframe.getHeight();
 
 		// Set Bounds for entire Board Game screen and do the initialization of the structure for the UI
 		boardGame_Layers = new JLayeredPane();
 		boardGame_Layers.setBounds(0,0,width,height);
-
-		// initialize town and road panels
-		gameMap = new GameMap(this);
-
-		// initialize elf boots
-		elfBoot1 = new ElfBoot("black", this.width, this.height, gameMap.getTown("Elvenhold").getPanel().getElfBootPanel(), 0);
-		elfBoot2 = new ElfBoot("blue", this.width, this.height, gameMap.getTown("Elvenhold").getPanel().getElfBootPanel(), 1);
 
 		initialization();
 
@@ -101,26 +112,19 @@ public class GameScreen extends JPanel implements Serializable
 		myTurn = isTurn;
 	}
 
-	public GameScreen (JFrame frame)
+	private GameScreen (JFrame frame)
 	{
 		// layout is necessary for JLayeredPane to be added to the JPanel
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
 		// Get dimensions of the full screen
-		mainFrame = frame;
-		width = mainFrame.getWidth();
-		height = mainFrame.getHeight();
+		mainframe = frame;
+		width = mainframe.getWidth();
+		height = mainframe.getHeight();
 
 		// Set Bounds for entire Board Game screen and do the initialization of the structure for the UI
 		boardGame_Layers = new JLayeredPane();
 		boardGame_Layers.setBounds(0,0,width,height);
-
-		// initialize town and road panels
-		gameMap = new GameMap(this);
-
-		// initialize elf boots
-		elfBoot1 = new ElfBoot("black", this.width, this.height, gameMap.getTown("Elvenhold").getPanel().getElfBootPanel(), 0);
-		elfBoot2 = new ElfBoot("blue", this.width, this.height, gameMap.getTown("Elvenhold").getPanel().getElfBootPanel(), 1);
 
 		initialization();
 
@@ -135,6 +139,17 @@ public class GameScreen extends JPanel implements Serializable
 		this.add(boardGame_Layers);
 	}
 
+	/**
+	 * @param frame - the main frame that is nested in this JPanel
+	 * @return the Singleton instance of the GameScreen 
+	 */
+	public static GameScreen getInstance(JFrame frame) {
+		if (INSTANCE == null) {
+			INSTANCE = new GameScreen(frame);
+		}
+		return INSTANCE; 
+	}
+
 
 	public void update(JPanel panel)
 	{
@@ -145,6 +160,10 @@ public class GameScreen extends JPanel implements Serializable
 
 	public void initialization()
 	{
+		// initialize town and road panels
+		gameMap = new GameMap(this);
+
+		initializeElfBoots();
 		initializeMapImage();
 		initializeRoundCardImage(1);
 		initializeTransportationCountersAndObstacle();
@@ -157,6 +176,25 @@ public class GameScreen extends JPanel implements Serializable
 		initializeLeaderboard();
 		initializeTransportationCounters();
 		initializeLeaderboard();
+	}
+
+	public void initializeElfBoots() {
+		// TODO - the number of boots depends on the number of players, this implementation is wrong
+		ElfBootPanel elvenholdBootPanel = gameMap.getTown("Elvenhold").getPanel().getElfBootPanel();
+
+		blackBoot = new ElfBoot("black", this.width, this.height, elvenholdBootPanel, this);
+		blueBoot = new ElfBoot("blue", this.width, this.height, elvenholdBootPanel, this);
+		greenBoot = new ElfBoot("green", this.width, this.height, elvenholdBootPanel, this);
+		purpleBoot = new ElfBoot("purple", this.width, this.height, elvenholdBootPanel, this);
+		redBoot = new ElfBoot("red", this.width, this.height, elvenholdBootPanel, this);
+		yellowBoot = new ElfBoot("yellow", this.width, this.height, elvenholdBootPanel, this);
+
+		gameState.addElfBoot(blackBoot);
+		gameState.addElfBoot(blueBoot);
+		gameState.addElfBoot(greenBoot);
+		gameState.addElfBoot(purpleBoot);
+		gameState.addElfBoot(redBoot);
+		gameState.addElfBoot(yellowBoot);
 	}
 	
 	public void initializeBackgroundPanels()
@@ -340,8 +378,8 @@ public class GameScreen extends JPanel implements Serializable
 		backgroundPanel_ForRound.add(roundImage_TopLayer);
 		backgroundPanel_ForInformationCard.add(informationCardImage_TopLayer);
 		panelForDeckOfTransportationCounters.add(deckOfTransportationCountersImage_TopLayer);
-		elfBoot1.getCurSpotInPanel().add(elfBoot1.getImage());
-		elfBoot2.getCurSpotInPanel().add(elfBoot2.getImage());
+
+		notifyObservers();
 	}
 	
 	public void addPanelToScreen()
@@ -430,8 +468,8 @@ public class GameScreen extends JPanel implements Serializable
 					if (panelForPlayerTransportationCounters[i].getComponentCount() == 0) // if spot is empty, put card there
 					{
 						panelForPlayerTransportationCounters[i].add(drawn.getDisplay());
-						mainFrame.repaint();
-						mainFrame.revalidate();
+						mainframe.repaint();
+						mainframe.revalidate();
 						break;
 					}
 					// if we don't find an open spot, we do nothing. we can't put the counter anywhere.
@@ -440,31 +478,31 @@ public class GameScreen extends JPanel implements Serializable
 		});
 	}
 
-	public void moveElfBoot1(JPanel newCurrentPanel)
+	public void moveBlackBoot(JPanel newCurrentPanel)
 	{
 		// this is what we will use to update the game state based on the information sent over the network
-		elfBoot1.getCurSpotInPanel().remove(elfBoot1.getImage());
-		elfBoot1.getCurPanel().setSpotAvailability(elfBoot1.getCurSpotInPanel(), true);
-		update(elfBoot1.getCurSpotInPanel());
+		blackBoot.getCurSpotInPanel().remove(blackBoot.getImage());
+		blackBoot.getCurPanel().setSpotAvailability(blackBoot.getCurSpotInPanel(), true);
+		update(blackBoot.getCurSpotInPanel());
 
 		// now switch the current panel
-		elfBoot1.setCurPanelAndSpot((ElfBootPanel) newCurrentPanel);
-		elfBoot1.getCurSpotInPanel().add(elfBoot1.getImage());
-		update(elfBoot1.getCurSpotInPanel());
+		blackBoot.setCurPanelAndSpot((ElfBootPanel) newCurrentPanel);
+		blackBoot.getCurSpotInPanel().add(blackBoot.getImage());
+		update(blackBoot.getCurSpotInPanel());
 
 	}
 
-	public void setCurrentPanelOfElfBoot2(JPanel newCurrentPanel)
+	public void setCurrentPanelOfBlueBoot(JPanel newCurrentPanel)
 	{
 		// this is what we will use to update the game state based on the information sent over the network
-		elfBoot2.getCurSpotInPanel().remove(elfBoot2.getImage());
-		elfBoot2.getCurPanel().setSpotAvailability(elfBoot2.getCurSpotInPanel(), true);
-		update(elfBoot2.getCurSpotInPanel());
+		blueBoot.getCurSpotInPanel().remove(blueBoot.getImage());
+		blueBoot.getCurPanel().setSpotAvailability(blueBoot.getCurSpotInPanel(), true);
+		update(blueBoot.getCurSpotInPanel());
 
 		// now switch the current panel
-		elfBoot2.setCurPanelAndSpot((ElfBootPanel) newCurrentPanel);
-		elfBoot2.getCurSpotInPanel().add(elfBoot2.getImage());
-		update(elfBoot2.getCurSpotInPanel());
+		blueBoot.setCurPanelAndSpot((ElfBootPanel) newCurrentPanel);
+		blueBoot.getCurSpotInPanel().add(blueBoot.getImage());
+		update(blueBoot.getCurSpotInPanel());
 
 	}
 
@@ -475,7 +513,7 @@ public class GameScreen extends JPanel implements Serializable
 		game_screen.setSize(MinuetoTool.getDisplayWidth(), MinuetoTool.getDisplayHeight());
 		game_screen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		game_screen.add(new GameScreen(game_screen, true));
+		game_screen.add(getInstance(game_screen));
 		game_screen.setVisible(true);
 	}
 
@@ -512,9 +550,9 @@ public class GameScreen extends JPanel implements Serializable
 		myTurn = !myTurn;
 	}
 
-	public ElfBoot getElfBoot1() { return this.elfBoot1; }
+	public ElfBoot getBlackBoot() { return this.blackBoot; }
 
-	public ElfBoot getElfBoot2() { return this.elfBoot2; }
+	public ElfBoot getBlueBoot() { return this.blueBoot; }
 
 	public int getWidth() { return this.width; }
 
@@ -522,7 +560,25 @@ public class GameScreen extends JPanel implements Serializable
 
 	public void addElement(JPanel panel) {
 		boardGame_Layers.add(panel);
-		mainFrame.repaint();
-		mainFrame.revalidate();
+		mainframe.repaint();
+		mainframe.revalidate();
+	}
+
+	public void setGameState(GameState pGameState) {
+		this.gameState = pGameState;
+	}
+
+	public GameState getGameState() {
+		return this.gameState;
+	}
+
+	public void addObserverPanel(ObserverPanel pPanel) {
+		this.observerPanels.add(pPanel);
+	}
+
+	public void notifyObservers() {
+		for ( ObserverPanel observer : observerPanels ) {
+			observer.updateView();
+		}
 	}
 }

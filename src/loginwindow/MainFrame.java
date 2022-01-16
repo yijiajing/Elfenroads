@@ -10,13 +10,6 @@ public class MainFrame extends JFrame {
 
     static CardLayout cardLayout;
     static JPanel mainPanel;
-    StartWindow start;
-    LoginWindow login;
-    LobbyWindow lobby;
-    LobbyWindow lobbyAfterBack;
-    VersionToPlayWindow version;
-    LoadGameWindow load;
-    GameScreen gameScreen;
 
     public MainFrame() {
 
@@ -27,7 +20,7 @@ public class MainFrame extends JFrame {
         mainPanel = new JPanel(cardLayout);
 
         mainPanel.add(new StartWindow(), "start");
-        mainPanel.add(new GameScreen(this), "gameScreen");
+        mainPanel.add(GameScreen.getInstance(this), "gameScreen");
 
         add(mainPanel);
         setVisible(true);
