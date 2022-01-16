@@ -20,12 +20,14 @@ public class PlayerClient extends Thread
     {
         try
         {
+            // Initialize the Streams
             out = new PrintWriter(aClientSocket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(aClientSocket.getInputStream()));
      
-            System.out.println("The client received: " + message + " from thread: " + PlayerServer.wait);
-
+            // Read the message and close the connection with the PlayerServer
+            out.println(message + " was the message from the server");
             done();
+
             // make sure only one thread at a time is decrementing the global vairable
             synchronized(this)    
             {

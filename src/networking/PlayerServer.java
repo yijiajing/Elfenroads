@@ -24,23 +24,25 @@ public class PlayerServer
     {
         try
         { 
+            // Open ServerSocket and set the message for the other incomming connections
             serverSocket = new ServerSocket(port);
-            setMessage("It worked from the Server!!");
 
+            // Loops for every other Players
             while(aConnections != 0)
             {
-                // create a thread for another player and start up the connection
+                // create a thread for another player and start up the connection and send message to it
                 new PlayerClient(serverSocket.accept(), message).start();
                 aConnections--;
             }
 
+            // Busy waiting to make sure every Thread finished their execution before closing the connection
+            // Sleep to use less cpu while waiting
             while(wait != 0)
             {
-                // Wait for all threads just in case and sleep to use less cpu while waiting
                 Thread.sleep(1000);
             }
 
-            // Reinitialize wait variable to the number of connections for futur message
+            // Reinitialize "wait" variable to the number of initial connections for futur message and close connection
             wait = aConnections;
             stop();
         }
@@ -70,7 +72,8 @@ public class PlayerServer
 
     public static void main(String[] args)
     {
-        PlayerServer server = new PlayerServer(8);
+        PlayerServer server = new PlayerServer(2);
+        server.setMessage("It worked from the Server!!\n" + "You are thread number " + wait);
         server.start(6666);
     }
     
