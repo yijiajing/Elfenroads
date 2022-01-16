@@ -49,15 +49,19 @@ public class StartWindow extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //remove(background_elvenroads);
-                if (Desktop.isDesktopSupported()) {
+                /*if (Desktop.isDesktopSupported()) {
                     try {
                         File myFile = new File("./assets/rules/Elfengold Rules.pdf");
                         Desktop.getDesktop().open(myFile);
                     } catch (IOException ex) {
                         // no application registered for PDFs
                     }
-                }
+                }*/
+                remove(background_elvenroads);
+                NetworkDemoPlayer1.mainPanel.add(new AboutWindow(), "about");
+                NetworkDemoPlayer1.cardLayout.show(NetworkDemoPlayer1.mainPanel,"about");
             }
+
         });
         
         // exitButton config
