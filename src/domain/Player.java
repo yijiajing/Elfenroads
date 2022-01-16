@@ -16,11 +16,13 @@ public class Player {
     private ArrayList<Player> connectedPlayers;
     private ArrayList<Socket> in; // connections in
     private ArrayList<Socket> out; // connections out
+    
+    private int aScore;//The score of a player 
 
     // TODO: implement the constructor
     public Player(String IP)
     {
-
+    	
     }
 
 
@@ -30,6 +32,9 @@ public class Player {
 
     }
 
+    public int getScore() {
+    	return aScore;
+    }
 
 
 

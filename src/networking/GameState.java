@@ -2,6 +2,9 @@ package networking;
 
 import org.json.JSONObject;
 import panel.GameScreen;
+import java.util.*;
+import domain.Player;
+
 
 public class GameState {
 
@@ -15,13 +18,23 @@ public class GameState {
     /* as of now, we need to keep track of and be able to serialize:
     1. which Elfen towns have been visited (show on the UI by the town pieces)
     2. where each player's boot is
-    3.
+    3. 
      */
 
     private GameScreen screen;
     private JSONObject serialized;
+    private List<Player> aPlayers = new ArrayList<>();
 
-    public GameState (GameScreen input)
+    //Global variable holding the singleton GameState instance
+    private static GameState instance = new GameState();
+    
+    //NEED TO IMPLEMENT
+    //a default constructor
+    private GameState() {
+    	
+    }
+    
+    private GameState (GameScreen input)
     {
         this.screen = input;
 
@@ -38,8 +51,20 @@ public class GameState {
         serialized = serializedVersion;
         return serialized;
     }
+    
+   
+    /**
+     * @return an arrayList containing all Players in this game
+     */
+    public List<Player> getPlayers(){
+    	return new ArrayList<>(aPlayers);
+    }
+    
+    public static GameState instance() {
+    	return instance;
+    }
 
-
+  
 
 
 

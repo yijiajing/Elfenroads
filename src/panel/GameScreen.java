@@ -9,11 +9,13 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.List;
 import java.util.Stack;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 
+import networking.*;
 import domain.*;
 import org.minueto.MinuetoTool;
 
@@ -240,18 +242,27 @@ public class GameScreen extends JPanel implements Serializable
 	
 	public void initializeLeaderboard()
 	{	
-		String[][] players = 
-		{
-				{"1", "0"},
-				{"2", "0"},
-				{"3", "0"},
-				{"4", "0"},
-				{"5", "0"},
-				{"6", "0"},
-		};
+//		String[][] players = 
+//		{
+//				{"1", "0"},
+//				{"2", "0"},
+//				{"3", "0"},
+//				{"4", "0"},
+//				{"5", "0"},
+//				{"6", "0"},
+//		};
+		
+		List<Player> aPlayers = GameState.instance().getPlayers();
+		
+		String[][] playerScores = new String [aPlayers.size()][2];
+		for (int i = 0; i < playerScores.length; i++){
+			playerScores[i][0] = String.valueOf(i+1);
+			playerScores[i][1] = String.valueOf(aPlayers.get(i).getScore());
+		}
+		
 		String[] titles = {"PLAYERS", "POINTS"};
 		
-		leaderboard = new JTable (players, titles);
+		leaderboard = new JTable (playerScores, titles);
 		leaderboard.setRowHeight(height*40/900);
 		
 		backgroundPanel_ForLeaderboard.setLayout(new BorderLayout());
