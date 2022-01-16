@@ -6,7 +6,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 
-public class TownPanel extends JPanel implements ObserverPanel {
+public class TownPanel extends JPanel {
 
     private String name;
     private int x;

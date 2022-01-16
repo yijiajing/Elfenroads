@@ -1,8 +1,11 @@
 package panel;
 
+import domain.ElfBoot;
+
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class ElfBootPanel extends JPanel implements ObserverPanel {
@@ -15,6 +18,7 @@ public class ElfBootPanel extends JPanel implements ObserverPanel {
     private JPanel[] spots;
     private boolean[] spotsAvailability;
     private GameScreen gameScreen;
+    private ElfBoot[] bootsOnPanel;
 
     public ElfBootPanel(TownPanel pTownPanel, int x, int y, int pWidth, int pHeight, GameScreen pGameScreen) {
         this.townPanel = pTownPanel;
@@ -24,6 +28,7 @@ public class ElfBootPanel extends JPanel implements ObserverPanel {
         this.height = pHeight;
         this.spots = new JPanel[6];
         this.gameScreen = pGameScreen;
+        this.bootsOnPanel = new ElfBoot[6];
 
         this.setBounds(this.x, this.y, this.width, this.height);
         this.setOpaque(false);
@@ -32,6 +37,8 @@ public class ElfBootPanel extends JPanel implements ObserverPanel {
         initializeSpotsOnPanel();
 
         this.addMouseListener(new ElfBootController(gameScreen, this));
+
+        gameScreen.addObserverPanel(this);
     }
 
     private void initializeSpotsOnPanel() {
@@ -60,13 +67,14 @@ public class ElfBootPanel extends JPanel implements ObserverPanel {
         Arrays.fill(spotsAvailability, true);
     }
 
-    public JPanel fillFirstAvailableSpot() {
+    public JPanel fillFirstAvailableSpot(ElfBoot boot) {
         JPanel availSpot = null;
 
         for (int i=0; i<spotsAvailability.length; i++) {
             if (spotsAvailability[i]) {
                 availSpot = spots[i];
                 spotsAvailability[i] = false;
+                addBootToPanel(boot, i);
                 return availSpot;
             }
         }
@@ -90,5 +98,40 @@ public class ElfBootPanel extends JPanel implements ObserverPanel {
         }
     }
 
+    private void addBootToPanel(ElfBoot boot, int index) {
+        this.bootsOnPanel[index] = boot;
+    }
 
+    public void removeBootFromPanel(ElfBoot boot) {
+        for (int i=0; i<bootsOnPanel.length; i++) {
+            if (bootsOnPanel[i] != null && bootsOnPanel[i].equals(boot)) {
+                bootsOnPanel[i] = null;
+                setSpotAvailability(i, true);
+            }
+        }
+    }
+
+    public void resetPanel() {
+        for ( JPanel spot : spots ) {
+            spot.removeAll();
+            spot.repaint();
+            spot.revalidate();
+        }
+    }
+
+
+    @Override
+    public void updateView() {
+        resetPanel();
+
+        for (int i=0; i<spots.length; i++) {
+            JPanel spot = spots[i];
+
+            if (bootsOnPanel[i] != null) {
+                spot.add(bootsOnPanel[i].getImage());
+                spot.repaint();
+                spot.revalidate();
+            }
+        }
+    }
 }

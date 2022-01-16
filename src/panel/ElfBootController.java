@@ -10,49 +10,26 @@ import networking.*;
 
 /**
  * Controller for ElfBoot movement.
- * Reacts to mouse events on TownPanels and ElfBootPanels and moves the selected ElfBoot accordingly. 
+ * Reacts to mouse events on ElfBoots, TownPanels, and ElfBootPanels by updating the model
  */
 public class ElfBootController implements MouseListener {
 
     private GameScreen gameScreen;
-    private JPanel panelClicked;
+    private JComponent itemClicked;
 
-    public ElfBootController(GameScreen pGameScreen, JPanel pPanelClicked) {
+    public ElfBootController(GameScreen pGameScreen, JComponent pItemClicked) {
         gameScreen = pGameScreen;
-        panelClicked = pPanelClicked;
+        itemClicked = pItemClicked;
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
 
-        GameState state = gameScreen.getGameState();
-        ArrayList<ElfBoot> elfBoots = state.getElfBoots();
-
-        for ( ElfBoot boot : elfBoots ) {
-            if (boot.isSelected()) {
-
-                // remove boot from previous spot
-                JPanel panelSpot = boot.getCurSpotInPanel();
-                panelSpot.remove(boot.getImage());
-                update(panelSpot);
-
-                // move boot to new spot
-                if (panelClicked instanceof ElfBootPanel) {
-                    boot.setCurPanelAndSpot((ElfBootPanel) panelClicked);
-                } else if (panelClicked instanceof TownPanel) {
-                    ElfBootPanel elfBootPanel = ((TownPanel) panelClicked).getElfBootPanel();
-                    boot.setCurPanelAndSpot(elfBootPanel);
-                }
-
-                JPanel newPanelSpot = boot.getCurSpotInPanel();
-                newPanelSpot.add(boot.getImage());
-                update(newPanelSpot);
-
-                // boot has been successfully moved and is no longer selected
-                boot.setSelected(false);
-
-                return;
-            }
+        if (itemClicked instanceof ElfBoot) {
+            ((ElfBoot) itemClicked).setSelected(true);
+        }
+        else {
+            moveBoot();
         }
     }
 
@@ -74,6 +51,29 @@ public class ElfBootController implements MouseListener {
     @Override
     public void mouseExited(MouseEvent e) {
 
+    }
+
+    public void moveBoot() {
+        GameState state = gameScreen.getGameState();
+        ArrayList<ElfBoot> elfBoots = state.getElfBoots();
+
+        for ( ElfBoot boot : elfBoots ) {
+            if (boot.isSelected()) {
+
+                // update model with new spot of boot
+                if (itemClicked instanceof ElfBootPanel) {
+                    boot.setCurPanelAndSpot((ElfBootPanel) itemClicked);
+                } else if (itemClicked instanceof TownPanel) {
+                    ElfBootPanel elfBootPanel = ((TownPanel) itemClicked).getElfBootPanel();
+                    boot.setCurPanelAndSpot(elfBootPanel);
+                }
+
+                // boot has been successfully moved and is no longer selected
+                boot.setSelected(false);
+
+                return;
+            }
+        }
     }
 
     public void update(JPanel panel)

@@ -9,6 +9,7 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Stack;
 
 import javax.swing.*;
@@ -59,6 +60,8 @@ public class GameScreen extends JPanel implements Serializable
 	private JPanel[] panelForFaceUpTransportationCounters = new JPanel[5];
 	private JPanel panelForDeckOfTransportationCounters = new JPanel();
 	private JPanel panelForObstacle = new JPanel();
+
+	private ArrayList<ObserverPanel> observerPanels = new ArrayList<>();
 
 	private GameMap gameMap;
 
@@ -177,12 +180,14 @@ public class GameScreen extends JPanel implements Serializable
 
 	public void initializeElfBoots() {
 		// TODO - the number of boots depends on the number of players, this implementation is wrong
-		blackBoot = new ElfBoot("black", this.width, this.height, gameMap.getTown("Elvenhold").getPanel().getElfBootPanel(), 0);
-		blueBoot = new ElfBoot("blue", this.width, this.height, gameMap.getTown("Elvenhold").getPanel().getElfBootPanel(), 1);
-		greenBoot = new ElfBoot("green", this.width, this.height, gameMap.getTown("Elvenhold").getPanel().getElfBootPanel(), 2);
-		purpleBoot = new ElfBoot("purple", this.width, this.height, gameMap.getTown("Elvenhold").getPanel().getElfBootPanel(), 3);
-		redBoot = new ElfBoot("red", this.width, this.height, gameMap.getTown("Elvenhold").getPanel().getElfBootPanel(), 4);
-		yellowBoot = new ElfBoot("yellow", this.width, this.height, gameMap.getTown("Elvenhold").getPanel().getElfBootPanel(), 5);
+		ElfBootPanel elvenholdBootPanel = gameMap.getTown("Elvenhold").getPanel().getElfBootPanel();
+
+		blackBoot = new ElfBoot("black", this.width, this.height, elvenholdBootPanel, this);
+		blueBoot = new ElfBoot("blue", this.width, this.height, elvenholdBootPanel, this);
+		greenBoot = new ElfBoot("green", this.width, this.height, elvenholdBootPanel, this);
+		purpleBoot = new ElfBoot("purple", this.width, this.height, elvenholdBootPanel, this);
+		redBoot = new ElfBoot("red", this.width, this.height, elvenholdBootPanel, this);
+		yellowBoot = new ElfBoot("yellow", this.width, this.height, elvenholdBootPanel, this);
 
 		gameState.addElfBoot(blackBoot);
 		gameState.addElfBoot(blueBoot);
@@ -373,12 +378,8 @@ public class GameScreen extends JPanel implements Serializable
 		backgroundPanel_ForRound.add(roundImage_TopLayer);
 		backgroundPanel_ForInformationCard.add(informationCardImage_TopLayer);
 		panelForDeckOfTransportationCounters.add(deckOfTransportationCountersImage_TopLayer);
-		blackBoot.getCurSpotInPanel().add(blackBoot.getImage());
-		blueBoot.getCurSpotInPanel().add(blueBoot.getImage());
-		greenBoot.getCurSpotInPanel().add(greenBoot.getImage());
-		purpleBoot.getCurSpotInPanel().add(purpleBoot.getImage());
-		redBoot.getCurSpotInPanel().add(redBoot.getImage());
-		yellowBoot.getCurSpotInPanel().add(yellowBoot.getImage());
+
+		notifyObservers();
 	}
 	
 	public void addPanelToScreen()
@@ -569,5 +570,15 @@ public class GameScreen extends JPanel implements Serializable
 
 	public GameState getGameState() {
 		return this.gameState;
+	}
+
+	public void addObserverPanel(ObserverPanel pPanel) {
+		this.observerPanels.add(pPanel);
+	}
+
+	public void notifyObservers() {
+		for ( ObserverPanel observer : observerPanels ) {
+			observer.updateView();
+		}
 	}
 }
