@@ -9,6 +9,8 @@ public class PlayerClient
     private PrintWriter out;
     private BufferedReader in;
 
+    // Use default constructor to create an instance of a client
+
     public void startConnection(String ip, int port)
     {
         try
