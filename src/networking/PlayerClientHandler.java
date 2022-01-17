@@ -24,7 +24,7 @@ public class PlayerClientHandler extends Thread
             out = new PrintWriter(aClientSocket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(aClientSocket.getInputStream()));
      
-            // Read the message and close the connection with the PlayerServer
+            // Send the message to the current client and close the connection with the PlayerServer
             out.println(message + " was the message from the server");
             done();
 
