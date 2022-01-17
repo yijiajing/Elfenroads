@@ -1,41 +1,21 @@
 package networking;
 import java.net.*;
+import java.util.stream.Collectors;
 import java.io.*;
 
-public class PlayerClient extends Thread
+public class PlayerClient 
 {
-    private Socket aClientSocket;
+    private Socket clientSocket;
     private PrintWriter out;
     private BufferedReader in;
-    private String message;
 
-    public PlayerClient(Socket pClientSocket, String msg)
-    {
-        aClientSocket = pClientSocket;
-        message = msg;
-        run();
-    }
-
-    public void run()
+    public void startConnection(String ip, int port)
     {
         try
         {
-            // Initialize the Streams
-            out = new PrintWriter(aClientSocket.getOutputStream(), true);
-            in = new BufferedReader(new InputStreamReader(aClientSocket.getInputStream()));
-     
-            // Read the message and close the connection with the PlayerServer
-            out.println(message + " was the message from the server");
-            done();
-
-            // make sure only one thread at a time is decrementing the global vairable
-            synchronized(this)    
-            {
-                PlayerServer.wait--;
-            }
-
-            // kill the thread when it is done executing (maybe will need to find a safer way to kill a thread)
-            this.stop();    
+            clientSocket = new Socket(ip, port);
+            out = new PrintWriter(clientSocket.getOutputStream(), true);
+            in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
         }
         catch(Exception e)
         {
@@ -43,19 +23,33 @@ public class PlayerClient extends Thread
         }
     }
 
-    public void done() 
+    public void stopConnection() 
     {
         try
-        { 
+        {
             in.close();
             out.close();
-            aClientSocket.close();
+            clientSocket.close();
         }
         catch(Exception e)
         {
-            System.out.println(e.getStackTrace());
+            System.out.println(e);
         }
+        
     }
 
-    
+    public String getMessage()
+    {
+        try
+        {
+            String msg = in.lines().collect(Collectors.joining("\n"));
+            return msg;
+        }
+        catch(Exception e)
+        {
+
+        }
+        
+        return null;
+    }
 }

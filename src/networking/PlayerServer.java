@@ -31,7 +31,7 @@ public class PlayerServer
             while(aConnections != 0)
             {
                 // create a thread for another player and start up the connection and send message to it
-                new PlayerClient(serverSocket.accept(), message).start();
+                new PlayerClientHandler(serverSocket.accept(), message).start();
                 aConnections--;
             }
 
@@ -70,11 +70,10 @@ public class PlayerServer
 
     }
 
-    public static void main(String[] args)
+    // Only for testing
+    public int getWait()
     {
-        PlayerServer server = new PlayerServer(2);
-        server.setMessage("It worked from the Server!!\n" + "You are thread number " + wait);
-        server.start(6666);
+        return wait;
     }
     
 }

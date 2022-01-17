@@ -35,7 +35,7 @@ public class User {
     private static final String basicAuthCredentials = "bgp-client-name:bgp-client-pw";
     private static final String adminUsername = "maex";
     private static final String adminPassword = "abc123_ABC123";
-    private String basicAuthEncoded;
+    private static final String basicAuthEncoded = Base64.getEncoder().encodeToString(basicAuthCredentials.getBytes());
     private boolean isAuthenticated;
     private String refreshToken;
     private int tokenExpiresIn;
@@ -45,8 +45,6 @@ public class User {
 
     // for reference
     private JSONObject infoFromAPI;
-
-
 
     /**
      * @pre user already exists in LS
@@ -60,11 +58,9 @@ public class User {
     {
         username = pUsername;
         password = pPassword;
-        // basicAuthCredentials = "bgp-client-name:bgp-client-pw";
-        basicAuthEncoded = Base64.getEncoder().encodeToString(basicAuthCredentials.getBytes());
         isAuthenticated = false;
         authenticate();
-        //retrieveUserInfo();
+        retrieveUserInfo();
     }
 
     /**
@@ -230,21 +226,16 @@ public class User {
      * */
     private void retrieveUserInfo() throws IOException, Exception
     {
-        // this operation requires admin permissions
-        User admin = new User(adminUsername, adminPassword);
-        String adminToken = admin.getAccessToken();
+        // this operation requires admin permissions.
+        // we're going to use the workaround method and purposely avoid calling the User constructor inside this method
+        // because when we call the constructor in here, it creates an infinite loop of User constructors and hangs forever
+        String adminToken = getAccessTokenUsingCreds("maex", "abc123_ABC123");
 
         // now make the main API call
         URL url = new URL("http://35.182.122.111:4242/api/users/maex?access_token=" + adminToken);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
 
-        /* Payload support */
-        con.setDoOutput(true);
-        DataOutputStream out = new DataOutputStream(con.getOutputStream());
-        out.writeBytes("user_oauth_approval=true&_csrf=19beb2db-3807-4dd5-9f64-6c733462281b&authorize=true");
-        out.flush();
-        out.close();
 
         int status = con.getResponseCode();
         BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
@@ -285,7 +276,7 @@ public class User {
 
     public Role getRole() {return role;}
 
-    private String escapePlusSign(String token)
+    private static String escapePlusSign(String token)
     {
         String returnVal = token.replace("+", "%2B");
         return returnVal;
@@ -375,7 +366,7 @@ public class User {
         
         for (JSONObject j : allUsers)
         {
-        	System.out.println(j.toString());
+        	// System.out.println(j.toString()); I don't think we need to print this
         }
     	
     	return allUsers;
@@ -412,6 +403,44 @@ public class User {
 
         System.out.println("The token was obtained at " + authTokenIssued);
         System.out.println("The token expires at " + authTokenExpiresAt + ", which should be " + tokenExpiresIn + " seconds from the time it was obtained.");
+    }
+
+
+    // TODO: make sure this method still works once the token is expired
+    /**
+     * a method to get access token without having to call the User constructor
+     * designed to avoid the infinite loop of User constructor called by getUserInfo
+     * @param username
+     * @param password
+     * @return
+     */
+    public static String getAccessTokenUsingCreds(String username, String password) throws IOException
+    {
+        URL url = new URL("http://35.182.122.111:4242/oauth/token?grant_type=password&username=" + username + "&password=" + password);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("POST");
+
+        // add the credentials, encoded
+        con.setRequestProperty("Authorization", "Basic " + basicAuthEncoded);
+
+        int status = con.getResponseCode();
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer content = new StringBuffer();
+        while((inputLine = in.readLine()) != null) {
+            content.append(inputLine);
+        }
+        in.close();
+        con.disconnect();
+
+        // now get the token
+        String contentString = content.toString();
+        JSONObject contentJSON = new JSONObject(contentString);
+
+        String accessToken = escapePlusSign(contentJSON.get("access_token").toString());
+        return accessToken;
+
+
     }
 
 }
