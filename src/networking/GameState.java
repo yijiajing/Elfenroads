@@ -1,10 +1,14 @@
 package networking;
 
+import domain.ElfBoot;
 import org.json.JSONObject;
 import panel.GameScreen;
 import java.util.*;
 import domain.Player;
 
+
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class GameState {
 
@@ -23,6 +27,7 @@ public class GameState {
 
     private GameScreen screen;
     private JSONObject serialized;
+
     private List<Player> aPlayers = new ArrayList<>();
 
     //Global variable holding the singleton GameState instance
@@ -35,9 +40,14 @@ public class GameState {
     }
     
     private GameState (GameScreen input)
+
+    private ArrayList<ElfBoot> elfBoots;
+
+    public GameState (GameScreen input)
+
     {
         this.screen = input;
-
+        this.elfBoots = new ArrayList<>();
     }
 
     // TODO: implement this second constructor
@@ -64,7 +74,14 @@ public class GameState {
     	return instance;
     }
 
-  
+
+    public void addElfBoot(ElfBoot pElfBoot) {
+        elfBoots.add(pElfBoot);
+    }
+
+    public ArrayList<ElfBoot> getElfBoots() {
+        return elfBoots;
+    }
 
 
 
