@@ -5,6 +5,8 @@ import java.io.*;
 
 public class PlayerClient 
 {
+    private String aIp;
+    private int aPort;
     private Socket clientSocket;
     private PrintWriter out;
     private BufferedReader in;

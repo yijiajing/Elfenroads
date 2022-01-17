@@ -26,7 +26,7 @@ public class PlayerServer
         { 
             // Open ServerSocket and set the message for the other incomming connections
             serverSocket = new ServerSocket(port);
-
+            
             // Loops for every other Players
             while(aConnections != 0)
             {

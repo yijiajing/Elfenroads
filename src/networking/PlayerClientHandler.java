@@ -25,7 +25,7 @@ public class PlayerClientHandler extends Thread
             in = new BufferedReader(new InputStreamReader(aClientSocket.getInputStream()));
      
             // Send the message to the current client and close the connection with the PlayerServer
-            out.println(message + " was the message from the server");
+            out.println('"' + message + '"' + " was the message from the server");
             done();
 
             // make sure only one thread at a time is decrementing the global vairable
