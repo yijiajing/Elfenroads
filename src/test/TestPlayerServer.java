@@ -12,11 +12,12 @@ public class TestPlayerServer
 {
     public static void main(String[] args) throws IOException
     {
-        String command = "./ngrok tcp 6666";
-        Process proc = Runtime.getRuntime().exec(command);
+        //String command = "./ngrok tcp 6666";
+        //Process proc = Runtime.getRuntime().exec(command);
 
-        //PlayerServer server = new PlayerServer(1);
-        //server.setMessage("It worked from the Server!! " + "You are now connected to the server");
-        //server.start(6666);
+        PlayerServer server = new PlayerServer(1);
+        server.setMessage("It worked from the Server!! " + "You are now connected");
+        server.start(6666);
+        //System.out.println(server.getServerInfo());
     }
 }

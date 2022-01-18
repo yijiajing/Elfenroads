@@ -1,5 +1,9 @@
 package networking;
 import java.net.*;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.*;
 //Use port > 1024
 
@@ -26,6 +30,9 @@ public class PlayerServer
         { 
             // Open ServerSocket and set the message for the other incomming connections
             serverSocket = new ServerSocket(port);
+            startNgrok(port);
+            Thread.sleep(1000);
+            System.out.println(getServerInfo());
             
             // Loops for every other Players
             while(aConnections != 0)
@@ -52,6 +59,36 @@ public class PlayerServer
         }
     }
 
+    public void startNgrok(int port) throws IOException
+    {
+        String command = "./ngrok tcp " + port;
+        Process proc = Runtime.getRuntime().exec(command);
+    }
+
+    public String getServerInfo() throws IOException
+    {
+        URL url = new URL("http://127.0.0.1:4040/api/tunnels");
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("GET");
+
+        int status = con.getResponseCode();
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer content = new StringBuffer();
+        while((inputLine = in.readLine()) != null) {
+	        content.append(inputLine);
+        }
+        in.close();
+        con.disconnect();
+        
+        // Get the ngrok url with the port
+        JSONObject response = new JSONObject(content.toString());
+        JSONArray a = response.getJSONArray("tunnels");
+        String address = a.getJSONObject(0).getString("public_url");
+
+        return address;
+    }
+
     public void setMessage(String msg)
     {
         message = msg;
@@ -62,6 +99,8 @@ public class PlayerServer
         try
         {
             serverSocket.close();
+            String command = "killall ngrok";
+            Process proc = Runtime.getRuntime().exec(command);
         }
         catch(IOException e)
         {
@@ -69,11 +108,4 @@ public class PlayerServer
         }
 
     }
-
-    // Only for testing
-    public int getWait()
-    {
-        return wait;
-    }
-    
 }
