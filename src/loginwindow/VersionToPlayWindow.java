@@ -57,7 +57,7 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
             
         });
         longGame = new JButton("Long Game");
-        destinationTown = new JButton("Destination domain.Town");
+        destinationTown = new JButton("Destination Town");
 
         classicGame1.addActionListener(new ActionListener(){
 

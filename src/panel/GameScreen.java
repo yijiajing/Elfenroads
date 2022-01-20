@@ -458,12 +458,12 @@ public class GameScreen extends JPanel implements Serializable
 
 		for (int i = 1; i <= 8; i++)
 		{
-			toAddToDeck.push(new TransportationCounter(TransportationCounter.CounterType.DRAGON, width*67/1440, height*52/900));
-			toAddToDeck.push(new TransportationCounter(TransportationCounter.CounterType.GIANTPIG, width*67/1440, height*52/900));
-			toAddToDeck.push(new TransportationCounter(TransportationCounter.CounterType.UNICORN, width*67/1440, height*52/900));
-			toAddToDeck.push(new TransportationCounter(TransportationCounter.CounterType.TROLLWAGON, width*67/1440, height*52/900));
-			toAddToDeck.push(new TransportationCounter(TransportationCounter.CounterType.ELFCYCLE, width*67/1440, height*52/900));
-			toAddToDeck.push(new TransportationCounter(TransportationCounter.CounterType.MAGICCLOUD, width*67/1440, height*52/900));
+			toAddToDeck.push(new TransportationCounter(CounterType.DRAGON, width*67/1440, height*52/900));
+			toAddToDeck.push(new TransportationCounter(CounterType.GIANTPIG, width*67/1440, height*52/900));
+			toAddToDeck.push(new TransportationCounter(CounterType.UNICORN, width*67/1440, height*52/900));
+			toAddToDeck.push(new TransportationCounter(CounterType.TROLLWAGON, width*67/1440, height*52/900));
+			toAddToDeck.push(new TransportationCounter(CounterType.ELFCYCLE, width*67/1440, height*52/900));
+			toAddToDeck.push(new TransportationCounter(CounterType.MAGICCLOUD, width*67/1440, height*52/900));
 		}
 
 		transportationCountersToDraw = new Deck(toAddToDeck);
@@ -522,7 +522,7 @@ public class GameScreen extends JPanel implements Serializable
 
 	public static void main(String[] args) 
 	{
-		JFrame game_screen = new JFrame("panel.GameScreen");
+		JFrame game_screen = new JFrame("GameScreen");
 		
 		game_screen.setSize(MinuetoTool.getDisplayWidth(), MinuetoTool.getDisplayHeight());
 		game_screen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
