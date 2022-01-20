@@ -31,7 +31,7 @@ public class CounterPanel extends JPanel {
             public void mouseClicked(MouseEvent e) {
                 //TODO: this is only for demonstration,
                 // need to implement a mechanism to place a selected transportation counter
-                setTransportationCounter(new TransportationCounter(TransportationCounter.CounterType.MAGICCLOUD, 30, 30));
+                setTransportationCounter(new TransportationCounter(CounterType.MAGICCLOUD, 30, 30));
                 update();
             }
         });

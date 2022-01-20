@@ -3,10 +3,7 @@ package domain;
 import org.jgrapht.graph.Pseudograph;
 import panel.GameScreen;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class GameMap {
 
@@ -34,12 +31,24 @@ public class GameMap {
         return roadList;
     }
 
+    public Set<Road> getRoadsFromTown(Town t) {
+        return mapGraph.outgoingEdgesOf(t);
+    }
+
+    public Set<Road> getRoadsBetween(Town srcTown, Town destTown) {
+        return mapGraph.getAllEdges(srcTown, destTown);
+    }
+
     public Town getRoadSource(Road r) {
         return mapGraph.getEdgeSource(r);
     }
 
     public Town getRoadTarget(Road r) {
         return mapGraph.getEdgeTarget(r);
+    }
+
+    public Town getTownByName(String name) {
+        return townMap.get(name);
     }
 
     public void clearAllCounters() {

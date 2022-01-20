@@ -5,6 +5,9 @@ import networking.*;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class Player {
 
@@ -16,13 +19,17 @@ public class Player {
     private ArrayList<Player> connectedPlayers;
     private ArrayList<Socket> in; // connections in
     private ArrayList<Socket> out; // connections out
+
+    // game-specific info
+    private String currentTownName;
+    private Set<String> townsVisited = new HashSet<>();
     
     private int aScore;//The score of a player 
 
     // TODO: implement the constructor
     public Player(String IP)
     {
-    	
+        this.currentTownName = "Elvenhold";
     }
 
 
@@ -32,10 +39,21 @@ public class Player {
 
     }
 
+    public String getCurrentTownName() {
+        return currentTownName;
+    }
+
+    public void setCurrentTown(String currentTownName) {
+        this.currentTownName = currentTownName;
+        if (!townsVisited.contains(currentTownName)) {
+            townsVisited.add(currentTownName);
+            aScore++;
+        }
+        //TODO: move elfboot, update UI
+    }
+
     public int getScore() {
     	return aScore;
     }
-
-
 
 }

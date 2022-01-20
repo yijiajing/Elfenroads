@@ -27,8 +27,12 @@ public class Road {
         return regionType;
     }
 
-    public CounterPanel getCounterPanel() {
-        return counterPanel;
+    public TransportationCounter getTransportationCounter() {
+        return counterPanel.getTransportationCounter();
+    }
+
+    public boolean hasObstacle() {
+        return counterPanel.hasObstacle();
     }
 
     public void clear() {
