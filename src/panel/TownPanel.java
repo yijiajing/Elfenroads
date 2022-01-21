@@ -23,7 +23,7 @@ public class TownPanel extends JPanel {
         this.width = pWidth;
         this.height = pHeight;
         this.gameScreen = pGameScreen;
-        this.elfBootPanel = new ElfBootPanel(this, x, y+height, gameScreen.getWidth()*72/1440, gameScreen.getHeight()*48/900, pGameScreen);
+        this.elfBootPanel = new ElfBootPanel(this, x, y+height, gameScreen.getWidth()*10/144, gameScreen.getHeight()*1/45, pGameScreen);
 
         this.setBounds(this.x, this.y, this.width, this.height);
         this.setOpaque(false);

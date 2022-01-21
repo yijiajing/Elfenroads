@@ -44,8 +44,8 @@ public class ElfBootPanel extends JPanel implements ObserverPanel {
     private void initializeSpotsOnPanel() {
 
         // set 6 spots for the elf boots
-        int spotHeight = this.height / 2;
-        int spotWidth = this.width / 3;
+        int spotHeight = this.height;
+        int spotWidth = this.width / 6;
 
         for (int i=0; i<spots.length; i++) {
             spots[i] = new JPanel();
@@ -53,12 +53,7 @@ public class ElfBootPanel extends JPanel implements ObserverPanel {
 
         // setting bounds of the six spots - 2 x 3 rectangle
         for (int s=0; s<spots.length; s++) {
-            if (s > 2) {
-                this.spots[s].setBounds(x + spotWidth * (s%3), y + spotHeight, spotWidth, spotHeight);
-            } else {
-                this.spots[s].setBounds(x + spotWidth * s, y, spotWidth, spotHeight);
-                    }
-
+            this.spots[s].setBounds(x + spotWidth * s, y, spotWidth, spotHeight);
             this.spots[s].setOpaque(false);
             }
 
