@@ -1,6 +1,7 @@
 package panel;
 
 import domain.ElfBoot;
+import domain.Town;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -10,7 +11,7 @@ import java.util.Arrays;
 
 public class ElfBootPanel extends JPanel implements ObserverPanel {
 
-    private TownPanel townPanel;
+    private Town town;
     private int x;
     private int y;
     private int width;
@@ -20,8 +21,8 @@ public class ElfBootPanel extends JPanel implements ObserverPanel {
     private GameScreen gameScreen;
     private ElfBoot[] bootsOnPanel;
 
-    public ElfBootPanel(TownPanel pTownPanel, int x, int y, int pWidth, int pHeight, GameScreen pGameScreen) {
-        this.townPanel = pTownPanel;
+    public ElfBootPanel(Town pTown, int x, int y, int pWidth, int pHeight, GameScreen pGameScreen) {
+        this.town = pTown;
         this.x = x;
         this.y = y;
         this.width = pWidth;
@@ -128,5 +129,9 @@ public class ElfBootPanel extends JPanel implements ObserverPanel {
                 spot.revalidate();
             }
         }
+    }
+
+    public Town getTown() {
+        return this.town;
     }
 }

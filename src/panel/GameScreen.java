@@ -80,7 +80,7 @@ public class GameScreen extends JPanel implements Serializable
 
 	// not sure if this makes sense ?
 	// perhaps we can use setGameState() method when a new game state is loaded onto the game screen
-	private GameState gameState = new GameState(this);
+	private GameState gameState;
 
 	// TODO: change this on the other computer
 	private String otherPlayerIP = "192.168.2.253"; // Nick's IP address
@@ -100,6 +100,8 @@ public class GameScreen extends JPanel implements Serializable
 		// Set Bounds for entire Board Game screen and do the initialization of the structure for the UI
 		boardGame_Layers = new JLayeredPane();
 		boardGame_Layers.setBounds(0,0,width,height);
+
+		gameState = new GameState(this); // TODO remove?
 
 		initialization();
 
@@ -130,6 +132,8 @@ public class GameScreen extends JPanel implements Serializable
 		// Set Bounds for entire Board Game screen and do the initialization of the structure for the UI
 		boardGame_Layers = new JLayeredPane();
 		boardGame_Layers.setBounds(0,0,width,height);
+
+		gameState = new GameState(this); // TODO remove?
 
 		initialization();
 
@@ -166,7 +170,7 @@ public class GameScreen extends JPanel implements Serializable
 	public void initialization()
 	{
 		// initialize town and road panels
-		gameMap = new GameMap(this);
+		gameMap = GameMap.getInstance(this);
 
 		initializeElfBoots();
 		initializeMapImage();
@@ -293,7 +297,7 @@ public class GameScreen extends JPanel implements Serializable
 //				{"6", "0"},
 //		};
 		
-		List<Player> aPlayers = GameState.instance().getPlayers();
+		List<Player> aPlayers = GameState.instance(this).getPlayers();
 		
 		String[][] playerScores = new String [aPlayers.size()][2];
 		for (int i = 0; i < playerScores.length; i++){

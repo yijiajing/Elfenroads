@@ -23,7 +23,7 @@ public class TestGameRuleUtils {
         gameScreen.setVisible(false);
 
         // test initialization
-        GameMap gameMap = new GameMap(GameScreen.getInstance(new JFrame()));
+        GameMap gameMap = GameMap.getInstance(GameScreen.getInstance(new JFrame()));
         Town elvenhold = gameMap.getTownByName("Elvenhold");
         Town feodor = gameMap.getTownByName("Feodor");
         Town beata = gameMap.getTownByName("Beata");
