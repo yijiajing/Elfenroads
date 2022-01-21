@@ -7,16 +7,25 @@ import java.util.*;
 
 public class GameMap {
 
+    private static GameMap instance;
+
     private GameScreen gameScreen;
     private Pseudograph<Town, Road> mapGraph = new Pseudograph<>(Road.class);
     private List<Town> townList = new ArrayList<>();
     private List<Road> roadList = new ArrayList<>();
     private Map<String, Town> townMap = new HashMap<>();
 
-    public GameMap(GameScreen pGameScreen) {
+    private GameMap(GameScreen pGameScreen) {
         this.gameScreen = pGameScreen;
         initializeTowns();
         initializeRoads();
+    }
+
+    public static GameMap getInstance(GameScreen pGameScreen) {
+        if (instance == null) {
+            instance = new GameMap(pGameScreen);
+        }
+        return instance;
     }
 
     public Town getTown(String name) {

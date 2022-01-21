@@ -1,5 +1,6 @@
 package domain;
 
+import networking.GameState;
 import panel.ElfBootController;
 import panel.ElfBootPanel;
 import panel.GameScreen;
@@ -19,6 +20,7 @@ public class ElfBoot extends JLabel {
     private ElfBootPanel curPanel;
     private JPanel curSpotInPanel;
     private JLabel bootImage;
+    private GameScreen gameScreen;
 
     public ElfBoot(String pColour, int pWidth, int pHeight, ElfBootPanel pCurPanel, GameScreen pGameScreen) {
 
@@ -27,6 +29,7 @@ public class ElfBoot extends JLabel {
         this.height = pHeight;
         this.curPanel = pCurPanel;
         this.curSpotInPanel = this.curPanel.fillFirstAvailableSpot(this);
+        this.gameScreen = pGameScreen;
 
         ImageIcon bootIcon = new ImageIcon(filepathToRepo + "/assets/boppels-and-boots/boot-" + this.colour + ".png");
         Image bootImage = bootIcon.getImage();
@@ -48,6 +51,11 @@ public class ElfBoot extends JLabel {
         this.curPanel.removeBootFromPanel(this);
         this.curPanel = pCurPanel;
         this.curSpotInPanel = curPanel.fillFirstAvailableSpot(this);
+
+        // if there is a town piece at the new location of the elf boot, remove it and update player's score
+        this.curPanel.getTown().removeTownPieceByColour(this.colour);
+        GameState.instance(gameScreen).getPlayerByColour(this.colour).setCurrentTown(curPanel.getTown());
+
         GameScreen.getInstance(new JFrame()).notifyObservers();
     }
 

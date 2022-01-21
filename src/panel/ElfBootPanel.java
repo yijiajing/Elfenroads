@@ -1,6 +1,7 @@
 package panel;
 
 import domain.ElfBoot;
+import domain.Town;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -10,7 +11,7 @@ import java.util.Arrays;
 
 public class ElfBootPanel extends JPanel implements ObserverPanel {
 
-    private TownPanel townPanel;
+    private Town town;
     private int x;
     private int y;
     private int width;
@@ -20,8 +21,8 @@ public class ElfBootPanel extends JPanel implements ObserverPanel {
     private GameScreen gameScreen;
     private ElfBoot[] bootsOnPanel;
 
-    public ElfBootPanel(TownPanel pTownPanel, int x, int y, int pWidth, int pHeight, GameScreen pGameScreen) {
-        this.townPanel = pTownPanel;
+    public ElfBootPanel(Town pTown, int x, int y, int pWidth, int pHeight, GameScreen pGameScreen) {
+        this.town = pTown;
         this.x = x;
         this.y = y;
         this.width = pWidth;
@@ -44,8 +45,8 @@ public class ElfBootPanel extends JPanel implements ObserverPanel {
     private void initializeSpotsOnPanel() {
 
         // set 6 spots for the elf boots
-        int spotHeight = this.height / 2;
-        int spotWidth = this.width / 3;
+        int spotHeight = this.height;
+        int spotWidth = this.width / 6;
 
         for (int i=0; i<spots.length; i++) {
             spots[i] = new JPanel();
@@ -53,12 +54,7 @@ public class ElfBootPanel extends JPanel implements ObserverPanel {
 
         // setting bounds of the six spots - 2 x 3 rectangle
         for (int s=0; s<spots.length; s++) {
-            if (s > 2) {
-                this.spots[s].setBounds(x + spotWidth * (s%3), y + spotHeight, spotWidth, spotHeight);
-            } else {
-                this.spots[s].setBounds(x + spotWidth * s, y, spotWidth, spotHeight);
-                    }
-
+            this.spots[s].setBounds(x + spotWidth * s, y, spotWidth, spotHeight);
             this.spots[s].setOpaque(false);
             }
 
@@ -133,5 +129,9 @@ public class ElfBootPanel extends JPanel implements ObserverPanel {
                 spot.revalidate();
             }
         }
+    }
+
+    public Town getTown() {
+        return this.town;
     }
 }

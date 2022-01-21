@@ -28,8 +28,8 @@ public class GameState {
     private GameScreen screen;
     private JSONObject serialized;
 
-    //Global variable holding the singleton GameState instance
-    private static GameState instance = new GameState();
+    // Global variable holding the singleton GameState instance
+    private static GameState instance;
 
     // meta info (possibly separated into another class in the future)
     private GameMap gameMap;
@@ -50,17 +50,18 @@ public class GameState {
     
     //NEED TO IMPLEMENT
     //a default constructor
-    private GameState() {
+    /*private GameState() {
     	
-    }
+    }*/
 
     private ArrayList<ElfBoot> elfBoots;
 
-    public GameState (GameScreen input)
-
+    public GameState (GameScreen pScreen)
     {
-        this.screen = input;
+        this.screen = pScreen;
         this.elfBoots = new ArrayList<>();
+
+        setDummyPlayers(); // TODO remove
     }
 
     // TODO: implement this second constructor
@@ -82,8 +83,21 @@ public class GameState {
     public List<Player> getPlayers(){
     	return new ArrayList<>(players);
     }
+
+    // TODO: remove this method, only using it for testing of UI before networking stuff is set up
+    public void setDummyPlayers() {
+        players.add(new Player("123", "black", screen));
+        players.add(new Player("123", "blue", screen));
+        players.add(new Player("123", "green", screen));
+        players.add(new Player("123", "purple", screen));
+        players.add(new Player("123", "red", screen));
+        players.add(new Player("123", "yellow", screen));
+    }
     
-    public static GameState instance() {
+    public static GameState instance(GameScreen pScreen) {
+        if (instance == null) {
+            instance = new GameState(pScreen);
+        }
     	return instance;
     }
 
@@ -142,10 +156,20 @@ public class GameState {
             if (!GameRuleUtils.validateMove(
                     gameMap, gameMap.getTownByName(currentPlayer.getCurrentTownName()), selectedTown, selectedCards
             )) {
-                currentPlayer.setCurrentTown(selectedTown.getName());
+                currentPlayer.setCurrentTown(selectedTown);
             } else {
                 //TODO: handle invalid move
             }
         }
+    }
+
+    public Player getPlayerByColour(String colour) {
+        for ( Player p : players ) {
+            if (p.getColour().equalsIgnoreCase(colour)) {
+                return p;
+            }
+        }
+
+        return null;
     }
 }

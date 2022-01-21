@@ -1,7 +1,9 @@
 package domain;
 
 import networking.*;
+import panel.GameScreen;
 
+import javax.swing.*;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -21,15 +23,17 @@ public class Player {
     private ArrayList<Socket> out; // connections out
 
     // game-specific info
-    private String currentTownName;
-    private Set<String> townsVisited = new HashSet<>();
+    private Town curTown;
+    private Set<Town> townsVisited = new HashSet<>();
+    private String colour;
     
-    private int aScore;//The score of a player 
+    private int score;//The score of a player
 
     // TODO: implement the constructor
-    public Player(String IP)
+    public Player(String IP, String pColour, GameScreen pScreen)
     {
-        this.currentTownName = "Elvenhold";
+        this.curTown = GameMap.getInstance(pScreen).getTownByName("Elvenhold");
+        this.colour = pColour;
     }
 
 
@@ -40,20 +44,23 @@ public class Player {
     }
 
     public String getCurrentTownName() {
-        return currentTownName;
+        return curTown.getName();
     }
 
-    public void setCurrentTown(String currentTownName) {
-        this.currentTownName = currentTownName;
-        if (!townsVisited.contains(currentTownName)) {
-            townsVisited.add(currentTownName);
-            aScore++;
+    // called by ElfBoot when it moves to a new town
+    public void setCurrentTown(Town curTown) {
+        this.curTown = curTown;
+        if (!townsVisited.contains(curTown)) {
+            townsVisited.add(curTown);
+            score++;
         }
-        //TODO: move elfboot, update UI
     }
 
     public int getScore() {
-    	return aScore;
+    	return score;
     }
 
+    public String getColour() {
+        return this.colour;
+    }
 }
