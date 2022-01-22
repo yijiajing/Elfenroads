@@ -33,7 +33,6 @@ public class GameState {
 
     // meta info (possibly separated into another class in the future)
     private GameMap gameMap;
-    private int numPlayers;
     private int totalRounds;
     private List<Player> players = new ArrayList<>();
 
@@ -41,11 +40,13 @@ public class GameState {
     private int currentRound;
     private RoundPhaseType currentPhase;
     private Player currentPlayer;
+    private int currentPlayerIdx;
+
     private Road selectedRoad;
     private TransportationCounter selectedCounter;
     private List<TravelCard> selectedCards = new ArrayList<>();
     private Town selectedTown;
-
+    boolean obstacleSelected;
 
     
     //NEED TO IMPLEMENT
@@ -60,8 +61,11 @@ public class GameState {
     {
         this.screen = pScreen;
         this.elfBoots = new ArrayList<>();
+        this.obstacleSelected = false;
 
         setDummyPlayers(); // TODO remove
+        this.currentPlayerIdx = 0;
+        this.currentPlayer = players.get(currentPlayerIdx);
     }
 
     // TODO: implement this second constructor
@@ -123,8 +127,22 @@ public class GameState {
         this.selectedRoad = selectedRoad;
 
         if (currentPhase == RoundPhaseType.PLANROUTES) {
-            //TODO: handle route planning of a player given counter/obstacle selected and road selected
+            // Player intends to place an obstacle
+            if (obstacleSelected) {
+                if (!selectedRoad.placeObstacle()) {
+                    //TODO: display failure message and deselect obstacle in UI
+                }
+            }
+            // Player intends to place a transportation counter
+            if (!selectedRoad.setTransportationCounter(selectedCounter)) {
+                //TODO: display failure message and deselect counter in UI
+            }
         }
+    }
+
+    public void obstacleSelected() {
+        obstacleSelected = true;
+        selectedCounter = null;
     }
 
     public TransportationCounter getSelectedCounter() {
@@ -139,6 +157,10 @@ public class GameState {
         return selectedCards;
     }
 
+    public void addSelectedCard(TravelCard selectedCard) {
+        this.selectedCards.add(selectedCard);
+    }
+
     public void setSelectedCard(List<TravelCard> selectedCards) {
         this.selectedCards = selectedCards;
     }
@@ -150,15 +172,15 @@ public class GameState {
     public void setSelectedTown(Town selectedTown) {
         this.selectedTown = selectedTown;
 
-        if (currentPhase == RoundPhaseType.MOVE) {
-            //TODO: handle the move of the current player (and their elfboot)
-            // if the cards can enable the player to follow one of the roads to the town
-            if (!GameRuleUtils.validateMove(
-                    gameMap, gameMap.getTownByName(currentPlayer.getCurrentTownName()), selectedTown, selectedCards
-            )) {
+        if (currentPhase == RoundPhaseType.MOVE && !selectedCards.isEmpty()) {
+            if (!GameRuleUtils.validateMove(gameMap, currentPlayer.getCurrentTown(), selectedTown, selectedCards)) {
                 currentPlayer.setCurrentTown(selectedTown);
             } else {
-                //TODO: handle invalid move
+                //TODO: in UI
+                // - deselect all currently selected cards in UI
+                // - display message that prompts Player for re-selection
+                this.selectedTown = null;
+                this.selectedCards.clear();
             }
         }
     }
@@ -171,5 +193,54 @@ public class GameState {
         }
 
         return null;
+    }
+
+    // totalRounds Round <--in-- numOfRoundPhaseType Phases <--in-- numOfPlayer Turns
+    public void endTurn() {
+        currentPlayerIdx++;
+        clearSelection();
+
+        // all players have passed their turn in the current phase
+        if (currentPlayerIdx == players.size()) {
+            int nextOrdinal = currentPhase.ordinal() + 1;
+            if (nextOrdinal == RoundPhaseType.values().length) {
+                // all phases are done, go to the next round
+                endRound();
+            } else {
+                // go to the next phase within the same round
+                currentPhase = RoundPhaseType.values()[nextOrdinal];
+            }
+            return;
+        }
+
+        // within the same phase, next player will take action
+        currentPlayer = players.get(currentPlayerIdx);
+    }
+
+    private void endRound() {
+        currentPlayerIdx = 0;
+        currentPlayer = players.get(currentPlayerIdx);
+        currentRound++;
+        if (currentRound == totalRounds) {
+            endGame();
+            return;
+        }
+        //TODO: update round card in UI
+    }
+
+    private void endGame() {
+        //TODO: finishes game ending
+    }
+
+    /**
+     * Clears all selection states.
+     * Whenever a new selection state is added to GameState, remember to clear it here.
+     */
+    private void clearSelection() {
+        selectedRoad = null;
+        selectedCounter = null;
+        selectedCards.clear();
+        selectedTown = null;
+        obstacleSelected = false;
     }
 }

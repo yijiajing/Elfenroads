@@ -1,16 +1,11 @@
 package test;
 
-import domain.CounterType;
-import domain.GameMap;
-import domain.Town;
-import domain.TravelCard;
+import domain.*;
 import org.minueto.MinuetoTool;
 import panel.GameScreen;
-import utils.CommonUtils;
 import utils.GameRuleUtils;
 
 import javax.swing.*;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 public class TestGameRuleUtils {
@@ -27,9 +22,9 @@ public class TestGameRuleUtils {
         Town elvenhold = gameMap.getTownByName("Elvenhold");
         Town feodor = gameMap.getTownByName("Feodor");
         Town beata = gameMap.getTownByName("Beata");
-        TravelCard unicorn = new TravelCard(CounterType.UNICORN, 1, 1);
-        TravelCard raft = new TravelCard(CounterType.RAFT, 1, 1);
-        TravelCard cloud = new TravelCard(CounterType.MAGICCLOUD, 1, 1);
+        TravelCard unicorn = new TravelCard(TravelCardType.UNICORN, 1, 1);
+        TravelCard raft = new TravelCard(TravelCardType.RAFT, 1, 1);
+        TravelCard cloud = new TravelCard(TravelCardType.MAGICCLOUD, 1, 1);
 
         // no road from Elvenhold to Feodor, expect false
         assert !GameRuleUtils.validateMove(gameMap, elvenhold, feodor, Arrays.asList(unicorn, raft));
