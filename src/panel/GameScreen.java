@@ -418,11 +418,6 @@ public class GameScreen extends JPanel implements Serializable
 		for (Town town: gameMap.getTownList()) {
 			boardGame_Layers.add(town.getPanel(), 0);
 			boardGame_Layers.add(town.getPanel().getElfBootPanel(), 0);
-
-			// add the JPanels for every spot on every elf boot panel
-			for (int spot = 0; spot < 6; spot++) {
-				boardGame_Layers.add(town.getPanel().getElfBootPanel().getSpotByNumber(spot), 0);
-			}
 		}
 	}
 	
@@ -499,28 +494,28 @@ public class GameScreen extends JPanel implements Serializable
 	public void moveBlackBoot(JPanel newCurrentPanel)
 	{
 		// this is what we will use to update the game state based on the information sent over the network
-		blackBoot.getCurSpotInPanel().remove(blackBoot.getImage());
-		blackBoot.getCurPanel().setSpotAvailability(blackBoot.getCurSpotInPanel(), true);
-		update(blackBoot.getCurSpotInPanel());
+		blackBoot.getCurPanel().remove(blackBoot.getImage());
+		//blackBoot.getCurPanel().setSpotAvailability(blackBoot.getCurPanel(), true);
+		update(blackBoot.getCurPanel());
 
 		// now switch the current panel
-		blackBoot.setCurPanelAndSpot((ElfBootPanel) newCurrentPanel);
-		blackBoot.getCurSpotInPanel().add(blackBoot.getImage());
-		update(blackBoot.getCurSpotInPanel());
+		blackBoot.setCurPanel((ElfBootPanel) newCurrentPanel);
+		blackBoot.getCurPanel().add(blackBoot.getImage());
+		update(blackBoot.getCurPanel());
 
 	}
 
 	public void setCurrentPanelOfBlueBoot(JPanel newCurrentPanel)
 	{
 		// this is what we will use to update the game state based on the information sent over the network
-		blueBoot.getCurSpotInPanel().remove(blueBoot.getImage());
-		blueBoot.getCurPanel().setSpotAvailability(blueBoot.getCurSpotInPanel(), true);
-		update(blueBoot.getCurSpotInPanel());
+		blueBoot.getCurPanel().remove(blueBoot.getImage());
+		//blueBoot.getCurPanel().setSpotAvailability(blueBoot.getCurPanel(), true);
+		update(blueBoot.getCurPanel());
 
 		// now switch the current panel
-		blueBoot.setCurPanelAndSpot((ElfBootPanel) newCurrentPanel);
-		blueBoot.getCurSpotInPanel().add(blueBoot.getImage());
-		update(blueBoot.getCurSpotInPanel());
+		blueBoot.setCurPanel((ElfBootPanel) newCurrentPanel);
+		blueBoot.getCurPanel().add(blueBoot.getImage());
+		update(blueBoot.getCurPanel());
 
 	}
 

@@ -29,7 +29,7 @@ public class TownPanel extends JPanel implements ObserverPanel {
         this.height = pHeight;
         this.gameScreen = pGameScreen;
         this.town = pTown;
-        this.elfBootPanel = new ElfBootPanel(town, x, y+height, gameScreen.getWidth()*10/144, gameScreen.getHeight()*1/45, pGameScreen);
+        this.elfBootPanel = new ElfBootPanel(town, x-10, y+height, gameScreen.getWidth()*13/144, gameScreen.getHeight()*1/45, pGameScreen);
 
         this.setBounds(this.x, this.y, this.width, this.height);
         this.setOpaque(false);
