@@ -62,10 +62,10 @@ public class ElfBootController implements MouseListener {
 
                 // update model with new spot of boot
                 if (itemClicked instanceof ElfBootPanel) {
-                    boot.setCurPanelAndSpot((ElfBootPanel) itemClicked);
+                    boot.setCurPanel((ElfBootPanel) itemClicked);
                 } else if (itemClicked instanceof TownPanel) {
                     ElfBootPanel elfBootPanel = ((TownPanel) itemClicked).getElfBootPanel();
-                    boot.setCurPanelAndSpot(elfBootPanel);
+                    boot.setCurPanel(elfBootPanel);
                 }
 
                 // boot has been successfully moved and is no longer selected
