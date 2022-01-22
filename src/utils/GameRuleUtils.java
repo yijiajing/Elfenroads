@@ -35,23 +35,24 @@ public final class GameRuleUtils {
             }
             if (road.getRegionType() == RegionType.LAKE) {
                 // lake - two raft cards
-                if (cards.size() == 2 && cards.stream().allMatch(card -> card.getType() == CounterType.RAFT)) {
+                if (cards.size() == 2 && cards.stream().allMatch(card -> card.getType() == TravelCardType.RAFT)) {
                     return true;
                 }
             } else if (road.getRegionType() == RegionType.RIVER) {
                 if (gameMap.getRoadSource(road).equals(destTown)) {
                     // upriver - two raft cards
-                    if (cards.size() == 2 && cards.stream().allMatch(card -> card.getType() == CounterType.RAFT)) {
+                    if (cards.size() == 2 && cards.stream().allMatch(card -> card.getType() == TravelCardType.RAFT)) {
                         return true;
                     }
                 } else {
                     // downriver - one raft card
-                    if (cards.size() == 1 && cards.get(0).getType() == CounterType.RAFT) {
+                    if (cards.size() == 1 && cards.get(0).getType() == TravelCardType.RAFT) {
                         return true;
                     }
                 }
             } else {
-                CounterType requiredType = road.getTransportationCounter().getType();
+                // convert transportation counter type to corresponding card type
+                TravelCardType requiredType = TravelCardType.valueOf(road.getTransportationCounter().getType().name());
                 int requiredNumOfCards = road.getTransportationCounter().getRequiredNumOfUnitsOn(road);
                 if (road.hasObstacle()) {
                     requiredNumOfCards++;

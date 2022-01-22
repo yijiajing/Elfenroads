@@ -2,14 +2,14 @@ package domain;
 
 public class TravelCard extends CardUnit {
 
-    private CounterType type;
+    private TravelCardType type;
 
-    public TravelCard(CounterType type, int resizeWidth, int resizeHeight) {
+    public TravelCard(TravelCardType type, int resizeWidth, int resizeHeight) {
         super(resizeWidth, resizeHeight, "T0" + type.ordinal() + 1);
         this.type = type;
     }
 
-    public CounterType getType() {
+    public TravelCardType getType() {
         return type;
     }
 }

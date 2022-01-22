@@ -56,6 +56,10 @@ public class Player {
         }
     }
 
+    public Town getCurrentTown() {
+        return curTown;
+    }
+
     public int getScore() {
     	return score;
     }

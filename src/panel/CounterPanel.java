@@ -11,8 +11,6 @@ public class CounterPanel extends JPanel {
     private final int x;
     private final int y;
     private GameScreen gameScreen;
-    private TransportationCounter transportationCounter = null;
-    private boolean hasObstacle = false;
     private Road road;
 
     public CounterPanel(int x, int y, Road road, GameScreen pScreen) {
@@ -37,23 +35,12 @@ public class CounterPanel extends JPanel {
         });
     }
 
-    public TransportationCounter getTransportationCounter() {
-        return transportationCounter;
-    }
-
     public void setTransportationCounter(TransportationCounter transportationCounter) {
-        this.transportationCounter = transportationCounter;
         this.add(transportationCounter.getDisplay());
     }
 
-    //TODO: implement obstacle
-
-    public boolean hasObstacle() {
-        return hasObstacle;
-    }
-
-    public void setObstacle(boolean hasObstacle) {
-        this.hasObstacle = hasObstacle;
+    public void placeObstacle() {
+        //TODO: display obstacle image on top of (maybe a bit on the bottom of) the transportation counter
     }
 
     public void update() {
@@ -62,8 +49,6 @@ public class CounterPanel extends JPanel {
     }
 
     public void clear() {
-        hasObstacle = false;
-        transportationCounter = null;
         this.removeAll();
         update();
     }
