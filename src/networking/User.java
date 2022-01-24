@@ -26,8 +26,6 @@ public class User {
     private Calendar authTokenIssued;
     private String tokenExpiryAsString;
 
-    private String lsHostIP = "35.182.122.111"; // Nick's IP because he is hosting the ls
-
 
     /**
      * @pre user already exists in LS
@@ -47,7 +45,7 @@ public class User {
 
     public int authenticate() throws IOException
     {
-        URL url = new URL("http://" + lsHostIP + ":4242/oauth/token?grant_type=password&username=" + username + "&password=" + password);
+        URL url = new URL("http://35.182.122.111:4242/oauth/token?grant_type=password&username=" + username + "&password=" + password);
 
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setDoOutput(true);
