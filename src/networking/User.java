@@ -3,6 +3,7 @@ package networking;
 import org.json.*;
 
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -12,13 +13,29 @@ import java.util.regex.Pattern;
 
 public class User {
 
+
+    // enum used for roles as they appear in the LS
+
+    public enum Role
+    {
+        PLAYER, SERVICE, ADMIN
+    }
+
     // this class represents a user of the lobby service
 
+
+    // basic info
     private String username;
     private String password;
+    private Role role;
+    private String preferredColor; // we probably won't need this, but I set it anyway
+
+    // oauth stuff
     private String accessToken;
-    private String basicAuthCredentials;
-    private String basicAuthEncoded;
+    private static final String basicAuthCredentials = "bgp-client-name:bgp-client-pw";
+    private static final String adminUsername = "maex";
+    private static final String adminPassword = "abc123_ABC123";
+    private static final String basicAuthEncoded = Base64.getEncoder().encodeToString(basicAuthCredentials.getBytes());
     private boolean isAuthenticated;
     private String refreshToken;
     private int tokenExpiresIn;
@@ -26,6 +43,8 @@ public class User {
     private Calendar authTokenIssued;
     private String tokenExpiryAsString;
 
+    // for reference
+    private JSONObject infoFromAPI;
 
     /**
      * @pre user already exists in LS
@@ -33,15 +52,72 @@ public class User {
      * @param pPassword
      * @throws IOException
      */
-    public User(String pUsername, String pPassword) throws IOException
+
+    // TODO: read in role from the API
+    public User(String pUsername, String pPassword) throws IOException, Exception
     {
         username = pUsername;
         password = pPassword;
-        basicAuthCredentials = "bgp-client-name:bgp-client-pw";
-        basicAuthEncoded = Base64.getEncoder().encodeToString(basicAuthCredentials.getBytes());
         isAuthenticated = false;
         authenticate();
+        retrieveUserInfo();
     }
+
+    /**
+     * creates a new User in the LS with ROLE_PLAYER
+     * @pre user does not yet exist in LS
+     * @pre the password must comply to the password policy, or the request throw an exception
+     * @param newUsername the username for the new user
+     * @param newPassword the password for the new user
+     * @return
+     * @throws IOException
+     */
+    public static User createNewUser(String newUsername, String newPassword, Role newRole) throws Exception
+    {
+
+        // check to make sure that password is acceptable by LS
+        // throw an exception with method if it is not
+        if (!isValidPassword(newPassword)) // calls the method we took from Max's code
+        {
+            throw new Exception("This password does not fit the LS criteria. Please try a different password.");
+        }
+
+        String adminToken = getAccessTokenUsingCreds(adminUsername, adminPassword);
+
+        URL url = new URL("http://35.182.122.111:4242/api/users/" + newUsername + "?access_token=" + adminToken);
+
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("PUT");
+        con.setRequestProperty("Content-Type", "application/json");
+
+        /* Payload support */
+        con.setDoOutput(true);
+        DataOutputStream out = new DataOutputStream(con.getOutputStream());
+        out.writeBytes("{\n");
+        out.writeBytes("    \"name\": \"" + newUsername + "\",\n");
+        out.writeBytes("    \"password\": \"" + newPassword + "\",\n");
+        out.writeBytes("    \"preferredColour\": \"01FFFF\",\n");
+        out.writeBytes("    \"role\": \"ROLE_PLAYER\"\n");
+        out.writeBytes("}");
+        out.flush();
+        out.close();
+
+        int status = con.getResponseCode();
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer content = new StringBuffer();
+        while((inputLine = in.readLine()) != null) {
+            content.append(inputLine);
+        }
+        in.close();
+        con.disconnect();
+        System.out.println("Response status: " + status);
+        System.out.println(content.toString());
+
+        User created = new User(newUsername, newPassword);
+        return created;
+    }
+
 
     public int authenticate() throws IOException
     {
@@ -142,6 +218,47 @@ public class User {
 
     }
 
+    /**
+     * makes an API call to get details about a user on the LS and to set the relevant fields
+     * */
+    private void retrieveUserInfo() throws IOException, Exception
+    {
+        // this operation requires admin permissions.
+        // we're going to use the workaround method and purposely avoid calling the User constructor inside this method
+        // because when we call the constructor in here, it creates an infinite loop of User constructors and hangs forever
+        String adminToken = getAccessTokenUsingCreds("maex", "abc123_ABC123");
+
+        // now make the main API call
+        URL url = new URL("http://35.182.122.111:4242/api/users/maex?access_token=" + adminToken);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("GET");
+
+
+        int status = con.getResponseCode();
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer content = new StringBuffer();
+        while((inputLine = in.readLine()) != null) {
+            content.append(inputLine);
+        }
+        in.close();
+        con.disconnect();
+
+        // now, take the output and turn it into a JSON
+
+        JSONObject response = new JSONObject(content.toString());
+        infoFromAPI = response;
+        // we already have username and password, so we don't need to do anything to those.
+
+        // we are, however, interested in preferred color and role
+        preferredColor = response.get("preferredColour").toString();
+        String roleString = response.get("role").toString();
+
+        role = interpretRole(roleString); // see line 386
+
+
+    }
+
     public String getRefreshToken() {
         return refreshToken;
     }
@@ -154,14 +271,16 @@ public class User {
         return username;
     }
 
-    private String escapePlusSign(String token)
+    public Role getRole() {return role;}
+
+    private static String escapePlusSign(String token)
     {
         String returnVal = token.replace("+", "%2B");
         return returnVal;
     }
 
     // TODO: need to implement this method
-    public static boolean doesUsernameExist(String username) throws IOException
+    public static boolean doesUsernameExist(String username) throws IOException, Exception
     {
         User admin = new User("maex", "abc123_ABC123");
         String token = admin.getAccessToken();
@@ -181,7 +300,7 @@ public class User {
     }
     
     // from Max's code
-    public static boolean doesPasswordExist(String password)
+    public static boolean isValidPassword(String password)
     {
     	return Pattern.compile("(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,32}").matcher(password).find();
     }
@@ -244,10 +363,31 @@ public class User {
         
         for (JSONObject j : allUsers)
         {
-        	System.out.println(j.toString());
+        	// System.out.println(j.toString()); I don't think we need to print this
         }
     	
     	return allUsers;
+    }
+
+    // used to help us convert the text description of a user's role to a value from our Role enum
+    public Role interpretRole(String role) throws Exception
+    {
+        if (role.equalsIgnoreCase("ROLE_PLAYER"))
+        {
+            return Role.PLAYER;
+        }
+
+        else if (role.equalsIgnoreCase("ROLE_ADMIN"))
+        {
+            return Role.ADMIN;
+        }
+
+        else if (role.equalsIgnoreCase("ROLE_SERVICE"))
+        {
+            return Role.SERVICE;
+        }
+
+        throw new Exception(role + " is not a valid role!");
     }
 
     // FOR TESTING PURPOSES ONLY
@@ -260,6 +400,44 @@ public class User {
 
         System.out.println("The token was obtained at " + authTokenIssued);
         System.out.println("The token expires at " + authTokenExpiresAt + ", which should be " + tokenExpiresIn + " seconds from the time it was obtained.");
+    }
+
+
+    // TODO: make sure this method still works once the token is expired
+    /**
+     * a method to get access token without having to call the User constructor
+     * designed to avoid the infinite loop of User constructor called by getUserInfo
+     * @param username
+     * @param password
+     * @return
+     */
+    public static String getAccessTokenUsingCreds(String username, String password) throws IOException
+    {
+        URL url = new URL("http://35.182.122.111:4242/oauth/token?grant_type=password&username=" + username + "&password=" + password);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("POST");
+
+        // add the credentials, encoded
+        con.setRequestProperty("Authorization", "Basic " + basicAuthEncoded);
+
+        int status = con.getResponseCode();
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer content = new StringBuffer();
+        while((inputLine = in.readLine()) != null) {
+            content.append(inputLine);
+        }
+        in.close();
+        con.disconnect();
+
+        // now get the token
+        String contentString = content.toString();
+        JSONObject contentJSON = new JSONObject(contentString);
+
+        String accessToken = escapePlusSign(contentJSON.get("access_token").toString());
+        return accessToken;
+
+
     }
 
 }
