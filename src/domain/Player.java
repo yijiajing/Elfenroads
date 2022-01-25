@@ -4,9 +4,6 @@ import networking.*;
 import panel.GameScreen;
 
 import javax.swing.*;
-import java.net.InetAddress;
-import java.net.Socket;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -19,16 +16,22 @@ public class Player {
     // game-specific info
     private Town curTown;
     private Set<Town> townsVisited = new HashSet<>();
-    private String colour;
+    private String colour; // TODO: maybe write an enum for colors since we only have certain ones
+    private int score; // The score of a player
     
-    private int score;//The score of a player
+    // info for connecting to LS and multiplayer
+    // TODO: decide where to initialize this field
+    private User associated;
+    private String ip;
 
     // TODO: implement the constructor
-    public Player(String IP, String pColour, GameScreen pScreen)
+    public Player(String pColour, GameScreen pScreen)
     {
         this.curTown = GameMap.getInstance(pScreen).getTownByName("Elvenhold");
         this.colour = pColour;
     }
+    
+    // TODO: add more constructors or update existing to initialize the networking fields (associated, ip)
 
     public String getCurrentTownName() {
         return curTown.getName();
