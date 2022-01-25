@@ -37,8 +37,9 @@ public class GameSession {
     {
         String token = creator.getAccessToken();
 
-        // TODO: pass location to LS
-        URL url = new URL("http://35.182.122.111:4242/api/sessions?access_token=" + token + "&location=10.0.0.244");
+
+        // TODO: deal with the location--do we even need to for P2P?
+        URL url = new URL("http://35.182.122.111:4242/api/sessions?access_token=" + token + "&location=" + locationIP);
 
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("POST");
