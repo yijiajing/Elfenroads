@@ -19,10 +19,10 @@ public class Player {
     private String colour; // TODO: maybe write an enum for colors since we only have certain ones
     private int score; // The score of a player
     
-    // associated User to interface between Player and LobbyService
+    // info for connecting to LS and multiplayer
     // TODO: decide where to initialize this field
-    
     private User associated;
+    private String ip;
 
     // TODO: implement the constructor
     public Player(String IP, String pColour, GameScreen pScreen)
