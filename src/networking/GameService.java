@@ -24,7 +24,7 @@ public class GameService {
     private String gameDisplayName;
 
 
-    public GameService (User pAdminUser, String pGameServiceName, String pGameDisplayName, String pGameServiceAccountPassword, int pMinSessionPlayers, int pMaxSessionPlayers) throws IOException
+    public GameService (User pAdminUser, String pGameServiceName, String pGameDisplayName, String pGameServiceAccountPassword, int pMinSessionPlayers, int pMaxSessionPlayers) throws IOException, Exception
     {
         // first, we need to create a user to manage the networking.GameService
         adminUser = pAdminUser;
@@ -34,12 +34,12 @@ public class GameService {
         maxSessionPlayers = 2;
         gameDisplayName = pGameDisplayName;
         createGameServiceUser();
-        // now, we have created the game service user and we can go on to create the actual game session (using that user)
+        // now, we have created the game service user and we can go on to create the actual game service (using that user)
         createGameService();
 
     }
 
-    public void createGameServiceUser() throws IOException
+    public void createGameServiceUser() throws IOException, Exception
     {
         // first, check if a service user already exists (will do this later)
         // if a user does not already exist, we will just create one

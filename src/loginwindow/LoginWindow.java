@@ -66,11 +66,11 @@ public class LoginWindow extends JPanel implements ActionListener {
             	{
 					u = User.doesUsernameExist(username);
 				} 
-            	catch (IOException e1) 
+            	catch (Exception e1) // TODO: create a custom exception for the one raised in doesUsernameExist and edit this to catch both an IOException and the custom one
             	{
 					e1.printStackTrace();
 				}
-            	boolean p = User.doesPasswordExist(password);
+            	boolean p = User.isValidPassword(password);
             	if (u && p)
             	{
             		remove(background_elvenroads);
