@@ -25,11 +25,13 @@ public class Player {
     private String ip;
 
     // TODO: implement the constructor
-    public Player(String IP, String pColour, GameScreen pScreen)
+    public Player(String pColour, GameScreen pScreen)
     {
         this.curTown = GameMap.getInstance(pScreen).getTownByName("Elvenhold");
         this.colour = pColour;
     }
+    
+    // TODO: add more constructors or update existing to initialize the networking fields (associated, ip)
 
     public String getCurrentTownName() {
         return curTown.getName();
