@@ -11,7 +11,7 @@ public class TestAPI {
 
     {
         User admin = new User("maex", "abc123_ABC123");
-        GameService elfenlands = new GameService()
+        // GameService elfenlands = new GameService()
     }
 
     public static void testCreateUser(String username, String password) throws IOException, Exception {
