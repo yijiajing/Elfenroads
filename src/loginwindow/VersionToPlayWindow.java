@@ -63,7 +63,7 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                NetworkDemoPlayer1.cardLayout.show(NetworkDemoPlayer1.mainPanel,"gameScreen");
+                MainFrame.cardLayout.show(NetworkDemoPlayer1.mainPanel,"gameScreen");
             }
         });
 
@@ -77,8 +77,8 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
             @Override
             public void actionPerformed(ActionEvent e) {
                 remove(background_elvenroads);
-                NetworkDemoPlayer1.mainPanel.add(new LobbyWindow(), "lobby");
-                NetworkDemoPlayer1.cardLayout.show(NetworkDemoPlayer1.mainPanel,"lobby");
+                MainFrame.mainPanel.add(new LobbyWindow(), "lobby");
+                MainFrame.cardLayout.show(NetworkDemoPlayer1.mainPanel,"lobby");
             }
         });
 
