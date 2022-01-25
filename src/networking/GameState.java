@@ -90,12 +90,12 @@ public class GameState {
 
     // TODO: remove this method, only using it for testing of UI before networking stuff is set up
     public void setDummyPlayers() {
-        players.add(new Player("123", "black", screen));
-        players.add(new Player("123", "blue", screen));
-        players.add(new Player("123", "green", screen));
-        players.add(new Player("123", "purple", screen));
-        players.add(new Player("123", "red", screen));
-        players.add(new Player("123", "yellow", screen));
+        players.add(new Player("black", screen));
+        players.add(new Player("blue", screen));
+        players.add(new Player("green", screen));
+        players.add(new Player("purple", screen));
+        players.add(new Player("red", screen));
+        players.add(new Player("yellow", screen));
     }
     
     public static GameState instance(GameScreen pScreen) {
