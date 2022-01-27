@@ -19,7 +19,8 @@ import java.util.Stack;
 import javax.swing.*;
 import javax.swing.border.Border;
 
-import networking.*;
+import enums.Colour;
+import enums.CounterType;
 import domain.*;
 import networking.GameState;
 import org.minueto.MinuetoTool;
@@ -191,12 +192,12 @@ public class GameScreen extends JPanel implements Serializable
 		// TODO - the number of boots depends on the number of players, this implementation is wrong
 		ElfBootPanel elvenholdBootPanel = gameMap.getTown("Elvenhold").getPanel().getElfBootPanel();
 
-		blackBoot = new ElfBoot("black", this.width, this.height, elvenholdBootPanel, this);
-		blueBoot = new ElfBoot("blue", this.width, this.height, elvenholdBootPanel, this);
-		greenBoot = new ElfBoot("green", this.width, this.height, elvenholdBootPanel, this);
-		purpleBoot = new ElfBoot("purple", this.width, this.height, elvenholdBootPanel, this);
-		redBoot = new ElfBoot("red", this.width, this.height, elvenholdBootPanel, this);
-		yellowBoot = new ElfBoot("yellow", this.width, this.height, elvenholdBootPanel, this);
+		blackBoot = new ElfBoot(Colour.BLACK, this.width, this.height, elvenholdBootPanel, this);
+		blueBoot = new ElfBoot(Colour.BLUE, this.width, this.height, elvenholdBootPanel, this);
+		greenBoot = new ElfBoot(Colour.GREEN, this.width, this.height, elvenholdBootPanel, this);
+		purpleBoot = new ElfBoot(Colour.PURPLE, this.width, this.height, elvenholdBootPanel, this);
+		redBoot = new ElfBoot(Colour.RED, this.width, this.height, elvenholdBootPanel, this);
+		yellowBoot = new ElfBoot(Colour.YELLOW, this.width, this.height, elvenholdBootPanel, this);
 
 		gameState.addElfBoot(blackBoot);
 		gameState.addElfBoot(blueBoot);

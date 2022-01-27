@@ -1,5 +1,7 @@
 package domain;
 
+import enums.TravelCardType;
+
 public class TravelCard extends CardUnit {
 
     private TravelCardType type;

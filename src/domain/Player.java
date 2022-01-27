@@ -1,5 +1,6 @@
 package domain;
 
+import enums.Colour;
 import networking.*;
 import panel.GameScreen;
 
@@ -16,7 +17,7 @@ public class Player {
     // game-specific info
     private Town curTown;
     private Set<Town> townsVisited = new HashSet<>();
-    private String colour; // TODO: maybe write an enum for colors since we only have certain ones
+    private Colour colour; // TODO: maybe write an enum for colors since we only have certain ones
     private int score; // The score of a player
     
     // info for connecting to LS and multiplayer
@@ -25,7 +26,7 @@ public class Player {
     private String ip;
 
     // TODO: implement the constructor
-    public Player(String pColour, GameScreen pScreen)
+    public Player(Colour pColour, GameScreen pScreen)
     {
         this.curTown = GameMap.getInstance(pScreen).getTownByName("Elvenhold");
         this.colour = pColour;
@@ -54,7 +55,7 @@ public class Player {
     	return score;
     }
 
-    public String getColour() {
+    public Colour getColour() {
         return this.colour;
     }
 }

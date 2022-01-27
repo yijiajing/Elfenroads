@@ -1,6 +1,7 @@
 package test;
 
 import domain.*;
+import enums.TravelCardType;
 import org.minueto.MinuetoTool;
 import panel.GameScreen;
 import utils.GameRuleUtils;
