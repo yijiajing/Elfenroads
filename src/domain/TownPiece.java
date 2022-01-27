@@ -1,5 +1,6 @@
 package domain;
 
+import enums.Colour;
 import panel.GameScreen;
 
 import javax.swing.*;
@@ -7,14 +8,14 @@ import java.awt.*;
 
 public class TownPiece {
 
-    private String colour;
+    private Colour colour;
     private JLabel image;
     private int width;
     private int height;
     private Town town;
     private GameScreen gameScreen;
 
-    public TownPiece(String pColour, Town pTown, GameScreen pScreen) {
+    public TownPiece(Colour pColour, Town pTown, GameScreen pScreen) {
         this.colour = pColour;
         this.town = pTown;
         this.gameScreen = pScreen;
@@ -31,7 +32,7 @@ public class TownPiece {
         return image;
     }
 
-    public String getColour() {
+    public Colour getColour() {
         return this.colour;
     }
 }

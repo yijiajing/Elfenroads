@@ -1,11 +1,13 @@
 package domain;
 
+import enums.Colour;
 import panel.GameScreen;
 import panel.TownPanel;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
-public class Town {
+public class Town implements Comparable<Town> {
 
     private String name;
     private int x;
@@ -45,24 +47,42 @@ public class Town {
     public void initializeTownPieces() {
         // TODO : get current players and add town pieces for those colours only
 
-        townPieces.add(new TownPiece("black", this, gameScreen));
-        townPieces.add(new TownPiece("blue", this, gameScreen));
-        townPieces.add(new TownPiece("green", this, gameScreen));
-        townPieces.add(new TownPiece("purple", this, gameScreen));
-        townPieces.add(new TownPiece("red", this, gameScreen));
-        townPieces.add(new TownPiece("yellow", this, gameScreen));
+        townPieces.add(new TownPiece(Colour.BLACK, this, gameScreen));
+        townPieces.add(new TownPiece(Colour.BLUE, this, gameScreen));
+        townPieces.add(new TownPiece(Colour.GREEN, this, gameScreen));
+        townPieces.add(new TownPiece(Colour.PURPLE, this, gameScreen));
+        townPieces.add(new TownPiece(Colour.RED, this, gameScreen));
+        townPieces.add(new TownPiece(Colour.YELLOW, this, gameScreen));
     }
 
     public ArrayList<TownPiece> getTownPieces() {
         return townPieces;
     }
 
-    public void removeTownPieceByColour(String colour) {
+    public void removeTownPieceByColour(Colour colour) {
         for ( TownPiece piece : townPieces ) {
-            if (piece.getColour().equalsIgnoreCase(colour)) {
+            if (piece.getColour() == colour) {
                 townPieces.remove(piece);
                 return;
             }
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Town town = (Town) o;
+        return Objects.equals(getName(), town.getName());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getName());
+    }
+
+    @Override
+    public int compareTo(Town o) {
+        return name.compareTo(o.name);
     }
 }

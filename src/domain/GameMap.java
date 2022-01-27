@@ -1,5 +1,6 @@
 package domain;
 
+import enums.RegionType;
 import org.jgrapht.graph.Pseudograph;
 import panel.GameScreen;
 

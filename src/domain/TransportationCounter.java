@@ -1,6 +1,8 @@
 package domain;
 
-import javax.swing.*;
+import enums.CounterType;
+import enums.RegionType;
+
 import java.util.Objects;
 
 public class TransportationCounter extends CounterUnit implements Comparable<TransportationCounter> {
