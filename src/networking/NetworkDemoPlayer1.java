@@ -38,7 +38,7 @@ public class NetworkDemoPlayer1 extends JFrame {
 
         // while (true)
          // {
-            GameScreen ourScreen = GameScreen.getInstance(this);
+            GameScreen ourScreen = GameScreen.init(this);
 
             mainPanel.add(ourScreen, "gameScreen");
 

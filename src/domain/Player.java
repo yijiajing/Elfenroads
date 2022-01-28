@@ -28,7 +28,7 @@ public class Player {
     // TODO: implement the constructor
     public Player(Colour pColour, GameScreen pScreen)
     {
-        this.curTown = GameMap.getInstance(pScreen).getTownByName("Elvenhold");
+        this.curTown = GameMap.getInstance().getTownByName("Elvenhold");
         this.colour = pColour;
     }
     
