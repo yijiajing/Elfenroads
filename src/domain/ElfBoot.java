@@ -54,7 +54,7 @@ public class ElfBoot extends JLabel {
         this.curPanel.getTown().removeTownPieceByColour(this.colour);
         GameState.instance(gameScreen).getPlayerByColour(this.colour).setCurrentTown(curPanel.getTown());
 
-        GameScreen.getInstance(new JFrame()).notifyObservers();
+        GameScreen.getInstance().notifyObservers();
     }
 
     public JLabel getImage() { return this.bootImage; }

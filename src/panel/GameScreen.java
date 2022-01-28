@@ -134,8 +134,6 @@ public class GameScreen extends JPanel implements Serializable
 		boardGame_Layers = new JLayeredPane();
 		boardGame_Layers.setBounds(0,0,width,height);
 
-		gameState = new GameState(this); // TODO remove?
-
 		initialization();
 
 		// Add the images to their corresponding JPanel
@@ -153,11 +151,15 @@ public class GameScreen extends JPanel implements Serializable
 	 * @param frame - the main frame that is nested in this JPanel
 	 * @return the Singleton instance of the GameScreen 
 	 */
-	public static GameScreen getInstance(JFrame frame) {
+	public static GameScreen getInstance() {
+		return INSTANCE; 
+	}
+
+	public static GameScreen init(JFrame frame) {
 		if (INSTANCE == null) {
 			INSTANCE = new GameScreen(frame);
 		}
-		return INSTANCE; 
+		return INSTANCE;
 	}
 
 
@@ -171,7 +173,8 @@ public class GameScreen extends JPanel implements Serializable
 	public void initialization()
 	{
 		// initialize town and road panels
-		gameMap = GameMap.getInstance(this);
+		gameMap = GameMap.init(this);
+		gameState = new GameState(this); // TODO remove?
 
 		initializeElfBoots();
 		initializeMapImage();
@@ -527,7 +530,7 @@ public class GameScreen extends JPanel implements Serializable
 		game_screen.setSize(MinuetoTool.getDisplayWidth(), MinuetoTool.getDisplayHeight());
 		game_screen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		game_screen.add(getInstance(game_screen));
+		game_screen.add(init(game_screen));
 		game_screen.setVisible(true);
 	}
 

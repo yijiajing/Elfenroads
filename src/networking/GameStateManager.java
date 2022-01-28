@@ -93,7 +93,7 @@ public class GameStateManager {
         this.selectedTown = selectedTown;
 
         if (gameState.getCurrentPhase() == RoundPhaseType.MOVE && !selectedCards.isEmpty()) {
-            if (!GameRuleUtils.validateMove(GameMap.getInstance(null), gameState.getCurrentPlayer().getCurrentTown(), selectedTown, selectedCards)) {
+            if (!GameRuleUtils.validateMove(GameMap.getInstance(), gameState.getCurrentPlayer().getCurrentTown(), selectedTown, selectedCards)) {
                 gameState.getCurrentPlayer().setCurrentTown(selectedTown);
             } else {
                 //TODO: in UI

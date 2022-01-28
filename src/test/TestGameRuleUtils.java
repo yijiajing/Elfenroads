@@ -15,11 +15,11 @@ public class TestGameRuleUtils {
         JFrame gameScreen = new JFrame("GameScreen");
         gameScreen.setSize(MinuetoTool.getDisplayWidth(), MinuetoTool.getDisplayHeight());
         gameScreen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        gameScreen.add(GameScreen.getInstance(gameScreen));
+        gameScreen.add(GameScreen.init(new JFrame()));
         gameScreen.setVisible(false);
 
         // test initialization
-        GameMap gameMap = GameMap.getInstance(GameScreen.getInstance(new JFrame()));
+        GameMap gameMap = GameMap.init(GameScreen.getInstance());
         Town elvenhold = gameMap.getTownByName("Elvenhold");
         Town feodor = gameMap.getTownByName("Feodor");
         Town beata = gameMap.getTownByName("Beata");
