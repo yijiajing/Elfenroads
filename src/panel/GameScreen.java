@@ -102,7 +102,10 @@ public class GameScreen extends JPanel implements Serializable
 		boardGame_Layers = new JLayeredPane();
 		boardGame_Layers.setBounds(0,0,width,height);
 
-		gameState = new GameState(this); // TODO remove?
+		// initialize town and road panels
+		gameMap = GameMap.init(this);
+
+		gameState = GameState.init(this); // TODO remove?
 
 		initialization();
 
@@ -134,6 +137,11 @@ public class GameScreen extends JPanel implements Serializable
 		boardGame_Layers = new JLayeredPane();
 		boardGame_Layers.setBounds(0,0,width,height);
 
+		// initialize town and road panels
+		gameMap = GameMap.init(this);
+
+		gameState = GameState.init(this); // TODO remove?
+
 		initialization();
 
 		// Add the images to their corresponding JPanel
@@ -148,7 +156,6 @@ public class GameScreen extends JPanel implements Serializable
 	}
 
 	/**
-	 * @param frame - the main frame that is nested in this JPanel
 	 * @return the Singleton instance of the GameScreen 
 	 */
 	public static GameScreen getInstance() {
@@ -172,10 +179,6 @@ public class GameScreen extends JPanel implements Serializable
 
 	public void initialization()
 	{
-		// initialize town and road panels
-		gameMap = GameMap.init(this);
-		gameState = new GameState(this); // TODO remove?
-
 		initializeElfBoots();
 		initializeMapImage();
 		initializeRoundCardImage(1);
@@ -301,7 +304,7 @@ public class GameScreen extends JPanel implements Serializable
 //				{"6", "0"},
 //		};
 		
-		List<Player> aPlayers = GameState.instance(this).getPlayers();
+		List<Player> aPlayers = GameState.instance().getPlayers();
 		
 		String[][] playerScores = new String [aPlayers.size()][2];
 		for (int i = 0; i < playerScores.length; i++){
@@ -434,10 +437,20 @@ public class GameScreen extends JPanel implements Serializable
 	}
 	
 	public void addCards()
-	{	
-		for (JPanel panel : panelForPlayerCards)
+	{
+		// TODO: this code assumes that the player viewing the GUI is the black player
+		// TODO: this is obviously wrong - we need to create a method to get the identity of the
+		// TODO: player looking at this screen to determine which travel cards to show them
+		ArrayList<TravelCard> myCards = GameState.instance().getPlayerByColour(Colour.BLACK).getTravelCards();
+
+		for (int p=0; p<panelForPlayerCards.length; p++)
 		{
+			JPanel panel = panelForPlayerCards[p];
+			TravelCard card = myCards.get(p);
+			panel.add(card.getImage());
 			boardGame_Layers.add(panel, 0);
+			panel.repaint();
+			panel.revalidate();
 		}
 	}
 	
@@ -499,7 +512,6 @@ public class GameScreen extends JPanel implements Serializable
 	{
 		// this is what we will use to update the game state based on the information sent over the network
 		blackBoot.getCurPanel().remove(blackBoot.getImage());
-		//blackBoot.getCurPanel().setSpotAvailability(blackBoot.getCurPanel(), true);
 		update(blackBoot.getCurPanel());
 
 		// now switch the current panel
@@ -513,7 +525,6 @@ public class GameScreen extends JPanel implements Serializable
 	{
 		// this is what we will use to update the game state based on the information sent over the network
 		blueBoot.getCurPanel().remove(blueBoot.getImage());
-		//blueBoot.getCurPanel().setSpotAvailability(blueBoot.getCurPanel(), true);
 		update(blueBoot.getCurPanel());
 
 		// now switch the current panel

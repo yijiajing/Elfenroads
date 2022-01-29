@@ -5,20 +5,19 @@ import java.awt.*;
 
 public abstract class CardUnit {
 
-    String imageFilepath;
-    ImageIcon image;
-    JLabel display;
-    String filepathToRepo = ".";
+    private JLabel image;
 
     public CardUnit(int resizeWidth, int resizeHeight, String filename) {
-        this.imageFilepath = (filepathToRepo + "/assets/sprites/" + filename + ".png");
-        this.image = new ImageIcon(this.imageFilepath);
-        Image toResize = this.image.getImage();
-        Image resized = toResize.getScaledInstance(resizeWidth, resizeHeight,  java.awt.Image.SCALE_SMOOTH);
-        this.image = new ImageIcon(resized);
 
-        // add JLabel
-        this.display = new JLabel(this.image);
+        ImageIcon imageIcon = new ImageIcon("./assets/sprites/" + filename + ".png");
+        Image toResize = imageIcon.getImage();
+        Image resized = toResize.getScaledInstance(resizeWidth, resizeHeight,  java.awt.Image.SCALE_SMOOTH);
+        this.image = new JLabel(new ImageIcon(resized));
+
+    }
+
+    public JLabel getImage() {
+        return this.image;
     }
 
 }

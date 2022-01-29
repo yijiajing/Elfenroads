@@ -3,6 +3,7 @@ package networking;
 import domain.*;
 import enums.Colour;
 import enums.RoundPhaseType;
+import enums.TravelCardType;
 import org.json.JSONObject;
 import panel.GameScreen;
 
@@ -42,6 +43,8 @@ public class GameState {
     private RoundPhaseType currentPhase;
     private Player currentPlayer;
 
+    private ArrayList<TravelCard> travelCardDeck = new ArrayList<>();
+
     //NEED TO IMPLEMENT
     //a default constructor
     /*private GameState() {
@@ -56,6 +59,9 @@ public class GameState {
         this.elfBoots = new ArrayList<>();
 
         setDummyPlayers(); // TODO remove
+
+        initializeTravelCardDeck();
+        distributeTravelCards();
         setToFirstPlayer();
     }
 
@@ -89,13 +95,16 @@ public class GameState {
         players.add(new Player(Colour.YELLOW, screen));
     }
     
-    public static GameState instance(GameScreen pScreen) {
+    public static GameState init(GameScreen pScreen) {
         if (instance == null) {
             instance = new GameState(pScreen);
         }
     	return instance;
     }
 
+    public static GameState instance() {
+        return instance;
+    }
 
     public void addElfBoot(ElfBoot pElfBoot) {
         elfBoots.add(pElfBoot);
@@ -162,5 +171,42 @@ public class GameState {
 
     public void setToFirstPlayer() {
         currentPlayer = players.get(0);
+    }
+
+    private void initializeTravelCardDeck() {
+        for (TravelCardType type : TravelCardType.values()) {
+            // leave out witch cards for now (TODO: incorporate witch variant for elfengold)
+            if (type.equals(TravelCardType.WITCH)) {
+                continue;
+            }
+
+            // add 10 or 12 (for raft) cards of each travel card type
+            if (type.equals(TravelCardType.RAFT)) {
+                for (int i = 0; i < 12; i++) {
+                    travelCardDeck.add(new TravelCard(type, 140, 200));
+                }
+            } else {
+                for (int i = 0; i < 10; i++) {
+                    travelCardDeck.add(new TravelCard(type, 140, 200));
+                }
+            }
+        }
+
+        Collections.shuffle(travelCardDeck); // shuffle the deck
+    }
+
+    public ArrayList<TravelCard> getTravelCardDeck() {
+        return travelCardDeck;
+    }
+
+    /**
+     * Distribute 8 travel cards to each Player by popping from the front of the TravelCardDeck
+     */
+    public void distributeTravelCards() {
+        for (Player p : players) {
+            for (int i=0; i<8; i++) {
+                p.addTravelCard(travelCardDeck.remove(0));
+            }
+        }
     }
 }
