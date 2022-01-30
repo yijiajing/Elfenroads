@@ -66,7 +66,7 @@ public class LoginWindow extends JPanel implements ActionListener {
         loginButton = new JButton("Enter");
         ngrokLogin = new JButton("ngrok LOGIN");
         ngrokSingup = new JButton("ngrok SIGNUP");
-        pasteClipboardButton = new JButton("Paste ngrok thoken");
+        pasteClipboardButton = new JButton("Paste ngrok token");
 
         pasteClipboardButton.addActionListener(new ActionListener()
         {
