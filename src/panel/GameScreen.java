@@ -45,13 +45,6 @@ public class GameScreen extends JPanel implements Serializable
 	private JLabel informationCardImage_TopLayer;
 	private JLabel deckOfTransportationCountersImage_TopLayer;
 	
-	private ElfBoot blackBoot;
-	private ElfBoot blueBoot;
-	private ElfBoot greenBoot;
-	private ElfBoot purpleBoot;
-	private ElfBoot redBoot;
-	private ElfBoot yellowBoot;
-	
 	private JPanel backgroundPanel_ForMap = new JPanel();
 	private JPanel backgroundPanel_ForRound = new JPanel();
 	private JPanel backgroundPanel_ForObstacle = new JPanel();
@@ -179,12 +172,11 @@ public class GameScreen extends JPanel implements Serializable
 
 	public void initialization()
 	{
-		initializeElfBoots();
 		initializeMapImage();
 		initializeRoundCardImage(1);
 		initializeTransportationCountersAndObstacle();
 		initializeBackgroundPanels();
-		initializeCards();
+		initializeCardPanels();
 		initializeInformationCardImage();
 		initializeFaceUpTransportationCounters();
 		initializeDeckOfTransportationCounters();
@@ -194,56 +186,38 @@ public class GameScreen extends JPanel implements Serializable
 		initializeLeaderboard();
 	}
 
-	public void initializeElfBoots() {
-		// TODO - the number of boots depends on the number of players, this implementation is wrong
-		ElfBootPanel elvenholdBootPanel = gameMap.getTown("Elvenhold").getPanel().getElfBootPanel();
-
-		blackBoot = new ElfBoot(Colour.BLACK, this.width, this.height, elvenholdBootPanel, this);
-		blueBoot = new ElfBoot(Colour.BLUE, this.width, this.height, elvenholdBootPanel, this);
-		greenBoot = new ElfBoot(Colour.GREEN, this.width, this.height, elvenholdBootPanel, this);
-		purpleBoot = new ElfBoot(Colour.PURPLE, this.width, this.height, elvenholdBootPanel, this);
-		redBoot = new ElfBoot(Colour.RED, this.width, this.height, elvenholdBootPanel, this);
-		yellowBoot = new ElfBoot(Colour.YELLOW, this.width, this.height, elvenholdBootPanel, this);
-
-		gameState.addElfBoot(blackBoot);
-		gameState.addElfBoot(blueBoot);
-		gameState.addElfBoot(greenBoot);
-		gameState.addElfBoot(purpleBoot);
-		gameState.addElfBoot(redBoot);
-		gameState.addElfBoot(yellowBoot);
-	}
 	
 	public void initializeBackgroundPanels()
 	{
-		// Set Bounds for background domain.Player Transportation Counter zone
-		backgroundPanel_ForTransportationCounters.setBounds(width*0/1440, height*565/900, width*983/1440, height*70/900);
+		// Set Bounds for background Player's Transportation Counter zone
+		backgroundPanel_ForTransportationCounters.setBounds(width*0/1440, height*623/900, width*1075/1440, height*70/900);
 		backgroundPanel_ForTransportationCounters.setBackground(Color.DARK_GRAY);
 		
 		// Set Bounds for background Obstacle zone
 		backgroundPanel_ForObstacle.setBackground(Color.RED);
-		backgroundPanel_ForObstacle.setBounds(width*984/1440, height*565/900, width*80/1440, height*70/900);
+		backgroundPanel_ForObstacle.setBounds(width*1070/1440, height*623/900, width*80/1440, height*70/900);
 		
 		// Set Bounds for background Image zone
-		backgroundPanel_ForMap.setBounds(width*0/1440, height*0/900, width*1064/1440, height*564/900);
+		backgroundPanel_ForMap.setBounds(width*0/1440, height*0/900, width*1150/1440, height*625/900);
 		backgroundPanel_ForMap.setBackground(Color.BLUE);
 		
 		// Set Bounds for background Round zone
-		backgroundPanel_ForRound.setBounds(width*932/1440, height*34/900, width*86/1440, height*130/900);
+		backgroundPanel_ForRound.setBounds(width*1000/1440, height*34/900, width*86/1440, height*130/900);
 		backgroundPanel_ForRound.setOpaque(false);
 		
 		// Set Bounds for background Cards zone
-		backgroundPanel_ForCards.setBounds(width*0/1440, height*566/900, width*1064/1440, height*333/900);
-		backgroundPanel_ForCards.setBackground(Color.DARK_GRAY);
+		backgroundPanel_ForCards.setBounds(width*0/1440, height*690/900, width*1150/1440, height*3/9);
+		backgroundPanel_ForCards.setBackground(Color.WHITE);
 		
 		// Set Bounds for background Information zone
-		backgroundPanel_ForInformationCard.setBounds(width*1065/1440, height*565/900, width*375/1440, height*335/900);
-		backgroundPanel_ForInformationCard.setBackground(Color.DARK_GRAY);
+		backgroundPanel_ForInformationCard.setBounds(width*1150/1440, height*565/900, width*290/1440, height*330/900);
+		backgroundPanel_ForInformationCard.setBackground(Color.WHITE);
 		
 		// Set Bounds for background Face Up Transportation Counter zone
-		backgroundPanel_ForDeckOfTransportationCounters.setBounds(width*1065/1440, height*275/900, width*375/1440, height*289/900);
+		backgroundPanel_ForDeckOfTransportationCounters.setBounds(width*1150/1440, height*275/900, width*290/1440, height*289/900);
 		backgroundPanel_ForDeckOfTransportationCounters.setBackground(Color.DARK_GRAY);
 		
-		backgroundPanel_ForLeaderboard.setBounds(width*1065/1440, height*0/900, width*375/1440, height*274/900);
+		backgroundPanel_ForLeaderboard.setBounds(width*1150/1440, height*0/900, width*290/1440, height*274/900);
 		backgroundPanel_ForLeaderboard.setBackground(Color.DARK_GRAY);
 	}
 	
@@ -252,7 +226,7 @@ public class GameScreen extends JPanel implements Serializable
 		Border whiteLine = BorderFactory.createLineBorder(Color.WHITE);
 		
 		JPanel panel1 = new JPanel();
-		panel1.setBounds(width*1170/1440, height*290/900, width*70/1440, height*60/900);
+		panel1.setBounds(width*1210/1440, height*290/900, width*70/1440, height*60/900);
 		panel1.setOpaque(false);
 		panel1.setBorder(whiteLine);
 		panelForDeckOfTransportationCounters = panel1;
@@ -262,31 +236,31 @@ public class GameScreen extends JPanel implements Serializable
 	{
 		Border whiteLine = BorderFactory.createLineBorder(Color.WHITE);
 		JPanel panel2 = new JPanel();
-		panel2.setBounds(width*1280/1440, height*290/900, width*70/1440, height*60/900);
+		panel2.setBounds(width*1315/1440, height*290/900, width*70/1440, height*60/900);
 		panel2.setOpaque(false);
 		panel2.setBorder(whiteLine);
 		panelForFaceUpTransportationCounters[0] = panel2;
 		
 		JPanel panel3 = new JPanel();
-		panel3.setBounds(width*1170/1440, height*390/900, width*70/1440, height*60/900);
+		panel3.setBounds(width*1210/1440, height*390/900, width*70/1440, height*60/900);
 		panel3.setOpaque(false);
 		panel3.setBorder(whiteLine);
 		panelForFaceUpTransportationCounters[1] = panel3;
 		
 		JPanel panel4 = new JPanel();
-		panel4.setBounds(width*1280/1440, height*390/900, width*70/1440, height*60/900);
+		panel4.setBounds(width*1315/1440, height*390/900, width*70/1440, height*60/900);
 		panel4.setOpaque(false);
 		panel4.setBorder(whiteLine);
 		panelForFaceUpTransportationCounters[2] = panel4;
 		
 		JPanel panel5 = new JPanel();
-		panel5.setBounds(width*1170/1440, height*490/900, width*70/1440, height*60/900);
+		panel5.setBounds(width*1210/1440, height*490/900, width*70/1440, height*60/900);
 		panel5.setOpaque(false);
 		panel5.setBorder(whiteLine);
 		panelForFaceUpTransportationCounters[3] = panel5;
 		
 		JPanel panel6 = new JPanel();
-		panel6.setBounds(width*1280/1440, height*490/900, width*70/1440, height*60/900);
+		panel6.setBounds(width*1315/1440, height*490/900, width*70/1440, height*60/900);
 		panel6.setOpaque(false);
 		panel6.setBorder(whiteLine);
 		panelForFaceUpTransportationCounters[4] = panel6;
@@ -324,7 +298,7 @@ public class GameScreen extends JPanel implements Serializable
 		backgroundPanel_ForLeaderboard.add(leaderboard);
 	}
 	
-	public void initializeCards()
+	public void initializeCardPanels()
 	{
 		int xCoordinate = width*2/1440;
 
@@ -332,10 +306,10 @@ public class GameScreen extends JPanel implements Serializable
 		{
 			JPanel panel = new JPanel();
 			panel.setOpaque(false);
-			panel.setBorder(whiteLine);
-			panel.setBounds(xCoordinate, height*637/900, width*130/1440, height*260/900);
+			//panel.setBorder(whiteLine);
+			panel.setBounds(xCoordinate, height*690/900, width*144/1440, height*3/9);
 			panelForPlayerCards[i] = panel;
-			xCoordinate += width*133/1440;
+			xCoordinate += width*144/1440;
 		}
 	}
 	
@@ -349,7 +323,7 @@ public class GameScreen extends JPanel implements Serializable
 			JPanel panel= new JPanel();
 			panel.setOpaque(false);
 			panel.setBorder(whiteLine);
-			panel.setBounds(xCoordinate, height*570/900, width*70/1440, height*60/900);
+			panel.setBounds(xCoordinate, height*630/900, width*70/1440, height*60/900);
 			panelForPlayerTransportationCounters[i] = panel;
 			xCoordinate += width*200/1440;
 		}
@@ -357,14 +331,14 @@ public class GameScreen extends JPanel implements Serializable
 		// Obstacle
 		panelForObstacle.setOpaque(false);
 		panelForObstacle.setBorder(whiteLine);
-		panelForObstacle.setBounds(width*989/1440, height*570/900, width*70/1440, height*60/900);
+		panelForObstacle.setBounds(width*1077/1440, height*630/900, width*70/1440, height*60/900);
 	}
 	
 	public void initializeMapImage()
 	{
 		ImageIcon mapImage = new ImageIcon(filepathToRepo + "/assets/sprites/map.png");
 		Image map = mapImage.getImage();
-		Image mapResized = map.getScaledInstance(width*1064/1440, height*564/900,  java.awt.Image.SCALE_SMOOTH);
+		Image mapResized = map.getScaledInstance(width*1140/1440, height*625/900,  java.awt.Image.SCALE_SMOOTH);
 		mapImage = new ImageIcon(mapResized);
 		mapImage_BottomLayer = new JLabel(mapImage);
 	}
@@ -383,7 +357,7 @@ public class GameScreen extends JPanel implements Serializable
 	{
 		ImageIcon gridImage = new ImageIcon(filepathToRepo + "/assets/sprites/grid.png");
 		Image grid = gridImage.getImage();
-		Image gridResized = grid.getScaledInstance(width*360/1440, height*325/900,  java.awt.Image.SCALE_SMOOTH);
+		Image gridResized = grid.getScaledInstance(width*290/1440, height*325/900,  java.awt.Image.SCALE_SMOOTH);
 		gridImage = new ImageIcon(gridResized);
 		informationCardImage_TopLayer = new JLabel(gridImage);
 	}
@@ -510,6 +484,8 @@ public class GameScreen extends JPanel implements Serializable
 
 	public void moveBlackBoot(JPanel newCurrentPanel)
 	{
+		ElfBoot blackBoot = gameState.getBootByColour(Colour.BLACK);
+
 		// this is what we will use to update the game state based on the information sent over the network
 		blackBoot.getCurPanel().remove(blackBoot.getImage());
 		update(blackBoot.getCurPanel());
@@ -523,6 +499,8 @@ public class GameScreen extends JPanel implements Serializable
 
 	public void setCurrentPanelOfBlueBoot(JPanel newCurrentPanel)
 	{
+		ElfBoot blueBoot = gameState.getBootByColour(Colour.BLUE);
+
 		// this is what we will use to update the game state based on the information sent over the network
 		blueBoot.getCurPanel().remove(blueBoot.getImage());
 		update(blueBoot.getCurPanel());
@@ -573,14 +551,9 @@ public class GameScreen extends JPanel implements Serializable
 	public void setMyTurn(boolean pMyTurn) { this.myTurn = pMyTurn; }
 
 	// only using this for the demo. See networking.NetworkDemoPlayer2 loop
-	public void reverseTurn()
-	{
+	public void reverseTurn() {
 		myTurn = !myTurn;
 	}
-
-	public ElfBoot getBlackBoot() { return this.blackBoot; }
-
-	public ElfBoot getBlueBoot() { return this.blueBoot; }
 
 	public int getWidth() { return this.width; }
 

@@ -5,6 +5,7 @@ import enums.Colour;
 import enums.RoundPhaseType;
 import enums.TravelCardType;
 import org.json.JSONObject;
+import panel.ElfBootPanel;
 import panel.GameScreen;
 
 import java.util.*;
@@ -34,7 +35,6 @@ public class GameState {
     private static GameState instance;
 
     // meta info (possibly separated into another class in the future)
-    private GameMap gameMap;
     private int totalRounds;
     private List<Player> players = new ArrayList<>();
 
@@ -45,13 +45,13 @@ public class GameState {
 
     private ArrayList<TravelCard> travelCardDeck = new ArrayList<>();
 
+    private ArrayList<ElfBoot> elfBoots;
+
     //NEED TO IMPLEMENT
     //a default constructor
     /*private GameState() {
-    	
-    }*/
 
-    private ArrayList<ElfBoot> elfBoots;
+    }*/
 
     public GameState (GameScreen pScreen)
     {
@@ -60,6 +60,7 @@ public class GameState {
 
         setDummyPlayers(); // TODO remove
 
+        initializeElfBoots();
         initializeTravelCardDeck();
         distributeTravelCards();
         setToFirstPlayer();
@@ -106,10 +107,6 @@ public class GameState {
         return instance;
     }
 
-    public void addElfBoot(ElfBoot pElfBoot) {
-        elfBoots.add(pElfBoot);
-    }
-
     public ArrayList<ElfBoot> getElfBoots() {
         return elfBoots;
     }
@@ -118,6 +115,16 @@ public class GameState {
         for ( Player p : players ) {
             if (p.getColour() == colour) {
                 return p;
+            }
+        }
+
+        return null;
+    }
+
+    public ElfBoot getBootByColour(Colour colour) {
+        for ( ElfBoot e : elfBoots ) {
+            if (e.getColour() == colour) {
+                return e;
             }
         }
 
@@ -183,11 +190,11 @@ public class GameState {
             // add 10 or 12 (for raft) cards of each travel card type
             if (type.equals(TravelCardType.RAFT)) {
                 for (int i = 0; i < 12; i++) {
-                    travelCardDeck.add(new TravelCard(type, 140, 200));
+                    travelCardDeck.add(new TravelCard(type, screen.getWidth()*135/1440, screen.getHeight()*2/9));
                 }
             } else {
                 for (int i = 0; i < 10; i++) {
-                    travelCardDeck.add(new TravelCard(type, 140, 200));
+                    travelCardDeck.add(new TravelCard(type, screen.getWidth()*135/1440, screen.getHeight()*2/9));
                 }
             }
         }
@@ -207,6 +214,15 @@ public class GameState {
             for (int i=0; i<8; i++) {
                 p.addTravelCard(travelCardDeck.remove(0));
             }
+        }
+    }
+
+    private void initializeElfBoots() {
+
+        ElfBootPanel elvenholdBootPanel = GameMap.getInstance().getTown("Elvenhold").getPanel().getElfBootPanel();
+
+        for (Player p : players) {
+            elfBoots.add(new ElfBoot(p.getColour(), screen.getWidth(), screen.getHeight(), elvenholdBootPanel, screen));
         }
     }
 }

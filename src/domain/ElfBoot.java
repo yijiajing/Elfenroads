@@ -58,4 +58,6 @@ public class ElfBoot extends JLabel {
     }
 
     public JLabel getImage() { return this.bootImage; }
+
+    public Colour getColour() { return this.colour; }
 }
