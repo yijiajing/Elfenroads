@@ -111,4 +111,38 @@ public class PlayerServer
         }
 
     }
+
+    public boolean validateNgrok() throws IOException
+    {
+        // will send a request to the status thing for ngrok to see if it is running
+        // we will check using the response code. so, we will say that ngrok startup failed if the response code is anything other than 200.
+
+        URL url = new URL("http://127.0.0.1:4040/status");
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("GET");
+
+        int status = con.getResponseCode();
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer content = new StringBuffer();
+        while((inputLine = in.readLine()) != null) {
+            content.append(inputLine);
+        }
+        in.close();
+        con.disconnect();
+
+        // check the status. if it's 200, ngrok is up and running. if not, it's not working
+
+        if (status == 200)
+        {
+            return true;
+        }
+
+        else
+        {
+            return false;
+        }
+
+
+    }
 }
