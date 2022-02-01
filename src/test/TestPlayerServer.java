@@ -15,6 +15,10 @@ public class TestPlayerServer
         //String command = "./ngrok tcp 6666";
         //Process proc = Runtime.getRuntime().exec(command);
 
+        System.out.println(PlayerServer.validateNgrok());
+        System.out.println("No errors in the new method validateNgrok!");
+
+
         PlayerServer server = new PlayerServer(1);
         server.setMessage("It worked from the Server!! " + "You are now connected");
         server.start(6666);

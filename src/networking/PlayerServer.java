@@ -112,7 +112,7 @@ public class PlayerServer
 
     }
 
-    public boolean validateNgrok() throws IOException
+    public static boolean validateNgrok() throws IOException
     {
         // will send a request to the status thing for ngrok to see if it is running
         // we will check using the response code. so, we will say that ngrok startup failed if the response code is anything other than 200.
