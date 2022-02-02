@@ -85,7 +85,7 @@ public class LoginWindow extends JPanel implements ActionListener {
                 try 
                 {
                     Desktop.getDesktop().browse(new URI("https://dashboard.ngrok.com/signup"));
-                     
+
                 } 
                 catch (IOException | URISyntaxException e1) 
                 {
