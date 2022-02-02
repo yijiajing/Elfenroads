@@ -1,5 +1,6 @@
 package loginwindow;
 
+import networking.User;
 import org.minueto.MinuetoTool;
 import panel.GameScreen;
 
@@ -17,6 +18,7 @@ public class MainFrame extends JFrame
     VersionToPlayWindow version;
     LoadGameWindow load;
     GameScreen gameScreen;
+    User loggedIn;
 
     public MainFrame() 
     {
