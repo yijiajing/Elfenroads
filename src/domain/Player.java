@@ -17,13 +17,15 @@ public class Player {
     // game-specific info
     private Town curTown;
     private Set<Town> townsVisited = new HashSet<>();
-    private Colour colour; // TODO: maybe write an enum for colors since we only have certain ones
+    private Colour colour; 
     private int score; // The score of a player
     
     // info for connecting to LS and multiplayer
     // TODO: decide where to initialize this field
     private User associated;
     private String ip;
+    
+    private Hand aHand;//The Hand of this Player, including hand of CardUnit and hand of CounterUnit
 
     // TODO: implement the constructor
     public Player(Colour pColour, GameScreen pScreen)
