@@ -19,9 +19,13 @@ public class TestPlayerServer
         System.out.println("No errors in the new method validateNgrok!");
 
 
+
+
+
+
         PlayerServer server = new PlayerServer(1);
         server.setMessage("It worked from the Server!! " + "You are now connected");
         server.start(6666);
-        //System.out.println(server.getServerInfo());
+        System.out.println(server.getServerInfo());
     }
 }

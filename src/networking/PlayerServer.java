@@ -68,7 +68,7 @@ public class PlayerServer
         Process proc2 = Runtime.getRuntime().exec(command2);
     }
 
-    public String getServerInfo() throws IOException
+    public static String getServerInfo() throws IOException
     {
         URL url = new URL("http://127.0.0.1:4040/api/tunnels");
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
