@@ -1,5 +1,6 @@
 package domain;
 
+import enums.RegionType;
 import panel.CounterPanel;
 import panel.GameScreen;
 

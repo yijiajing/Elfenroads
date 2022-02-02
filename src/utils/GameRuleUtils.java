@@ -1,6 +1,8 @@
 package utils;
 
 import domain.*;
+import enums.RegionType;
+import enums.TravelCardType;
 
 import java.util.List;
 import java.util.Set;

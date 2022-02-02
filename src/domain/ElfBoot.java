@@ -1,5 +1,6 @@
 package domain;
 
+import enums.Colour;
 import networking.GameState;
 import panel.ElfBootController;
 import panel.ElfBootPanel;
@@ -11,7 +12,7 @@ import java.awt.*;
 public class ElfBoot extends JLabel {
 
     private String filepathToRepo = ".";
-    private String colour;
+    private Colour colour;
     private int width;
     private int height;
     private boolean selected = false;
@@ -19,7 +20,7 @@ public class ElfBoot extends JLabel {
     private JLabel bootImage;
     private GameScreen gameScreen;
 
-    public ElfBoot(String pColour, int pWidth, int pHeight, ElfBootPanel pCurPanel, GameScreen pGameScreen) {
+    public ElfBoot(Colour pColour, int pWidth, int pHeight, ElfBootPanel pCurPanel, GameScreen pGameScreen) {
 
         this.colour = pColour;
         this.width = pWidth;
@@ -53,7 +54,7 @@ public class ElfBoot extends JLabel {
         this.curPanel.getTown().removeTownPieceByColour(this.colour);
         GameState.instance(gameScreen).getPlayerByColour(this.colour).setCurrentTown(curPanel.getTown());
 
-        GameScreen.getInstance(new JFrame()).notifyObservers();
+        GameScreen.getInstance().notifyObservers();
     }
 
     public JLabel getImage() { return this.bootImage; }

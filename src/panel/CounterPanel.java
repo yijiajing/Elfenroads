@@ -1,6 +1,8 @@
 package panel;
 
 import domain.*;
+import enums.CounterType;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;

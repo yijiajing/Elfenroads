@@ -1,5 +1,6 @@
 package domain;
 
+import enums.RegionType;
 import org.jgrapht.graph.Pseudograph;
 import panel.GameScreen;
 
@@ -7,7 +8,7 @@ import java.util.*;
 
 public class GameMap {
 
-    private static GameMap instance;
+    private static GameMap INSTANCE;
 
     private GameScreen gameScreen;
     private Pseudograph<Town, Road> mapGraph = new Pseudograph<>(Road.class);
@@ -21,11 +22,18 @@ public class GameMap {
         initializeRoads();
     }
 
-    public static GameMap getInstance(GameScreen pGameScreen) {
-        if (instance == null) {
-            instance = new GameMap(pGameScreen);
+    public static GameMap getInstance() {
+        return INSTANCE;
+    }
+
+    /**
+     * Call this once before getting instance
+     */
+    public static GameMap init(GameScreen gameScreen) {
+        if (INSTANCE == null) {
+            INSTANCE = new GameMap(gameScreen);
         }
-        return instance;
+        return INSTANCE;
     }
 
     public Town getTown(String name) {
