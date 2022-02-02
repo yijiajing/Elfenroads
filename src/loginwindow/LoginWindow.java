@@ -139,12 +139,17 @@ public class LoginWindow extends JPanel implements ActionListener {
                     try 
                     {
                         PlayerServer.startNgrok(token);
+
+                        // log into the LS
+                        MainFrame.loggedIn = User.getInstance(username, password);
+
                     } 
-                    catch (IOException e1) 
+                    catch (Exception e1)
                     {
                         // TODO Auto-generated catch block
                         e1.printStackTrace();
                     }
+
             		remove(background_elvenroads);
                     MainFrame.mainPanel.add(new LobbyWindow(), "lobby");
                     MainFrame.cardLayout.show(MainFrame.mainPanel,"lobby");

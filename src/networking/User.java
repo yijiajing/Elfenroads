@@ -25,7 +25,7 @@ public class User {
     // this class represents a user of the lobby service
 
     // singleton
-    private User instance;
+    private static User instance;
 
     // basic info
     private String username;
@@ -66,7 +66,7 @@ public class User {
         retrieveUserInfo();
     }
 
-    public User getInstance(String pUsername, String pPassword) throws IOException, Exception
+    public static User getInstance(String pUsername, String pPassword) throws IOException, Exception
     {
         if (instance == null)
         {

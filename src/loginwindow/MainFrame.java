@@ -11,6 +11,7 @@ public class MainFrame extends JFrame
 {
     static CardLayout cardLayout;
     static JPanel mainPanel;
+    static User loggedIn;
     StartWindow start;
     LoginWindow login;
     LobbyWindow lobby;
@@ -18,7 +19,6 @@ public class MainFrame extends JFrame
     VersionToPlayWindow version;
     LoadGameWindow load;
     GameScreen gameScreen;
-    User loggedIn;
 
     public MainFrame() 
     {
