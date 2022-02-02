@@ -28,7 +28,7 @@ public class LoginWindow extends JPanel implements ActionListener {
     
 
     LoginWindow() {
-
+        MP3Player track1 = new MP3Player("./assets/Music/JLEX5AW-ui-medieval-click-heavy-positive-01.mp3");
         infoPanel = new JPanel(new BorderLayout());
 
         ImageIcon background_image = new ImageIcon(filepathToRepo + "/assets/sprites/elfenroads.jpeg");
@@ -60,6 +60,7 @@ public class LoginWindow extends JPanel implements ActionListener {
 			@Override
             public void actionPerformed(ActionEvent e) 
             {
+                
             	String username = usernameTextField.getText();
             	String password = passwordTextField.getText();
             	boolean u = false;
@@ -74,6 +75,7 @@ public class LoginWindow extends JPanel implements ActionListener {
             	boolean p = User.doesPasswordExist(password);
             	if (u && p)
             	{
+                    track1.play();
             		remove(background_elvenroads);
                     MainFrame.mainPanel.add(new LobbyWindow(), "lobby");
                     MainFrame.cardLayout.show(MainFrame.mainPanel,"lobby");

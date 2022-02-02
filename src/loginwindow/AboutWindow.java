@@ -23,6 +23,7 @@ public class AboutWindow extends JPanel {
     private JButton backButton;
     
     public AboutWindow(){
+        MP3Player track1 = new MP3Player("./assets/Music/JLEX5AW-ui-medieval-click-heavy-positive-01.mp3");
         ImageIcon background_image = 
         new ImageIcon("./assets/sprites/elfenroads.jpeg");
         background_elvenroads = new JLabel(background_image);
@@ -35,6 +36,7 @@ public class AboutWindow extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if (Desktop.isDesktopSupported()) {
                     try {
+                        track1.play();
                         File myFile = new File("./assets/rules/Elfenland Rules.pdf");
                         Desktop.getDesktop().open(myFile);
                     } catch (IOException ex) {
@@ -55,6 +57,7 @@ public class AboutWindow extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if (Desktop.isDesktopSupported()) {
                     try {
+                        track1.play();
                         File myFile = new File("./assets/rules/Elfengold Rules.pdf");
                         Desktop.getDesktop().open(myFile);
                     } catch (IOException ex) {
@@ -73,6 +76,7 @@ public class AboutWindow extends JPanel {
 
             @Override
             public void actionPerformed(ActionEvent e) {
+                track1.play();
                 remove(background_elvenroads);
                 MainFrame.mainPanel.add(new StartWindow(), "start");
                 MainFrame.cardLayout.show(MainFrame.mainPanel,"start");

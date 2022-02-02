@@ -35,7 +35,8 @@ public class LobbyWindow extends JPanel implements ActionListener {
     private String filepathToRepo = ".";
 
     LobbyWindow(){
-
+        MP3Player track1 = new MP3Player("./assets/Music/JLEX5AW-ui-medieval-click-heavy-positive-01.mp3");
+        track1.play();
         createButton = new JButton("CREATE NEW SESSION");
         loadButton = new JButton("LOAD SAVED SESSION");
         gamesButton = new JButton("JOIN");

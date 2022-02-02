@@ -27,6 +27,7 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
     private JLabel elfengoldText;
 
     VersionToPlayWindow(){
+        MP3Player track1 = new MP3Player("./assets/Music/JLEX5AW-ui-medieval-click-heavy-positive-01.mp3");
         ImageIcon background_image = 
         new ImageIcon("./assets/sprites/elfenroads.jpeg");
         background_elvenroads = new JLabel(background_image);
@@ -51,6 +52,7 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
 
             @Override
             public void actionPerformed(ActionEvent e) {
+                track1.play();
                 remove(background_elvenroads);
                 // Main.setScreen(new GameScreen(Main.startFrame));
             }
@@ -63,6 +65,7 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
 
             @Override
             public void actionPerformed(ActionEvent e) {
+                track1.play();
                 //NetworkDemoPlayer1.cardLayout.show(NetworkDemoPlayer1.mainPanel,"gameScreen");
                 MainFrame.cardLayout.show(MainFrame.mainPanel,"gameScreen");
             }
@@ -77,6 +80,7 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                track1.play();
                 remove(background_elvenroads);
                 NetworkDemoPlayer1.mainPanel.add(new LobbyWindow(), "lobby");
                 NetworkDemoPlayer1.cardLayout.show(NetworkDemoPlayer1.mainPanel,"lobby");
