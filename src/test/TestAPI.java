@@ -9,7 +9,7 @@ public class TestAPI {
     public static void main (String [] args) throws IOException, Exception
 
     {
-        System.out.println(User.doesUsernameExist("Maex"));
+        System.out.println(User.doesUsernameExist("maex"));
 
 
 
@@ -19,6 +19,9 @@ public class TestAPI {
         System.out.println(token);
 
          */
+
+
+
     }
 
     public static void testCreateUser(String username, String password) throws IOException, Exception {
