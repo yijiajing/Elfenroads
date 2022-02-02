@@ -5,6 +5,10 @@ import panel.GameScreen;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+
+import javazoom.jl.player.Player;
 
 public class MainFrame extends JFrame {
 
@@ -28,7 +32,13 @@ public class MainFrame extends JFrame {
         cardLayout.show(mainPanel, "start");
     }
 
+
+
     public static void main(String[] args){
         MainFrame mainFrame = new MainFrame();
+        MP3Player track1 = new MP3Player("./assets/Music/alexander-nakarada-adventure.mp3");
+        track1.playReapeated();
+        //if (track1.)
+        
     }
 }

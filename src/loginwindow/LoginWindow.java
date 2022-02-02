@@ -21,6 +21,7 @@ public class LoginWindow extends JPanel implements ActionListener {
     private static JLabel usernameLabel;
     private static JLabel passwordLabel;
     private static JButton loginButton;
+    private static JButton backButton;
     private JPanel infoPanel;
     
     private String filepathToRepo = ".";
