@@ -3,11 +3,9 @@ package domain;
 import javax.swing.*;
 import java.awt.*;
 
-public abstract class CounterUnit {
+public abstract class CounterUnit extends Drawable{
 
-    String imageFilepath;
-    ImageIcon image;
-    JLabel display;
+
     String filepathToRepo = ".";
 
     CounterUnit(int resizeWidth, int resizeHeight, int imageNumber) {
