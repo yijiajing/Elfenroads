@@ -5,6 +5,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.*;
+import java.util.ArrayList;
 //Use port > 1024
 
 public class PlayerServer 
@@ -142,7 +143,32 @@ public class PlayerServer
         {
             return false;
         }
+    }
 
+    /**
+     * this will call getServerInfo and get the full ngrok address with the port and everything.
+     * it will have to do some sanitizing of the output, and then
+     * it will split it and return the ip and the port, ready for the Socket constructor
+     * @return an array: element at index 0 is the ip and element at index 1 is the port, both are String
+     */
+    public static String[] tokenizeNgrokAddr() throws IOException
+    {
+        String fullAddr = getServerInfo();
+        String [] tokenized = fullAddr.split(":");
+
+        // at this point we have an array of something like:
+        // {"tcp", "//4.tcp.ngrok.io", "14714"}
+        // we will ignore the first element and clean up the second element to remove the slashes
+        String ipUntrimmed = tokenized[1];
+        String ip = ipUntrimmed.replaceAll("/", "");
+
+        // now fill in the return array
+        String port = tokenized[2];
+        String [] results = new String[2];
+        results[0] = ip;
+        results[1] = port;
+
+        return results;
 
     }
 }
