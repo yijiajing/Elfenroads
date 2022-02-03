@@ -5,7 +5,6 @@ import java.awt.*;
 
 public abstract class CardUnit extends Drawable{
 
-    String filepathToRepo = ".";
     private JLabel image;
 
     public CardUnit(int resizeWidth, int resizeHeight, String filename) {

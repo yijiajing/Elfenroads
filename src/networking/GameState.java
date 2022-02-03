@@ -212,7 +212,7 @@ public class GameState {
     public void distributeTravelCards() {
         for (Player p : players) {
             for (int i=0; i<8; i++) {
-                p.addTravelCard(travelCardDeck.remove(0));
+                p.getHand().addUnit(travelCardDeck.remove(0));
             }
         }
     }

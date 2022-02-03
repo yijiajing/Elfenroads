@@ -415,12 +415,12 @@ public class GameScreen extends JPanel implements Serializable
 		// TODO: this code assumes that the player viewing the GUI is the black player
 		// TODO: this is obviously wrong - we need to create a method to get the identity of the
 		// TODO: player looking at this screen to determine which travel cards to show them
-		ArrayList<TravelCard> myCards = GameState.instance().getPlayerByColour(Colour.BLACK).getTravelCards();
+		List<CardUnit> myCards = GameState.instance().getPlayerByColour(Colour.BLACK).getHand().getCards();
 
 		for (int p=0; p<panelForPlayerCards.length; p++)
 		{
 			JPanel panel = panelForPlayerCards[p];
-			TravelCard card = myCards.get(p);
+			CardUnit card = myCards.get(p);
 			panel.add(card.getImage());
 			boardGame_Layers.add(panel, 0);
 			panel.repaint();
