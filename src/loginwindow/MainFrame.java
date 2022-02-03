@@ -1,5 +1,6 @@
 package loginwindow;
 
+import networking.User;
 import org.minueto.MinuetoTool;
 import panel.GameScreen;
 
@@ -10,6 +11,7 @@ public class MainFrame extends JFrame
 {
     static CardLayout cardLayout;
     static JPanel mainPanel;
+    static User loggedIn;
     StartWindow start;
     LoginWindow login;
     LobbyWindow lobby;
