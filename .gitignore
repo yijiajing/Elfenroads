@@ -21,3 +21,6 @@ crash.log
 
 
 /src/networking/keysForAWSThing.pem
+/bin1/
+.classpath
+.project

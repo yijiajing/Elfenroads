@@ -18,6 +18,7 @@ public class Player {
     // game-specific info
     private Town curTown;
     private Set<Town> townsVisited = new HashSet<>();
+
     private Colour colour;
     private int score;
     private ArrayList<TravelCard> travelCards = new ArrayList<>(); // travel cards in hand
@@ -26,6 +27,8 @@ public class Player {
     // TODO: decide where to initialize this field
     private User associated;
     private String ip;
+    
+    private Hand aHand;//The Hand of this Player, including hand of CardUnit and hand of CounterUnit
 
     // TODO: implement the constructor
     public Player(Colour pColour, GameScreen pScreen)
