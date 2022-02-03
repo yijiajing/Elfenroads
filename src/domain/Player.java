@@ -5,6 +5,7 @@ import networking.*;
 import panel.GameScreen;
 
 import javax.swing.*;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -17,8 +18,10 @@ public class Player {
     // game-specific info
     private Town curTown;
     private Set<Town> townsVisited = new HashSet<>();
-    private Colour colour; 
-    private int score; // The score of a player
+
+    private Colour colour;
+    private int score;
+    private ArrayList<TravelCard> travelCards = new ArrayList<>(); // travel cards in hand
     
     // info for connecting to LS and multiplayer
     // TODO: decide where to initialize this field
@@ -59,5 +62,13 @@ public class Player {
 
     public Colour getColour() {
         return this.colour;
+    }
+
+    public void addTravelCard(TravelCard pCard) {
+        this.travelCards.add(pCard);
+    }
+
+    public ArrayList<TravelCard> getTravelCards() {
+        return this.travelCards;
     }
 }

@@ -3,7 +3,9 @@ package networking;
 import domain.*;
 import enums.Colour;
 import enums.RoundPhaseType;
+import enums.TravelCardType;
 import org.json.JSONObject;
+import panel.ElfBootPanel;
 import panel.GameScreen;
 
 import java.util.*;
@@ -33,7 +35,6 @@ public class GameState {
     private static GameState instance;
 
     // meta info (possibly separated into another class in the future)
-    private GameMap gameMap;
     private int totalRounds;
     private List<Player> players = new ArrayList<>();
 
@@ -42,13 +43,15 @@ public class GameState {
     private RoundPhaseType currentPhase;
     private Player currentPlayer;
 
+    private ArrayList<TravelCard> travelCardDeck = new ArrayList<>();
+
+    private ArrayList<ElfBoot> elfBoots;
+
     //NEED TO IMPLEMENT
     //a default constructor
     /*private GameState() {
-    	
-    }*/
 
-    private ArrayList<ElfBoot> elfBoots;
+    }*/
 
     public GameState (GameScreen pScreen)
     {
@@ -56,6 +59,10 @@ public class GameState {
         this.elfBoots = new ArrayList<>();
 
         setDummyPlayers(); // TODO remove
+
+        initializeElfBoots();
+        initializeTravelCardDeck();
+        distributeTravelCards();
         setToFirstPlayer();
     }
 
@@ -89,16 +96,15 @@ public class GameState {
         players.add(new Player(Colour.YELLOW, screen));
     }
     
-    public static GameState instance(GameScreen pScreen) {
+    public static GameState init(GameScreen pScreen) {
         if (instance == null) {
             instance = new GameState(pScreen);
         }
     	return instance;
     }
 
-
-    public void addElfBoot(ElfBoot pElfBoot) {
-        elfBoots.add(pElfBoot);
+    public static GameState instance() {
+        return instance;
     }
 
     public ArrayList<ElfBoot> getElfBoots() {
@@ -109,6 +115,16 @@ public class GameState {
         for ( Player p : players ) {
             if (p.getColour() == colour) {
                 return p;
+            }
+        }
+
+        return null;
+    }
+
+    public ElfBoot getBootByColour(Colour colour) {
+        for ( ElfBoot e : elfBoots ) {
+            if (e.getColour() == colour) {
+                return e;
             }
         }
 
@@ -162,5 +178,51 @@ public class GameState {
 
     public void setToFirstPlayer() {
         currentPlayer = players.get(0);
+    }
+
+    private void initializeTravelCardDeck() {
+        for (TravelCardType type : TravelCardType.values()) {
+            // leave out witch cards for now (TODO: incorporate witch variant for elfengold)
+            if (type.equals(TravelCardType.WITCH)) {
+                continue;
+            }
+
+            // add 10 or 12 (for raft) cards of each travel card type
+            if (type.equals(TravelCardType.RAFT)) {
+                for (int i = 0; i < 12; i++) {
+                    travelCardDeck.add(new TravelCard(type, screen.getWidth()*135/1440, screen.getHeight()*2/9));
+                }
+            } else {
+                for (int i = 0; i < 10; i++) {
+                    travelCardDeck.add(new TravelCard(type, screen.getWidth()*135/1440, screen.getHeight()*2/9));
+                }
+            }
+        }
+
+        Collections.shuffle(travelCardDeck); // shuffle the deck
+    }
+
+    public ArrayList<TravelCard> getTravelCardDeck() {
+        return travelCardDeck;
+    }
+
+    /**
+     * Distribute 8 travel cards to each Player by popping from the front of the TravelCardDeck
+     */
+    public void distributeTravelCards() {
+        for (Player p : players) {
+            for (int i=0; i<8; i++) {
+                p.addTravelCard(travelCardDeck.remove(0));
+            }
+        }
+    }
+
+    private void initializeElfBoots() {
+
+        ElfBootPanel elvenholdBootPanel = GameMap.getInstance().getTown("Elvenhold").getPanel().getElfBootPanel();
+
+        for (Player p : players) {
+            elfBoots.add(new ElfBoot(p.getColour(), screen.getWidth(), screen.getHeight(), elvenholdBootPanel, screen));
+        }
     }
 }
