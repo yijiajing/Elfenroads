@@ -87,6 +87,7 @@ public class NetworkUtils {
      * this will call getServerInfo and get the full ngrok address with the port and everything.
      * it will have to do some sanitizing of the output, and then
      * it will split it and return the ip and the port, ready for the Socket constructor
+     * @pre ngrok is up and running, has been validated by validateNgrok()
      * @return an array: element at index 0 is the ip and element at index 1 is the port, both are String
      */
     public static String[] tokenizeNgrokAddr() throws IOException
