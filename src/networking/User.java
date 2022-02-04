@@ -337,7 +337,7 @@ public class User {
         }
         in.close();
         con.disconnect();
-        System.out.println("Response status: " + status);
+        // System.out.println("Response status: " + status);
         //System.out.println(content.toString());
         
         
