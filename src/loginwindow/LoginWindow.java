@@ -149,11 +149,12 @@ public class LoginWindow extends JPanel implements ActionListener {
 
                         if (!NetworkUtils.validateNgrok())
                         {
-                            return; // TODO: provide some GUI feedback to tell the user that ngrok wasn't working
+                            return;
                         }
 
 
                         // log into the LS
+                        MainFrame.loggedIn = null; // unecessary to set to null probably but I just want to make sure that we have no issues with User
                         MainFrame.loggedIn = User.getInstance(username, password);
 
                     } 
@@ -163,7 +164,6 @@ public class LoginWindow extends JPanel implements ActionListener {
                         e1.printStackTrace();
                         invalidCredentialsPopUp.show();
                         return;
-                        // TODO: make the user enter username and password again. don't go to the next screen
                     }
 
             		remove(background_elvenroads);

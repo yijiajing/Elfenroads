@@ -121,7 +121,7 @@ public class NetworkUtils {
         // first, we need to add text to the popup
         JLabel display = new JLabel("Invalid credentials. Please try again!");
 
-        Popup out = factory.getPopup(loginScreen, display, 0, 0);
+        Popup out = factory.getPopup(loginScreen, display, 800, 225);
 
         return out;
     }
