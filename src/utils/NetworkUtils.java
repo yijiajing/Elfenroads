@@ -45,7 +45,7 @@ public class NetworkUtils {
         return address;
     }
 
-    public static boolean validateNgrok() throws IOException {
+    public static boolean validateNgrok() {
         // will send a request to the status thing for ngrok to see if it is running
         // we will check using the response code. so, we will say that ngrok startup failed if the response code is anything other than 200.
 
@@ -113,18 +113,7 @@ public class NetworkUtils {
         return results;
     }
 
-    public static Popup initializeInvalidCredentialsPopUp(LoginWindow loginScreen)
-    {
-        // add a popup to the loginWindow where we want it
-        PopupFactory factory = new PopupFactory();
-
-        // first, we need to add text to the popup
-        JLabel display = new JLabel("Invalid credentials. Please try again!");
-
-        Popup out = factory.getPopup(loginScreen, display, 800, 225);
-
-        return out;
-    }
+    // Popups for network-related errors
 
     public static Popup initializeNgrokErrorPopup(LoginWindow loginScreen)
     {
@@ -146,7 +135,7 @@ public class NetworkUtils {
         return out;
     }
 
-    public static Popup intializeWrongPasswordErrorPopup(LoginWindow loginScreen)
+    public static Popup initializeWrongPasswordErrorPopup(LoginWindow loginScreen)
     {
         PopupFactory factory = new PopupFactory();
         JLabel display = new JLabel("The password entered is incorrect. Please try again.");

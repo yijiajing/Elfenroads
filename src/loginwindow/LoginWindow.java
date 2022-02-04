@@ -34,7 +34,10 @@ public class LoginWindow extends JPanel implements ActionListener {
     private static JButton ngrokSingup;
     private static JButton pasteClipboardButton;
 
-    private static Popup invalidCredentialsPopUp;
+    private static Popup invalidCredentialsPopup;
+    private static Popup ngrokErrorPopup;
+    private static Popup wrongUsernameErrorPopup;
+    private static Popup wrongPasswordErrorPopup;
     
     
     private String filepathToRepo = ".";
@@ -73,7 +76,9 @@ public class LoginWindow extends JPanel implements ActionListener {
         pasteClipboardButton = new JButton("Paste ngrok token");
 
         // add popups to be displayed later
-        invalidCredentialsPopUp = NetworkUtils.initializeInvalidCredentialsPopUp(this);
+        ngrokErrorPopup = NetworkUtils.initializeNgrokErrorPopup(this);
+        wrongUsernameErrorPopup = NetworkUtils.initializeWrongUsernameErrorPopup(this);
+        wrongPasswordErrorPopup = NetworkUtils.initializeWrongPasswordErrorPopup(this);
 
         pasteClipboardButton.addActionListener(new ActionListener()
         {
@@ -141,17 +146,16 @@ public class LoginWindow extends JPanel implements ActionListener {
 					e1.printStackTrace();
 				}
             	boolean p = User.isValidPassword(password);
-            	if (u && p)
-            	{
+            	// if (u && p)
+            	// {
                     try 
                     {
-                        PlayerServer.startNgrok(token);
-
-                        if (!NetworkUtils.validateNgrok())
+                        // first, make sure the username exists. if not, display the appropriate pop-up.
+                        if (!u)
                         {
-                            return;
+                                wrongUsernameErrorPopup.show();
+                                return;
                         }
-
 
                         // log into the LS
                         MainFrame.loggedIn = null; // unecessary to set to null probably but I just want to make sure that we have no issues with User
@@ -160,16 +164,30 @@ public class LoginWindow extends JPanel implements ActionListener {
                     } 
                     catch (Exception e1)
                     {
-                        // TODO Auto-generated catch block
                         e1.printStackTrace();
-                        invalidCredentialsPopUp.show();
+                        wrongPasswordErrorPopup.show();
+                        return;
+                    }
+
+                    // we have made it through the LS login, so the last error to check for is whether Ngrok is running properly
+
+                try {
+                    PlayerServer.startNgrok(token);
+                } catch (IOException ngrokStartupProblem) {
+                    ngrokErrorPopup.show();
+                    return;
+                }
+
+                if (!NetworkUtils.validateNgrok())
+                    {
+                        ngrokErrorPopup.show();
                         return;
                     }
 
             		remove(background_elvenroads);
                     MainFrame.mainPanel.add(new LobbyWindow(), "lobby");
                     MainFrame.cardLayout.show(MainFrame.mainPanel,"lobby");
-            	}
+            	// }
                 
             }
             
