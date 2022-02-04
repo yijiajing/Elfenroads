@@ -162,9 +162,9 @@ public class LoginWindow extends JPanel implements ActionListener {
                         MainFrame.loggedIn = User.getInstance(username, password);
 
                     } 
-                    catch (Exception e1)
+                    catch (Exception loginProblem)
                     {
-                        e1.printStackTrace();
+                        loginProblem.printStackTrace();
                         wrongPasswordErrorPopup.show();
                         return;
                     }
