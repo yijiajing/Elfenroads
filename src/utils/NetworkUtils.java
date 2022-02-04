@@ -126,6 +126,26 @@ public class NetworkUtils {
         return out;
     }
 
+    public static Popup initializeNgrokErrorPopup(LoginWindow loginScreen)
+    {
+        PopupFactory factory = new PopupFactory();
+        JLabel display = new JLabel("Ngrok did not start properly. Please check your token input and try again.");
+
+        Popup out = factory.getPopup(loginScreen, display, 800, 225);
+
+        return out;
+    }
+
+    public static Popup initializeWrongUsernameErrorPopup(LoginWindow loginScreen)
+    {
+        PopupFactory factory = new PopupFactory();
+        JLabel display = new JLabel("That username does not exist in the LS system. Please try it again!");
+
+        Popup out = factory.getPopup(loginScreen, display, 800, 225);
+
+        return out;
+    }
+
 
 
 
