@@ -141,7 +141,7 @@ public class LoginWindow extends JPanel implements ActionListener {
                         PlayerServer.startNgrok(token);
 
                         // log into the LS
-                        MainFrame.loggedIn = User.getInstance(username, password);
+                        MainFrame.loggedIn = User.init(username, password);
 
                     } 
                     catch (Exception e1)

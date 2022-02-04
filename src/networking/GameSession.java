@@ -187,6 +187,30 @@ public class GameSession {
         return "000000000000";
     }
 
+    // not sure if this does the right thing, was just copying the method above
+    // so that I could show all sessions in the LobbyWindow - Chloe
+    public static ArrayList<String> getAllSessionIDs(JSONObject resultsOfGetSessions) {
+
+        ArrayList<String> sessionIDs = new ArrayList<>();
+
+        Set keys = resultsOfGetSessions.keySet();
+
+        for (Object key : keys) {
+            String keyString = key.toString();
+            JSONObject nested = new JSONObject (resultsOfGetSessions.get(keyString).toString());
+            Set nestedKeys = nested.keySet();
+
+            // this could be cleaner, for loop probably not necessary
+            for (Object nestedKey : nestedKeys)
+            {
+                sessionIDs.add(nestedKey.toString());
+                break;
+            }
+        }
+
+        return sessionIDs;
+    }
+
     public static JSONObject getSessions() throws IOException
     {
         URL url = new URL("http://35.182.122.111:4242/api/sessions");
@@ -308,8 +332,6 @@ public class GameSession {
         con.disconnect();
         System.out.println("Response status: " + status);
         System.out.println(content.toString());
-
-
 
     }
 }

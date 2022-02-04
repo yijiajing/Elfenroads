@@ -66,13 +66,17 @@ public class User {
         retrieveUserInfo();
     }
 
-    public static User getInstance(String pUsername, String pPassword) throws IOException, Exception
+    public static User init(String pUsername, String pPassword) throws IOException, Exception
     {
         if (instance == null)
         {
-            return new User(pUsername, pPassword);
+            instance = new User(pUsername, pPassword);
         }
 
+        return instance;
+    }
+
+    public static User getInstance() {
         return instance;
     }
 

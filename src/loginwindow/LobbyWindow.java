@@ -1,5 +1,6 @@
 package loginwindow;
 
+import domain.GameManager;
 import org.json.JSONObject;
 import networking.*;
 
@@ -7,113 +8,54 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Optional;
 
 public class LobbyWindow extends JPanel implements ActionListener {
 
-    //private static Box boxPanel;
-
-    // private String creator;
-    // private String numPlayers;
-    // TODO: fill out the other fields to represent any info we need to see about a game
-
-
-    private JLabel background_elvenroads;
-    private static JButton createButton;
-    private static JButton loadButton;
-    private static JButton gamesButton;
-    private static JButton refreshButton;
+    private JLabel background;
+    private JButton createButton;
+    private JButton loadButton;
+    private JButton refreshButton;
     private JPanel buttons;
-    private JPanel sessions;
+    private JPanel sessionsPanel;
     private JLabel gameToJoin;
     private JLabel available;
-    private JLabel gameName;
-    private JLabel creator;
-    private JLabel numPlayers;
-    private Box gameInfo;
+    private JSONObject sessions;
 
-
-    private String filepathToRepo = ".";
-
-    LobbyWindow(){
+    public LobbyWindow(){
 
         createButton = new JButton("CREATE NEW SESSION");
         loadButton = new JButton("LOAD SAVED SESSION");
-        gamesButton = new JButton("JOIN");
-
         refreshButton = new JButton("REFRESH");
+        buttons = new JPanel();
+        buttons.add(createButton);
+        buttons.add(loadButton);
+        buttons.add(refreshButton);
 
-        // add an action listener
+        ImageIcon background_image = new ImageIcon("./assets/sprites/elfenroads.jpeg");
+        background = new JLabel(background_image);
 
+        sessionsPanel = new JPanel(new BorderLayout());
 
-        ImageIcon background_image =
-                new ImageIcon(filepathToRepo + "/assets/sprites/elfenroads.jpeg");
-        background_elvenroads = new JLabel(background_image);
         gameToJoin = new JLabel();
         gameToJoin.setText("");
-        sessions = new JPanel(new BorderLayout());
+
         available = new JLabel();
         available.setText("Available Sessions");
-        sessions.add(available,BorderLayout.PAGE_START);
-        gameInfo= Box.createVerticalBox();
-        gameName = new JLabel("GAME NAME: Sample");
-        creator = new JLabel("CREATOR: John");
-        numPlayers = new JLabel("PLAYERS: 4");
-        gameInfo.add(gameName);
-        gameInfo.add(creator);
-        gameInfo.add(numPlayers);
-        gameInfo.add(gamesButton);
-        sessions.add(gameInfo,BorderLayout.LINE_START);
+        sessionsPanel.add(available, BorderLayout.PAGE_START);
 
-        createButton.addActionListener(new ActionListener(){
+        createButton.addActionListener(e -> {
+            remove(background);
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                remove(background_elvenroads);
-
-                MainFrame.mainPanel.add(new VersionToPlayWindow(), "version");
-                MainFrame.cardLayout.show(MainFrame.mainPanel,"version");
-
-                // create a new session
-
-                // first, create the gameService
-
-                try
-                {
-                    // networking.User maex = new networking.User("maex", "abc123_ABC123");
-                    // networking.GameService elfenlands = new networking.GameService (maex, "Elfenlands", "Elfenlands", "Password1", 2, 2);
-                    // networking.GameSession newGame = new networking.GameSession(maex, "Elfenlands", "savegame2");
-
-                }
-
-                catch (Exception problem)
-                {
-                    problem.printStackTrace();
-                }
-
-
-
-            }
-
+            MainFrame.mainPanel.add(new VersionToPlayWindow(), "version");
+            MainFrame.cardLayout.show(MainFrame.mainPanel,"version");
         });
-        loadButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                remove(background_elvenroads);
-                MainFrame.mainPanel.add(new LoadGameWindow(), "load");
 
-                MainFrame.cardLayout.show(MainFrame.mainPanel,"load");
-
-            }
-        });
-        //gamesButton.addActionListener(this);
-        gamesButton.addActionListener(new ActionListener()
-        {
-
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-
-            }
+        loadButton.addActionListener(e -> {
+            remove(background);
+            MainFrame.mainPanel.add(new LoadGameWindow(), "load");
+            MainFrame.cardLayout.show(MainFrame.mainPanel,"load");
         });
 
         refreshButton.addActionListener(new ActionListener()
@@ -121,82 +63,89 @@ public class LobbyWindow extends JPanel implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                gameInfo.removeAll();
-                gameInfo.repaint();
-                gameInfo.revalidate();
-                JSONObject j = null;
-                try
-                {
-                    j = GameSession.getSessions();
-                }
-                catch (IOException e1)
-                {
-                    // TODO Auto-generated catch block
-                    e1.printStackTrace();
-                }
-
-                String id = GameSession.getFirstSessionID(j);
-                JSONObject json = null;
-
-                try
-                {
-                    json = GameSession.getGameParameters(id);
-                }
-                catch (IOException e1)
-                {
-                    // TODO Auto-generated catch block
-                    e1.printStackTrace();
-                }
-                JSONObject json2 = null;
-                try
-                {
-                    json2 = GameSession.getSessionDetails(id);
-                }
-                catch (IOException e1)
-                {
-                    // TODO Auto-generated catch block
-                    e1.printStackTrace();
-                }
-                gameInfo.add(new JLabel("creator: " + json2.get("creator")));
-                gameInfo.add(new JLabel("MaxSessionPlayers: " + json.get("maxSessionPlayers")));
-                gameInfo.add(new JLabel("MinSessionPlayers: " + json.getDouble("minSessionPlayers")));
-                gameInfo.add(new JLabel("name: " + json.get("name")));
-                gameInfo.add(gamesButton);
-                gameInfo.repaint();
-                gameInfo.revalidate();
-                // TODO: get info about game
-                /* JSONObject allSessions = networking.GameSession.getSessions();
-                String firstSessionID = networking.GameSession.getFirstSessionID(allSessions);
-                JSONObject sessionDetails = networking.GameSession.getSessionDetails(firstSessionID);
-                 */
-
+                draw();
             }
         });
 
 
-        buttons = new JPanel();
-        buttons.add(createButton);
-        buttons.add(loadButton);
-        buttons.add(refreshButton);
         GridBagLayout layout = new GridBagLayout();
+        background.setLayout(layout);
+
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
-
         gbc.gridwidth = 3;
         gbc.gridheight= 3;
-        background_elvenroads.setLayout(layout);
-        background_elvenroads.add(buttons,gbc);
+        background.add(buttons,gbc);
         gbc.gridy = 3;
-        background_elvenroads.add(sessions,gbc);
+        background.add(sessionsPanel,gbc);
+        add(background);
 
-        add(background_elvenroads);
+        draw();
+    }
 
+    public void refreshSessions() {
+        try {
+            sessions = GameSession.getSessions();
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+    }
+
+    public JPanel draw() {
+
+        refreshSessions();
+        sessionsPanel.removeAll();
+
+        ArrayList<String> ids = GameSession.getAllSessionIDs(sessions);
+
+        // draw all sessions to screen
+        for (String id : ids) {
+
+            JSONObject gameParams = null;
+            JSONObject sessionDetails = null;
+
+            try {
+                gameParams = GameSession.getGameParameters(id);
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+
+            try {
+                sessionDetails = GameSession.getSessionDetails(id);
+            }
+            catch (IOException e1) {
+                e1.printStackTrace();
+            }
+
+            Box gameBox = Box.createVerticalBox();
+            gameBox.add(new JLabel("Creator: " + sessionDetails.get("creator")));
+            gameBox.add(new JLabel("MaxSessionPlayers: " + gameParams.get("maxSessionPlayers")));
+            gameBox.add(new JLabel("MinSessionPlayers: " + gameParams.getDouble("minSessionPlayers")));
+            gameBox.add(new JLabel("Name: " + gameParams.get("name")));
+
+            JButton joinButton = new JButton("JOIN");
+            JButton startButton = new JButton("START");
+            startButton.addActionListener(e -> {
+                GameManager.init(Optional.empty(), Optional.of(id));
+            });
+
+            gameBox.add(joinButton);
+            gameBox.add(startButton);
+
+            sessionsPanel.add(gameBox, BorderLayout.LINE_START);
+        }
+
+        sessionsPanel.repaint();
+        sessionsPanel.revalidate();
+
+        return sessionsPanel;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
 
-
     }
+
+
 }

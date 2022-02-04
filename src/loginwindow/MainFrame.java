@@ -9,18 +9,9 @@ import java.awt.*;
 
 public class MainFrame extends JFrame 
 {
-    static CardLayout cardLayout;
-    static JPanel mainPanel;
-    static User loggedIn;
-    StartWindow start;
-    LoginWindow login;
-    LobbyWindow lobby;
-    LobbyWindow lobbyAfterBack;
-    VersionToPlayWindow version;
-    LoadGameWindow load;
-    GameScreen gameScreen;
-
-
+    public static CardLayout cardLayout;
+    public static JPanel mainPanel;
+    public static User loggedIn;
 
     public MainFrame() 
     {
@@ -39,8 +30,10 @@ public class MainFrame extends JFrame
         cardLayout.show(mainPanel, "start");
     }
 
+    // Everything starts here
     public static void main(String[] args)
     {
         MainFrame mainFrame = new MainFrame();
     }
+
 }

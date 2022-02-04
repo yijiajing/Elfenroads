@@ -26,7 +26,7 @@ import networking.GameState;
 import org.minueto.MinuetoTool;
 
 /**
- * A Singleton class that represents the main GameScreen in which the board game is played
+ * A Singleton class that represents the main screen in which the board game is played
  */
 public class GameScreen extends JPanel implements Serializable
 {
