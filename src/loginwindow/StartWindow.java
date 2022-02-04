@@ -58,8 +58,8 @@ public class StartWindow extends JPanel {
                     }
                 }*/
                 remove(background_elvenroads);
-                NetworkDemoPlayer1.mainPanel.add(new AboutWindow(), "about");
-                NetworkDemoPlayer1.cardLayout.show(NetworkDemoPlayer1.mainPanel,"about");
+                MainFrame.mainPanel.add(new AboutWindow(), "about");
+                MainFrame.cardLayout.show(MainFrame.mainPanel,"about");
             }
 
         });
