@@ -76,6 +76,7 @@ public class User {
         return instance;
     }
 
+
     /**
      * creates a new User in the LS with ROLE_PLAYER
      * @pre user does not yet exist in LS
