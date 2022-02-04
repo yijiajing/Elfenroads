@@ -3,6 +3,7 @@ import java.net.*;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import utils.NetworkUtils;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ public class PlayerServer
             serverSocket = new ServerSocket(port);
             startNgrok("23pqd8dMfU3nAVUXDPkJfk6v4qO_5LPatNkgcUPXZn9rHuGAc");
             Thread.sleep(1000);
-            System.out.println(getServerInfo());
+            System.out.println(NetworkUtils.getServerInfo());
             
             // Loops for every other Players
             while(aConnections != 0)
@@ -69,35 +70,6 @@ public class PlayerServer
         Process proc2 = Runtime.getRuntime().exec(command2);
     }
 
-    /**
-     * @pre we have validated ngrok setup using validateNgrok()
-     * @return
-     * @throws IOException
-     */
-    public static String getServerInfo() throws IOException
-    {
-        URL url = new URL("http://127.0.0.1:4040/api/tunnels");
-        HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        con.setRequestMethod("GET");
-
-        int status = con.getResponseCode();
-        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-        String inputLine;
-        StringBuffer content = new StringBuffer();
-        while((inputLine = in.readLine()) != null) {
-	        content.append(inputLine);
-        }
-        in.close();
-        con.disconnect();
-        
-        // Get the ngrok url with the port
-        JSONObject response = new JSONObject(content.toString());
-        JSONArray a = response.getJSONArray("tunnels");
-        String address = a.getJSONObject(0).getString("public_url");
-
-        return address;
-    }
-
     public void setMessage(String msg)
     {
         message = msg;
@@ -118,65 +90,4 @@ public class PlayerServer
 
     }
 
-    public static boolean validateNgrok() throws IOException
-    {
-        // will send a request to the status thing for ngrok to see if it is running
-        // we will check using the response code. so, we will say that ngrok startup failed if the response code is anything other than 200.
-
-        try {
-            URL url = new URL("http://127.0.0.1:4040/status");
-            HttpURLConnection con = (HttpURLConnection) url.openConnection();
-            con.setRequestMethod("GET");
-
-            int status = con.getResponseCode();
-            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-            String inputLine;
-            StringBuffer content = new StringBuffer();
-            while ((inputLine = in.readLine()) != null) {
-                content.append(inputLine);
-            }
-            in.close();
-            con.disconnect();
-
-            // check the status. if it's 200, ngrok is up and running. if not, it's not working
-
-            if (status == 200) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-        catch (IOException e)
-        {
-            return false;
-        }
-    }
-
-    /**
-     * this will call getServerInfo and get the full ngrok address with the port and everything.
-     * it will have to do some sanitizing of the output, and then
-     * it will split it and return the ip and the port, ready for the Socket constructor
-     * @return an array: element at index 0 is the ip and element at index 1 is the port, both are String
-     */
-    public static String[] tokenizeNgrokAddr() throws IOException
-    {
-        // TODO: trim whitespaces just in case
-        String fullAddr = getServerInfo();
-        String [] tokenized = fullAddr.split(":");
-
-        // at this point we have an array of something like:
-        // {"tcp", "//4.tcp.ngrok.io", "14714"}
-        // we will ignore the first element and clean up the second element to remove the slashes
-        String ipUntrimmed = tokenized[1];
-        String ip = ipUntrimmed.replaceAll("/", "");
-
-        // now fill in the return array
-        String port = tokenized[2];
-        String [] results = new String[2];
-        results[0] = ip;
-        results[1] = port;
-
-        return results;
-
-    }
 }

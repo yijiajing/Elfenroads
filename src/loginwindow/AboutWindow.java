@@ -74,8 +74,8 @@ public class AboutWindow extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 remove(background_elvenroads);
-                NetworkDemoPlayer1.mainPanel.add(new StartWindow(), "start");
-                NetworkDemoPlayer1.cardLayout.show(NetworkDemoPlayer1.mainPanel,"start");
+                MainFrame.mainPanel.add(new StartWindow(), "start");
+                MainFrame.cardLayout.show(MainFrame.mainPanel,"start");
             }
 
         });

@@ -1,6 +1,8 @@
 package loginwindow;
 
 import networking.*;
+import utils.NetworkUtils;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -140,6 +142,12 @@ public class LoginWindow extends JPanel implements ActionListener {
                     {
                         PlayerServer.startNgrok(token);
 
+                        if (!NetworkUtils.validateNgrok())
+                        {
+                            return; // TODO: provide some GUI feedback to tell the user that ngrok wasn't working
+                        }
+
+
                         // log into the LS
                         MainFrame.loggedIn = User.getInstance(username, password);
 
@@ -148,6 +156,8 @@ public class LoginWindow extends JPanel implements ActionListener {
                     {
                         // TODO Auto-generated catch block
                         e1.printStackTrace();
+                        return;
+                        // TODO: make the user enter username and password again. don't go to the next screen
                     }
 
             		remove(background_elvenroads);
