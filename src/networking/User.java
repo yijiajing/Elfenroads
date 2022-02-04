@@ -15,6 +15,7 @@ public class User {
 
 
     // enum used for roles as they appear in the LS
+    // as of 2-02-2022 this class is now a Singleton
 
     public enum Role
     {
@@ -23,6 +24,8 @@ public class User {
 
     // this class represents a user of the lobby service
 
+    // singleton
+    private static User instance;
 
     // basic info
     private String username;
@@ -54,13 +57,23 @@ public class User {
      */
 
     // TODO: read in role from the API
-    public User(String pUsername, String pPassword) throws IOException, Exception
+    private User(String pUsername, String pPassword) throws IOException, Exception
     {
         username = pUsername;
         password = pPassword;
         isAuthenticated = false;
         authenticate();
         retrieveUserInfo();
+    }
+
+    public static User getInstance(String pUsername, String pPassword) throws IOException, Exception
+    {
+        if (instance == null)
+        {
+            return new User(pUsername, pPassword);
+        }
+
+        return instance;
     }
 
     /**
@@ -72,6 +85,7 @@ public class User {
      * @return
      * @throws IOException
      */
+
     public static User createNewUser(String newUsername, String newPassword, Role newRole) throws Exception
     {
 

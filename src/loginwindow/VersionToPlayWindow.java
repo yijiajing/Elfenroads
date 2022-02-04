@@ -50,9 +50,10 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
         classicGame1.addActionListener(new ActionListener(){
 
             @Override
-            public void actionPerformed(ActionEvent e) {
-                remove(background_elvenroads);
-                // Main.setScreen(new GameScreen(Main.startFrame));
+            public void actionPerformed(ActionEvent e) 
+            {
+                //remove(background_elvenroads);
+                MainFrame.cardLayout.show(MainFrame.mainPanel, "gameScreen");
             }
             
         });

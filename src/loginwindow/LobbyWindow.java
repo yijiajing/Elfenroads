@@ -73,9 +73,6 @@ public class LobbyWindow extends JPanel implements ActionListener {
                 MainFrame.mainPanel.add(new VersionToPlayWindow(), "version");
                 MainFrame.cardLayout.show(MainFrame.mainPanel,"version");
 
-                MainFrame.mainPanel.add(new VersionToPlayWindow(), "version");
-                MainFrame.cardLayout.show(MainFrame.mainPanel,"version");
-
                 // create a new session
 
                 // first, create the gameService
@@ -103,6 +100,7 @@ public class LobbyWindow extends JPanel implements ActionListener {
             public void actionPerformed(ActionEvent e) {
                 remove(background_elvenroads);
                 MainFrame.mainPanel.add(new LoadGameWindow(), "load");
+
                 MainFrame.cardLayout.show(MainFrame.mainPanel,"load");
 
             }
