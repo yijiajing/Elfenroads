@@ -139,7 +139,17 @@ public class NetworkUtils {
     public static Popup initializeWrongUsernameErrorPopup(LoginWindow loginScreen)
     {
         PopupFactory factory = new PopupFactory();
-        JLabel display = new JLabel("That username does not exist in the LS system. Please try it again!");
+        JLabel display = new JLabel("That username does not exist in the LS system. Please try again.");
+
+        Popup out = factory.getPopup(loginScreen, display, 800, 225);
+
+        return out;
+    }
+
+    public static Popup intializeWrongPasswordErrorPopup(LoginWindow loginScreen)
+    {
+        PopupFactory factory = new PopupFactory();
+        JLabel display = new JLabel("The password entered is incorrect. Please try again.");
 
         Popup out = factory.getPopup(loginScreen, display, 800, 225);
 
