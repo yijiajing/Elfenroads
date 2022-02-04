@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="ASCII"?>
+<ram:Aspect xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ram="http://cs.mcgill.ca/sel/ram/3.0" xmi:id="_dI-QAKXZEeWm0etaGTh0cw" name="UniquePlainToKeyIndexed">
+  <realizes href="Association.core#_9kEAMHQyEeWm6eZfpLWFHw"/>
+  <realizes href="Association.core#_8wYC4ACWEeWTy6SkLveZ6w"/>
+  <realizes href="Association.core#_9z2_cJFtEeWSP-8jReRTpg"/>
+  <coreConcern href="Association.core#_mZ-ooACWEeWTy6SkLveZ6w"/>
+  <structuralView xmi:id="_dI-QAaXZEeWm0etaGTh0cw">
+    <types xsi:type="ram:RVoid" xmi:id="_dI-QAqXZEeWm0etaGTh0cw"/>
+    <types xsi:type="ram:RAny" xmi:id="_dI-3EKXZEeWm0etaGTh0cw"/>
+    <types xsi:type="ram:RBoolean" xmi:id="_dI-3EaXZEeWm0etaGTh0cw"/>
+    <types xsi:type="ram:RInt" xmi:id="_dI-3EqXZEeWm0etaGTh0cw"/>
+    <types xsi:type="ram:RChar" xmi:id="_dI-3E6XZEeWm0etaGTh0cw"/>
+    <types xsi:type="ram:RString" xmi:id="_dI-3FKXZEeWm0etaGTh0cw"/>
+    <types xsi:type="ram:RDouble" xmi:id="_dI-3FaXZEeWm0etaGTh0cw"/>
+    <types xsi:type="ram:RFloat" xmi:id="_dI-3FqXZEeWm0etaGTh0cw"/>
+    <types xsi:type="ram:RLong" xmi:id="_dI-3F6XZEeWm0etaGTh0cw"/>
+  </structuralView>
+  <messageViews xsi:type="ram:MessageViewReference" xmi:id="_hF700KXZEeWZOINN42XIyw">
+    <affectedBy href="UniquePlain.ram#_9ZzYI5ipEeWQVPFj3dJr6A"/>
+    <references href="PlainToKeyIndexed.ram#_A3H-Q6XJEeW5vr47q3SVSw"/>
+  </messageViews>
+  <instantiations xmi:id="_dI-3GKXZEeWm0etaGTh0cw">
+    <source xsi:type="ram:Aspect" href="PlainToKeyIndexed.ram#_ydQzMKW8EeW5vr47q3SVSw"/>
+  </instantiations>
+  <instantiations xmi:id="_B_lycKXaEeWm0etaGTh0cw">
+    <source xsi:type="ram:Aspect" href="UniquePlainBidirectional.ram#_41L60JkUEeWdyuYpYIVtbw"/>
+  </instantiations>
+  <layout xmi:id="_dI-3GqXZEeWm0etaGTh0cw">
+    <containers xmi:id="_dI-3G6XZEeWm0etaGTh0cw" key="_dI-QAaXZEeWm0etaGTh0cw"/>
+  </layout>
+</ram:Aspect>

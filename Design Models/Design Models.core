@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="ASCII"?>
+<core:COREConcern xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://cs.mcgill.ca/sel/core/2.0" xmlns:ram="http://cs.mcgill.ca/sel/ram/3.0" xmi:id="_jTlJgYSYEeyXuZjYMpRsbg" name="Design Models">
+  <models xsi:type="core:COREFeatureModel" href="#_jTu6gISYEeyXuZjYMpRsbg"/>
+  <models xsi:type="ram:Aspect" href="Design%20Models.ram#_apTEgISZEeyXuZjYMpRsbg"/>
+  <featureModel xmi:id="_jTu6gISYEeyXuZjYMpRsbg" coreConcern="_jTlJgYSYEeyXuZjYMpRsbg" root="_jTu6gYSYEeyXuZjYMpRsbg">
+    <features xmi:id="_jTu6gYSYEeyXuZjYMpRsbg" name="Design Models">
+      <realizedBy xsi:type="ram:Aspect" href="Design%20Models.ram#_apTEgISZEeyXuZjYMpRsbg"/>
+      <reuses xmi:id="_g7WpsISfEey9wdrZlqoRvQ" name="Association_GameState_Player2" selectedConfiguration="_g7WpsoSfEey9wdrZlqoRvQ">
+        <reusedConcern href="Reused_Association/Association.core#_mZ-ooACWEeWTy6SkLveZ6w"/>
+        <configurations xmi:id="_g7WpsYSfEey9wdrZlqoRvQ" name="User selection">
+          <source xsi:type="core:COREFeatureModel" href="Reused_Association/Association.core#_mZ_PsACWEeWTy6SkLveZ6w"/>
+          <selected href="Reused_Association/Association.core#_nEJnAACWEeWTy6SkLveZ6w"/>
+          <selected href="Reused_Association/Association.core#_Tbip0HQzEeWm6eZfpLWFHw"/>
+          <selected href="Reused_Association/Association.core#_B8rTMACYEeWTy6SkLveZ6w"/>
+          <selected href="Reused_Association/Association.core#__6WrkACWEeWTy6SkLveZ6w"/>
+          <selected href="Reused_Association/Association.core#_GHh2gH19EeW8vqKd4iftUw"/>
+          <selected href="Reused_Association/Association.core#_8wYC4ACWEeWTy6SkLveZ6w"/>
+          <selected href="Reused_Association/Association.core#_mZ_PsQCWEeWTy6SkLveZ6w"/>
+          <selected href="Reused_Association/Association.core#_SKylUH2DEeWIy5MXlHNV-w"/>
+        </configurations>
+        <configurations xmi:id="_g7WpsoSfEey9wdrZlqoRvQ" name="Automatic selection" reuse="_g7WpsISfEey9wdrZlqoRvQ">
+          <source xsi:type="core:COREFeatureModel" href="Reused_Association/Association.core#_mZ_PsACWEeWTy6SkLveZ6w"/>
+          <selected href="Reused_Association/Association.core#_LEwHcACXEeWTy6SkLveZ6w"/>
+          <selected href="Reused_Association/Association.core#_JFas8ACXEeWTy6SkLveZ6w"/>
+          <selected href="Reused_Association/Association.core#_nEJnAACWEeWTy6SkLveZ6w"/>
+          <selected href="Reused_Association/Association.core#_Tbip0HQzEeWm6eZfpLWFHw"/>
+          <selected href="Reused_Association/Association.core#_B8rTMACYEeWTy6SkLveZ6w"/>
+          <selected href="Reused_Association/Association.core#_EDjMIHQzEeWm6eZfpLWFHw"/>
+          <selected href="Reused_Association/Association.core#_y2TyIHQ0EeWm6eZfpLWFHw"/>
+          <selected href="Reused_Association/Association.core#__6WrkACWEeWTy6SkLveZ6w"/>
+          <selected href="Reused_Association/Association.core#_GHh2gH19EeW8vqKd4iftUw"/>
+          <selected href="Reused_Association/Association.core#_8wYC4ACWEeWTy6SkLveZ6w"/>
+          <selected href="Reused_Association/Association.core#_mZ_PsQCWEeWTy6SkLveZ6w"/>
+          <selected href="Reused_Association/Association.core#_SKylUH2DEeWIy5MXlHNV-w"/>
+        </configurations>
+      </reuses>
+      <reuses xmi:id="_g9Crz4SfEey9wdrZlqoRvQ" name="Association_Player_GameState" selectedConfiguration="_g9Cr0ISfEey9wdrZlqoRvQ">
+        <reusedConcern href="Reused_Association/Association.core#_mZ-ooACWEeWTy6SkLveZ6w"/>
+        <configurations xmi:id="_g9Cr0ISfEey9wdrZlqoRvQ" name="Automatic selection" reuse="_g9Crz4SfEey9wdrZlqoRvQ">
+          <source xsi:type="core:COREFeatureModel" href="Reused_Association/Association.core#_mZ_PsACWEeWTy6SkLveZ6w"/>
+          <selected href="Reused_Association/Association.core#_nEJnAACWEeWTy6SkLveZ6w"/>
+          <selected href="Reused_Association/Association.core#_EDjMIHQzEeWm6eZfpLWFHw"/>
+          <selected href="Reused_Association/Association.core#_zPvl0HQ0EeWm6eZfpLWFHw"/>
+          <selected href="Reused_Association/Association.core#_EnSLwH19EeW8vqKd4iftUw"/>
+          <selected href="Reused_Association/Association.core#_mZ_PsQCWEeWTy6SkLveZ6w"/>
+          <selected href="Reused_Association/Association.core#_8RGMMJFtEeWSP-8jReRTpg"/>
+          <selected href="Reused_Association/Association.core#_A4UO8JFuEeWSP-8jReRTpg"/>
+        </configurations>
+      </reuses>
+      <reuses xmi:id="_jmeMJoSfEey9wdrZlqoRvQ" name="Association_GameState_Player3" selectedConfiguration="_jmeMJ4SfEey9wdrZlqoRvQ">
+        <reusedConcern href="Reused_Association/Association.core#_mZ-ooACWEeWTy6SkLveZ6w"/>
+        <configurations xmi:id="_jmeMJ4SfEey9wdrZlqoRvQ" name="Automatic selection" reuse="_jmeMJoSfEey9wdrZlqoRvQ">
+          <source xsi:type="core:COREFeatureModel" href="Reused_Association/Association.core#_mZ_PsACWEeWTy6SkLveZ6w"/>
+          <selected href="Reused_Association/Association.core#_EnSLwH19EeW8vqKd4iftUw"/>
+          <selected href="Reused_Association/Association.core#_mZ_PsQCWEeWTy6SkLveZ6w"/>
+          <selected href="Reused_Association/Association.core#_nEJnAACWEeWTy6SkLveZ6w"/>
+        </configurations>
+      </reuses>
+      <reuses xmi:id="_mZaN2oSfEey9wdrZlqoRvQ" name="Association_GameState_Player4" selectedConfiguration="_mZaN24SfEey9wdrZlqoRvQ">
+        <reusedConcern href="Reused_Association/Association.core#_mZ-ooACWEeWTy6SkLveZ6w"/>
+        <configurations xmi:id="_mZaN24SfEey9wdrZlqoRvQ" name="Automatic selection" reuse="_mZaN2oSfEey9wdrZlqoRvQ">
+          <source xsi:type="core:COREFeatureModel" href="Reused_Association/Association.core#_mZ_PsACWEeWTy6SkLveZ6w"/>
+          <selected href="Reused_Association/Association.core#_mZ_PsQCWEeWTy6SkLveZ6w"/>
+          <selected href="Reused_Association/Association.core#_nEJnAACWEeWTy6SkLveZ6w"/>
+          <selected href="Reused_Association/Association.core#_8wYC4ACWEeWTy6SkLveZ6w"/>
+          <selected href="Reused_Association/Association.core#_SKylUH2DEeWIy5MXlHNV-w"/>
+          <selected href="Reused_Association/Association.core#_JFas8ACXEeWTy6SkLveZ6w"/>
+          <selected href="Reused_Association/Association.core#_GHh2gH19EeW8vqKd4iftUw"/>
+        </configurations>
+      </reuses>
+      <reuses xmi:id="_6P1ltoSfEey9wdrZlqoRvQ" name="Association_Road_Town" selectedConfiguration="_6P1lt4SfEey9wdrZlqoRvQ">
+        <reusedConcern href="Reused_Association/Association.core#_mZ-ooACWEeWTy6SkLveZ6w"/>
+        <configurations xmi:id="_6P1lt4SfEey9wdrZlqoRvQ" name="Automatic selection" reuse="_6P1ltoSfEey9wdrZlqoRvQ">
+          <source xsi:type="core:COREFeatureModel" href="Reused_Association/Association.core#_mZ_PsACWEeWTy6SkLveZ6w"/>
+          <selected href="Reused_Association/Association.core#_EnSLwH19EeW8vqKd4iftUw"/>
+          <selected href="Reused_Association/Association.core#_mZ_PsQCWEeWTy6SkLveZ6w"/>
+          <selected href="Reused_Association/Association.core#_nEJnAACWEeWTy6SkLveZ6w"/>
+        </configurations>
+      </reuses>
+      <reuses xmi:id="_9_zQVoSfEey9wdrZlqoRvQ" name="Association_Road_Town1" selectedConfiguration="_9_zQV4SfEey9wdrZlqoRvQ">
+        <reusedConcern href="Reused_Association/Association.core#_mZ-ooACWEeWTy6SkLveZ6w"/>
+        <configurations xmi:id="_9_zQV4SfEey9wdrZlqoRvQ" name="Automatic selection" reuse="_9_zQVoSfEey9wdrZlqoRvQ">
+          <source xsi:type="core:COREFeatureModel" href="Reused_Association/Association.core#_mZ_PsACWEeWTy6SkLveZ6w"/>
+          <selected href="Reused_Association/Association.core#_EnSLwH19EeW8vqKd4iftUw"/>
+          <selected href="Reused_Association/Association.core#_mZ_PsQCWEeWTy6SkLveZ6w"/>
+          <selected href="Reused_Association/Association.core#_nEJnAACWEeWTy6SkLveZ6w"/>
+        </configurations>
+      </reuses>
+      <reuses xmi:id="_My7GaoSgEey9wdrZlqoRvQ" name="Association_Town_Player" selectedConfiguration="_My7Ga4SgEey9wdrZlqoRvQ">
+        <reusedConcern href="Reused_Association/Association.core#_mZ-ooACWEeWTy6SkLveZ6w"/>
+        <configurations xmi:id="_My7Ga4SgEey9wdrZlqoRvQ" name="Automatic selection" reuse="_My7GaoSgEey9wdrZlqoRvQ">
+          <source xsi:type="core:COREFeatureModel" href="Reused_Association/Association.core#_mZ_PsACWEeWTy6SkLveZ6w"/>
+          <selected href="Reused_Association/Association.core#_y2TyIHQ0EeWm6eZfpLWFHw"/>
+          <selected href="Reused_Association/Association.core#_mZ_PsQCWEeWTy6SkLveZ6w"/>
+          <selected href="Reused_Association/Association.core#_nEJnAACWEeWTy6SkLveZ6w"/>
+          <selected href="Reused_Association/Association.core#_EDjMIHQzEeWm6eZfpLWFHw"/>
+          <selected href="Reused_Association/Association.core#_GHh2gH19EeW8vqKd4iftUw"/>
+        </configurations>
+      </reuses>
+      <reuses xmi:id="_MzGFhoSgEey9wdrZlqoRvQ" name="Association_Player_Town" selectedConfiguration="_MzGFh4SgEey9wdrZlqoRvQ">
+        <reusedConcern href="Reused_Association/Association.core#_mZ-ooACWEeWTy6SkLveZ6w"/>
+        <configurations xmi:id="_MzGFh4SgEey9wdrZlqoRvQ" name="Automatic selection" reuse="_MzGFhoSgEey9wdrZlqoRvQ">
+          <source xsi:type="core:COREFeatureModel" href="Reused_Association/Association.core#_mZ_PsACWEeWTy6SkLveZ6w"/>
+          <selected href="Reused_Association/Association.core#_EnSLwH19EeW8vqKd4iftUw"/>
+          <selected href="Reused_Association/Association.core#_mZ_PsQCWEeWTy6SkLveZ6w"/>
+          <selected href="Reused_Association/Association.core#_nEJnAACWEeWTy6SkLveZ6w"/>
+          <selected href="Reused_Association/Association.core#_EDjMIHQzEeWm6eZfpLWFHw"/>
+          <selected href="Reused_Association/Association.core#_zPvl0HQ0EeWm6eZfpLWFHw"/>
+        </configurations>
+      </reuses>
+      <reuses xmi:id="_Uc1opoShEey9wdrZlqoRvQ" name="Association_Counter_Player" selectedConfiguration="_Uc1op4ShEey9wdrZlqoRvQ">
+        <reusedConcern href="Reused_Association/Association.core#_mZ-ooACWEeWTy6SkLveZ6w"/>
+        <configurations xmi:id="_Uc1op4ShEey9wdrZlqoRvQ" name="Automatic selection" reuse="_Uc1opoShEey9wdrZlqoRvQ">
+          <source xsi:type="core:COREFeatureModel" href="Reused_Association/Association.core#_mZ_PsACWEeWTy6SkLveZ6w"/>
+          <selected href="Reused_Association/Association.core#_EnSLwH19EeW8vqKd4iftUw"/>
+          <selected href="Reused_Association/Association.core#_mZ_PsQCWEeWTy6SkLveZ6w"/>
+          <selected href="Reused_Association/Association.core#_nEJnAACWEeWTy6SkLveZ6w"/>
+          <selected href="Reused_Association/Association.core#_EDjMIHQzEeWm6eZfpLWFHw"/>
+          <selected href="Reused_Association/Association.core#_zPvl0HQ0EeWm6eZfpLWFHw"/>
+        </configurations>
+      </reuses>
+      <reuses xmi:id="_Uc8WUIShEey9wdrZlqoRvQ" name="Association_Player_Counter" selectedConfiguration="_Uc8WUYShEey9wdrZlqoRvQ">
+        <reusedConcern href="Reused_Association/Association.core#_mZ-ooACWEeWTy6SkLveZ6w"/>
+        <configurations xmi:id="_Uc8WUYShEey9wdrZlqoRvQ" name="Automatic selection" reuse="_Uc8WUIShEey9wdrZlqoRvQ">
+          <source xsi:type="core:COREFeatureModel" href="Reused_Association/Association.core#_mZ_PsACWEeWTy6SkLveZ6w"/>
+          <selected href="Reused_Association/Association.core#_y2TyIHQ0EeWm6eZfpLWFHw"/>
+          <selected href="Reused_Association/Association.core#_mZ_PsQCWEeWTy6SkLveZ6w"/>
+          <selected href="Reused_Association/Association.core#_nEJnAACWEeWTy6SkLveZ6w"/>
+          <selected href="Reused_Association/Association.core#_EDjMIHQzEeWm6eZfpLWFHw"/>
+          <selected href="Reused_Association/Association.core#_GHh2gH19EeW8vqKd4iftUw"/>
+        </configurations>
+      </reuses>
+    </features>
+  </featureModel>
+</core:COREConcern>

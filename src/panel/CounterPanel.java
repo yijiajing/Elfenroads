@@ -1,6 +1,8 @@
 package panel;
 
 import domain.*;
+import enums.CounterType;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -11,8 +13,6 @@ public class CounterPanel extends JPanel {
     private final int x;
     private final int y;
     private GameScreen gameScreen;
-    private TransportationCounter transportationCounter = null;
-    private boolean hasObstacle = false;
     private Road road;
 
     public CounterPanel(int x, int y, Road road, GameScreen pScreen) {
@@ -31,29 +31,18 @@ public class CounterPanel extends JPanel {
             public void mouseClicked(MouseEvent e) {
                 //TODO: this is only for demonstration,
                 // need to implement a mechanism to place a selected transportation counter
-                setTransportationCounter(new TransportationCounter(TransportationCounter.CounterType.MAGICCLOUD, 30, 30));
+                setTransportationCounter(new TransportationCounter(CounterType.MAGICCLOUD, 30, 30));
                 update();
             }
         });
     }
 
-    public TransportationCounter getTransportationCounter() {
-        return transportationCounter;
-    }
-
     public void setTransportationCounter(TransportationCounter transportationCounter) {
-        this.transportationCounter = transportationCounter;
         this.add(transportationCounter.getDisplay());
     }
 
-    //TODO: implement obstacle
-
-    public boolean hasObstacle() {
-        return hasObstacle;
-    }
-
-    public void setObstacle(boolean hasObstacle) {
-        this.hasObstacle = hasObstacle;
+    public void placeObstacle() {
+        //TODO: display obstacle image on top of (maybe a bit on the bottom of) the transportation counter
     }
 
     public void update() {
@@ -62,8 +51,6 @@ public class CounterPanel extends JPanel {
     }
 
     public void clear() {
-        hasObstacle = false;
-        transportationCounter = null;
         this.removeAll();
         update();
     }

@@ -100,7 +100,8 @@ public class LobbyWindow extends JPanel implements ActionListener {
             public void actionPerformed(ActionEvent e) {
                 remove(background_elvenroads);
                 MainFrame.mainPanel.add(new LoadGameWindow(), "load");
-                MainFrame.cardLayout.show(NetworkDemoPlayer1.mainPanel,"load");
+
+                MainFrame.cardLayout.show(MainFrame.mainPanel,"load");
 
             }
         });

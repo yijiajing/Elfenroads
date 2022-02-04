@@ -1,49 +1,68 @@
 package domain;
 
+import enums.Colour;
 import networking.*;
+import panel.GameScreen;
 
-import java.net.InetAddress;
-import java.net.Socket;
+import javax.swing.*;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class Player {
 
     // this represents a player in a game
     // there may be some overlap between this and the networking.User class, but I thought it would be a good idea to keep them separated for now
 
-    // basic info
-    private String name;
-    private String bootColor; // TODO: write enum for colors instead
-    private int score; // we might want to do this somewhere else instead, but for now I will store score in here
-    private int gold; // will only be used in Elfengold
+    // game-specific info
+    private Town curTown;
+    private Set<Town> townsVisited = new HashSet<>();
 
-
-    // networking stuff
+    private Colour colour;
+    private int score;
+    
+    // info for connecting to LS and multiplayer
+    // TODO: decide where to initialize this field
     private User associated;
-    private String IP;
+    private String ip;
+    
+    private Hand hand; //The Hand of this Player, including hand of CardUnit and hand of CounterUnit
 
-    /**
-     * constructs a player from a User object (designed to be called after login)
-     * @param loggedIn the LS account the player is currently signed into. must be of role Player
-     */
-    public Player (User loggedIn) throws Exception
+    // TODO: implement the constructor
+    public Player(Colour pColour, GameScreen pScreen)
     {
-        if (!loggedIn.getRole().equals(User.Role.PLAYER))
-        {
-            throw new Exception("The user associated with the Player must have Player role in the LS!");
-        }
+        this.curTown = GameMap.getInstance().getTownByName("Elvenhold");
+        this.colour = pColour;
+        this.hand = new Hand();
+    }
+    
+    // TODO: add more constructors or update existing to initialize the networking fields (associated, ip)
 
-        associated = loggedIn;
-        name = loggedIn.getUsername();
+    public String getCurrentTownName() {
+        return curTown.getName();
     }
 
-    public String getName() {return name;}
+    // called by ElfBoot when it moves to a new town
+    public void setCurrentTown(Town curTown) {
+        this.curTown = curTown;
+        if (!townsVisited.contains(curTown)) {
+            townsVisited.add(curTown);
+            score++;
+        }
+    }
 
-    public String getBootColor() {return bootColor;}
+    public Town getCurrentTown() {
+        return curTown;
+    }
 
-    public int getScore() {return score;}
+    public int getScore() {
+    	return score;
+    }
 
-    public User getAssociated() {return associated;}
+    public Colour getColour() {
+        return this.colour;
+    }
 
-    public String getIP() {return IP;}
+    public Hand getHand() { return this.hand; }
 }

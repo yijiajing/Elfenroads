@@ -1,53 +1,89 @@
 package domain;
 
-import javax.swing.*;
-import java.awt.*;
+import enums.CounterType;
+import enums.RegionType;
 
-public class TransportationCounter {
+import java.util.Objects;
 
-    public enum CounterType {GIANTPIG, ELFCYCLE, MAGICCLOUD, UNICORN, TROLLWAGON, DRAGON}
+public class TransportationCounter extends CounterUnit implements Comparable<TransportationCounter> {
 
     // another rudimentary class to go along with domain.Deck
 
     // will represent, for now, a Transportation Counter. It will contain information about how to display said counter.
 
     private CounterType type;
-    private String imageFilepath;
-    private ImageIcon image;
-    private JLabel display;
-    //private String filepathToRepo = "/Users/nicktriantos/Desktop/f2021-hexanome-12" ; // change this depending on whose machine we are using
-    // private String filepathToRepo = "/Users/charlescouture/eclipse-workspace/COMP361" ;
-    private String filepathToRepo = ".";
 
     public TransportationCounter (CounterType pType, int resizeWidth, int resizeHeight)
     {
-         this.type = pType;
-
-         // find the picture of the card based on what type it is
-        // since the images are named similarly and ordered the same way as they are in the enum declaration, we can get the filepath just by using the type.
-
-        int imageNumber = this.type.ordinal() + 1; // since the images start from M01, not M00
-        this.imageFilepath = (filepathToRepo + "/assets/sprites/M0" + imageNumber + ".png");
-        this.image = new ImageIcon (this.imageFilepath);
-        Image toResize = this.image.getImage();
-        Image resized = toResize.getScaledInstance(resizeWidth, resizeHeight,  java.awt.Image.SCALE_SMOOTH);
-        this.image = new ImageIcon(resized);
-
-        // add JLabel
-        
-        this.display = new JLabel(this.image);
+        super(resizeWidth, resizeHeight, pType.ordinal() + 1); // since the images start from M01, not M00
+        this.type = pType;
     }
 
-    private ImageIcon getImage() {return this.image;}
 
     public CounterType getType() {return this.type;}
 
-    public String getImageFilepath() {return this.imageFilepath;}
+    public int getRequiredNumOfUnitsOn(Road r) {
+        RegionType region = r.getRegionType();
+        switch(type) {
+            case GIANTPIG:
+                if (region == RegionType.PLAIN || region == RegionType.WOODS) {
+                    return 1;
+                }
+                break;
+            case ELFCYCLE:
+                if (region == RegionType.PLAIN || region == RegionType.WOODS) {
+                    return 1;
+                } else if (region == RegionType.MOUNTAIN) {
+                    return 2;
+                }
+                break;
+            case MAGICCLOUD:
+                if (region == RegionType.PLAIN || region == RegionType.WOODS) {
+                    return 2;
+                } else if (region == RegionType.MOUNTAIN) {
+                    return 1;
+                }
+                break;
+            case UNICORN:
+                if (region == RegionType.MOUNTAIN || region == RegionType.WOODS) {
+                    return 1;
+                } else if (region == RegionType.DESERT) {
+                    return 2;
+                }
+                break;
+            case TROLLWAGON:
+                if (region == RegionType.DESERT || region == RegionType.MOUNTAIN || region == RegionType.WOODS) {
+                    return 2;
+                } else if (region == RegionType.PLAIN) {
+                    return 1;
+                }
+                break;
+            case DRAGON:
+                if (region == RegionType.PLAIN || region == RegionType.DESERT || region == RegionType.MOUNTAIN) {
+                    return 1;
+                } else if (region == RegionType.WOODS) {
+                    return 2;
+                }
+                break;
+        }
+        return -1; // not applicable
+    }
 
-    public JLabel getDisplay() {return this.display;}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TransportationCounter that = (TransportationCounter) o;
+        return getType() == that.getType();
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(getType());
+    }
 
-
-
-
+    @Override
+    public int compareTo(TransportationCounter o) {
+        return type.compareTo(o.type);
+    }
 }

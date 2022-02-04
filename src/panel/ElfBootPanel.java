@@ -1,91 +1,68 @@
 package panel;
 
+import domain.ElfBoot;
+import domain.Town;
+
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import java.awt.*;
-import java.util.Arrays;
+import java.util.ArrayList;
 
-public class ElfBootPanel extends JPanel {
+public class ElfBootPanel extends JPanel implements ObserverPanel {
 
-    private TownPanel townPanel;
+    private Town town;
     private int x;
     private int y;
     private int width;
     private int height;
-    private JPanel[] spots;
-    private boolean[] spotsAvailability;
+    private GameScreen gameScreen;
+    private ArrayList<ElfBoot> bootsOnPanel;
 
-
-    public ElfBootPanel(TownPanel pTownPanel, int x, int y, int pWidth, int pHeight) {
-        this.townPanel = pTownPanel;
+    public ElfBootPanel(Town pTown, int x, int y, int pWidth, int pHeight, GameScreen pGameScreen) {
+        this.town = pTown;
         this.x = x;
         this.y = y;
         this.width = pWidth;
         this.height = pHeight;
-        this.spots = new JPanel[6];
+        this.gameScreen = pGameScreen;
+        this.bootsOnPanel = new ArrayList<>();
 
         this.setBounds(this.x, this.y, this.width, this.height);
         this.setOpaque(false);
         this.setBorder(BorderFactory.createLineBorder(Color.WHITE));
 
-        initializeSpotsOnPanel();
+        this.addMouseListener(new ElfBootController(gameScreen, this));
+
+        gameScreen.addObserverPanel(this);
     }
 
-    private void initializeSpotsOnPanel() {
+    public void addBootToPanel(ElfBoot boot) {
+        this.bootsOnPanel.add(boot);
+    }
 
-        // set 6 spots for the elf boots
-        int spotHeight = this.height / 2;
-        int spotWidth = this.width / 3;
+    public void removeBootFromPanel(ElfBoot boot) {
+        this.bootsOnPanel.remove(boot);
+    }
 
-        for (int i=0; i<spots.length; i++) {
-            spots[i] = new JPanel();
+    public void resetPanel() {
+        removeAll();
+        repaint();
+        revalidate();
+    }
+
+
+    @Override
+    public void updateView() {
+        resetPanel();
+
+        for (ElfBoot b : bootsOnPanel) {
+            add(b.getImage());
         }
 
-        // setting bounds of the six spots - 2 x 3 rectangle
-        for (int s=0; s<spots.length; s++) {
-            if (s > 2) {
-                this.spots[s].setBounds(x + spotWidth * (s%3), y + spotHeight, spotWidth, spotHeight);
-            } else {
-                this.spots[s].setBounds(x + spotWidth * s, y, spotWidth, spotHeight);
-                    }
-
-            this.spots[s].setOpaque(false);
-            }
-
-        // set all spot availabilities to true (they are empty)
-        spotsAvailability = new boolean[6];
-        Arrays.fill(spotsAvailability, true);
+        repaint();
+        revalidate();
     }
 
-    public JPanel fillFirstAvailableSpot() {
-        JPanel availSpot = null;
-
-        for (int i=0; i<spotsAvailability.length; i++) {
-            if (spotsAvailability[i]) {
-                availSpot = spots[i];
-                spotsAvailability[i] = false;
-                return availSpot;
-            }
-        }
-
-        return availSpot; // should never be null, there are 6 spots for 6 boots
+    public Town getTown() {
+        return this.town;
     }
-
-    public JPanel getSpotByNumber(int spot) {
-        return spots[spot];
-    }
-
-    public void setSpotAvailability(int spot, boolean availability) {
-        this.spotsAvailability[spot] = availability;
-    }
-
-    public void setSpotAvailability(JPanel spot, boolean availability) {
-        for (int s=0; s<spots.length; s++) {
-            if (spots[s].equals(spot)) {
-                this.spotsAvailability[s] = availability;
-            }
-        }
-    }
-
-
 }

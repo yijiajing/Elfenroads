@@ -20,6 +20,8 @@ public class MainFrame extends JFrame
     LoadGameWindow load;
     GameScreen gameScreen;
 
+
+
     public MainFrame() 
     {
         setSize(MinuetoTool.getDisplayWidth(), MinuetoTool.getDisplayHeight());
@@ -29,7 +31,7 @@ public class MainFrame extends JFrame
         mainPanel = new JPanel(cardLayout);
 
         mainPanel.add(new StartWindow(), "start");
-        mainPanel.add(new GameScreen(this), "gameScreen");
+        mainPanel.add(GameScreen.init(this), "gameScreen");
 
         add(mainPanel);
         setVisible(true);

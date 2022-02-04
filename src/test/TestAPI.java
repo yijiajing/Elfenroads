@@ -1,5 +1,6 @@
 package test;
 
+import networking.GameService;
 import networking.User;
 
 import java.io.IOException;
@@ -9,6 +10,7 @@ public class TestAPI {
     public static void main (String [] args) throws IOException, Exception
 
     {
+
         System.out.println(User.doesUsernameExist("maex"));
 
 
@@ -19,7 +21,6 @@ public class TestAPI {
         System.out.println(token);
 
          */
-
 
 
     }

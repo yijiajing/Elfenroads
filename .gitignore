@@ -16,3 +16,11 @@ crash.log
 
 # Phillipe's vscode files
 .vscode/
+
+/bin/
+
+
+/src/networking/keysForAWSThing.pem
+/bin1/
+.classpath
+.project

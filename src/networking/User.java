@@ -96,10 +96,7 @@ public class User {
             throw new Exception("This password does not fit the LS criteria. Please try a different password.");
         }
 
-
-
-        User admin = new User (adminUsername, adminPassword);
-        String adminToken = admin.getAccessToken();
+        String adminToken = getAccessTokenUsingCreds(adminUsername, adminPassword);
 
         URL url = new URL("http://35.182.122.111:4242/api/users/" + newUsername + "?access_token=" + adminToken);
 
