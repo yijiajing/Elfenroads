@@ -1,8 +1,11 @@
 package utils;
 
+import loginwindow.LoginWindow;
+import loginwindow.MainFrame;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -108,7 +111,19 @@ public class NetworkUtils {
         results[1] = port.trim();
 
         return results;
+    }
 
+    public static Popup initializeInvalidCredentialsPopUp(LoginWindow loginScreen)
+    {
+        // add a popup to the loginWindow where we want it
+        PopupFactory factory = new PopupFactory();
+
+        // first, we need to add text to the popup
+        JLabel display = new JLabel("Invalid credentials. Please try again!");
+
+        Popup out = factory.getPopup(loginScreen, display, 0, 0);
+
+        return out;
     }
 
 

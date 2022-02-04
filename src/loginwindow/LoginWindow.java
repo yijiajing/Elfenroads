@@ -33,6 +33,8 @@ public class LoginWindow extends JPanel implements ActionListener {
     private static JButton ngrokLogin;
     private static JButton ngrokSingup;
     private static JButton pasteClipboardButton;
+
+    private static Popup invalidCredentialsPopUp;
     
     
     private String filepathToRepo = ".";
@@ -69,6 +71,9 @@ public class LoginWindow extends JPanel implements ActionListener {
         ngrokLogin = new JButton("ngrok LOGIN");
         ngrokSingup = new JButton("ngrok SIGNUP");
         pasteClipboardButton = new JButton("Paste ngrok token");
+
+        // add popups to be displayed later
+        invalidCredentialsPopUp = NetworkUtils.initializeInvalidCredentialsPopUp(this);
 
         pasteClipboardButton.addActionListener(new ActionListener()
         {
@@ -156,6 +161,7 @@ public class LoginWindow extends JPanel implements ActionListener {
                     {
                         // TODO Auto-generated catch block
                         e1.printStackTrace();
+                        invalidCredentialsPopUp.show();
                         return;
                         // TODO: make the user enter username and password again. don't go to the next screen
                     }
@@ -201,6 +207,7 @@ public class LoginWindow extends JPanel implements ActionListener {
         background_elvenroads.add(infoPanel,gbc);
 
         add(background_elvenroads);
+
     }
 
     @Override
