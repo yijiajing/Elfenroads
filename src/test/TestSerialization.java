@@ -14,10 +14,10 @@ public class TestSerialization {
 
     public static void serializeGameScreen()
     {
-        MainFrame main = new MainFrame();
+        MainFrame main = MainFrame.getInstance();
         GameScreen screen = GameScreen.init(main);
 
-        GameState test = new GameState(screen);
+        GameState test = GameState.init(screen);
         System.out.println(test.serialize());
 
 

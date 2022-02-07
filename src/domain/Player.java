@@ -24,7 +24,7 @@ public class Player {
     
     // info for connecting to LS and multiplayer
     // TODO: decide where to initialize this field
-    private User associated;
+    private User associatedUser;
     private String ip;
     
     private Hand hand; //The Hand of this Player, including hand of CardUnit and hand of CounterUnit
@@ -35,6 +35,7 @@ public class Player {
         this.curTown = GameMap.getInstance().getTownByName("Elvenhold");
         this.colour = pColour;
         this.hand = new Hand();
+        this.associatedUser = User.getInstance(); // TODO change this - just doing this to get the game working for 1 player
     }
     
     // TODO: add more constructors or update existing to initialize the networking fields (associated, ip)
@@ -65,4 +66,8 @@ public class Player {
     }
 
     public Hand getHand() { return this.hand; }
+
+    public User getUser() {
+        return associatedUser;
+    }
 }

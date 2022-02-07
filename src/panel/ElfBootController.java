@@ -6,6 +6,7 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import domain.ElfBoot;
+import domain.GameManager;
 import networking.*;
 
 /**
@@ -54,7 +55,7 @@ public class ElfBootController implements MouseListener {
     }
 
     public void moveBoot() {
-        GameState state = gameScreen.getGameState();
+        GameState state = GameManager.getInstance().getGameState();
         ArrayList<ElfBoot> elfBoots = state.getElfBoots();
 
         for ( ElfBoot boot : elfBoots ) {

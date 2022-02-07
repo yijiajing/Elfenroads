@@ -2,6 +2,7 @@ package panel;
 
 import domain.Town;
 import domain.TownPiece;
+import loginwindow.MainFrame;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,7 +30,7 @@ public class TownPanel extends JPanel implements ObserverPanel {
         this.height = pHeight;
         this.gameScreen = pGameScreen;
         this.town = pTown;
-        this.elfBootPanel = new ElfBootPanel(town, x-10, y+height, gameScreen.getWidth()*13/144, gameScreen.getHeight()*1/45, pGameScreen);
+        this.elfBootPanel = new ElfBootPanel(town, x-10, y+height, MainFrame.getInstance().getWidth()*13/144, MainFrame.getInstance().getHeight()*1/45, pGameScreen);
 
         this.setBounds(this.x, this.y, this.width, this.height);
         this.setOpaque(false);

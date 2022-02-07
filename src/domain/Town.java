@@ -1,6 +1,7 @@
 package domain;
 
 import enums.Colour;
+import loginwindow.MainFrame;
 import panel.GameScreen;
 import panel.TownPanel;
 
@@ -21,10 +22,10 @@ public class Town implements Comparable<Town> {
     public Town(String name, int x, int y, int pWidth, int pHeight, GameScreen pScreen) {
         this.name = name;
         this.gameScreen = pScreen;
-        this.x = pScreen.getWidth() * x / 1440;
-        this.y = pScreen.getHeight() * y / 900;
-        this.width = pScreen.getWidth() * pWidth / 1440;
-        this.height = pScreen.getHeight() * pHeight / 900;
+        this.x = MainFrame.getInstance().getWidth() * x / 1440;
+        this.y = MainFrame.getInstance().getHeight() * y / 900;
+        this.width = MainFrame.getInstance().getWidth() * pWidth / 1440;
+        this.height = MainFrame.getInstance().getHeight() * pHeight / 900;
         this.townPieces = new ArrayList<>();
 
         // put town pieces on every town except for Elvenhold

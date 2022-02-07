@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class GameStateManager {
+public class ActionManager {
 
     private final static Logger LOGGER = Logger.getLogger("game state");
 
@@ -20,13 +20,7 @@ public class GameStateManager {
     private Town selectedTown;
     boolean obstacleSelected = false;
 
-    private GameStateManager() {}
-
-    public GameStateManager getInstance() {
-        return this;
-    }
-
-    public void setGameState(GameState gameState) {
+    public ActionManager(GameState gameState) {
         this.gameState = gameState;
     }
 
@@ -109,50 +103,11 @@ public class GameStateManager {
      * Clears all selection states.
      * Whenever a new selection state is added to GameState, remember to clear it here.
      */
-    private void clearSelection() {
+    public void clearSelection() {
         selectedRoad = null;
         selectedCounter = null;
         selectedCards.clear();
         selectedTown = null;
         obstacleSelected = false;
-    }
-
-    /*
-    Advance game progress
-     */
-
-    // totalRounds Round <--in-- numOfRoundPhaseType Phases <--in-- numOfPlayer Turns
-    public void endTurn() {
-        clearSelection();
-
-        // all players have passed their turn in the current phase
-        if (gameState.getCurrentPlayerIdx() + 1 == gameState.getNumOfPlayers()) {
-            int nextOrdinal = gameState.getCurrentPhase().ordinal() + 1;
-            if (nextOrdinal == RoundPhaseType.values().length) {
-                // all phases are done, go to the next round
-                endRound();
-            } else {
-                // go to the next phase within the same round
-                gameState.setCurrentPhase(RoundPhaseType.values()[nextOrdinal]);
-            }
-            return;
-        }
-
-        // within the same phase, next player will take action
-        gameState.setToNextPlayer();
-    }
-
-    private void endRound() {
-        gameState.setToFirstPlayer();
-        gameState.incrementCurrentRound();
-        if (gameState.getCurrentRound() == gameState.getTotalRounds()) {
-            endGame();
-            return;
-        }
-        //TODO: update round card in UI
-    }
-
-    private void endGame() {
-        //TODO: finishes game ending
     }
 }

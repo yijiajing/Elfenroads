@@ -44,17 +44,12 @@ public class GameState {
 
     private ArrayList<ElfBoot> elfBoots;
 
-    public GameState (GameScreen pScreen)
+    private GameState (GameScreen pScreen)
     {
         this.screen = pScreen;
         this.elfBoots = new ArrayList<>();
-
-        setDummyPlayers(); // TODO remove
-
-        initializeElfBoots();
-        initializeTravelCardDeck();
-        distributeTravelCards();
-        setToFirstPlayer();
+        this.currentRound = 1;
+        this.totalRounds = 3; // TODO depends on version
     }
 
     // TODO: implement this second constructor
@@ -171,49 +166,19 @@ public class GameState {
         currentPlayer = players.get(0);
     }
 
-    private void initializeTravelCardDeck() {
-        for (TravelCardType type : TravelCardType.values()) {
-            // leave out witch cards for now (TODO: incorporate witch variant for elfengold)
-            if (type.equals(TravelCardType.WITCH)) {
-                continue;
-            }
+    public void addTravelCard(TravelCard pCard) {
+        this.travelCardDeck.add(pCard);
+    }
 
-            // add 10 or 12 (for raft) cards of each travel card type
-            if (type.equals(TravelCardType.RAFT)) {
-                for (int i = 0; i < 12; i++) {
-                    travelCardDeck.add(new TravelCard(type, screen.getWidth()*135/1440, screen.getHeight()*2/9));
-                }
-            } else {
-                for (int i = 0; i < 10; i++) {
-                    travelCardDeck.add(new TravelCard(type, screen.getWidth()*135/1440, screen.getHeight()*2/9));
-                }
-            }
-        }
-
-        Collections.shuffle(travelCardDeck); // shuffle the deck
+    public void addElfBoot(ElfBoot boot) {
+        this.elfBoots.add(boot);
     }
 
     public ArrayList<TravelCard> getTravelCardDeck() {
         return travelCardDeck;
     }
 
-    /**
-     * Distribute 8 travel cards to each Player by popping from the front of the TravelCardDeck
-     */
-    public void distributeTravelCards() {
-        for (Player p : players) {
-            for (int i=0; i<8; i++) {
-                p.getHand().addUnit(travelCardDeck.remove(0));
-            }
-        }
-    }
-
-    private void initializeElfBoots() {
-
-        ElfBootPanel elvenholdBootPanel = GameMap.getInstance().getTown("Elvenhold").getPanel().getElfBootPanel();
-
-        for (Player p : players) {
-            elfBoots.add(new ElfBoot(p.getColour(), screen.getWidth(), screen.getHeight(), elvenholdBootPanel, screen));
-        }
+    public void setTravelCardDeck(ArrayList<TravelCard> travelCards) {
+        this.travelCardDeck = travelCards;
     }
 }

@@ -1,6 +1,7 @@
 package domain;
 
 import enums.Colour;
+import loginwindow.MainFrame;
 import panel.GameScreen;
 
 import javax.swing.*;
@@ -19,8 +20,8 @@ public class TownPiece {
         this.colour = pColour;
         this.town = pTown;
         this.gameScreen = pScreen;
-        this.width = gameScreen.getWidth() * 1/144;
-        this.height = gameScreen.getHeight() * 1/90;
+        this.width = MainFrame.getInstance().getWidth() * 1/144;
+        this.height = MainFrame.getInstance().getHeight() * 1/90;
 
         ImageIcon pieceIcon = new ImageIcon("./assets/boppels-and-boots/boppel-" + this.colour + ".png");
         Image pieceImage = pieceIcon.getImage();

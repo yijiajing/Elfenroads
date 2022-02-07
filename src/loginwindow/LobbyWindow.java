@@ -36,14 +36,15 @@ public class LobbyWindow extends JPanel implements ActionListener {
         ImageIcon background_image = new ImageIcon("./assets/sprites/elfenroads.jpeg");
         background = new JLabel(background_image);
 
-        sessionsPanel = new JPanel(new BorderLayout());
+        sessionsPanel = new JPanel();
+        sessionsPanel.setLayout(new BoxLayout(sessionsPanel, BoxLayout.LINE_AXIS));
 
         gameToJoin = new JLabel();
         gameToJoin.setText("");
 
         available = new JLabel();
         available.setText("Available Sessions");
-        sessionsPanel.add(available, BorderLayout.PAGE_START);
+        sessionsPanel.add(available);
 
         createButton.addActionListener(e -> {
             remove(background);
@@ -78,10 +79,12 @@ public class LobbyWindow extends JPanel implements ActionListener {
         gbc.gridheight= 3;
         background.add(buttons,gbc);
         gbc.gridy = 3;
+
         background.add(sessionsPanel,gbc);
         add(background);
 
         draw();
+
     }
 
     public void refreshSessions() {
@@ -96,6 +99,25 @@ public class LobbyWindow extends JPanel implements ActionListener {
 
         refreshSessions();
         sessionsPanel.removeAll();
+
+        // TODO: delete dummy box
+        Box gameBox1 = Box.createVerticalBox();
+        gameBox1.setBorder(BorderFactory.createLineBorder(Color.black));
+        gameBox1.add(new JLabel("Creator: John Smith"));
+        gameBox1.add(new JLabel("MaxSessionPlayers: 2"));
+        gameBox1.add(new JLabel("MinSessionPlayers: 6"));
+        gameBox1.add(new JLabel("Name: John's Game"));
+
+        JButton joinButton1 = new JButton("JOIN");
+        JButton startButton1 = new JButton("START");
+        startButton1.addActionListener(e -> {
+            GameManager.init(Optional.empty(), Optional.empty());
+        });
+
+        gameBox1.add(joinButton1);
+        gameBox1.add(startButton1);
+
+        sessionsPanel.add(gameBox1, BorderLayout.LINE_START);
 
         ArrayList<String> ids = GameSession.getAllSessionIDs(sessions);
 
@@ -113,12 +135,13 @@ public class LobbyWindow extends JPanel implements ActionListener {
 
             try {
                 sessionDetails = GameSession.getSessionDetails(id);
-            }
-            catch (IOException e1) {
+            } catch (IOException e1) {
                 e1.printStackTrace();
             }
 
             Box gameBox = Box.createVerticalBox();
+            gameBox.setBorder(BorderFactory.createLineBorder(Color.black));
+
             gameBox.add(new JLabel("Creator: " + sessionDetails.get("creator")));
             gameBox.add(new JLabel("MaxSessionPlayers: " + gameParams.get("maxSessionPlayers")));
             gameBox.add(new JLabel("MinSessionPlayers: " + gameParams.getDouble("minSessionPlayers")));
@@ -133,11 +156,14 @@ public class LobbyWindow extends JPanel implements ActionListener {
             gameBox.add(joinButton);
             gameBox.add(startButton);
 
-            sessionsPanel.add(gameBox, BorderLayout.LINE_START);
+            sessionsPanel.add(gameBox, BorderLayout.LINE_END);
         }
 
         sessionsPanel.repaint();
         sessionsPanel.revalidate();
+
+        background.repaint();
+        background.revalidate();
 
         return sessionsPanel;
     }
