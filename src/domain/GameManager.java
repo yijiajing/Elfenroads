@@ -168,7 +168,7 @@ public class GameManager {
         return travelCardDeck;
     }
 
-    
+
     /**
      * Distribute 8 travel cards to each Player by popping from the front of the TravelCardDeck
      */

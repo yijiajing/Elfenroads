@@ -14,7 +14,7 @@ public class TestAPI {
 
         System.out.println(User.doesUsernameExist("maex"));
 
-        User maex = User.getInstance("maex", "abc123_ABC123");
+        User maex = User.init("maex", "abc123_ABC123");
 
         GameSession newOne = new GameSession(maex, "dummygame1", "");
 
