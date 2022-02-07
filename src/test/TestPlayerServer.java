@@ -7,6 +7,7 @@ import java.net.ServerSocket;
 import java.net.UnknownHostException;
 
 import networking.PlayerServer;
+import utils.NetworkUtils;
 
 public class TestPlayerServer 
 {
@@ -15,11 +16,11 @@ public class TestPlayerServer
         //String command = "./ngrok tcp 6666";
         //Process proc = Runtime.getRuntime().exec(command);
 
-        System.out.println(PlayerServer.validateNgrok());
+        System.out.println(NetworkUtils.validateNgrok());
         System.out.println("No errors in the new method validateNgrok!");
 
-        System.out.println(PlayerServer.getServerInfo() + " is the ngrok address.");
-        String [] tokenizedAddr = PlayerServer.tokenizeNgrokAddr();
+        System.out.println(NetworkUtils.getServerInfo() + " is the ngrok address.");
+        String [] tokenizedAddr = NetworkUtils.tokenizeNgrokAddr();
         for (String entry : tokenizedAddr)
         {
             System.out.println(entry);

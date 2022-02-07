@@ -1,6 +1,7 @@
 package test;
 
 import networking.GameService;
+import networking.GameSession;
 import networking.User;
 
 import java.io.IOException;
@@ -13,6 +14,9 @@ public class TestAPI {
 
         System.out.println(User.doesUsernameExist("maex"));
 
+        User maex = User.getInstance("maex", "abc123_ABC123");
+
+        GameSession newOne = new GameSession(maex, "dummygame1", "");
 
 
 
