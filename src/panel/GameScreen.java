@@ -26,7 +26,7 @@ import networking.GameState;
 import org.minueto.MinuetoTool;
 
 /**
- * A Singleton class that represents the main GameScreen in which the board game is played
+ * A Singleton class that represents the main screen in which the board game is played
  */
 public class GameScreen extends JPanel implements Serializable
 {
@@ -72,49 +72,8 @@ public class GameScreen extends JPanel implements Serializable
 	private String filepathToRepo = ".";
 	private boolean myTurn;
 
-	// not sure if this makes sense ?
-	// perhaps we can use setGameState() method when a new game state is loaded onto the game screen
-	private GameState gameState;
-
 	// TODO: change this on the other computer
 	private String otherPlayerIP = "192.168.2.253"; // Nick's IP address
-
-	
-	// alternate constructor for networking demo
-	private GameScreen(JFrame frame, boolean isTurn)
-	{
-		// layout is necessary for JLayeredPane to be added to the JPanel
-		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-
-		// Get dimensions of the full screen
-		mainframe = frame;
-		width = mainframe.getWidth();
-		height = mainframe.getHeight();
-
-		// Set Bounds for entire Board Game screen and do the initialization of the structure for the UI
-		boardGame_Layers = new JLayeredPane();
-		boardGame_Layers.setBounds(0,0,width,height);
-
-		// initialize town and road panels
-		gameMap = GameMap.init(this);
-
-		gameState = GameState.init(this); // TODO remove?
-
-		initialization();
-
-		// Add the images to their corresponding JPanel
-		addImages();
-		initializeListenerToDraw();
-		
-		// Add the JPanels to the main JLayeredPane with their corresponding layer
-		addPanelToScreen();
-		
-		// Add the entire structure of the UI to the panel
-		this.add(boardGame_Layers);
-
-		// doing this for the demo
-		myTurn = isTurn;
-	}
 
 	private GameScreen (JFrame frame)
 	{
@@ -132,20 +91,6 @@ public class GameScreen extends JPanel implements Serializable
 
 		// initialize town and road panels
 		gameMap = GameMap.init(this);
-
-		gameState = GameState.init(this); // TODO remove?
-
-		initialization();
-
-		// Add the images to their corresponding JPanel
-		addImages();
-		initializeListenerToDraw();
-
-		// Add the JPanels to the main JLayeredPane with their corresponding layer
-		addPanelToScreen();
-
-		// Add the entire structure of the UI to the panel
-		this.add(boardGame_Layers);
 	}
 
 	/**
@@ -162,6 +107,22 @@ public class GameScreen extends JPanel implements Serializable
 		return INSTANCE;
 	}
 
+	/**
+	 * You must call this function to draw all of the UI components to the screen
+	 */
+	public void draw() {
+		initialization();
+
+		// Add the images to their corresponding JPanel
+		addImages();
+		initializeListenerToDraw();
+
+		// Add the JPanels to the main JLayeredPane with their corresponding layer
+		addPanelToScreen();
+
+		// Add the entire structure of the UI to the panel
+		this.add(boardGame_Layers);
+	}
 
 	public void update(JPanel panel)
 	{
@@ -482,6 +443,7 @@ public class GameScreen extends JPanel implements Serializable
 		});
 	}
 
+	/*
 	public void moveBlackBoot(JPanel newCurrentPanel)
 	{
 		ElfBoot blackBoot = gameState.getBootByColour(Colour.BLACK);
@@ -510,7 +472,7 @@ public class GameScreen extends JPanel implements Serializable
 		blueBoot.getCurPanel().add(blueBoot.getImage());
 		update(blueBoot.getCurPanel());
 
-	}
+	}*/
 
 	public static void main(String[] args) 
 	{
@@ -555,22 +517,10 @@ public class GameScreen extends JPanel implements Serializable
 		myTurn = !myTurn;
 	}
 
-	public int getWidth() { return this.width; }
-
-	public int getHeight() { return this.height; }
-
 	public void addElement(JPanel panel) {
 		boardGame_Layers.add(panel);
 		mainframe.repaint();
 		mainframe.revalidate();
-	}
-
-	public void setGameState(GameState pGameState) {
-		this.gameState = pGameState;
-	}
-
-	public GameState getGameState() {
-		return this.gameState;
 	}
 
 	public void addObserverPanel(ObserverPanel pPanel) {
@@ -581,5 +531,13 @@ public class GameScreen extends JPanel implements Serializable
 		for ( ObserverPanel observer : observerPanels ) {
 			observer.updateView();
 		}
+	}
+
+	public int getWidth() {
+		return this.width;
+	}
+
+	public int getHeight() {
+		return this.height;
 	}
 }

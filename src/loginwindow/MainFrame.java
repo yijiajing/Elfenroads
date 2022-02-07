@@ -1,46 +1,46 @@
 package loginwindow;
 
 import networking.User;
-import org.minueto.MinuetoTool;
-import panel.GameScreen;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class MainFrame extends JFrame 
+public class MainFrame extends JFrame
 {
-    static CardLayout cardLayout;
-    static JPanel mainPanel;
-    static User loggedIn;
-    StartWindow start;
-    LoginWindow login;
-    LobbyWindow lobby;
-    LobbyWindow lobbyAfterBack;
-    VersionToPlayWindow version;
-    LoadGameWindow load;
-    GameScreen gameScreen;
+    public static CardLayout cardLayout;
+    public static JPanel mainPanel;
+    public static User loggedIn;
 
+    public static MainFrame instance;
 
-
-    public MainFrame() 
+    private MainFrame()
     {
-        setSize(MinuetoTool.getDisplayWidth(), MinuetoTool.getDisplayHeight());
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        setSize((int) screenSize.getWidth(), (int) screenSize.getHeight());
+
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
 
         mainPanel.add(new StartWindow(), "start");
-        mainPanel.add(GameScreen.init(this), "gameScreen");
 
         add(mainPanel);
         setVisible(true);
+    }
 
+    // Everything starts here
+    public static void main(String[] args)
+    {
+        MainFrame mainFrame = getInstance();
         cardLayout.show(mainPanel, "start");
     }
 
-    public static void main(String[] args)
-    {
-        MainFrame mainFrame = new MainFrame();
+    public static MainFrame getInstance() {
+        if (instance == null) {
+            instance = new MainFrame();
+        }
+        return instance;
     }
+
 }

@@ -1,5 +1,6 @@
 package loginwindow;
 
+import domain.GameManager;
 import networking.*;
 import panel.GameScreen;
 
@@ -7,6 +8,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.Optional;
 
 public class VersionToPlayWindow extends JPanel implements ActionListener{
     
@@ -47,16 +50,6 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
         elfengoldText = new JLabel("Elfengold");
 
         classicGame1 = new JButton("Classic");
-        classicGame1.addActionListener(new ActionListener(){
-
-            @Override
-            public void actionPerformed(ActionEvent e) 
-            {
-                //remove(background_elvenroads);
-                MainFrame.cardLayout.show(MainFrame.mainPanel, "gameScreen");
-            }
-            
-        });
         longGame = new JButton("Long Game");
         destinationTown = new JButton("Destination Town");
 
@@ -64,7 +57,17 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                MainFrame.cardLayout.show(MainFrame.mainPanel,"gameScreen");
+                GameSession session;
+
+                // TODO : add panel for user to input their game name and save game name
+                try {
+                    session = new GameSession(User.getInstance(), "testGame", "My Save Game Name");
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+
+                MainFrame.mainPanel.add(new LobbyWindow(), "lobby");
+                MainFrame.cardLayout.show(MainFrame.mainPanel, "lobby");
             }
         });
 

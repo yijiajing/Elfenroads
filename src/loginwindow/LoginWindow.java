@@ -158,8 +158,12 @@ public class LoginWindow extends JPanel implements ActionListener {
                         }
 
                         // log into the LS
-                        MainFrame.loggedIn = null; // unecessary to set to null probably but I just want to make sure that we have no issues with User
-                        MainFrame.loggedIn = User.getInstance(username, password);
+
+                        MainFrame.loggedIn = User.init(username, password);
+
+                        //MainFrame.loggedIn = null; // unecessary to set to null probably but I just want to make sure that we have no issues with User
+                        //MainFrame.loggedIn = User.getInstance(username, password);
+
 
                     } 
                     catch (Exception loginProblem)
