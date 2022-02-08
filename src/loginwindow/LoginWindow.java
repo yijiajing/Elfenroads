@@ -38,18 +38,16 @@ public class LoginWindow extends JPanel implements ActionListener {
     private static Popup ngrokErrorPopup;
     private static Popup wrongUsernameErrorPopup;
     private static Popup wrongPasswordErrorPopup;
-    
-    
-    private String filepathToRepo = ".";
-    
 
     LoginWindow() 
     {
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        setSize((int) screenSize.getWidth(), (int) screenSize.getHeight());
 
         infoPanel = new JPanel(new BorderLayout());
 
-        ImageIcon background_image = new ImageIcon(filepathToRepo + "/assets/sprites/elfenroads.jpeg");
-        background_elvenroads = new JLabel(background_image);
+        background_elvenroads = MainFrame.instance.getElfenroadsBackground();
+
         GridBagLayout layout = new GridBagLayout();
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -224,7 +222,7 @@ public class LoginWindow extends JPanel implements ActionListener {
         
         infoPanel.add(boxPanel,BorderLayout.CENTER);
         infoPanel.add(test,BorderLayout.SOUTH);
-        
+
         background_elvenroads.setLayout(layout);
         background_elvenroads.add(infoPanel,gbc);
 

@@ -23,9 +23,10 @@ public class AboutWindow extends JPanel {
     private JButton backButton;
     
     public AboutWindow(){
-        ImageIcon background_image = 
-        new ImageIcon("./assets/sprites/elfenroads.jpeg");
-        background_elvenroads = new JLabel(background_image);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        setSize((int) screenSize.getWidth(), (int) screenSize.getHeight());
+
+        background_elvenroads = MainFrame.instance.getElfenroadsBackground();
 
         //Elfenland rules button
         elfenlandRulesButton = new JButton("Elfenland Rules");
