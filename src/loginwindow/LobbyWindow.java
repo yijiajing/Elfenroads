@@ -24,6 +24,8 @@ public class LobbyWindow extends JPanel implements ActionListener {
     private JSONObject sessions;
 
     public LobbyWindow(){
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        setSize((int) screenSize.getWidth(), (int) screenSize.getHeight());
 
         createButton = new JButton("CREATE NEW SESSION");
         loadButton = new JButton("LOAD SAVED SESSION");
@@ -33,8 +35,7 @@ public class LobbyWindow extends JPanel implements ActionListener {
         buttons.add(loadButton);
         buttons.add(refreshButton);
 
-        ImageIcon background_image = new ImageIcon("./assets/sprites/elfenroads.jpeg");
-        background = new JLabel(background_image);
+        background = MainFrame.instance.getElfenroadsBackground();
 
         sessionsPanel = new JPanel();
         sessionsPanel.setLayout(new BoxLayout(sessionsPanel, BoxLayout.LINE_AXIS));

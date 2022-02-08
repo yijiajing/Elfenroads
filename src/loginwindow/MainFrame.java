@@ -43,4 +43,13 @@ public class MainFrame extends JFrame
         return instance;
     }
 
+    public JLabel getElfenroadsBackground() {
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
+        ImageIcon background_image = new ImageIcon("./assets/sprites/elfenroads.jpeg");
+        Image background_image_resized = background_image.getImage().getScaledInstance((int) screenSize.getWidth(), (int) screenSize.getHeight(), java.awt.Image.SCALE_SMOOTH);
+        JLabel background_elfenroads = new JLabel(new ImageIcon(background_image_resized));
+
+        return background_elfenroads;
+    }
 }

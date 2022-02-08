@@ -30,9 +30,11 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
     private JLabel elfengoldText;
 
     VersionToPlayWindow(){
-        ImageIcon background_image = 
-        new ImageIcon("./assets/sprites/elfenroads.jpeg");
-        background_elvenroads = new JLabel(background_image);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        setSize((int) screenSize.getWidth(), (int) screenSize.getHeight());
+
+        background_elvenroads = MainFrame.instance.getElfenroadsBackground();
+
         GridBagLayout layout = new GridBagLayout();
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
