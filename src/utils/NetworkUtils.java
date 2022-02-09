@@ -163,13 +163,16 @@ public class NetworkUtils {
      * designed to be called inside the LobbyWindow to display game information
      * can be called multiple times--it will clear the games displayed and reset every time
      */
-    public static void initializeGameInfo(JPanel sessions, JButton gamesButton) throws IOException
+    public static void initializeGameInfo(JPanel sessions) throws IOException
     {
         // reset the UI
         sessions.removeAll();
 
         // get a list of game sessions by ID
         ArrayList<String> gameIDs = GameSession.getAllSessionID();
+
+        // TODO: remove this. it's for testing
+        int counter = 0;
 
         // iterate through the IDs and get info for each game & add it to the display
         for (String id : gameIDs)
@@ -191,6 +194,9 @@ public class NetworkUtils {
             JLabel maxPlayersLabel = new JLabel("max session players: " + maxSessionPlayers);
             JLabel minPlayersLabel = new JLabel("min session players: " + minSessionPlayers);
             JLabel nameLabel = new JLabel("name: " + name);
+            // initialize join button
+            JButton joinButton = new JButton("JOIN");
+            // TODO: intialize an actionListener in the button
 
             // initialize the box
             Box gameInfo = Box.createVerticalBox();
@@ -200,17 +206,30 @@ public class NetworkUtils {
             gameInfo.add(maxPlayersLabel);
             gameInfo.add(minPlayersLabel);
             gameInfo.add(nameLabel);
-            gameInfo.add(gamesButton);
+            gameInfo.add(joinButton);
 
             // add the box to the sessions panel
-            sessions.add(gameInfo, BorderLayout.LINE_END);
+            // sessions.add(gameInfo);
+
+            if (counter == 0)
+            {
+                sessions.add(gameInfo, BorderLayout.CENTER);
+            }
+            else if (counter == 1)
+            {
+                sessions.add(gameInfo, BorderLayout.LINE_END);
+            }
+
+            else if (counter == 2)
+            {
+                sessions.add(gameInfo, BorderLayout.LINE_START);
+            }
+
+            counter++;
             sessions.repaint();
             sessions.revalidate();
 
         }
-
-        // sessions.repaint();
-        // sessions.revalidate();
 
 
 

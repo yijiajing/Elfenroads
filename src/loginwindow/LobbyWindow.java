@@ -124,7 +124,7 @@ public class LobbyWindow extends JPanel implements ActionListener {
             {
                 try
                 {
-                    NetworkUtils.initializeGameInfo(sessions, gamesButton);
+                    NetworkUtils.initializeGameInfo(sessions);
                 }
 
                 catch (IOException e1)
