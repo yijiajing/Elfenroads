@@ -171,7 +171,6 @@ public class NetworkUtils {
         // get a list of game sessions by ID
         ArrayList<String> gameIDs = GameSession.getAllSessionID();
 
-        // TODO: remove this. it's for testing
         int counter = 0;
 
         // iterate through the IDs and get info for each game & add it to the display
