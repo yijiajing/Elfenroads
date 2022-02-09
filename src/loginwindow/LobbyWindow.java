@@ -23,7 +23,10 @@ public class LobbyWindow extends JPanel implements ActionListener {
     private JLabel available;
     private JSONObject sessions;
 
+    
     public LobbyWindow(){
+        MP3Player track1 = new MP3Player("./assets/Music/JLEX5AW-ui-medieval-click-heavy-positive-01.mp3");
+        track1.play();
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setSize((int) screenSize.getWidth(), (int) screenSize.getHeight());
 

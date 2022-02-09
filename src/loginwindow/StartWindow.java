@@ -25,6 +25,7 @@ public class StartWindow extends JPanel {
     private Font font;
 
     public StartWindow(){
+        MP3Player track1 = new MP3Player("./assets/Music/JLEX5AW-ui-medieval-click-heavy-positive-01.mp3");
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setSize((int) screenSize.getWidth(), (int) screenSize.getHeight());
         
@@ -38,6 +39,7 @@ public class StartWindow extends JPanel {
 
             @Override
             public void actionPerformed(ActionEvent e) {
+                track1.play();
                 remove(background_elvenroads);
                 MainFrame.mainPanel.add(new LoginWindow(), "login");
                 MainFrame.cardLayout.show(MainFrame.mainPanel,"login");
@@ -51,15 +53,7 @@ public class StartWindow extends JPanel {
         aboutButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                //remove(background_elvenroads);
-                /*if (Desktop.isDesktopSupported()) {
-                    try {
-                        File myFile = new File("./assets/rules/Elfengold Rules.pdf");
-                        Desktop.getDesktop().open(myFile);
-                    } catch (IOException ex) {
-                        // no application registered for PDFs
-                    }
-                }*/
+                track1.play();
                 remove(background_elvenroads);
                 MainFrame.mainPanel.add(new AboutWindow(), "about");
                 MainFrame.cardLayout.show(MainFrame.mainPanel,"about");
@@ -73,6 +67,7 @@ public class StartWindow extends JPanel {
 
             @Override
             public void actionPerformed(ActionEvent e) {
+                track1.play();
                 System.exit(0);;
                 
             }

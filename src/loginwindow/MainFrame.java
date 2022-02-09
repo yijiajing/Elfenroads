@@ -4,6 +4,10 @@ import networking.User;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+
+import javazoom.jl.player.Player;
 
 public class MainFrame extends JFrame
 {
@@ -34,6 +38,8 @@ public class MainFrame extends JFrame
     {
         MainFrame mainFrame = getInstance();
         cardLayout.show(mainPanel, "start");
+        MP3Player track1 = new MP3Player("./assets/Music/alexander-nakarada-adventure.mp3");
+        track1.playReapeated();
     }
 
     public static MainFrame getInstance() {

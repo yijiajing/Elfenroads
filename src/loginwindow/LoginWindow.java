@@ -27,6 +27,7 @@ public class LoginWindow extends JPanel implements ActionListener {
     private static JLabel passwordLabel;
     private static JLabel ngrok;
     private static JButton loginButton;
+    private static JButton backButton;
     private JPanel infoPanel;
 
     private static Box test;
@@ -41,6 +42,7 @@ public class LoginWindow extends JPanel implements ActionListener {
 
     LoginWindow() 
     {
+        MP3Player track1 = new MP3Player("./assets/Music/JLEX5AW-ui-medieval-click-heavy-positive-01.mp3");
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setSize((int) screenSize.getWidth(), (int) screenSize.getHeight());
 
@@ -131,6 +133,7 @@ public class LoginWindow extends JPanel implements ActionListener {
 			@Override
             public void actionPerformed(ActionEvent e) 
             {
+                
             	String username = usernameTextField.getText();
             	String password = passwordTextField.getText();
                 String token = ngrokTextField.getText();
@@ -175,6 +178,7 @@ public class LoginWindow extends JPanel implements ActionListener {
 
                 try {
                     PlayerServer.startNgrok(token);
+                    track1.play();
                 } catch (IOException ngrokStartupProblem) {
                     ngrokErrorPopup.show();
                     return;
