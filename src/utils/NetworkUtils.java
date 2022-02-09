@@ -7,6 +7,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -162,12 +163,10 @@ public class NetworkUtils {
      * designed to be called inside the LobbyWindow to display game information
      * can be called multiple times--it will clear the games displayed and reset every time
      */
-    public static void initializeGameInfo(JPanel sessions, Box gameInfo, JButton gamesButton) throws IOException
+    public static void initializeGameInfo(JPanel sessions, JButton gamesButton) throws IOException
     {
         // reset the UI
-        gameInfo.removeAll();
-        gameInfo.repaint();
-        gameInfo.revalidate();
+        sessions.removeAll();
 
         // get a list of game sessions by ID
         ArrayList<String> gameIDs = GameSession.getAllSessionID();
@@ -176,6 +175,7 @@ public class NetworkUtils {
         for (String id : gameIDs)
         {
             // get game info
+            System.out.println("We are now looking for details about id " + id);
             JSONObject sessionDetails = GameSession.getSessionDetails(id);
             JSONObject sessionParameters = sessionDetails.getJSONObject("gameParameters"); // TODO: make sure this method works, otherwise call regular get and cast to JSONObject manually instead
 
@@ -192,6 +192,9 @@ public class NetworkUtils {
             JLabel minPlayersLabel = new JLabel("min session players: " + minSessionPlayers);
             JLabel nameLabel = new JLabel("name: " + name);
 
+            // initialize the box
+            Box gameInfo = Box.createVerticalBox();
+            gameInfo.setBorder(BorderFactory.createLineBorder(Color.black));
             // add the button and the labels to the box
             gameInfo.add(creatorLabel);
             gameInfo.add(maxPlayersLabel);
@@ -199,13 +202,17 @@ public class NetworkUtils {
             gameInfo.add(nameLabel);
             gameInfo.add(gamesButton);
 
-            gameInfo.repaint();
-            gameInfo.revalidate();
+            // add the box to the sessions panel
+            sessions.add(gameInfo, BorderLayout.LINE_END);
+            sessions.repaint();
+            sessions.revalidate();
 
         }
 
-        gameInfo.repaint();
-        gameInfo.revalidate();
+        // sessions.repaint();
+        // sessions.revalidate();
+
+
 
     }
 

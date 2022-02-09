@@ -193,23 +193,15 @@ public class GameSession {
     public static ArrayList<String> getAllSessionID() throws IOException
     {
         JSONObject resultsOfGetSessions = getSessions();
-        ArrayList<String> ids = new ArrayList<String>();
 
         Set keys = resultsOfGetSessions.keySet();
 
-        for(Object key : keys)
-        {
-            String keyString = key.toString();
-            JSONObject nested = new JSONObject (resultsOfGetSessions.get(keyString).toString());
+        // the top-level key in the response is just "sessions"
+        // the second-level is the IDs
 
-            Set nestedKeys = nested.keySet();
-
-            for (Object nestedKey : nestedKeys)
-            {
-                ids.add(nested.toString());
-            }
-
-        }
+        JSONObject sessions = resultsOfGetSessions.getJSONObject("sessions");
+        Set idSet = sessions.keySet();
+        ArrayList<String> ids = new ArrayList<String>(idSet);
         return ids;
 
 
@@ -231,7 +223,7 @@ public class GameSession {
         in.close();
         con.disconnect();
         System.out.println("Response status: " + status);
-        System.out.println(content.toString());
+        // System.out.println(content.toString());
 
         JSONObject response = new JSONObject(content.toString());
 

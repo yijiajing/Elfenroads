@@ -12,9 +12,10 @@ public class TestAPI {
 
     {
 
-        System.out.println(User.doesUsernameExist("maex"));
+        // System.out.println(User.doesUsernameExist("maex"));
 
-        System.out.println(GameSession.getSessions());
+        // System.out.println(GameSession.getFirstSessionID());
+        System.out.println(GameSession.getAllSessionID());
 
 
         /* User admin = new User("maex", "abc123_ABC123");
