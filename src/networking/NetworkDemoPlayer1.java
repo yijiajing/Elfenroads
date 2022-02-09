@@ -73,7 +73,7 @@ public class NetworkDemoPlayer1 extends JFrame {
                 // let's set our game screen to this and then update it
                 // we need to use it to reinitialize the game screen
 
-                ourScreen.moveBlackBoot(newSpot);
+                //ourScreen.moveBlackBoot(newSpot);
                 // mainPanel.add(newScreen, "gameScreen");
 
                 for (Component toUpdate : mainPanel.getComponents())

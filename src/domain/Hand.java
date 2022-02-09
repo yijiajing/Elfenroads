@@ -18,5 +18,9 @@ public class Hand {
 	public void removeUnit(Drawable pUnit) {
 		if (pUnit instanceof CardUnit) cardList.remove((CardUnit)pUnit); else counterList.remove((CounterUnit)pUnit);
 	}
+
+	public List<CardUnit> getCards() {
+		return this.cardList;
+	}
 	
 }

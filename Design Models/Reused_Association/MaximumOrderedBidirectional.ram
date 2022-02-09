@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="ASCII"?>
+<ram:Aspect xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ram="http://cs.mcgill.ca/sel/ram/3.0" xmi:id="_Rh5cAKNkEeWU0LOAsKVUHw" name="MaximumOrderedBidirectional">
+  <realizes href="Association.core#_JFas8ACXEeWTy6SkLveZ6w"/>
+  <realizes href="Association.core#__6WrkACWEeWTy6SkLveZ6w"/>
+  <coreConcern href="Association.core#_mZ-ooACWEeWTy6SkLveZ6w"/>
+  <structuralView xmi:id="_Rh5cAaNkEeWU0LOAsKVUHw">
+    <types xsi:type="ram:RVoid" xmi:id="_Rh5cAqNkEeWU0LOAsKVUHw"/>
+    <types xsi:type="ram:RAny" xmi:id="_Rh5cA6NkEeWU0LOAsKVUHw"/>
+    <types xsi:type="ram:RBoolean" xmi:id="_Rh5cBKNkEeWU0LOAsKVUHw"/>
+    <types xsi:type="ram:RInt" xmi:id="_Rh5cBaNkEeWU0LOAsKVUHw"/>
+    <types xsi:type="ram:RChar" xmi:id="_Rh5cBqNkEeWU0LOAsKVUHw"/>
+    <types xsi:type="ram:RString" xmi:id="_Rh5cB6NkEeWU0LOAsKVUHw"/>
+    <types xsi:type="ram:RDouble" xmi:id="_Rh5cCKNkEeWU0LOAsKVUHw"/>
+    <types xsi:type="ram:RFloat" xmi:id="_Rh5cCaNkEeWU0LOAsKVUHw"/>
+    <types xsi:type="ram:RLong" xmi:id="_Rh5cCqNkEeWU0LOAsKVUHw"/>
+  </structuralView>
+  <messageViews xsi:type="ram:MessageViewReference" xmi:id="_cTkO0KNkEeWY2N8-Nm9AFg">
+    <affectedBy href="Maximum.ram#_sHPbA5k0EeW5PZgeQVCCQw"/>
+    <references href="OrderedBidirectional.ram#_P9mkw5hNEeW--bMvXkrHlA"/>
+  </messageViews>
+  <instantiations xmi:id="_S3c5sKNkEeWU0LOAsKVUHw">
+    <source xsi:type="ram:Aspect" href="MaximumPlainBidirectional.ram#_nZf24KNjEeWU0LOAsKVUHw"/>
+  </instantiations>
+  <instantiations xmi:id="_UUmNIKNkEeWU0LOAsKVUHw">
+    <source xsi:type="ram:Aspect" href="OrderedBidirectional.ram#_9VxuAJhMEeW--bMvXkrHlA"/>
+  </instantiations>
+  <instantiations xmi:id="_SA3dsKNpEeWU0LOAsKVUHw">
+    <source xsi:type="ram:Aspect" href="MaximumOrdered.ram#_3fxZgJk0EeW5PZgeQVCCQw"/>
+  </instantiations>
+  <layout xmi:id="_Rh5cDKNkEeWU0LOAsKVUHw">
+    <containers xmi:id="_Rh5cDaNkEeWU0LOAsKVUHw" key="_Rh5cAaNkEeWU0LOAsKVUHw"/>
+  </layout>
+</ram:Aspect>

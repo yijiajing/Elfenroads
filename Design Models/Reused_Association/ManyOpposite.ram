@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="ASCII"?>
+<ram:Aspect xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ram="http://cs.mcgill.ca/sel/ram/3.0" xmi:id="_jG4CQH2fEeW19p3ERnXRPg" name="ManyOpposite">
+  <realizes href="Association.core#_zPvl0HQ0EeWm6eZfpLWFHw"/>
+  <coreConcern href="Association.core#_mZ-ooACWEeWTy6SkLveZ6w"/>
+  <structuralView xmi:id="_jG4CQX2fEeW19p3ERnXRPg">
+    <classes xsi:type="ram:Class" xmi:id="_jG4CQn2fEeW19p3ERnXRPg" name="Data" partiality="public"/>
+    <classes xsi:type="ram:Class" xmi:id="_jG4CRH2fEeW19p3ERnXRPg" name="Associated" partiality="public"/>
+    <types xsi:type="ram:RVoid" xmi:id="_jG4CR32fEeW19p3ERnXRPg"/>
+    <types xsi:type="ram:RAny" xmi:id="_jG4CSH2fEeW19p3ERnXRPg"/>
+    <types xsi:type="ram:RBoolean" xmi:id="_jG4CSX2fEeW19p3ERnXRPg"/>
+    <types xsi:type="ram:RInt" xmi:id="_jG4CSn2fEeW19p3ERnXRPg"/>
+    <types xsi:type="ram:RChar" xmi:id="_jG4CS32fEeW19p3ERnXRPg"/>
+    <types xsi:type="ram:RString" xmi:id="_jG4CTH2fEeW19p3ERnXRPg"/>
+    <types xsi:type="ram:RDouble" xmi:id="_jG4CTX2fEeW19p3ERnXRPg"/>
+    <types xsi:type="ram:RFloat" xmi:id="_jG4CTn2fEeW19p3ERnXRPg"/>
+    <types xsi:type="ram:RLong" xmi:id="_jG4CT32fEeW19p3ERnXRPg"/>
+  </structuralView>
+  <instantiations xmi:id="_E3F5cPLyEea0LqdFshE0fA">
+    <source xsi:type="ram:Aspect" href="Association.ram#_mDv4YEQ1EeSSfO86-u_zzA"/>
+  </instantiations>
+  <layout xmi:id="_jG4CUX2fEeW19p3ERnXRPg">
+    <containers xmi:id="_jG4CUn2fEeW19p3ERnXRPg" key="_jG4CQX2fEeW19p3ERnXRPg">
+      <value xmi:id="_jG4CU32fEeW19p3ERnXRPg" key="_jG4CQn2fEeW19p3ERnXRPg">
+        <value xmi:id="_jG4CVH2fEeW19p3ERnXRPg" x="151.0" y="215.0"/>
+      </value>
+      <value xmi:id="_jG4CVX2fEeW19p3ERnXRPg" key="_jG4CRH2fEeW19p3ERnXRPg">
+        <value xmi:id="_jG4CVn2fEeW19p3ERnXRPg" x="569.0002" y="216.99992"/>
+      </value>
+    </containers>
+  </layout>
+</ram:Aspect>

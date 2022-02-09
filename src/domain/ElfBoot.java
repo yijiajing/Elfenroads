@@ -52,10 +52,12 @@ public class ElfBoot extends JLabel {
 
         // if there is a town piece at the new location of the elf boot, remove it and update player's score
         this.curPanel.getTown().removeTownPieceByColour(this.colour);
-        GameState.instance(gameScreen).getPlayerByColour(this.colour).setCurrentTown(curPanel.getTown());
+        GameState.instance().getPlayerByColour(this.colour).setCurrentTown(curPanel.getTown());
 
         GameScreen.getInstance().notifyObservers();
     }
 
     public JLabel getImage() { return this.bootImage; }
+
+    public Colour getColour() { return this.colour; }
 }

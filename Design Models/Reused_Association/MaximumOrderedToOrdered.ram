@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="ASCII"?>
+<ram:Aspect xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ram="http://cs.mcgill.ca/sel/ram/3.0" xmi:id="_MLZYkJl4EeWM4o-qQsaeGw" name="MaximumOrderedToOrdered">
+  <realizes href="Association.core#_JFas8ACXEeWTy6SkLveZ6w"/>
+  <realizes href="Association.core#__6WrkACWEeWTy6SkLveZ6w"/>
+  <realizes href="Association.core#_A4UO8JFuEeWSP-8jReRTpg"/>
+  <coreConcern href="Association.core#_mZ-ooACWEeWTy6SkLveZ6w"/>
+  <structuralView xmi:id="_MLZYkZl4EeWM4o-qQsaeGw">
+    <types xsi:type="ram:RVoid" xmi:id="_MLZYkpl4EeWM4o-qQsaeGw"/>
+    <types xsi:type="ram:RAny" xmi:id="_MLZYk5l4EeWM4o-qQsaeGw"/>
+    <types xsi:type="ram:RBoolean" xmi:id="_MLZYlJl4EeWM4o-qQsaeGw"/>
+    <types xsi:type="ram:RInt" xmi:id="_MLZYlZl4EeWM4o-qQsaeGw"/>
+    <types xsi:type="ram:RChar" xmi:id="_MLZYlpl4EeWM4o-qQsaeGw"/>
+    <types xsi:type="ram:RString" xmi:id="_MLZYl5l4EeWM4o-qQsaeGw"/>
+    <types xsi:type="ram:RDouble" xmi:id="_MLZYmJl4EeWM4o-qQsaeGw"/>
+    <types xsi:type="ram:RFloat" xmi:id="_MLZYmZl4EeWM4o-qQsaeGw"/>
+    <types xsi:type="ram:RLong" xmi:id="_MLZYmpl4EeWM4o-qQsaeGw"/>
+  </structuralView>
+  <messageViews xsi:type="ram:MessageViewReference" xmi:id="_bvtbAJl4EeW9WLj49axp_A">
+    <affectedBy href="Maximum.ram#_sHPbA5k0EeW5PZgeQVCCQw"/>
+    <references href="OrderedToOrdered.ram#_UigMI5h1EeWP05U_LT_0_A"/>
+  </messageViews>
+  <instantiations xmi:id="_MLZYm5l4EeWM4o-qQsaeGw">
+    <source xsi:type="ram:Aspect" href="OrderedToOrdered.ram#__xZ7wJh0EeWP05U_LT_0_A"/>
+  </instantiations>
+  <instantiations xmi:id="_MLZYnJl4EeWM4o-qQsaeGw">
+    <source xsi:type="ram:Aspect" href="MaximumOrderedToPlain.ram#_ehMgoJl3EeWM4o-qQsaeGw"/>
+  </instantiations>
+  <instantiations xmi:id="_7-HakJnYEeWvRd4qi-wbqA">
+    <source xsi:type="ram:Aspect" href="MaximumPlainToOrdered.ram#_HL-DcJlzEeWM4o-qQsaeGw"/>
+  </instantiations>
+  <layout xmi:id="_MLZYnZl4EeWM4o-qQsaeGw">
+    <containers xmi:id="_MLZYnpl4EeWM4o-qQsaeGw" key="_MLZYkZl4EeWM4o-qQsaeGw"/>
+  </layout>
+</ram:Aspect>

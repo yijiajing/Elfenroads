@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="ASCII"?>
+<ram:Aspect xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ram="http://cs.mcgill.ca/sel/ram/3.0" xmi:id="_QxfNkNrrEeOiKaOAPqVfuA" name="TreeSet">
+  <realizes href="Association.core#_D5T_AACYEeWTy6SkLveZ6w"/>
+  <coreConcern href="Association.core#_mZ-ooACWEeWTy6SkLveZ6w"/>
+  <structuralView xmi:id="_QxfNkdrrEeOiKaOAPqVfuA">
+    <classes xsi:type="ram:ImplementationClass" xmi:id="_QxfNnNrrEeOiKaOAPqVfuA" name="Object" instanceClassName="java.lang.Object"/>
+    <classes xsi:type="ram:Class" xmi:id="_NJcR8MFIEeWDZKepm4PK7A" name="Associated" partiality="public"/>
+    <classes xsi:type="ram:ImplementationClass" xmi:id="_QHcUIMFIEeWDZKepm4PK7A" name="TreeSet" visibility="public" instanceClassName="java.util.TreeSet">
+      <operations xmi:id="_XIvsMMLTEeWjVKFIG7JTNA" name="TreeSet" visibility="public" returnType="_QHcUIMFIEeWDZKepm4PK7A" operationType="Constructor"/>
+      <operations xmi:id="_RcVDcMFIEeWDZKepm4PK7A" name="add" visibility="public" returnType="_QxfNrNrrEeOiKaOAPqVfuA">
+        <parameters xmi:id="_RcVDccFIEeWDZKepm4PK7A" name="arg0" type="_NJcR8MFIEeWDZKepm4PK7A"/>
+      </operations>
+      <operations xmi:id="_SEX64MFIEeWDZKepm4PK7A" name="remove" visibility="public" returnType="_QxfNrNrrEeOiKaOAPqVfuA">
+        <parameters xmi:id="_SEX64cFIEeWDZKepm4PK7A" name="arg0" type="_QxfNnNrrEeOiKaOAPqVfuA"/>
+      </operations>
+      <operations xmi:id="_TCDEEMFIEeWDZKepm4PK7A" name="contains" visibility="public" returnType="_QxfNrNrrEeOiKaOAPqVfuA">
+        <parameters xmi:id="_TCDEEcFIEeWDZKepm4PK7A" name="arg0" type="_QxfNnNrrEeOiKaOAPqVfuA"/>
+      </operations>
+      <operations xmi:id="_TfTAwMFIEeWDZKepm4PK7A" name="size" visibility="public" returnType="_QxfNqdrrEeOiKaOAPqVfuA"/>
+      <typeParameters xmi:id="_QHcUIcFIEeWDZKepm4PK7A" name="E" genericType="_NJcR8MFIEeWDZKepm4PK7A"/>
+    </classes>
+    <types xsi:type="ram:RInt" xmi:id="_QxfNqdrrEeOiKaOAPqVfuA"/>
+    <types xsi:type="ram:RVoid" xmi:id="_QxfNqtrrEeOiKaOAPqVfuA"/>
+    <types xsi:type="ram:RAny" xmi:id="_QxfNq9rrEeOiKaOAPqVfuA"/>
+    <types xsi:type="ram:RBoolean" xmi:id="_QxfNrNrrEeOiKaOAPqVfuA"/>
+    <types xsi:type="ram:RChar" xmi:id="_QxfNrdrrEeOiKaOAPqVfuA"/>
+    <types xsi:type="ram:RString" xmi:id="_QxfNrtrrEeOiKaOAPqVfuA"/>
+    <types xsi:type="ram:RDouble" xmi:id="_QxfNr9rrEeOiKaOAPqVfuA"/>
+    <types xsi:type="ram:RFloat" xmi:id="_QxfNsNrrEeOiKaOAPqVfuA"/>
+  </structuralView>
+  <instantiations xmi:id="_mZbIkNxaEeOLe_W5cUN4CA">
+    <source xsi:type="ram:Aspect" href="Unordered.ram#_Z3l1INxZEeOLe_W5cUN4CA"/>
+    <mappings xsi:type="ram:ClassifierMapping" xmi:id="_UCks8MFIEeWDZKepm4PK7A" to="_NJcR8MFIEeWDZKepm4PK7A">
+      <from xsi:type="ram:Class" href="Unordered.ram#_-QdEcMFHEeWDZKepm4PK7A"/>
+    </mappings>
+    <mappings xsi:type="ram:ClassifierMapping" xmi:id="_VGnj4MFIEeWDZKepm4PK7A" to="_QHcUIMFIEeWDZKepm4PK7A">
+      <from xsi:type="ram:Class" href="Unordered.ram#_lY4hQAvJEeW97eUarwQSdA"/>
+      <operationMappings xmi:id="_WX_sMMFIEeWDZKepm4PK7A" to="_RcVDcMFIEeWDZKepm4PK7A">
+        <from xsi:type="ram:Operation" href="Plain.ram#_hsEN8H2bEeW19p3ERnXRPg"/>
+      </operationMappings>
+      <operationMappings xmi:id="_WcxegMFIEeWDZKepm4PK7A" to="_TCDEEMFIEeWDZKepm4PK7A">
+        <from xsi:type="ram:Operation" href="Many.ram#_h0EcwH2CEeWIy5MXlHNV-w"/>
+      </operationMappings>
+      <operationMappings xmi:id="_Wh2y0MFIEeWDZKepm4PK7A" to="_SEX64MFIEeWDZKepm4PK7A">
+        <from xsi:type="ram:Operation" href="Plain.ram#_jaVGkH2bEeW19p3ERnXRPg"/>
+      </operationMappings>
+      <operationMappings xmi:id="_Wl-d0MFIEeWDZKepm4PK7A" to="_TfTAwMFIEeWDZKepm4PK7A">
+        <from xsi:type="ram:Operation" href="Many.ram#_lA1TsH2CEeWIy5MXlHNV-w"/>
+      </operationMappings>
+      <operationMappings xmi:id="_bl6HEOq_EeWXzZ5qXBIQTg" to="_XIvsMMLTEeWjVKFIG7JTNA">
+        <from xsi:type="ram:Operation" href="Many.ram#_kCfOoOq7EeWy6cPK1HfUhA"/>
+      </operationMappings>
+    </mappings>
+  </instantiations>
+  <layout xmi:id="_Qxf0odrrEeOiKaOAPqVfuA">
+    <containers xmi:id="_Qxf0otrrEeOiKaOAPqVfuA" key="_QxfNkdrrEeOiKaOAPqVfuA">
+      <value xmi:id="_Qxf0qdrrEeOiKaOAPqVfuA" key="_QxfNnNrrEeOiKaOAPqVfuA">
+        <value xmi:id="_Qxf0qtrrEeOiKaOAPqVfuA" x="550.1085" y="161.58647"/>
+      </value>
+      <value xmi:id="_NJdgEMFIEeWDZKepm4PK7A" key="_NJcR8MFIEeWDZKepm4PK7A">
+        <value xmi:id="_NJdgEcFIEeWDZKepm4PK7A" x="259.99997" y="154.99995"/>
+      </value>
+      <value xmi:id="_QHdiQMFIEeWDZKepm4PK7A" key="_QHcUIMFIEeWDZKepm4PK7A">
+        <value xmi:id="_QHdiQcFIEeWDZKepm4PK7A" x="394.00003" y="308.99985"/>
+      </value>
+    </containers>
+  </layout>
+</ram:Aspect>

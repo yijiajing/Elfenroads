@@ -79,10 +79,17 @@ public class GameService {
             System.out.println("Response status: " + status);
             System.out.println(content.toString());
 
-            User gameServiceUser = new User(gameServiceName, gameServiceAccountPassword);
-            this.gameServiceUser = gameServiceUser;
+           //  User gameServiceUser = new User(gameServiceName, gameServiceAccountPassword);
+            // this.gameServiceUser = gameServiceUser;
             // System.out.println("The token for the gameServiceUser is: " + this.gameServiceUser.getAccessToken());
         }
+
+
+        // TODO: COME BACK AND FIX THIS!!!
+        // User gameServiceUser = new User(gameServiceName, gameServiceAccountPassword);
+        //is.gameServiceUser = gameServiceUser;
+        // System.out.println("The token for the gameServiceUser is: " + this.gameServiceUser.getAccessToken());
+
     }
 
     public void createGameService() throws IOException

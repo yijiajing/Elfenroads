@@ -3,7 +3,9 @@ package networking;
 import domain.*;
 import enums.Colour;
 import enums.RoundPhaseType;
+import enums.TravelCardType;
 import org.json.JSONObject;
+import panel.ElfBootPanel;
 import panel.GameScreen;
 
 import java.util.*;
@@ -16,9 +18,6 @@ public class GameState {
     // this class will contain all of the information we need to send regarding game state
     // created this class so that I can easily serialize and send important info to each computer
     // for now, this will only keep track of boot locations and towns visited because that's all we need for the demo
-
-    // TODO: probably get rid of this class entirely, for now
-
 
     /* as of now, we need to keep track of and be able to serialize:
     1. which Elfen towns have been visited (show on the UI by the town pieces)
@@ -33,7 +32,6 @@ public class GameState {
     private static GameState instance;
 
     // meta info (possibly separated into another class in the future)
-    private GameMap gameMap;
     private int totalRounds;
     private List<Player> players = new ArrayList<>();
 
@@ -42,21 +40,16 @@ public class GameState {
     private RoundPhaseType currentPhase;
     private Player currentPlayer;
 
-    //NEED TO IMPLEMENT
-    //a default constructor
-    /*private GameState() {
-    	
-    }*/
+    private ArrayList<TravelCard> travelCardDeck = new ArrayList<>();
 
     private ArrayList<ElfBoot> elfBoots;
 
-    public GameState (GameScreen pScreen)
+    private GameState (GameScreen pScreen)
     {
         this.screen = pScreen;
         this.elfBoots = new ArrayList<>();
-
-        setDummyPlayers(); // TODO remove
-        setToFirstPlayer();
+        this.currentRound = 1;
+        this.totalRounds = 3; // TODO depends on version
     }
 
     // TODO: implement this second constructor
@@ -89,16 +82,15 @@ public class GameState {
         players.add(new Player(Colour.YELLOW, screen));
     }
     
-    public static GameState instance(GameScreen pScreen) {
+    public static GameState init(GameScreen pScreen) {
         if (instance == null) {
             instance = new GameState(pScreen);
         }
     	return instance;
     }
 
-
-    public void addElfBoot(ElfBoot pElfBoot) {
-        elfBoots.add(pElfBoot);
+    public static GameState instance() {
+        return instance;
     }
 
     public ArrayList<ElfBoot> getElfBoots() {
@@ -109,6 +101,16 @@ public class GameState {
         for ( Player p : players ) {
             if (p.getColour() == colour) {
                 return p;
+            }
+        }
+
+        return null;
+    }
+
+    public ElfBoot getBootByColour(Colour colour) {
+        for ( ElfBoot e : elfBoots ) {
+            if (e.getColour() == colour) {
+                return e;
             }
         }
 
@@ -162,5 +164,21 @@ public class GameState {
 
     public void setToFirstPlayer() {
         currentPlayer = players.get(0);
+    }
+
+    public void addTravelCard(TravelCard pCard) {
+        this.travelCardDeck.add(pCard);
+    }
+
+    public void addElfBoot(ElfBoot boot) {
+        this.elfBoots.add(boot);
+    }
+
+    public ArrayList<TravelCard> getTravelCardDeck() {
+        return travelCardDeck;
+    }
+
+    public void setTravelCardDeck(ArrayList<TravelCard> travelCards) {
+        this.travelCardDeck = travelCards;
     }
 }
