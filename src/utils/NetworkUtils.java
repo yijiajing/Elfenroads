@@ -113,6 +113,15 @@ public class NetworkUtils {
         return results;
     }
 
+    public static String ngrokAddrToPassToLS() throws IOException
+    {
+        String [] info = tokenizeNgrokAddr();
+        String ip = info[0];
+        String port = info[1];
+        return ip + ":" + port;
+
+    }
+
     // Popups for network-related errors
 
     public static Popup initializeNgrokErrorPopup(LoginWindow loginScreen)
