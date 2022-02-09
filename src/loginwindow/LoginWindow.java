@@ -1,11 +1,15 @@
 package loginwindow;
 
 import networking.*;
+import utils.NetworkUtils;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import static javax.swing.Box.createVerticalStrut;
 
@@ -18,21 +22,34 @@ public class LoginWindow extends JPanel implements ActionListener {
     private static Box boxPanel;
     private static JTextField usernameTextField;
     private static JPasswordField passwordTextField;
+    private static JTextField ngrokTextField;
     private static JLabel usernameLabel;
     private static JLabel passwordLabel;
+    private static JLabel ngrok;
     private static JButton loginButton;
     private static JButton backButton;
     private JPanel infoPanel;
-    
-    private String filepathToRepo = ".";
-    
 
-    LoginWindow() {
+    private static Box test;
+    private static JButton ngrokLogin;
+    private static JButton ngrokSingup;
+    private static JButton pasteClipboardButton;
+
+    private static Popup invalidCredentialsPopup;
+    private static Popup ngrokErrorPopup;
+    private static Popup wrongUsernameErrorPopup;
+    private static Popup wrongPasswordErrorPopup;
+
+    LoginWindow() 
+    {
         MP3Player track1 = new MP3Player("./assets/Music/JLEX5AW-ui-medieval-click-heavy-positive-01.mp3");
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        setSize((int) screenSize.getWidth(), (int) screenSize.getHeight());
+
         infoPanel = new JPanel(new BorderLayout());
 
-        ImageIcon background_image = new ImageIcon(filepathToRepo + "/assets/sprites/elfenroads.jpeg");
-        background_elvenroads = new JLabel(background_image);
+        background_elvenroads = MainFrame.instance.getElfenroadsBackground();
+
         GridBagLayout layout = new GridBagLayout();
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -46,12 +63,68 @@ public class LoginWindow extends JPanel implements ActionListener {
 
         usernameTextField = new JTextField(15);
         passwordTextField = new JPasswordField(15);
+        ngrokTextField = new JTextField(20);
+        ngrok = new JLabel();
         usernameLabel = new JLabel();
         passwordLabel = new JLabel();
         usernameLabel.setText("Username:");
         passwordLabel.setText("Password:");
+        ngrok.setText("Ngrok token:");
         loginButton = new JButton("Enter");
+        ngrokLogin = new JButton("ngrok LOGIN");
+        ngrokSingup = new JButton("ngrok SIGNUP");
+        pasteClipboardButton = new JButton("Paste ngrok token");
+
+        // add popups to be displayed later
+        ngrokErrorPopup = NetworkUtils.initializeNgrokErrorPopup(this);
+        wrongUsernameErrorPopup = NetworkUtils.initializeWrongUsernameErrorPopup(this);
+        wrongPasswordErrorPopup = NetworkUtils.initializeWrongPasswordErrorPopup(this);
+
+        pasteClipboardButton.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e) 
+            {
+                ngrokTextField.paste();
+            }
+        });
+
+        ngrokSingup.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e) 
+            {
+                try 
+                {
+                    Desktop.getDesktop().browse(new URI("https://dashboard.ngrok.com/signup"));
+
+                } 
+                catch (IOException | URISyntaxException e1) 
+                {
+                    e1.printStackTrace();
+                }
+            }
+            
+        });
         
+        ngrokLogin.addActionListener(new ActionListener() 
+        {
+
+            @Override
+            public void actionPerformed(ActionEvent e) 
+            {
+                try 
+                {
+                    Desktop.getDesktop().browse(new URI("https://dashboard.ngrok.com/login"));
+                     
+                } 
+                catch (IOException | URISyntaxException e1) 
+                {
+                    e1.printStackTrace();
+                }  
+            }
+            
+        });
 
         loginButton.addActionListener(new ActionListener()
         {
@@ -63,6 +136,7 @@ public class LoginWindow extends JPanel implements ActionListener {
                 
             	String username = usernameTextField.getText();
             	String password = passwordTextField.getText();
+                String token = ngrokTextField.getText();
             	boolean u = false;
             	try 
             	{
@@ -73,13 +147,53 @@ public class LoginWindow extends JPanel implements ActionListener {
 					e1.printStackTrace();
 				}
             	boolean p = User.isValidPassword(password);
-            	if (u && p)
-            	{
+            	// if (u && p)
+            	// {
+                    try 
+                    {
+                        // first, make sure the username exists. if not, display the appropriate pop-up.
+                        if (!u)
+                        {
+                                wrongUsernameErrorPopup.show();
+                                return;
+                        }
+
+                        // log into the LS
+
+                        MainFrame.loggedIn = User.init(username, password);
+
+                        //MainFrame.loggedIn = null; // unecessary to set to null probably but I just want to make sure that we have no issues with User
+                        //MainFrame.loggedIn = User.getInstance(username, password);
+
+
+                    } 
+                    catch (Exception loginProblem)
+                    {
+                        loginProblem.printStackTrace();
+                        wrongPasswordErrorPopup.show();
+                        return;
+                    }
+
+                    // we have made it through the LS login, so the last error to check for is whether Ngrok is running properly
+
+                try {
+                    PlayerServer.startNgrok(token);
                     track1.play();
+                } catch (IOException ngrokStartupProblem) {
+                    ngrokErrorPopup.show();
+                    return;
+                }
+
+                if (!NetworkUtils.validateNgrok())
+                    {
+                        ngrokErrorPopup.show();
+                        return;
+                    }
+
             		remove(background_elvenroads);
                     MainFrame.mainPanel.add(new LobbyWindow(), "lobby");
                     MainFrame.cardLayout.show(MainFrame.mainPanel,"lobby");
-            	}
+            	// }
                 
             }
             
@@ -91,20 +205,33 @@ public class LoginWindow extends JPanel implements ActionListener {
         labelBox.add(createVerticalStrut(10)); // small separation between lines
         labelBox.add(passwordLabel);
         passwordLabel.setAlignmentX(LEFT_ALIGNMENT);
+        labelBox.add(createVerticalStrut(10));
+        labelBox.add(ngrok);
+        ngrok.setAlignmentX(LEFT_ALIGNMENT);
 
         textFieldBox.add(usernameTextField);
         textFieldBox.add(passwordTextField);
+        textFieldBox.add(ngrokTextField);
 
         boxPanel = Box.createHorizontalBox();
         boxPanel.add(labelBox);
         boxPanel.add(textFieldBox);
         boxPanel.add(loginButton);
-        infoPanel.add(boxPanel,BorderLayout.CENTER);
+        boxPanel.add(ngrokLogin);
+        boxPanel.add(ngrokSingup);
+        boxPanel.add(pasteClipboardButton);
+
+        test = Box.createVerticalBox();
+        test.add(pasteClipboardButton);
         
+        infoPanel.add(boxPanel,BorderLayout.CENTER);
+        infoPanel.add(test,BorderLayout.SOUTH);
+
         background_elvenroads.setLayout(layout);
         background_elvenroads.add(infoPanel,gbc);
 
         add(background_elvenroads);
+
     }
 
     @Override

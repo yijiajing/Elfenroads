@@ -21,6 +21,9 @@ public class LoadGameWindow extends JPanel implements ActionListener{
 
     LoadGameWindow(){
         MP3Player track1 = new MP3Player("./assets/Music/JLEX5AW-ui-medieval-click-heavy-positive-01.mp3");
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        setSize((int) screenSize.getWidth(), (int) screenSize.getHeight());
+
         gamesPanel = new JPanel(new BorderLayout());
         gamePanel = new JPanel(new BorderLayout());
         loadButton = new JButton("Load");
@@ -57,9 +60,7 @@ public class LoadGameWindow extends JPanel implements ActionListener{
 
         gamesPanel.add(gamePanel, BorderLayout.LINE_START);
 
-        ImageIcon background_image = 
-        new ImageIcon("./assets/sprites/elfenroads.jpeg");
-        background_elvenroads = new JLabel(background_image);
+        background_elvenroads = MainFrame.instance.getElfenroadsBackground();
         GridBagLayout layout = new GridBagLayout();
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;

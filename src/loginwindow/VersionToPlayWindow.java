@@ -1,5 +1,6 @@
 package loginwindow;
 
+import domain.GameManager;
 import networking.*;
 import panel.GameScreen;
 
@@ -7,6 +8,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.Optional;
 
 public class VersionToPlayWindow extends JPanel implements ActionListener{
     
@@ -28,9 +31,11 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
 
     VersionToPlayWindow(){
         MP3Player track1 = new MP3Player("./assets/Music/JLEX5AW-ui-medieval-click-heavy-positive-01.mp3");
-        ImageIcon background_image = 
-        new ImageIcon("./assets/sprites/elfenroads.jpeg");
-        background_elvenroads = new JLabel(background_image);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        setSize((int) screenSize.getWidth(), (int) screenSize.getHeight());
+
+        background_elvenroads = MainFrame.instance.getElfenroadsBackground();
+
         GridBagLayout layout = new GridBagLayout();
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -48,16 +53,7 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
         elfengoldText = new JLabel("Elfengold");
 
         classicGame1 = new JButton("Classic");
-        classicGame1.addActionListener(new ActionListener(){
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                track1.play();
-                remove(background_elvenroads);
-                // Main.setScreen(new GameScreen(Main.startFrame));
-            }
-            
-        });
+        
         longGame = new JButton("Long Game");
         destinationTown = new JButton("Destination Town");
 
@@ -65,8 +61,17 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
 
             @Override
             public void actionPerformed(ActionEvent e) {
+                GameSession session;
+
+                // TODO : add panel for user to input their game name and save game name
+                try {
+                    session = new GameSession(User.getInstance(), "testGame", "My Save Game Name");
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
                 track1.play();
-                MainFrame.cardLayout.show(MainFrame.mainPanel,"gameScreen");
+                MainFrame.mainPanel.add(new LobbyWindow(), "lobby");
+                MainFrame.cardLayout.show(MainFrame.mainPanel, "lobby");
             }
         });
 

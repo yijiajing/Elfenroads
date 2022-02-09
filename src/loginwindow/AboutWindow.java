@@ -24,9 +24,13 @@ public class AboutWindow extends JPanel {
     
     public AboutWindow(){
         MP3Player track1 = new MP3Player("./assets/Music/JLEX5AW-ui-medieval-click-heavy-positive-01.mp3");
-        ImageIcon background_image = 
-        new ImageIcon("./assets/sprites/elfenroads.jpeg");
-        background_elvenroads = new JLabel(background_image);
+        //ImageIcon background_image = 
+        //new ImageIcon("./assets/sprites/elfenroads.jpeg");
+        //background_elvenroads = new JLabel(background_image);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        setSize((int) screenSize.getWidth(), (int) screenSize.getHeight());
+
+        background_elvenroads = MainFrame.instance.getElfenroadsBackground();
 
         //Elfenland rules button
         elfenlandRulesButton = new JButton("Elfenland Rules");
