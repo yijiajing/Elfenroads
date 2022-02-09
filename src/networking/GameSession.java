@@ -1,6 +1,7 @@
 package networking;
 
 import org.json.JSONObject;
+import utils.NetworkUtils;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -26,8 +27,7 @@ public class GameSession {
         creator = pCreator;
         gameName = pGameName;
         saveGameName = pSaveGameName;
-        InetAddress ip = InetAddress.getLocalHost();
-        locationIP = ip.getHostAddress();
+        locationIP = NetworkUtils.ngrokAddrToPassToLS();
         createNewSession();
     }
 
@@ -285,15 +285,19 @@ public class GameSession {
 
     /**
      * @pre joiner must have role player
+     * @pre ngrok has been initialized and verified
      *
      * @param joiner
      */
-    public static void joinSession(User joiner, String sessionID, String joinerIP) throws IOException
+    public static void joinSession(User joiner, String sessionID) throws IOException
     {
         // we need to join this session with the chosen user, so we will
         String token = joiner.getAccessToken();
 
-        URL url = new URL("http://35.182.122.111:4242/api/sessions" + sessionID +"/players/" + joiner.getUsername() + "?location=" + joinerIP + "&access_token=" + token);
+        // get ip to pass
+        String ip = NetworkUtils.ngrokAddrToPassToLS();
+
+        URL url = new URL("http://35.182.122.111:4242/api/sessions" + sessionID +"/players/" + joiner.getUsername() + "?location=" + ip + "&access_token=" + token);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("PUT");
 
