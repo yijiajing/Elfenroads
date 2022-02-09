@@ -55,15 +55,12 @@ public class LobbyWindow extends JPanel implements ActionListener {
         available = new JLabel();
         available.setText("Available Sessions");
         sessions.add(available,BorderLayout.PAGE_START);
-        gameInfo= Box.createVerticalBox();
-        gameName = new JLabel("GAME NAME: Sample");
-        creator = new JLabel("CREATOR: John");
-        numPlayers = new JLabel("PLAYERS: 4");
-        gameInfo.add(gameName);
-        gameInfo.add(creator);
-        gameInfo.add(numPlayers);
-        gameInfo.add(gamesButton);
-        sessions.add(gameInfo,BorderLayout.LINE_START);
+
+        try{NetworkUtils.initializeGameInfo(sessions);}
+        catch(IOException gameProblem)
+        {
+            gameProblem.printStackTrace();
+        }
 
         createButton.addActionListener(new ActionListener(){
 
