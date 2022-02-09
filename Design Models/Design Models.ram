@@ -502,7 +502,6 @@
       <attributes xmi:id="_-9n4kIShEey9wdrZlqoRvQ" name="currentPhase" type="_apTElISZEeyXuZjYMpRsbg"/>
     </classes>
     <classes xsi:type="ram:Class" xmi:id="_ZvGQoISaEeyBG615ZLB12A" name="GameManager" visibility="public">
-      <operations xmi:id="_Zu9RQISbEeyBG615ZLB12A" name="passTurn" visibility="public" returnType="_apTEg4SZEeyXuZjYMpRsbg"/>
       <operations xmi:id="_JXRJwISeEey9wdrZlqoRvQ" name="chooseBoot" visibility="public" returnType="_apTEg4SZEeyXuZjYMpRsbg">
         <parameters xmi:id="_JXRJwYSeEey9wdrZlqoRvQ" name="c" type="_apTEjYSZEeyXuZjYMpRsbg"/>
         <parameters xmi:id="_JXRJwoSeEey9wdrZlqoRvQ" name="p" type="_RWVkAIScEeyBG615ZLB12A"/>
@@ -682,6 +681,13 @@
       <operations xmi:id="_iftm8IlWEeysGOmfX51fHg" name="getGameState" extendedVisibility="package" returnType="_Y97SYISaEeyBG615ZLB12A"/>
       <operations xmi:id="_ifu1EIlWEeysGOmfX51fHg" name="setGameState" extendedVisibility="package" returnType="_apTEhYSZEeyXuZjYMpRsbg">
         <parameters xmi:id="_ifu1EYlWEeysGOmfX51fHg" name="newObject" type="_Y97SYISaEeyBG615ZLB12A"/>
+      </operations>
+      <operations xmi:id="_AV0s4InMEeyo4Y-07QdG9A" name="passTurn" visibility="public" returnType="_apTEg4SZEeyXuZjYMpRsbg">
+        <parameters xmi:id="_AV0s4YnMEeyo4Y-07QdG9A" name="p" type="_RWVkAIScEeyBG615ZLB12A"/>
+      </operations>
+      <operations xmi:id="_REshIInQEeyo4Y-07QdG9A" name="chosenCounterToKeep" visibility="public" returnType="_apTEg4SZEeyXuZjYMpRsbg">
+        <parameters xmi:id="_REshIYnQEeyo4Y-07QdG9A" name="c" type="_1tRywISaEeyBG615ZLB12A"/>
+        <parameters xmi:id="_REshIonQEeyo4Y-07QdG9A" name="p" type="_RWVkAIScEeyBG615ZLB12A"/>
       </operations>
       <associationEnds xmi:id="_Wz0AgIlWEeysGOmfX51fHg" name="gameState" lowerBound="1" assoc="_Wz11sIlWEeysGOmfX51fHg" featureSelection="_ifrKsIlWEeysGOmfX51fHg"/>
     </classes>
@@ -973,19 +979,19 @@
         <value xmi:id="_DO4WkYSbEeyBG615ZLB12A" x="620.47845" y="882.8952"/>
       </value>
       <value xmi:id="_RWbDkIScEeyBG615ZLB12A" key="_RWVkAIScEeyBG615ZLB12A">
-        <value xmi:id="_RWbDkYScEeyBG615ZLB12A" x="275.71533" y="617.8361"/>
+        <value xmi:id="_RWbDkYScEeyBG615ZLB12A" x="748.37683" y="-317.87048"/>
       </value>
       <value xmi:id="_qo8JUISfEey9wdrZlqoRvQ" key="_qo5GAISfEey9wdrZlqoRvQ">
-        <value xmi:id="_qo8JUYSfEey9wdrZlqoRvQ" x="1039.0337" y="507.0"/>
+        <value xmi:id="_qo8JUYSfEey9wdrZlqoRvQ" x="1179.1902" y="514.0081"/>
       </value>
       <value xmi:id="_gudAsISgEey9wdrZlqoRvQ" key="_guXhIISgEey9wdrZlqoRvQ">
-        <value xmi:id="_gudAsYSgEey9wdrZlqoRvQ" x="-221.61325" y="763.0948"/>
+        <value xmi:id="_gudAsYSgEey9wdrZlqoRvQ" x="15.999516" y="737.0948"/>
       </value>
       <value xmi:id="_0jbxoIShEey9wdrZlqoRvQ" key="_0jYuUIShEey9wdrZlqoRvQ">
         <value xmi:id="_0jbxoYShEey9wdrZlqoRvQ" x="-693.48254" y="114.2776"/>
       </value>
       <value xmi:id="_cDolcISiEey9wdrZlqoRvQ" key="_cDjs8ISiEey9wdrZlqoRvQ">
-        <value xmi:id="_cDolcYSiEey9wdrZlqoRvQ" x="-251.60432" y="452.78"/>
+        <value xmi:id="_cDolcYSiEey9wdrZlqoRvQ" x="-44.57595" y="459.7881"/>
       </value>
       <value xmi:id="_ulkJAIlXEeysGOmfX51fHg" key="_ulhFsIlXEeysGOmfX51fHg">
         <value xmi:id="_ulkJAYlXEeysGOmfX51fHg" x="-693.48254" y="873.0096"/>
