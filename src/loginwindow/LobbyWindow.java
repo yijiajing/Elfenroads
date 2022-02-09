@@ -2,6 +2,7 @@ package loginwindow;
 
 import org.json.JSONObject;
 import networking.*;
+import utils.NetworkUtils;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -121,55 +122,15 @@ public class LobbyWindow extends JPanel implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                gameInfo.removeAll();
-                gameInfo.repaint();
-                gameInfo.revalidate();
-                JSONObject j = null;
                 try
                 {
-                    j = GameSession.getSessions();
-                }
-                catch (IOException e1)
-                {
-                    // TODO Auto-generated catch block
-                    e1.printStackTrace();
+                    NetworkUtils.initializeGameInfo(sessions, gameInfo, gamesButton);
                 }
 
-                String id = GameSession.getFirstSessionID(j);
-                JSONObject json = null;
-
-                try
-                {
-                    json = GameSession.getGameParameters(id);
-                }
                 catch (IOException e1)
                 {
-                    // TODO Auto-generated catch block
-                    e1.printStackTrace();
-                }
-                JSONObject json2 = null;
-                try
-                {
-                    json2 = GameSession.getSessionDetails(id);
-                }
-                catch (IOException e1)
-                {
-                    // TODO Auto-generated catch block
-                    e1.printStackTrace();
-                }
-                gameInfo.add(new JLabel("creator: " + json2.get("creator")));
-                gameInfo.add(new JLabel("MaxSessionPlayers: " + json.get("maxSessionPlayers")));
-                gameInfo.add(new JLabel("MinSessionPlayers: " + json.getDouble("minSessionPlayers")));
-                gameInfo.add(new JLabel("name: " + json.get("name")));
-                gameInfo.add(gamesButton);
-                gameInfo.repaint();
-                gameInfo.revalidate();
-                // TODO: get info about game
-                /* JSONObject allSessions = networking.GameSession.getSessions();
-                String firstSessionID = networking.GameSession.getFirstSessionID(allSessions);
-                JSONObject sessionDetails = networking.GameSession.getSessionDetails(firstSessionID);
-                 */
 
+                }
             }
         });
 

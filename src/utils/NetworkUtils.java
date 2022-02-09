@@ -2,6 +2,7 @@ package utils;
 
 import loginwindow.LoginWindow;
 import loginwindow.MainFrame;
+import networking.GameSession;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -11,6 +12,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
 public class NetworkUtils {
 
@@ -154,6 +156,58 @@ public class NetworkUtils {
         return out;
     }
 
+    // other UI-API crossover stuff
+
+    /**
+     * designed to be called inside the LobbyWindow to display game information
+     * can be called multiple times--it will clear the games displayed and reset every time
+     */
+    public static void initializeGameInfo(JPanel sessions, Box gameInfo, JButton gamesButton) throws IOException
+    {
+        // reset the UI
+        gameInfo.removeAll();
+        gameInfo.repaint();
+        gameInfo.revalidate();
+
+        // get a list of game sessions by ID
+        ArrayList<String> gameIDs = GameSession.getAllSessionID();
+
+        // iterate through the IDs and get info for each game & add it to the display
+        for (String id : gameIDs)
+        {
+            // get game info
+            JSONObject sessionDetails = GameSession.getSessionDetails(id);
+            JSONObject sessionParameters = sessionDetails.getJSONObject("gameParameters"); // TODO: make sure this method works, otherwise call regular get and cast to JSONObject manually instead
+
+            // separate the game info into pieces
+            String creator = sessionDetails.get("creator").toString();
+            String maxSessionPlayers = sessionParameters.get("maxSessionPlayers").toString();
+            String minSessionPlayers = sessionParameters.get("minSessionPlayers").toString();
+            String name = sessionParameters.get("name").toString();
+            // TODO: add support to display other players as well, and any other additional info that would be helpful to the user
+
+            // add the game info to labels
+            JLabel creatorLabel = new JLabel("creator: " + creator);
+            JLabel maxPlayersLabel = new JLabel("max session players: " + maxSessionPlayers);
+            JLabel minPlayersLabel = new JLabel("min session players: " + minSessionPlayers);
+            JLabel nameLabel = new JLabel("name: " + name);
+
+            // add the button and the labels to the box
+            gameInfo.add(creatorLabel);
+            gameInfo.add(maxPlayersLabel);
+            gameInfo.add(minPlayersLabel);
+            gameInfo.add(nameLabel);
+            gameInfo.add(gamesButton);
+
+            gameInfo.repaint();
+            gameInfo.revalidate();
+
+        }
+
+        gameInfo.repaint();
+        gameInfo.revalidate();
+
+    }
 
 
 

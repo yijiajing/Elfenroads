@@ -165,11 +165,10 @@ public class GameSession {
         return parameters;
     }
 
-    public static String getFirstSessionID(JSONObject resultsOfGetSessions)
+    public static String getFirstSessionID() throws IOException
     {
+        JSONObject resultsOfGetSessions = getSessions();
         Set keys = resultsOfGetSessions.keySet();
-
-        int counter = 0;
 
         for(Object key : keys)
         {
@@ -185,6 +184,35 @@ public class GameSession {
 
         }
         return "000000000000";
+    }
+
+    /**
+     * very similar to the above, but gets a list of session IDs instead of just one
+     * @return
+     */
+    public static ArrayList<String> getAllSessionID() throws IOException
+    {
+        JSONObject resultsOfGetSessions = getSessions();
+        ArrayList<String> ids = new ArrayList<String>();
+
+        Set keys = resultsOfGetSessions.keySet();
+
+        for(Object key : keys)
+        {
+            String keyString = key.toString();
+            JSONObject nested = new JSONObject (resultsOfGetSessions.get(keyString).toString());
+
+            Set nestedKeys = nested.keySet();
+
+            for (Object nestedKey : nestedKeys)
+            {
+                ids.add(nested.toString());
+            }
+
+        }
+        return ids;
+
+
     }
 
     public static JSONObject getSessions() throws IOException
