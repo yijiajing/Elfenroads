@@ -150,19 +150,6 @@ public class NetworkUtils {
 
     }
 
-    // DNS lookup for ngrok address
-    // we need to do this in order to pass the address to the LS
-    // code based on that found at http://github.com/DoctorLai/DNSLookup
-
-    public static String dnsLookupNgrok() throws IOException
-    {
-        String [] info = tokenizeNgrokAddr();
-        String dns = info [0];
-
-        InetAddress ip = InetAddress.getByName(dns);
-        return ip.getHostAddress();
-    }
-
     // Popups for network-related errors
 
     public static Popup initializeNgrokErrorPopup(LoginWindow loginScreen)

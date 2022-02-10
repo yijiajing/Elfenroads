@@ -90,6 +90,15 @@ public class User {
      * @throws IOException
      */
 
+    /**
+     * I wrote this for testing so I could use multiple users consecutively
+     * Delete if causing problems
+     */
+    public static void resetUser()
+    {
+        instance = null;
+    }
+
     // TODO: removed hardcoded color and allow the user to decide?
     public static User createNewUser(String newUsername, String newPassword, Role newRole) throws Exception
     {

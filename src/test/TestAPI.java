@@ -22,25 +22,23 @@ public class TestAPI {
         // System.out.println(NetworkUtils.getServerInfo());
         // System.out.println(GameSession.getAllSessionID());
 
+
         User alex = User.init("alex", "abc123_ABC123");
         GameSession sesh = new GameSession(alex, "testGame", "saveGameName1");
         GameSession sesh2 = new GameSession(alex, "testGame", "saveGame2");
+        User.resetUser();
 
         //System.out.println(NetworkUtils.dnsLookupNgrok());
 
-        String ngrokdns = (NetworkUtils.tokenizeNgrokAddr()[0]);
-        String dnsTrim = ngrokdns.trim();
-        System.out.println("THE ADDRESS WE ARE LOOKING UP IS: " + dnsTrim);
-        DNSLookup.getAdd(NetworkUtils.ngrokAddrToPassToLS());
 
-        /* User nick = User.init("nick", "abc123_ABC123");
+        User nick = User.init("nick", "abc123_ABC123");
 
         for (String id : GameSession.getAllSessionID())
         {
             GameSession.joinSession(nick, id);
         }
 
-        */
+
 
         System.out.println(GameSession.getSessions());
 
