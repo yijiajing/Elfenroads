@@ -1,6 +1,7 @@
 package networking;
 
 import org.json.JSONObject;
+import utils.NetworkUtils;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -26,8 +27,7 @@ public class GameSession {
         creator = pCreator;
         gameName = pGameName;
         saveGameName = pSaveGameName;
-        InetAddress ip = InetAddress.getLocalHost();
-        locationIP = ip.getHostAddress();
+        locationIP = NetworkUtils.ngrokAddrToPassToLS();
         createNewSession();
     }
 
@@ -165,11 +165,10 @@ public class GameSession {
         return parameters;
     }
 
-    public static String getFirstSessionID(JSONObject resultsOfGetSessions)
+    public static String getFirstSessionID() throws IOException
     {
+        JSONObject resultsOfGetSessions = getSessions();
         Set keys = resultsOfGetSessions.keySet();
-
-        int counter = 0;
 
         for(Object key : keys)
         {
@@ -187,28 +186,25 @@ public class GameSession {
         return "000000000000";
     }
 
-    // not sure if this does the right thing, was just copying the method above
-    // so that I could show all sessions in the LobbyWindow - Chloe
-    public static ArrayList<String> getAllSessionIDs(JSONObject resultsOfGetSessions) {
-
-        ArrayList<String> sessionIDs = new ArrayList<>();
+    /**
+     * very similar to the above, but gets a list of session IDs instead of just one
+     * @return
+     */
+    public static ArrayList<String> getAllSessionID() throws IOException
+    {
+        JSONObject resultsOfGetSessions = getSessions();
 
         Set keys = resultsOfGetSessions.keySet();
 
-        for (Object key : keys) {
-            String keyString = key.toString();
-            JSONObject nested = new JSONObject (resultsOfGetSessions.get(keyString).toString());
-            Set nestedKeys = nested.keySet();
+        // the top-level key in the response is just "sessions"
+        // the second-level is the IDs
 
-            // this could be cleaner, for loop probably not necessary
-            for (Object nestedKey : nestedKeys)
-            {
-                sessionIDs.add(nestedKey.toString());
-                break;
-            }
-        }
+        JSONObject sessions = resultsOfGetSessions.getJSONObject("sessions");
+        Set idSet = sessions.keySet();
+        ArrayList<String> ids = new ArrayList<String>(idSet);
+        return ids;
 
-        return sessionIDs;
+
     }
 
     public static JSONObject getSessions() throws IOException
@@ -227,7 +223,7 @@ public class GameSession {
         in.close();
         con.disconnect();
         System.out.println("Response status: " + status);
-        System.out.println(content.toString());
+        // System.out.println(content.toString());
 
         JSONObject response = new JSONObject(content.toString());
 
@@ -309,15 +305,19 @@ public class GameSession {
 
     /**
      * @pre joiner must have role player
+     * @pre ngrok has been initialized and verified
      *
      * @param joiner
      */
-    public static void joinSession(User joiner, String sessionID, String joinerIP) throws IOException
+    public static void joinSession(User joiner, String sessionID) throws IOException
     {
         // we need to join this session with the chosen user, so we will
         String token = joiner.getAccessToken();
 
-        URL url = new URL("http://35.182.122.111:4242/api/sessions" + sessionID +"/players/" + joiner.getUsername() + "?location=" + joinerIP + "&access_token=" + token);
+        // get ip to pass
+        String ip = NetworkUtils.ngrokAddrToPassToLS();
+
+        URL url = new URL("http://35.182.122.111:4242/api/sessions" + sessionID +"/players/" + joiner.getUsername() + "?location=" + ip + "&access_token=" + token);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("PUT");
 
@@ -332,6 +332,8 @@ public class GameSession {
         con.disconnect();
         System.out.println("Response status: " + status);
         System.out.println(content.toString());
+
+
 
     }
 }
