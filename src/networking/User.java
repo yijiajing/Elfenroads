@@ -90,6 +90,7 @@ public class User {
      * @throws IOException
      */
 
+    // TODO: removed hardcoded color and allow the user to decide?
     public static User createNewUser(String newUsername, String newPassword, Role newRole) throws Exception
     {
 
