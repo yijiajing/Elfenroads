@@ -26,12 +26,15 @@ public class TestAPI {
         User alex = User.init("alex", "abc123_ABC123");
         GameSession sesh = new GameSession(alex, "testGame", "saveGameName1");
         GameSession sesh2 = new GameSession(alex, "testGame", "saveGame2");
+        System.out.println("Alex IP is: " + NetworkUtils.ngrokAddrToPassToLS());
         User.resetUser();
 
         //System.out.println(NetworkUtils.dnsLookupNgrok());
 
 
         User nick = User.init("nick", "abc123_ABC123");
+
+        System.out.println("Nick's IP is: " + NetworkUtils.ngrokAddrToPassToLS());
 
         for (String id : GameSession.getAllSessionID())
         {

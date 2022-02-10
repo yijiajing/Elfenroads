@@ -28,6 +28,13 @@ public class PlayerServer
 
     public void start(int port)
     {
+        try {
+            System.out.println("Address this time around: " + NetworkUtils.ngrokAddrToPassToLS());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
         try
         { 
             // Open ServerSocket and set the message for the other incomming connections
