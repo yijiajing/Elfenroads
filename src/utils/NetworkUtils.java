@@ -12,7 +12,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.InetAddress;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 public class NetworkUtils {
@@ -116,14 +118,38 @@ public class NetworkUtils {
         return results;
     }
 
+    // DNS lookup part based on code from https://github.com/DoctorLai/DNSLookup
     public static String ngrokAddrToPassToLS() throws IOException
     {
         String [] info = tokenizeNgrokAddr();
-        String ip = info[0];
+        String dns = info[0];
         String port = info[1];
+
+        // String full = dns + ":" + port;
+
+        // at this stage, the IP is not fit for input into the LS.
+        // we need to perform a DNS lookup to get a valid IP address.
+
+        String ip;
+
+        try
+        {
+            InetAddress add;
+            add = InetAddress.getByName(dns);
+            ip = add.getHostAddress();
+        }
+
+        catch (UnknownHostException e)
+        {
+            System.out.println("Failed to get the address!");
+            e.printStackTrace();
+            return null;
+        }
+
         return ip + ":" + port;
 
     }
+
 
     // Popups for network-related errors
 

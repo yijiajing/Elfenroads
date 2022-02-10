@@ -32,11 +32,13 @@ public class MainFrame extends JFrame
         add(mainPanel);
         setVisible(true);
 
-        // make the frame full screen
+        /* // make the frame full screen-- commented out because it seems really slow
         GraphicsEnvironment graphics = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsDevice screen = graphics.getDefaultScreenDevice();
 
         screen.setFullScreenWindow(this);
+
+         */
 
     }
 
