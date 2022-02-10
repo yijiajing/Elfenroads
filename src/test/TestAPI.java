@@ -25,20 +25,19 @@ public class TestAPI {
         GameSession sesh = new GameSession(alex, "testGame", "saveGameName1");
         GameSession sesh2 = new GameSession(alex, "testGame", "saveGame2");
 
-        User nick = User.init("nick", "abc123_ABC123");
+
+
+
+        /* User nick = User.init("nick", "abc123_ABC123");
 
         for (String id : GameSession.getAllSessionID())
         {
             GameSession.joinSession(nick, id);
         }
 
+        */
 
-
-        /* User admin = new User("maex", "abc123_ABC123");
-        String token = admin.getAccessToken().toString();
-        System.out.println(token);
-
-         */
+        System.out.println(GameSession.getSessions());
 
 
     }
