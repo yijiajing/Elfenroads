@@ -1,5 +1,6 @@
 package test;
 
+import networking.DNSLookup;
 import networking.GameService;
 import networking.GameSession;
 import networking.User;
@@ -25,8 +26,12 @@ public class TestAPI {
         GameSession sesh = new GameSession(alex, "testGame", "saveGameName1");
         GameSession sesh2 = new GameSession(alex, "testGame", "saveGame2");
 
+        //System.out.println(NetworkUtils.dnsLookupNgrok());
 
-
+        String ngrokdns = (NetworkUtils.tokenizeNgrokAddr()[0]);
+        String dnsTrim = ngrokdns.trim();
+        System.out.println("THE ADDRESS WE ARE LOOKING UP IS: " + dnsTrim);
+        DNSLookup.getAdd(NetworkUtils.ngrokAddrToPassToLS());
 
         /* User nick = User.init("nick", "abc123_ABC123");
 

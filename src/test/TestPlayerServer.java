@@ -26,6 +26,13 @@ public class TestPlayerServer
             System.out.println(entry);
         }
 
+
+        for (int i = 0; i < 1000000000; i++)
+        {
+            PlayerServer server = new PlayerServer(1);
+            server.setMessage("It worked from the Server!! " + "You are now connected");
+            server.start(6666);
+        }
         PlayerServer server = new PlayerServer(1);
         server.setMessage("It worked from the Server!! " + "You are now connected");
         server.start(6666);

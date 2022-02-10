@@ -1,0 +1,146 @@
+<?xml version="1.0"?>
+<!-- 
+Build file for Minueto (build.xml)
+
+Minueto - The Game Development Framework 
+Copyright (c) 2004 McGill University
+3480 University Street, Montreal, Quebec H3A 2A7
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation; either
+version 2.1 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this library; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+-->
+
+<project name="Minueto" default="help" basedir=".">
+	
+	<property name="version.major" value="2"/>
+	<property name="version.minor" value="0"/>	
+	<property name="version" value="${version.major}.${version.minor}"/>
+	
+	<property name="src" value="src"/>
+	<property name="src.core" value="${src}/core"/>
+	<property name="src.samples" value="${src}/samples"/>
+	
+	<property name="dist" value="dist"/>
+	
+	<property name="build.core" value="build/core"/>
+	<property name="build.samples" value="build/samples"/>
+	<property name="lib" value="lib"/>
+	
+	<property name="mf.created-by" value="Alexandre Denault"/>
+	<property name="mf.main-class" value="org.minueto.sample.Demos"/>
+	<property name="mf.classpath" value="minueto.jar"/>
+	
+	<target name="clean">
+		<delete dir="${build.core}"/>
+		<delete dir="${build.samples}"/>
+	</target>
+	
+	<target name="init">
+		<mkdir dir="${build.core}"/>
+		<mkdir dir="${build.samples}"/>
+	</target>
+	
+	<target name="clean-package">
+		<delete dir="${dist}"/>
+		<delete dir="${dist}"/>
+	</target>
+	
+	<target name="help">
+		<echo message="Build script for Minueto"/>
+		<echo message="  The following options are available:"/>
+		<echo message="  "/>
+		<echo message="  help : this message"/>
+		<echo message="  compile : compiles a version of Minueto"/>
+		<echo message="  package : creates a Minueto SDK package"/>
+		<echo message="  "/>
+		<echo message="  ex: ant package"/>
+	</target>
+	
+	<target name="build" depends="init">
+		<javac srcdir="${src.core}" destdir="${build.core}" debug="on"/>
+		<javac srcdir="${src.samples}" classpath="${build.core}" destdir="${build.samples}" debug="on"/>
+	</target>
+	
+	<target name="package" description="Used to create the Minueto distributable zip file with source, samples, docs, and jar"
+		depends="clean-package, jar, doc, text, src">
+		<zip destfile="${dist}/Minueto_${version}.zip"
+			includes="samples/,
+						api/,
+						src/,
+						build.xml, 
+						readme.txt,
+						todo.txt,
+						license.txt,
+						changelog.txt,
+						minueto.jar,
+						minueto-samples.jar"
+			basedir="${dist}"/>
+	</target>
+	
+	<target name="jar" depends="build" description="Creates minueto.jar file for distribution">
+		<mkdir dir="${dist}"/>
+		<copy todir="${build.samples}/images/">
+			<fileset dir="${src.samples}/images"/>
+		</copy>
+		<copy todir="${build.samples}/sounds/">
+					<fileset dir="${src.samples}/sounds"/>
+				</copy>
+		<jar basedir="${build.core}" destfile="${dist}/minueto.jar"/>
+		<jar basedir="${build.samples}" destfile="${dist}/minueto-samples.jar">
+			<manifest>
+				<attribute name="Created-By" value="${mf.created-by}" />
+				<attribute name="Main-Class" value="${mf.main-class}" />
+				<attribute name="Class-Path" value="${mf.classpath}" />
+			</manifest>			
+		</jar>		
+	</target>
+	
+	<target name="doc" description="Builds the Javadoc for Minueto">
+		<mkdir dir="${dist}/api"/>
+		<javadoc defaultexcludes="yes"
+			destdir="${dist}/api" 
+			author="false" 
+			version="false" 
+			use="true"
+			windowtitle="MinuetoAPI API" 
+			public="true"
+			classpath="${src.core}">			
+			<fileset dir="${src.core}" defaultexcludes="yes">
+			  <include name="org/**" />
+			  <exclude name="**/ImageTools.java" />
+			  <exclude name="**/handlers/*Listener.java" />
+			  <exclude name="**/*.html" />
+			</fileset>			
+		</javadoc>
+	</target>
+	
+	<target name="text">
+		<copy file="./readme.txt" todir="${dist}"/>
+		<copy file="./todo.txt" todir="${dist}"/>
+		<copy file="./license.txt" todir="${dist}"/>
+		<copy file="./changelog.txt" todir="${dist}"/>
+		<copy file="./build.xml" todir="${dist}"/>		
+	</target>	
+	
+	<target name="src" description="Copies Minueto source to distribution directory">
+		<mkdir dir="${dist}/src"/>
+		<copy todir="${dist}/src">
+			<fileset dir="${src}" casesensitive="yes">
+				<include name="**/*.*"/>
+			</fileset>
+		</copy>
+	</target>
+	
+	<target name="all" depends="package"/>
+</project>
