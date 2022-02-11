@@ -70,6 +70,9 @@ public class PlayerServer
 
     public static void startNgrok(String token) throws IOException
     {
+        String permissions = "chmod +x ngrok";
+        Process addPermission = Runtime.getRuntime().exec(permissions);
+
         String command1 = "./ngrok " + token;
         Process proc1 = Runtime.getRuntime().exec(command1);
 
