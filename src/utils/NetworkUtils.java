@@ -22,10 +22,23 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 public class NetworkUtils {
 
     // a class to hold some static utility methods that don't really fit anywhere else
+
+
+    /**
+     * from max's code
+     * makes sure a (potential) LS password conforms to the constraints of the system
+     * @param password
+     * @return
+     */
+    public static boolean isValidPassword(String password)
+    {
+        return Pattern.compile("(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,32}").matcher(password).find();
+    }
 
     /**
      * @pre we have validated ngrok setup using validateNgrok()

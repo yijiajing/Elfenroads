@@ -159,7 +159,7 @@ public class LoginWindow extends JPanel {
             	{
 					e1.printStackTrace();
 				}
-            	boolean p = User.isValidPassword(password);
+            	boolean p = NetworkUtils.isValidPassword(password);
             	// if (u && p)
             	// {
                     try 
@@ -229,7 +229,7 @@ public class LoginWindow extends JPanel {
                 {
                     e1.printStackTrace();
                 }
-                boolean p = User.isValidPassword(password);
+                boolean p = NetworkUtils.isValidPassword(password);
                 // if (u && p)
                 // {
                 try

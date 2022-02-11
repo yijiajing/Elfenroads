@@ -1,6 +1,7 @@
 package networking;
 
 import org.json.*;
+import utils.NetworkUtils;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -105,7 +106,7 @@ public class User {
 
         // check to make sure that password is acceptable by LS
         // throw an exception with method if it is not
-        if (!isValidPassword(newPassword)) // calls the method we took from Max's code
+        if (!NetworkUtils.isValidPassword(newPassword)) // calls the method we took from Max's code
         {
             throw new Exception("This password does not fit the LS criteria. Please try a different password.");
         }
@@ -323,12 +324,6 @@ public class User {
         }
 
        return false;
-    }
-    
-    // from Max's code
-    public static boolean isValidPassword(String password)
-    {
-    	return Pattern.compile("(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,32}").matcher(password).find();
     }
 
     public static List<JSONObject> getAllUsers(String adminToken) throws IOException
