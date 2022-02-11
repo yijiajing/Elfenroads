@@ -1,7 +1,11 @@
 package loginwindow;
 
+import networking.User;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import static javax.swing.Box.createVerticalStrut;
 
@@ -26,7 +30,6 @@ public class CreateAccountWindow extends JPanel {
     private static JLabel confirmPasswordLabel;
 
     // buttons
-    private static JButton createAccountButton;
     private static JButton createAccountAndLoginButton;
     private static JButton backButton;
 
@@ -64,8 +67,8 @@ public class CreateAccountWindow extends JPanel {
         passwordLabel.setText("Choose a password. If you see this message it means Nick forgot to write what the constraints are.");
         confirmPasswordLabel.setText("Confirm your password:");
 
-        createAccountButton = new JButton("Create account");
         createAccountAndLoginButton = new JButton("Create account and log into the LS");
+        backButton = new JButton(("Back to login"));
 
         // add the stuff to the layout
         labelBox.add(usernameLabel);
@@ -84,8 +87,8 @@ public class CreateAccountWindow extends JPanel {
         boxPanel = Box.createHorizontalBox();
         boxPanel.add(labelBox);
         boxPanel.add(textFieldBox);
-        boxPanel.add(createAccountButton);
         boxPanel.add(createAccountAndLoginButton);
+        boxPanel.add(backButton);
 
         infoPanel.add(boxPanel, BorderLayout.CENTER);
 
@@ -93,6 +96,69 @@ public class CreateAccountWindow extends JPanel {
         background.add(infoPanel, constraints);
 
         add(background);
+
+
+        passwordTextField.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                // creates an account and takes the user to the game lobby
+                // TODO: validate the password before making any API calls
+
+                // register the account at the LS
+                String username = usernameTextField.getText();
+                String password = passwordTextField.getText();
+
+                // TODO: allow the user to pick his role?
+                try {
+                    User.registerNewUser(username, password, User.Role.PLAYER);
+                    MainFrame.loggedIn = User.init(username, password);
+                    MainFrame.mainPanel.add(new LobbyWindow(), "lobby");
+                    MainFrame.cardLayout.show(MainFrame.mainPanel,"lobby");
+                } catch (Exception ex) {
+                    System.out.print("Error: there was a problem creating a user. Please try again.");
+                    ex.printStackTrace();
+                    return;
+                }
+
+            }
+        });
+
+
+        createAccountAndLoginButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // creates an account and takes the user to the game lobby
+                // TODO: validate the password before making any API calls
+
+                // register the account at the LS
+                String username = usernameTextField.getText();
+                String password = passwordTextField.getText();
+
+                // TODO: allow the user to pick his role?
+                try {
+                    User.registerNewUser(username, password, User.Role.PLAYER);
+                    MainFrame.loggedIn = User.init(username, password);
+                    MainFrame.mainPanel.add(new LobbyWindow(), "lobby");
+                    MainFrame.cardLayout.show(MainFrame.mainPanel,"lobby");
+                } catch (Exception ex) {
+                    System.out.print("Error: there was a problem creating a user. Please try again.");
+                    ex.printStackTrace();
+                    return;
+                }
+            }
+        });
+
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MainFrame.cardLayout.show(MainFrame.mainPanel, "login");
+            }
+        });
+
+
+
+
 
     }
 
