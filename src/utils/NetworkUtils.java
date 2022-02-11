@@ -8,6 +8,8 @@ import org.json.JSONObject;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -220,7 +222,19 @@ public class NetworkUtils {
             JLabel nameLabel = new JLabel("name: " + name);
             // initialize join button
             JButton joinButton = new JButton("JOIN");
-            // TODO: intialize an actionListener in the button
+
+            joinButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    // join the game
+                    try {
+                        GameSession.joinSession(MainFrame.loggedIn, id);
+                    } catch (Exception ex) {
+                        System.out.println("There was a problem attempting to join the session with User" + MainFrame.loggedIn.getUsername());
+                        ex.printStackTrace();
+                    }
+                }
+            });
 
             // initialize the box
             Box gameInfo = Box.createVerticalBox();

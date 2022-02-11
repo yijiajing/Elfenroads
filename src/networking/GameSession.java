@@ -245,9 +245,15 @@ public class GameSession {
      *
      * @param joiner
      */
-    public static void joinSession(User joiner, String sessionID) throws IOException
+    public static void joinSession(User joiner, String sessionID) throws Exception
     {
-        // we need to join this session with the chosen user, so we will
+
+        if (!joiner.getRole().equals(User.Role.PLAYER))
+        {
+            throw new Exception ("Only players can join games.");
+        }
+
+
         String token = joiner.getAccessToken();
 
         // get ip to pass
