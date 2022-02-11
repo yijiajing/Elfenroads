@@ -3,6 +3,7 @@ package panel;
 import domain.Town;
 import domain.TownPiece;
 import loginwindow.MainFrame;
+import networking.ActionManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -36,8 +37,13 @@ public class TownPanel extends JPanel implements ObserverPanel {
         this.setOpaque(false);
         this.setBorder(BorderFactory.createLineBorder(Color.WHITE));
 
-        this.addMouseListener(new ElfBootController(gameScreen, this));
-
+        this.addMouseListener(new ElfBootController(gameScreen, this)); //TODO: refactor/remove ElfBootController
+        this.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                ActionManager.getInstance().setSelectedTown(TownPanel.this.town);
+            }
+        });
         drawTownPieces();
 
         gameScreen.addObserverPanel(this);

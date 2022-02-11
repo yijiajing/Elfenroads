@@ -2,7 +2,10 @@ package domain;
 
 import enums.CounterType;
 import enums.RegionType;
+import networking.ActionManager;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Objects;
 
 public class TransportationCounter extends CounterUnit implements Comparable<TransportationCounter> {
@@ -17,8 +20,18 @@ public class TransportationCounter extends CounterUnit implements Comparable<Tra
     {
         super(resizeWidth, resizeHeight, pType.ordinal() + 1); // since the images start from M01, not M00
         this.type = pType;
+        this.getDisplay().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (getPlacedOn() == null) {
+                    ActionManager.getInstance().setSelectedCounter(TransportationCounter.this);
+                } else {
+                    // If the counter is placed on a road, then the user's intention is to click on the road
+                    ActionManager.getInstance().setSelectedRoad(getPlacedOn());
+                }
+            }
+        });
     }
-
 
     public CounterType getType() {return this.type;}
 

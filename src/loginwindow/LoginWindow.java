@@ -134,9 +134,12 @@ public class LoginWindow extends JPanel implements ActionListener {
             public void actionPerformed(ActionEvent e) 
             {
                 
-            	String username = usernameTextField.getText();
-            	String password = passwordTextField.getText();
-                String token = ngrokTextField.getText();
+//            	String username = usernameTextField.getText();
+//            	String password = passwordTextField.getText();
+//                String token = ngrokTextField.getText();
+                String username = "maex";
+                String password = "abc123_ABC123";
+                String token = "24tPIsoQJZYgdwB6QYLiQtYMhrc_4pYokqaUZXa95qB5ikAx8";
             	boolean u = false;
             	try 
             	{

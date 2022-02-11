@@ -33,7 +33,7 @@ public class GameManager {
         // start a new game if there is no state to be loaded
         if (!loadedState.isPresent() && sessionID.isPresent()) {
             gameState = GameState.init(GameScreen.getInstance());
-            actionManager = new ActionManager(gameState);
+            actionManager = ActionManager.init(gameState);
 
             // TODO: delete this - need to add players to gameState based on users in gameSession
             gameState.setDummyPlayers();
