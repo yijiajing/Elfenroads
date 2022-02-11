@@ -36,6 +36,7 @@ public class LoginWindow extends JPanel implements ActionListener {
     private static JButton ngrokLogin;
     private static JButton ngrokSingup;
     private static JButton pasteClipboardButton;
+    private static JButton createNewAccountButton;
 
     private static Popup invalidCredentialsPopup;
     private static Popup ngrokErrorPopup;
@@ -75,6 +76,7 @@ public class LoginWindow extends JPanel implements ActionListener {
         loginButton = new JButton("Enter");
         ngrokLogin = new JButton("ngrok LOGIN");
         ngrokSingup = new JButton("ngrok SIGNUP");
+        createNewAccountButton = new JButton("Create a new account");
         pasteClipboardButton = new JButton("Paste ngrok token");
 
         // add popups to be displayed later
@@ -88,6 +90,15 @@ public class LoginWindow extends JPanel implements ActionListener {
             public void actionPerformed(ActionEvent e) 
             {
                 ngrokTextField.paste();
+            }
+        });
+
+        createNewAccountButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // open a new createNewAccount window
+                MainFrame.mainPanel.add(new CreateAccountWindow(), "createAccount");
+                MainFrame.cardLayout.show(MainFrame.mainPanel, "createAccount");
             }
         });
 
@@ -290,6 +301,7 @@ public class LoginWindow extends JPanel implements ActionListener {
         boxPanel.add(ngrokLogin);
         boxPanel.add(ngrokSingup);
         boxPanel.add(pasteClipboardButton);
+        boxPanel.add(createNewAccountButton);
 
         test = Box.createVerticalBox();
         test.add(pasteClipboardButton);

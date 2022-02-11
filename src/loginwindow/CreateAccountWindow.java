@@ -3,6 +3,8 @@ package loginwindow;
 import javax.swing.*;
 import java.awt.*;
 
+import static javax.swing.Box.createVerticalStrut;
+
 // designed to create an account in the LS
 public class CreateAccountWindow extends JPanel {
 
@@ -68,8 +70,10 @@ public class CreateAccountWindow extends JPanel {
         // add the stuff to the layout
         labelBox.add(usernameLabel);
         usernameLabel.setAlignmentX(LEFT_ALIGNMENT);
+        labelBox.add(createVerticalStrut(10));
         labelBox.add(passwordLabel);
         passwordLabel.setAlignmentX(LEFT_ALIGNMENT);
+        labelBox.add(createVerticalStrut(10));
         labelBox.add(confirmPasswordLabel);
         confirmPasswordLabel.setAlignmentX(LEFT_ALIGNMENT);
 
@@ -82,6 +86,8 @@ public class CreateAccountWindow extends JPanel {
         boxPanel.add(textFieldBox);
         boxPanel.add(createAccountButton);
         boxPanel.add(createAccountAndLoginButton);
+
+        infoPanel.add(boxPanel, BorderLayout.CENTER);
 
         background.setLayout(layout);
         background.add(infoPanel, constraints);
