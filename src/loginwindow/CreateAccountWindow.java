@@ -1,6 +1,7 @@
 package loginwindow;
 
 import networking.User;
+import utils.NetworkUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -102,12 +103,40 @@ public class CreateAccountWindow extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                // creates an account and takes the user to the game lobby
-                // TODO: validate the password before making any API calls
+                // creates an account, logs in, and takes the user to the game lobby
 
                 // register the account at the LS
                 String username = usernameTextField.getText();
                 String password = passwordTextField.getText();
+                String confirmPw = confirmPasswordTextField.getText();
+
+                boolean alreadyUser = false;
+
+                try {
+                    alreadyUser = User.doesUsernameExist(username);
+                } catch (Exception ex) {
+                    System.out.println("There was an error while checking whether the user already exists.");
+                    ex.printStackTrace();
+                    return;
+                }
+
+                if (alreadyUser)
+                {
+                    System.out.println("A user with the chosen username already exists in the LS.");
+                    return;
+                }
+
+                else if (!NetworkUtils.isValidPassword(password))
+                {
+                    System.out.println("The password you chose is not valid! Please try again.");
+                    return;
+                }
+
+                else if (!confirmPw.equals(password))
+                {
+                    System.out.println("Your password and confirmation must match. Please try again.");
+                    return;
+                }
 
                 // TODO: allow the user to pick his role?
                 try {
@@ -129,11 +158,38 @@ public class CreateAccountWindow extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // creates an account and takes the user to the game lobby
-                // TODO: validate the password before making any API calls
 
-                // register the account at the LS
                 String username = usernameTextField.getText();
                 String password = passwordTextField.getText();
+                String confirmPw = confirmPasswordTextField.getText();
+
+                boolean alreadyUser = false;
+
+                try {
+                    alreadyUser = User.doesUsernameExist(username);
+                } catch (Exception ex) {
+                    System.out.println("There was an error while checking whether the user already exists.");
+                    ex.printStackTrace();
+                    return;
+                }
+
+                if (alreadyUser)
+                {
+                    System.out.println("A user with the chosen username already exists in the LS.");
+                    return;
+                }
+
+                else if (!NetworkUtils.isValidPassword(password))
+                {
+                    System.out.println("The password you chose is not valid! Please try again.");
+                    return;
+                }
+
+                else if (!confirmPw.equals(password))
+                {
+                    System.out.println("Your password and confirmation must match. Please try again.");
+                    return;
+                }
 
                 // TODO: allow the user to pick his role?
                 try {
