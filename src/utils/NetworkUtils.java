@@ -1,19 +1,27 @@
 package utils;
 
+import domain.GameManager;
 import loginwindow.LoginWindow;
 import loginwindow.MainFrame;
 import networking.GameSession;
+import networking.GameState;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import panel.GameScreen;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.InetAddress;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class NetworkUtils {
 
@@ -116,11 +124,34 @@ public class NetworkUtils {
         return results;
     }
 
+    // DNS lookup part based on code from https://github.com/DoctorLai/DNSLookup
     public static String ngrokAddrToPassToLS() throws IOException
     {
         String [] info = tokenizeNgrokAddr();
-        String ip = info[0];
+        String dns = info[0];
         String port = info[1];
+
+        // String full = dns + ":" + port;
+
+        // at this stage, the IP is not fit for input into the LS.
+        // we need to perform a DNS lookup to get a valid IP address.
+
+        String ip;
+
+        try
+        {
+            InetAddress add;
+            add = InetAddress.getByName(dns);
+            ip = add.getHostAddress();
+        }
+
+        catch (UnknownHostException e)
+        {
+            System.out.println("Failed to get the address!");
+            e.printStackTrace();
+            return null;
+        }
+
         return ip + ":" + port;
 
     }
@@ -195,7 +226,33 @@ public class NetworkUtils {
             JLabel nameLabel = new JLabel("name: " + name);
             // initialize join button
             JButton joinButton = new JButton("JOIN");
-            // TODO: intialize an actionListener in the button
+            JButton startButton = new JButton("START");
+
+            joinButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    // join the game
+                    try {
+                        GameSession.joinSession(MainFrame.loggedIn, id);
+                    } catch (Exception ex) {
+                        System.out.println("There was a problem attempting to join the session with User" + MainFrame.loggedIn.getUsername());
+                        ex.printStackTrace();
+                        return;
+                    }
+                }
+            });
+
+            startButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    GameState state = GameState.init(GameScreen.init(MainFrame.getInstance()));
+                    GameManager.init(Optional.empty(), Optional.of(id));
+                }
+            });
+
+
+
+
 
             // initialize the box
             Box gameInfo = Box.createVerticalBox();
@@ -206,6 +263,7 @@ public class NetworkUtils {
             gameInfo.add(minPlayersLabel);
             gameInfo.add(nameLabel);
             gameInfo.add(joinButton);
+            gameInfo.add(startButton);
 
             // add the box to the sessions panel
             // sessions.add(gameInfo);

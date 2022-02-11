@@ -230,70 +230,6 @@ public class GameSession {
         return response;
     }
 
-    /*
-    public static List<JSONObject> getSessions() throws IOException
-    {
-    	URL url = new URL("http://127.0.0.1:4242/api/gameservices");
-    	HttpURLConnection con = (HttpURLConnection) url.openConnection();
-    	con.setRequestMethod("GET");
-
-    	int status = con.getResponseCode();
-    	BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-    	String inputLine;
-    	StringBuffer content = new StringBuffer();
-    	while((inputLine = in.readLine()) != null) {
-    		content.append(inputLine);
-    	}
-    	in.close();
-    	con.disconnect();
-    	System.out.println("Response status: " + status);
-    	//System.out.println(content.toString());
-    	
-    	// Start here
-        String session = "";
-        List<JSONObject> allSessions = new ArrayList<>();
-        String sessionAsString = content.toString();
-        
-        int flag = 0;
-        for (int i = 0; i < content.length(); i++)
-        {
-        	if (sessionAsString.charAt(i) == '}')
-        	{
-        		session += sessionAsString.charAt(i);
-        		flag = 0;
-        		
-        		String str = session.toString();
-        		JSONObject json = new JSONObject(str);
-        		session = "";
-        		allSessions.add(json);
-        		continue;
-        	}
-        	
-        	if (flag == 1)
-        	{
-        		session += sessionAsString.charAt(i);
-        		continue;
-        	}
-        	
-        	if (sessionAsString.charAt(i) == '{')
-        	{
-        		session += sessionAsString.charAt(i);
-        		flag = 1;
-        		continue;
-        	}
-        	
-        }
-        
-        for (JSONObject j : allSessions)
-        {
-        	System.out.println(j.toString());
-        }
-    	
-    	return allSessions;
-  
-    }
-
-     */
 
     public String getLocationIP() {
         return locationIP;
@@ -309,15 +245,21 @@ public class GameSession {
      *
      * @param joiner
      */
-    public static void joinSession(User joiner, String sessionID) throws IOException
+    public static void joinSession(User joiner, String sessionID) throws Exception
     {
-        // we need to join this session with the chosen user, so we will
+
+        if (!joiner.getRole().equals(User.Role.PLAYER))
+        {
+            throw new Exception ("Only players can join games.");
+        }
+
+
         String token = joiner.getAccessToken();
 
         // get ip to pass
         String ip = NetworkUtils.ngrokAddrToPassToLS();
 
-        URL url = new URL("http://35.182.122.111:4242/api/sessions" + sessionID +"/players/" + joiner.getUsername() + "?location=" + ip + "&access_token=" + token);
+        URL url = new URL("http://35.182.122.111:4242/api/sessions/" + sessionID +"/players/" + joiner.getUsername() + "?location=" + ip + "&access_token=" + token);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("PUT");
 

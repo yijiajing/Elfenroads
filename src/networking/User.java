@@ -90,8 +90,17 @@ public class User {
      * @throws IOException
      */
 
+    /**
+     * I wrote this for testing so I could use multiple users consecutively
+     * Delete if causing problems
+     */
+    public static void resetUser()
+    {
+        instance = null;
+    }
+
     // TODO: removed hardcoded color and allow the user to decide?
-    public static User createNewUser(String newUsername, String newPassword, Role newRole) throws Exception
+    public static void registerNewUser(String newUsername, String newPassword, Role newRole) throws Exception
     {
 
         // check to make sure that password is acceptable by LS
@@ -133,8 +142,6 @@ public class User {
         System.out.println("Response status: " + status);
         System.out.println(content.toString());
 
-        User created = new User(newUsername, newPassword);
-        return created;
     }
 
 
@@ -248,7 +255,7 @@ public class User {
         String adminToken = getAccessTokenUsingCreds("maex", "abc123_ABC123");
 
         // now make the main API call
-        URL url = new URL("http://35.182.122.111:4242/api/users/maex?access_token=" + adminToken);
+        URL url = new URL("http://35.182.122.111:4242/api/users/" + username + "?access_token=" + adminToken);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
 
@@ -267,6 +274,7 @@ public class User {
 
         JSONObject response = new JSONObject(content.toString());
         infoFromAPI = response;
+        System.out.println("The info about " + username + "from the API looks like: " + infoFromAPI);
         // we already have username and password, so we don't need to do anything to those.
 
         // we are, however, interested in preferred color and role
@@ -301,11 +309,10 @@ public class User {
     // TODO: need to implement this method
     public static boolean doesUsernameExist(String username) throws IOException, Exception
     {
-        User admin = new User("maex", "abc123_ABC123");
-        String token = admin.getAccessToken();
+        String adminToken = getAccessTokenUsingCreds("maex", "abc123_ABC123");
         // do a get request to api/users and look at all users, see if our username is there
         //JSONObject allUsers = getAllUsers(token);
-        List<JSONObject> allUsers = getAllUsers(token);
+        List<JSONObject> allUsers = getAllUsers(adminToken);
         for (JSONObject json : allUsers)
         {
         	

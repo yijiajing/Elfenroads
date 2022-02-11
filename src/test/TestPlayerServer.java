@@ -9,7 +9,7 @@ import java.net.UnknownHostException;
 import networking.PlayerServer;
 import utils.NetworkUtils;
 
-public class TestPlayerServer 
+public class TestPlayerServer
 {
     public static void main(String[] args) throws IOException
     {
@@ -27,13 +27,14 @@ public class TestPlayerServer
         }
 
 
-
-
-
-
-        // PlayerServer server = new PlayerServer(1);
-        // server.setMessage("It worked from the Server!! " + "You are now connected");
-        // server.start(6666);
-        // System.out.println(server.getServerInfo());
+        for (int i = 0; i < 1000000000; i++)
+        {
+            PlayerServer server = new PlayerServer(1);
+            server.setMessage("It worked from the Server!! " + "You are now connected");
+            server.start(6666);
+        }
+        PlayerServer server = new PlayerServer(1);
+        server.setMessage("It worked from the Server!! " + "You are now connected");
+        server.start(6666);
     }
 }
