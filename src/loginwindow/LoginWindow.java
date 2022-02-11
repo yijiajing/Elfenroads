@@ -16,7 +16,7 @@ import java.net.URISyntaxException;
 import static javax.swing.Box.createVerticalStrut;
 
 
-public class LoginWindow extends JPanel implements ActionListener {
+public class LoginWindow extends JPanel {
 
     private JLabel background_elvenroads;
     private static Box labelBox;
@@ -316,10 +316,4 @@ public class LoginWindow extends JPanel implements ActionListener {
 
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-
-        
-
-    }
 }
