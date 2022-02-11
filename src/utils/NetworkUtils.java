@@ -237,6 +237,7 @@ public class NetworkUtils {
                     } catch (Exception ex) {
                         System.out.println("There was a problem attempting to join the session with User" + MainFrame.loggedIn.getUsername());
                         ex.printStackTrace();
+                        return;
                     }
                 }
             });
