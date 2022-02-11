@@ -7,6 +7,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -197,6 +199,74 @@ public class LoginWindow extends JPanel implements ActionListener {
                 
             }
             
+        });
+
+        // making it so that the user can log in by pressing enter
+        // the default action listener for a text field is the enter key, so we don't have to specify
+        passwordTextField.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String username = usernameTextField.getText();
+                String password = passwordTextField.getText();
+                String token = ngrokTextField.getText();
+                boolean u = false;
+                try
+                {
+                    u = User.doesUsernameExist(username);
+                }
+                catch (Exception e1) // TODO: create a custom exception for the one raised in doesUsernameExist and edit this to catch both an IOException and the custom one
+                {
+                    e1.printStackTrace();
+                }
+                boolean p = User.isValidPassword(password);
+                // if (u && p)
+                // {
+                try
+                {
+                    // first, make sure the username exists. if not, display the appropriate pop-up.
+                    if (!u)
+                    {
+                        wrongUsernameErrorPopup.show();
+                        return;
+                    }
+
+                    // log into the LS
+
+                    MainFrame.loggedIn = User.init(username, password);
+
+                    //MainFrame.loggedIn = null; // unecessary to set to null probably but I just want to make sure that we have no issues with User
+                    //MainFrame.loggedIn = User.getInstance(username, password);
+
+
+                }
+                catch (Exception loginProblem)
+                {
+                    loginProblem.printStackTrace();
+                    wrongPasswordErrorPopup.show();
+                    return;
+                }
+
+                // we have made it through the LS login, so the last error to check for is whether Ngrok is running properly
+
+                try {
+                    PlayerServer.startNgrok(token);
+                    track1.play();
+                } catch (IOException ngrokStartupProblem) {
+                    ngrokErrorPopup.show();
+                    return;
+                }
+
+                if (!NetworkUtils.validateNgrok())
+                {
+                    ngrokErrorPopup.show();
+                    return;
+                }
+
+                remove(background_elvenroads);
+                MainFrame.mainPanel.add(new LobbyWindow(), "lobby");
+                MainFrame.cardLayout.show(MainFrame.mainPanel,"lobby");
+                // }
+            }
         });
         
 
