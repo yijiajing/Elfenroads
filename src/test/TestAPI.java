@@ -24,6 +24,10 @@ public class TestAPI {
 
 
         User alex = User.init("alex", "abc123_ABC123");
+        User.resetUser();
+        User nick = User.init("nick", "abc123_ABC123");
+        System.out.println("Nick's role is: " + nick.getRole());
+
         GameSession sesh = new GameSession(alex, "testGame", "saveGameName1");
         GameSession sesh2 = new GameSession(alex, "testGame", "saveGame2");
         System.out.println("Alex IP is: " + NetworkUtils.ngrokAddrToPassToLS());
@@ -31,7 +35,7 @@ public class TestAPI {
 
         //System.out.println(NetworkUtils.dnsLookupNgrok());
 
-
+/*
         User nick = User.init("nick", "abc123_ABC123");
 
         System.out.println("Nick's IP is: " + NetworkUtils.ngrokAddrToPassToLS());
@@ -42,7 +46,7 @@ public class TestAPI {
         }
 
 
-
+*/
         System.out.println(GameSession.getSessions());
 
 
