@@ -5,10 +5,10 @@ import java.awt.*;
 
 public abstract class CounterUnit extends Drawable{
 
-    String filepathToRepo = ".";
-    String imageFilepath;
-    ImageIcon image;
-    JLabel display;
+    private String imageFilepath;
+    private ImageIcon image;
+    private JLabel display;
+    private Road placedOn;
 
     CounterUnit(int resizeWidth, int resizeHeight, int imageNumber) {
         // find the picture of the card based on what type it is
@@ -22,6 +22,14 @@ public abstract class CounterUnit extends Drawable{
 
         // add JLabel
         this.display = new JLabel(this.image);
+    }
+
+    public Road getPlacedOn() {
+        return placedOn;
+    }
+
+    public void setPlacedOn(Road placedOn) {
+        this.placedOn = placedOn;
     }
 
     public ImageIcon getImage() {return this.image;}

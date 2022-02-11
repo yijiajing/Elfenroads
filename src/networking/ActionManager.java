@@ -10,6 +10,8 @@ import java.util.logging.Logger;
 
 public class ActionManager {
 
+    private static ActionManager INSTANCE;
+
     private final static Logger LOGGER = Logger.getLogger("game state");
 
     private GameState gameState;
@@ -20,8 +22,19 @@ public class ActionManager {
     private Town selectedTown;
     boolean obstacleSelected = false;
 
-    public ActionManager(GameState gameState) {
+    public static ActionManager init(GameState gameState) {
+        if (INSTANCE == null) {
+            INSTANCE = new ActionManager(gameState);
+        }
+        return INSTANCE;
+    }
+
+    private ActionManager(GameState gameState) {
         this.gameState = gameState;
+    }
+
+    public static ActionManager getInstance() {
+        return INSTANCE;
     }
 
     /*
@@ -53,7 +66,8 @@ public class ActionManager {
     }
 
     public void obstacleSelected() {
-        obstacleSelected = true;
+        LOGGER.info("Obstacle selected");
+        obstacleSelected = !obstacleSelected;
         selectedCounter = null;
     }
 
@@ -71,10 +85,14 @@ public class ActionManager {
     }
 
     public void addSelectedCard(TravelCard selectedCard) {
+        LOGGER.info("Card " + selectedCard.getType() + " selected");
+        if (selectedCards.contains(selectedCard)) {
+            this.selectedCards.remove(selectedCard);
+        }
         this.selectedCards.add(selectedCard);
     }
 
-    public void setSelectedCard(List<TravelCard> selectedCards) {
+    public void setSelectedCards(List<TravelCard> selectedCards) {
         this.selectedCards = selectedCards;
     }
 

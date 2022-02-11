@@ -955,6 +955,30 @@
       <formalGates xmi:id="_mTQ3fIleEey7iLuwPBMl6A" message="_mTQ3eYleEey7iLuwPBMl6A" name="out_travelOnRoad"/>
     </specification>
   </messageViews>
+  <messageViews xsi:type="ram:MessageView" xmi:id="_T49UU4nXEeyN7_6E_L9khA" specifies="_AV0s4InMEeyo4Y-07QdG9A">
+    <specification xmi:id="_T49UVInXEeyN7_6E_L9khA">
+      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_T49UVYnXEeyN7_6E_L9khA" covered="_T49UV4nXEeyN7_6E_L9khA" message="_T49UWInXEeyN7_6E_L9khA"/>
+      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_T49UVonXEeyN7_6E_L9khA" covered="_T49UV4nXEeyN7_6E_L9khA" message="_T497YInXEeyN7_6E_L9khA"/>
+      <lifelines xmi:id="_T49UV4nXEeyN7_6E_L9khA" represents="_T497YYnXEeyN7_6E_L9khA" coveredBy="_T49UVYnXEeyN7_6E_L9khA _T49UVonXEeyN7_6E_L9khA"/>
+      <messages xmi:id="_T49UWInXEeyN7_6E_L9khA" sendEvent="_T497YonXEeyN7_6E_L9khA" receiveEvent="_T49UVYnXEeyN7_6E_L9khA" signature="_AV0s4InMEeyo4Y-07QdG9A"/>
+      <messages xmi:id="_T497YInXEeyN7_6E_L9khA" sendEvent="_T49UVonXEeyN7_6E_L9khA" receiveEvent="_T497Y4nXEeyN7_6E_L9khA" signature="_AV0s4InMEeyo4Y-07QdG9A" messageSort="reply"/>
+      <properties xmi:id="_T497YYnXEeyN7_6E_L9khA" name="target" lowerBound="1" type="_guXhIISgEey9wdrZlqoRvQ"/>
+      <formalGates xmi:id="_T497YonXEeyN7_6E_L9khA" message="_T49UWInXEeyN7_6E_L9khA" name="in_passTurn"/>
+      <formalGates xmi:id="_T497Y4nXEeyN7_6E_L9khA" message="_T497YInXEeyN7_6E_L9khA" name="out_passTurn"/>
+    </specification>
+  </messageViews>
+  <messageViews xsi:type="ram:MessageView" xmi:id="_ZUcFk4nXEeyN7_6E_L9khA" specifies="_REshIInQEeyo4Y-07QdG9A">
+    <specification xmi:id="_ZUcFlInXEeyN7_6E_L9khA">
+      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_ZUcFlYnXEeyN7_6E_L9khA" covered="_ZUcFl4nXEeyN7_6E_L9khA" message="_ZUcFmInXEeyN7_6E_L9khA"/>
+      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_ZUcFlonXEeyN7_6E_L9khA" covered="_ZUcFl4nXEeyN7_6E_L9khA" message="_ZUcFmYnXEeyN7_6E_L9khA"/>
+      <lifelines xmi:id="_ZUcFl4nXEeyN7_6E_L9khA" represents="_ZUcFmonXEeyN7_6E_L9khA" coveredBy="_ZUcFlYnXEeyN7_6E_L9khA _ZUcFlonXEeyN7_6E_L9khA"/>
+      <messages xmi:id="_ZUcFmInXEeyN7_6E_L9khA" sendEvent="_ZUcFm4nXEeyN7_6E_L9khA" receiveEvent="_ZUcFlYnXEeyN7_6E_L9khA" signature="_REshIInQEeyo4Y-07QdG9A"/>
+      <messages xmi:id="_ZUcFmYnXEeyN7_6E_L9khA" sendEvent="_ZUcFlonXEeyN7_6E_L9khA" receiveEvent="_ZUcFnInXEeyN7_6E_L9khA" signature="_REshIInQEeyo4Y-07QdG9A" messageSort="reply"/>
+      <properties xmi:id="_ZUcFmonXEeyN7_6E_L9khA" name="target" lowerBound="1" type="_guXhIISgEey9wdrZlqoRvQ"/>
+      <formalGates xmi:id="_ZUcFm4nXEeyN7_6E_L9khA" message="_ZUcFmInXEeyN7_6E_L9khA" name="in_chosenCounterToKeep"/>
+      <formalGates xmi:id="_ZUcFnInXEeyN7_6E_L9khA" message="_ZUcFmYnXEeyN7_6E_L9khA" name="out_chosenCounterToKeep"/>
+    </specification>
+  </messageViews>
   <layout xmi:id="_apVgwISZEeyXuZjYMpRsbg">
     <containers xmi:id="_apVgwYSZEeyXuZjYMpRsbg" key="_apTEgYSZEeyXuZjYMpRsbg">
       <value xmi:id="_apVgxISZEeyXuZjYMpRsbg" key="_apTEjYSZEeyXuZjYMpRsbg">
@@ -1058,6 +1082,16 @@
       </value>
       <value xmi:id="_mi9D0IlfEey7iLuwPBMl6A" key="_mi8cwIlfEey7iLuwPBMl6A">
         <value xmi:id="_mi9D0YlfEey7iLuwPBMl6A" x="668.0" y="100.0"/>
+      </value>
+    </containers>
+    <containers xmi:id="_T49UUInXEeyN7_6E_L9khA" key="_T49UU4nXEeyN7_6E_L9khA">
+      <value xmi:id="_T49UUYnXEeyN7_6E_L9khA" key="_T49UV4nXEeyN7_6E_L9khA">
+        <value xmi:id="_T49UUonXEeyN7_6E_L9khA" x="100.0" y="100.0"/>
+      </value>
+    </containers>
+    <containers xmi:id="_ZUcFkInXEeyN7_6E_L9khA" key="_ZUcFk4nXEeyN7_6E_L9khA">
+      <value xmi:id="_ZUcFkYnXEeyN7_6E_L9khA" key="_ZUcFl4nXEeyN7_6E_L9khA">
+        <value xmi:id="_ZUcFkonXEeyN7_6E_L9khA" x="100.0" y="100.0"/>
       </value>
     </containers>
   </layout>
