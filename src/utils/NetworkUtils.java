@@ -1,10 +1,13 @@
 package utils;
 
+import domain.GameManager;
 import loginwindow.LoginWindow;
 import loginwindow.MainFrame;
 import networking.GameSession;
+import networking.GameState;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import panel.GameScreen;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,6 +21,7 @@ import java.net.InetAddress;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class NetworkUtils {
 
@@ -222,6 +226,7 @@ public class NetworkUtils {
             JLabel nameLabel = new JLabel("name: " + name);
             // initialize join button
             JButton joinButton = new JButton("JOIN");
+            JButton startButton = new JButton("START");
 
             joinButton.addActionListener(new ActionListener() {
                 @Override
@@ -236,6 +241,18 @@ public class NetworkUtils {
                 }
             });
 
+            startButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    GameState state = GameState.init(GameScreen.init(MainFrame.getInstance()));
+                    GameManager.init(Optional.empty(), Optional.of(id));
+                }
+            });
+
+
+
+
+
             // initialize the box
             Box gameInfo = Box.createVerticalBox();
             gameInfo.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -245,6 +262,7 @@ public class NetworkUtils {
             gameInfo.add(minPlayersLabel);
             gameInfo.add(nameLabel);
             gameInfo.add(joinButton);
+            gameInfo.add(startButton);
 
             // add the box to the sessions panel
             // sessions.add(gameInfo);

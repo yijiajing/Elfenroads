@@ -274,7 +274,7 @@ public class User {
 
         JSONObject response = new JSONObject(content.toString());
         infoFromAPI = response;
-        System.out.println("The info about" + username + "from the API looks like: " + infoFromAPI);
+        System.out.println("The info about " + username + "from the API looks like: " + infoFromAPI);
         // we already have username and password, so we don't need to do anything to those.
 
         // we are, however, interested in preferred color and role
