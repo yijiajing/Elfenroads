@@ -986,6 +986,7 @@
       <literals xmi:id="_apTEkYSZEeyXuZjYMpRsbg" name="Yellow"/>
       <literals xmi:id="_apTEkoSZEeyXuZjYMpRsbg" name="Purple"/>
       <literals xmi:id="_apTEk4SZEeyXuZjYMpRsbg" name="Green"/>
+      <literals xmi:id="_qTkJ4IwsEeyjsquSLaUUUw" name="None"/>
     </types>
     <types xsi:type="ram:REnum" xmi:id="_apTElISZEeyXuZjYMpRsbg" name="GamePhase">
       <literals xmi:id="_apTElYSZEeyXuZjYMpRsbg" name="DrawTravelCards"/>
@@ -1030,6 +1031,29 @@
       <literals xmi:id="_P6NLwIvEEeyNIpgdKBQvFg" name="Mountains"/>
       <literals xmi:id="_SG-lUIvEEeyNIpgdKBQvFg" name="River"/>
       <literals xmi:id="_S2xDgIvEEeyNIpgdKBQvFg" name="Lakes"/>
+    </types>
+    <types xsi:type="ram:REnum" xmi:id="_7VidIIwsEeyjsquSLaUUUw" name="TownName">
+      <literals xmi:id="_HGJkcIwtEeyjsquSLaUUUw" name="Beata"/>
+      <literals xmi:id="_NxPjcIwtEeyjsquSLaUUUw" name="ErgEren"/>
+      <literals xmi:id="_T1dvsIwtEeyjsquSLaUUUw" name="Grangor"/>
+      <literals xmi:id="_YGUg4IwtEeyjsquSLaUUUw" name="Jaccaranda"/>
+      <literals xmi:id="_aJrfwIwtEeyjsquSLaUUUw" name="Jxara"/>
+      <literals xmi:id="_dg7vcIwtEeyjsquSLaUUUw" name="MahDavikia"/>
+      <literals xmi:id="_gi5EkIwtEeyjsquSLaUUUw" name="Strykhaven"/>
+      <literals xmi:id="_jXM_QIwtEeyjsquSLaUUUw" name="Tichih"/>
+      <literals xmi:id="_lNnuUIwtEeyjsquSLaUUUw" name="Usselen"/>
+      <literals xmi:id="_nUwZ8IwtEeyjsquSLaUUUw" name="Wylhien"/>
+      <literals xmi:id="_s3gQ0IwtEeyjsquSLaUUUw" name="Vlrst"/>
+      <literals xmi:id="_uk18YIwtEeyjsquSLaUUUw" name="Yttar"/>
+      <literals xmi:id="_wRu8AIwtEeyjsquSLaUUUw" name="AlBaran"/>
+      <literals xmi:id="_yVoGYIwtEeyjsquSLaUUUw" name="Kihromah"/>
+      <literals xmi:id="_1yAtsIwtEeyjsquSLaUUUw" name="DagAmura"/>
+      <literals xmi:id="_395WcIwtEeyjsquSLaUUUw" name="Parundia"/>
+      <literals xmi:id="_5Qu3UIwtEeyjsquSLaUUUw" name="Feodor"/>
+      <literals xmi:id="_85Do4IwtEeyjsquSLaUUUw" name="Throtmanni"/>
+      <literals xmi:id="_-hNScIwtEeyjsquSLaUUUw" name="Rivinia"/>
+      <literals xmi:id="_A9_d8IwuEeyjsquSLaUUUw" name="Lapphalia"/>
+      <literals xmi:id="_CIqhUIwuEeyjsquSLaUUUw" name="Elvenhold"/>
     </types>
   </structuralView>
   <messageViews xsi:type="ram:MessageView" xmi:id="_mPumA4SiEey9wdrZlqoRvQ" affectedBy="_mPumEISiEey9wdrZlqoRvQ" specifies="_jynDUISiEey9wdrZlqoRvQ">
@@ -1798,6 +1822,9 @@
       </value>
       <value xmi:id="_LuSk8IvEEeyNIpgdKBQvFg" key="_LuOTgIvEEeyNIpgdKBQvFg">
         <value xmi:id="_LuSk8YvEEeyNIpgdKBQvFg" x="-972.9955" y="391.2752"/>
+      </value>
+      <value xmi:id="_7Vk5YIwsEeyjsquSLaUUUw" key="_7VidIIwsEeyjsquSLaUUUw">
+        <value xmi:id="_7Vk5YYwsEeyjsquSLaUUUw" x="252.0" y="272.0"/>
       </value>
     </containers>
     <containers xmi:id="_mPumAISiEey9wdrZlqoRvQ" key="_mPumA4SiEey9wdrZlqoRvQ">
