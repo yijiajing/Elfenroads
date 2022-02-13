@@ -70,10 +70,15 @@ public class PlayerServer
 
     public static void startNgrok(String token) throws IOException
     {
-        String command1 = "./ngrok " + token;
-        Process proc1 = Runtime.getRuntime().exec(command1);
+        String os = System.getProperty("os.name");
+        String command1 = "ngrok " + token;
+        String command2 = "ngrok tcp 6666";
+        if (!os.contains("win")) {
+            command1 = "./" + command1;
+            command2 = "./" + command2;
+        }
 
-        String command2 = "./ngrok tcp 6666";
+        Process proc1 = Runtime.getRuntime().exec(command1);
         Process proc2 = Runtime.getRuntime().exec(command2);
     }
 
