@@ -1,9 +1,12 @@
 package loginwindow;
 
+import networking.PlayerServer;
 import networking.User;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
+import java.awt.event.WindowListener;
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 
@@ -21,8 +24,19 @@ public class MainFrame extends JFrame
     {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setSize((int) screenSize.getWidth(), (int) screenSize.getHeight());
-
+        
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        addWindowListener(new WindowAdapter() 
+        {
+            @Override
+            public void windowClosing(WindowEvent event) 
+            {
+                PlayerServer.stopNgrok();;
+                dispose();
+                System.exit(0);
+            }
+        });
 
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);

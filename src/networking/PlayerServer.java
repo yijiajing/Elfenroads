@@ -60,7 +60,7 @@ public class PlayerServer
 
             // Reinitialize "wait" variable to the number of initial connections for futur message and close connection
             wait = aConnections;
-            stop();
+            stopNgrok();
         }
         catch (Exception e)
         {
@@ -85,13 +85,13 @@ public class PlayerServer
         message = msg;
     }
 
-    public void stop()
+    public static void stopNgrok()
     {
         try
         {
-            serverSocket.close();
+            //serverSocket.close();
             String command = "killall ngrok";
-            //Process proc = Runtime.getRuntime().exec(command);
+            Process proc = Runtime.getRuntime().exec(command);
         }
         catch(IOException e)
         {
