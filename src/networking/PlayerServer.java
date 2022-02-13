@@ -70,7 +70,7 @@ public class PlayerServer
 
     public static void startNgrok(String token) throws IOException
     {
-        String os = System.getProperty("os.name");
+        String os = System.getProperty("os.name").toLowerCase();
         String command1 = "ngrok " + token;
         String command2 = "ngrok tcp 6666";
         if (!os.contains("win")) {
