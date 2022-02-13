@@ -1086,7 +1086,8 @@
       <associationEnds xmi:id="_MciKMIShEey9wdrZlqoRvQ" name="ownedCounters" upperBound="-1" assoc="_McixQYShEey9wdrZlqoRvQ" featureSelection="_hK5zUIlaEeysGOmfX51fHg"/>
       <associationEnds xmi:id="_BPo-UIlfEey7iLuwPBMl6A" name="ownedCards" upperBound="-1" assoc="_BPsBoIlfEey7iLuwPBMl6A" featureSelection="_CbcA4IvBEeyNIpgdKBQvFg"/>
       <associationEnds xmi:id="__d0mgIw_Eeyae6mDmA-efQ" name="visited" upperBound="-1" assoc="__d4Q4Iw_Eeyae6mDmA-efQ" featureSelection="_K6v80IxAEeyae6mDmA-efQ"/>
-      <attributes xmi:id="_vAF3IIScEeyBG615ZLB12A" name="color" type="_apTEjYSZEeyXuZjYMpRsbg"/>
+      <attributes xmi:id="_vAF3IIScEeyBG615ZLB12A" name="color" type="_apTEhYSZEeyXuZjYMpRsbg"/>
+      <attributes xmi:id="_RVDGIIyVEey2jP54r_NZgQ" name="startPlayer" type="_apTEhYSZEeyXuZjYMpRsbg"/>
     </classes>
     <classes xsi:type="ram:Class" xmi:id="_qo5GAISfEey9wdrZlqoRvQ" name="Town" visibility="public">
       <operations xmi:id="_1NVd4IwuEeyjsquSLaUUUw" name="create" visibility="public" returnType="_qo5GAISfEey9wdrZlqoRvQ" operationType="Constructor">
@@ -1795,10 +1796,30 @@
   <messageViews xsi:type="ram:MessageView" xmi:id="_PzoYk4uWEeysx5HYEX3KUg" specifies="_n_tn0ISgEey9wdrZlqoRvQ">
     <specification xmi:id="_PzoYlIuWEeysx5HYEX3KUg">
       <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_PzoYlYuWEeysx5HYEX3KUg" covered="_PzoYl4uWEeysx5HYEX3KUg" message="_PzoYmIuWEeysx5HYEX3KUg"/>
+      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_In4MkoyTEey2jP54r_NZgQ" covered="_PzoYl4uWEeysx5HYEX3KUg" message="_In4zoIyTEey2jP54r_NZgQ"/>
+      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_In4Mk4yTEey2jP54r_NZgQ" covered="_In3lgIyTEey2jP54r_NZgQ" message="_In4zoIyTEey2jP54r_NZgQ"/>
+      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_NqMP4IyTEey2jP54r_NZgQ" covered="_PzoYl4uWEeysx5HYEX3KUg" message="_NqOFEIyTEey2jP54r_NZgQ"/>
+      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_NqMP4YyTEey2jP54r_NZgQ" covered="_In3lgIyTEey2jP54r_NZgQ" message="_NqOFEIyTEey2jP54r_NZgQ"/>
+      <fragments xsi:type="ram:CombinedFragment" xmi:id="_nSNL4IyTEey2jP54r_NZgQ" covered="_PzoYl4uWEeysx5HYEX3KUg" interactionOperator="opt">
+        <operands xmi:id="_nSNL4YyTEey2jP54r_NZgQ">
+          <fragments xsi:type="ram:CombinedFragment" xmi:id="_VUHZMIyUEey2jP54r_NZgQ" covered="_PzoYl4uWEeysx5HYEX3KUg" interactionOperator="opt">
+            <operands xmi:id="_VUHZMYyUEey2jP54r_NZgQ">
+              <interactionConstraint xsi:type="ram:OpaqueExpression" xmi:id="_VUHZMoyUEey2jP54r_NZgQ" body="isFirstPlayer" language="java"/>
+            </operands>
+          </fragments>
+          <interactionConstraint xsi:type="ram:OpaqueExpression" xmi:id="_nSNL4oyTEey2jP54r_NZgQ" body="(currentPhase == DrawFaceUpCounterOne || currentPhase == DrawFaceUpCounterTwo||currentPhase == DrawFaceUpCounterThree) &amp;&amp; currentPlayer.equals(p)" language="java"/>
+        </operands>
+      </fragments>
       <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_PzoYlouWEeysx5HYEX3KUg" covered="_PzoYl4uWEeysx5HYEX3KUg" message="_PzoYmYuWEeysx5HYEX3KUg"/>
-      <lifelines xmi:id="_PzoYl4uWEeysx5HYEX3KUg" represents="_PzoYmouWEeysx5HYEX3KUg" coveredBy="_PzoYlYuWEeysx5HYEX3KUg _PzoYlouWEeysx5HYEX3KUg"/>
-      <messages xmi:id="_PzoYmIuWEeysx5HYEX3KUg" sendEvent="_PzoYm4uWEeysx5HYEX3KUg" receiveEvent="_PzoYlYuWEeysx5HYEX3KUg" signature="_n_tn0ISgEey9wdrZlqoRvQ"/>
+      <lifelines xmi:id="_PzoYl4uWEeysx5HYEX3KUg" represents="_PzoYmouWEeysx5HYEX3KUg" coveredBy="_PzoYlYuWEeysx5HYEX3KUg _PzoYlouWEeysx5HYEX3KUg _In4MkoyTEey2jP54r_NZgQ _NqMP4IyTEey2jP54r_NZgQ _nSNL4IyTEey2jP54r_NZgQ _VUHZMIyUEey2jP54r_NZgQ"/>
+      <lifelines xmi:id="_In3lgIyTEey2jP54r_NZgQ" represents="_Wz0AgIlWEeysGOmfX51fHg" coveredBy="_In4Mk4yTEey2jP54r_NZgQ _NqMP4YyTEey2jP54r_NZgQ"/>
+      <messages xmi:id="_PzoYmIuWEeysx5HYEX3KUg" sendEvent="_PzoYm4uWEeysx5HYEX3KUg" receiveEvent="_PzoYlYuWEeysx5HYEX3KUg" signature="_n_tn0ISgEey9wdrZlqoRvQ">
+        <localProperties xsi:type="ram:Attribute" xmi:id="_J2XY8IyTEey2jP54r_NZgQ" name="currentPhase" type="_apTElISZEeyXuZjYMpRsbg"/>
+        <localProperties xsi:type="ram:Reference" xmi:id="_aBOeAIyTEey2jP54r_NZgQ" name="currentPlayer" lowerBound="1" type="_RWVkAIScEeyBG615ZLB12A"/>
+      </messages>
       <messages xmi:id="_PzoYmYuWEeysx5HYEX3KUg" sendEvent="_PzoYlouWEeysx5HYEX3KUg" receiveEvent="_PzoYnIuWEeysx5HYEX3KUg" signature="_n_tn0ISgEey9wdrZlqoRvQ" messageSort="reply"/>
+      <messages xmi:id="_In4zoIyTEey2jP54r_NZgQ" sendEvent="_In4MkoyTEey2jP54r_NZgQ" receiveEvent="_In4Mk4yTEey2jP54r_NZgQ" signature="_p7RAQIlbEeysGOmfX51fHg" assignTo="_J2XY8IyTEey2jP54r_NZgQ"/>
+      <messages xmi:id="_NqOFEIyTEey2jP54r_NZgQ" sendEvent="_NqMP4IyTEey2jP54r_NZgQ" receiveEvent="_NqMP4YyTEey2jP54r_NZgQ" signature="_jmgBUISfEey9wdrZlqoRvQ" assignTo="_aBOeAIyTEey2jP54r_NZgQ"/>
       <properties xmi:id="_PzoYmouWEeysx5HYEX3KUg" name="target" lowerBound="1" type="_guXhIISgEey9wdrZlqoRvQ"/>
       <formalGates xmi:id="_PzoYm4uWEeysx5HYEX3KUg" message="_PzoYmIuWEeysx5HYEX3KUg" name="in_drawRandomCounter"/>
       <formalGates xmi:id="_PzoYnIuWEeysx5HYEX3KUg" message="_PzoYmYuWEeysx5HYEX3KUg" name="out_drawRandomCounter"/>
@@ -2450,6 +2471,9 @@
     <containers xmi:id="_PzoYkIuWEeysx5HYEX3KUg" key="_PzoYk4uWEeysx5HYEX3KUg">
       <value xmi:id="_PzoYkYuWEeysx5HYEX3KUg" key="_PzoYl4uWEeysx5HYEX3KUg">
         <value xmi:id="_PzoYkouWEeysx5HYEX3KUg" x="100.0" y="100.0"/>
+      </value>
+      <value xmi:id="_In4MkIyTEey2jP54r_NZgQ" key="_In3lgIyTEey2jP54r_NZgQ">
+        <value xmi:id="_In4MkYyTEey2jP54r_NZgQ" x="365.0" y="100.0"/>
       </value>
     </containers>
     <containers xmi:id="_Vl9jkIuWEeysx5HYEX3KUg" key="_Vl9jk4uWEeysx5HYEX3KUg">
