@@ -65,11 +65,7 @@ public class GameScreen extends JPanel implements Serializable
 	private GameMap gameMap;
 
 	private JTable leaderboard = new JTable();
-	
-	private Deck transportationCountersToDraw;
-	//private String filepathToRepo = "/Users/nicktriantos/Desktop/f2021-hexanome-12"; // change this depending on whose machine we are using
-	// private String filepathToRepo = "/Users/charlescouture/eclipse-workspace/COMP361";
-	private String filepathToRepo = ".";
+
 	private boolean myTurn;
 
 	// TODO: change this on the other computer
@@ -108,7 +104,7 @@ public class GameScreen extends JPanel implements Serializable
 	}
 
 	/**
-	 * You must call this function to draw all of the UI components to the screen
+	 * Draws all of the UI components to the screen
 	 */
 	public void draw() {
 		initialization();
@@ -143,7 +139,6 @@ public class GameScreen extends JPanel implements Serializable
 		initializeDeckOfTransportationCounters();
 		initializeDeckOfTransportationCountersImage();
 		initializeLeaderboard();
-		initializeTransportationCounters();
 		initializeLeaderboard();
 	}
 
@@ -297,7 +292,7 @@ public class GameScreen extends JPanel implements Serializable
 	
 	public void initializeMapImage()
 	{
-		ImageIcon mapImage = new ImageIcon(filepathToRepo + "/assets/sprites/map.png");
+		ImageIcon mapImage = new ImageIcon("./assets/sprites/map.png");
 		Image map = mapImage.getImage();
 		Image mapResized = map.getScaledInstance(width*1140/1440, height*625/900,  java.awt.Image.SCALE_SMOOTH);
 		mapImage = new ImageIcon(mapResized);
@@ -306,8 +301,7 @@ public class GameScreen extends JPanel implements Serializable
 	
 	public void initializeRoundCardImage(int round)
 	{
-		String image = filepathToRepo + "R" + String.valueOf(round) + ".png";
-		ImageIcon roundImage = new ImageIcon(filepathToRepo + "/assets/sprites/R1.png");
+		ImageIcon roundImage = new ImageIcon("./assets/sprites/R1.png");
 		Image Round = roundImage.getImage();
 		Image RoundResized = Round.getScaledInstance(width*90/1440, height*130/900,  java.awt.Image.SCALE_SMOOTH);
 		roundImage = new ImageIcon(RoundResized);
@@ -316,7 +310,7 @@ public class GameScreen extends JPanel implements Serializable
 	
 	public void initializeInformationCardImage()
 	{
-		ImageIcon gridImage = new ImageIcon(filepathToRepo + "/assets/sprites/grid.png");
+		ImageIcon gridImage = new ImageIcon("./assets/sprites/grid.png");
 		Image grid = gridImage.getImage();
 		Image gridResized = grid.getScaledInstance(width*290/1440, height*325/900,  java.awt.Image.SCALE_SMOOTH);
 		gridImage = new ImageIcon(gridResized);
@@ -325,7 +319,7 @@ public class GameScreen extends JPanel implements Serializable
 	
 	public void initializeDeckOfTransportationCountersImage()
 	{
-		ImageIcon gridImage = new ImageIcon(filepathToRepo + "/assets/sprites/M08.png");
+		ImageIcon gridImage = new ImageIcon("./assets/sprites/M08.png");
 		Image grid = gridImage.getImage();
 		Image gridResized = grid.getScaledInstance(width*67/1440, height*52/900,  java.awt.Image.SCALE_SMOOTH);
 		gridImage = new ImageIcon(gridResized);
@@ -364,10 +358,17 @@ public class GameScreen extends JPanel implements Serializable
 	}
 	
 	public void addFaceUpTransportationCounters()
-	{	
-		for (JPanel panel : panelForFaceUpTransportationCounters)
-		{
+	{
+		ArrayList<TransportationCounter> faceUpCounters = GameState.instance().getFaceUpCounters();
+
+		for (int i = 0; i < 5; i++) {
+			JPanel panel = panelForFaceUpTransportationCounters[i];
+			TransportationCounter counter = faceUpCounters.get(i);
+			panel.add(counter.getImage());
+
 			boardGame_Layers.add(panel, 0);
+			panel.repaint();
+			panel.revalidate();
 		}
 	}
 	
@@ -383,6 +384,7 @@ public class GameScreen extends JPanel implements Serializable
 			JPanel panel = panelForPlayerCards[p];
 			CardUnit card = myCards.get(p);
 			panel.add(card.getImage());
+
 			boardGame_Layers.add(panel, 0);
 			panel.repaint();
 			panel.revalidate();
@@ -401,24 +403,6 @@ public class GameScreen extends JPanel implements Serializable
 		// Obstacle
 		boardGame_Layers.add(panelForObstacle,0);
 	}
-
-	public void initializeTransportationCounters()
-	{
-		// we have 8 of each counter in the game
-		Stack<TransportationCounter> toAddToDeck = new Stack<TransportationCounter>();
-
-		for (int i = 1; i <= 8; i++)
-		{
-			toAddToDeck.push(new TransportationCounter(CounterType.DRAGON, width*67/1440, height*52/900));
-			toAddToDeck.push(new TransportationCounter(CounterType.GIANTPIG, width*67/1440, height*52/900));
-			toAddToDeck.push(new TransportationCounter(CounterType.UNICORN, width*67/1440, height*52/900));
-			toAddToDeck.push(new TransportationCounter(CounterType.TROLLWAGON, width*67/1440, height*52/900));
-			toAddToDeck.push(new TransportationCounter(CounterType.ELFCYCLE, width*67/1440, height*52/900));
-			toAddToDeck.push(new TransportationCounter(CounterType.MAGICCLOUD, width*67/1440, height*52/900));
-		}
-
-		transportationCountersToDraw = new Deck(toAddToDeck);
-	}
 	
 	public void initializeListenerToDraw()
 	{
@@ -427,12 +411,12 @@ public class GameScreen extends JPanel implements Serializable
 		deckOfTransportationCountersImage_TopLayer.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				TransportationCounter drawn = transportationCountersToDraw.draw(); // draw a counter
+				TransportationCounter drawn = GameState.instance().getCounterPile().draw(); // draw a counter
 				for (int i = 0; i < 5; i++)
 				{
 					if (panelForPlayerTransportationCounters[i].getComponentCount() == 0) // if spot is empty, put card there
 					{
-						panelForPlayerTransportationCounters[i].add(drawn.getDisplay());
+						panelForPlayerTransportationCounters[i].add(drawn.getImage());
 						mainframe.repaint();
 						mainframe.revalidate();
 						break;

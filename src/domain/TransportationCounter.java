@@ -20,7 +20,7 @@ public class TransportationCounter extends CounterUnit implements Comparable<Tra
     {
         super(resizeWidth, resizeHeight, pType.ordinal() + 1); // since the images start from M01, not M00
         this.type = pType;
-        this.getDisplay().addMouseListener(new MouseAdapter() {
+        this.getImage().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (getPlacedOn() == null) {

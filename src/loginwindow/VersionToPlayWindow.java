@@ -34,7 +34,7 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setSize((int) screenSize.getWidth(), (int) screenSize.getHeight());
 
-        background_elvenroads = MainFrame.instance.getElfenroadsBackground();
+        background_elvenroads = MainFrame.getInstance().getElfenroadsBackground();
 
         GridBagLayout layout = new GridBagLayout();
         GridBagConstraints gbc = new GridBagConstraints();
