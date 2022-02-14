@@ -71,9 +71,14 @@ public class GameManager {
     }
 
     private void setUpNewGame() {
-
+        // put 5 counters face up
         for (int i=0; i<5; i++) {
             this.gameState.addFaceUpCounterFromPile();
+        }
+
+        // give all players an obstacle
+        for (Player p : gameState.getPlayers()) {
+            p.getHand().addUnit(new Obstacle(MainFrame.instance.getWidth()*67/1440, MainFrame.instance.getHeight()*60/900));
         }
 
         distributeTravelCards(); // distribute cards to each player

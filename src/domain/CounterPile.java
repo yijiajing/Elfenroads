@@ -20,7 +20,7 @@ public class CounterPile {
 
         for (CounterType type : CounterType.values()) {
             for (int i = 0; i < 8; i++) {
-                counters.add(new TransportationCounter(type, MainFrame.instance.getWidth()*67/1440, MainFrame.instance.getHeight()*52/900));
+                counters.add(new TransportationCounter(type, MainFrame.instance.getWidth()*67/1440, MainFrame.instance.getHeight()*60/900));
             }
         }
 

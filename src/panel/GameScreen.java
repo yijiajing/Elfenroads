@@ -182,9 +182,9 @@ public class GameScreen extends JPanel implements Serializable
 		Border whiteLine = BorderFactory.createLineBorder(Color.WHITE);
 		
 		JPanel panel1 = new JPanel();
-		panel1.setBounds(width*1210/1440, height*290/900, width*70/1440, height*60/900);
+		panel1.setBounds(width*1210/1440, height*290/900, width*70/1440, height*65/900);
 		panel1.setOpaque(false);
-		panel1.setBorder(whiteLine);
+		//panel1.setBorder(whiteLine);
 		panelForDeckOfTransportationCounters = panel1;
 	}
 	
@@ -192,33 +192,33 @@ public class GameScreen extends JPanel implements Serializable
 	{
 		Border whiteLine = BorderFactory.createLineBorder(Color.WHITE);
 		JPanel panel2 = new JPanel();
-		panel2.setBounds(width*1315/1440, height*290/900, width*70/1440, height*60/900);
+		panel2.setBounds(width*1315/1440, height*290/900, width*70/1440, height*65/900);
 		panel2.setOpaque(false);
-		panel2.setBorder(whiteLine);
+		//panel2.setBorder(whiteLine);
 		panelForFaceUpTransportationCounters[0] = panel2;
 		
 		JPanel panel3 = new JPanel();
-		panel3.setBounds(width*1210/1440, height*390/900, width*70/1440, height*60/900);
+		panel3.setBounds(width*1210/1440, height*385/900, width*70/1440, height*65/900);
 		panel3.setOpaque(false);
-		panel3.setBorder(whiteLine);
+		//panel3.setBorder(whiteLine);
 		panelForFaceUpTransportationCounters[1] = panel3;
 		
 		JPanel panel4 = new JPanel();
-		panel4.setBounds(width*1315/1440, height*390/900, width*70/1440, height*60/900);
+		panel4.setBounds(width*1315/1440, height*385/900, width*70/1440, height*65/900);
 		panel4.setOpaque(false);
-		panel4.setBorder(whiteLine);
+		//panel4.setBorder(whiteLine);
 		panelForFaceUpTransportationCounters[2] = panel4;
 		
 		JPanel panel5 = new JPanel();
-		panel5.setBounds(width*1210/1440, height*490/900, width*70/1440, height*60/900);
+		panel5.setBounds(width*1210/1440, height*480/900, width*70/1440, height*65/900);
 		panel5.setOpaque(false);
-		panel5.setBorder(whiteLine);
+		//panel5.setBorder(whiteLine);
 		panelForFaceUpTransportationCounters[3] = panel5;
 		
 		JPanel panel6 = new JPanel();
-		panel6.setBounds(width*1315/1440, height*490/900, width*70/1440, height*60/900);
+		panel6.setBounds(width*1315/1440, height*480/900, width*70/1440, height*65/900);
 		panel6.setOpaque(false);
-		panel6.setBorder(whiteLine);
+		//panel6.setBorder(whiteLine);
 		panelForFaceUpTransportationCounters[4] = panel6;
 	}
 	
@@ -279,15 +279,15 @@ public class GameScreen extends JPanel implements Serializable
 			JPanel panel= new JPanel();
 			panel.setOpaque(false);
 			panel.setBorder(whiteLine);
-			panel.setBounds(xCoordinate, height*630/900, width*70/1440, height*60/900);
+			panel.setBounds(xCoordinate, height*625/900, width*70/1440, height*65/900);
 			panelForPlayerTransportationCounters[i] = panel;
 			xCoordinate += width*200/1440;
 		}
 		
 		// Obstacle
 		panelForObstacle.setOpaque(false);
-		panelForObstacle.setBorder(whiteLine);
-		panelForObstacle.setBounds(width*1077/1440, height*630/900, width*70/1440, height*60/900);
+		//panelForObstacle.setBorder(whiteLine);
+		panelForObstacle.setBounds(width*1077/1440, height*625/900, width*70/1440, height*65/900);
 	}
 	
 	public void initializeMapImage()
@@ -321,7 +321,7 @@ public class GameScreen extends JPanel implements Serializable
 	{
 		ImageIcon gridImage = new ImageIcon("./assets/sprites/M08.png");
 		Image grid = gridImage.getImage();
-		Image gridResized = grid.getScaledInstance(width*67/1440, height*52/900,  java.awt.Image.SCALE_SMOOTH);
+		Image gridResized = grid.getScaledInstance(width*67/1440, height*60/900,  java.awt.Image.SCALE_SMOOTH);
 		gridImage = new ImageIcon(gridResized);
 		deckOfTransportationCountersImage_TopLayer = new JLabel(gridImage);
 	}
@@ -401,6 +401,9 @@ public class GameScreen extends JPanel implements Serializable
 		}
 		
 		// Obstacle
+		// TODO: this code assumes that the player viewing the GUI is the black player, fix this
+		Obstacle o = GameState.instance().getPlayerByColour(Colour.BLACK).getHand().getObstacle();
+		panelForObstacle.add(o.getImage());
 		boardGame_Layers.add(panelForObstacle,0);
 	}
 	
