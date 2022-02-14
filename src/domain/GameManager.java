@@ -1,5 +1,6 @@
 package domain;
 
+import enums.CounterType;
 import enums.RoundPhaseType;
 import enums.TravelCardType;
 import loginwindow.*;
@@ -11,6 +12,7 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Optional;
+import java.util.Stack;
 
 /**
  * A Singleton class that controls the main game loop
@@ -32,7 +34,7 @@ public class GameManager {
 
         // start a new game if there is no state to be loaded
         if (!loadedState.isPresent() && sessionID.isPresent()) {
-            gameState = GameState.init(GameScreen.getInstance());
+            gameState = GameState.init(GameScreen.getInstance(), 3);
             actionManager = ActionManager.init(gameState);
 
             // TODO: delete this - need to add players to gameState based on users in gameSession
@@ -69,10 +71,15 @@ public class GameManager {
     }
 
     private void setUpNewGame() {
+        // put 5 counters face up
+        for (int i=0; i<5; i++) {
+            this.gameState.addFaceUpCounterFromPile();
+        }
 
-        // create travel card deck
-        ArrayList<TravelCard> travelCards = initializeTravelCardDeck();
-        this.gameState.setTravelCardDeck(travelCards);
+        // give all players an obstacle
+        for (Player p : gameState.getPlayers()) {
+            p.getHand().addUnit(new Obstacle(MainFrame.instance.getWidth()*67/1440, MainFrame.instance.getHeight()*60/900));
+        }
 
         distributeTravelCards(); // distribute cards to each player
 
@@ -141,41 +148,13 @@ public class GameManager {
     }
 
 
-    private ArrayList<TravelCard> initializeTravelCardDeck() {
-
-        ArrayList<TravelCard> travelCardDeck = new ArrayList<>();
-
-        for (TravelCardType type : TravelCardType.values()) {
-            // leave out witch cards for now (TODO: incorporate witch variant for elfengold)
-            if (type.equals(TravelCardType.WITCH)) {
-                continue;
-            }
-
-            // add 10 or 12 (for raft) cards of each travel card type
-            if (type.equals(TravelCardType.RAFT)) {
-                for (int i = 0; i < 12; i++) {
-                    travelCardDeck.add(new TravelCard(type, GameScreen.getInstance().getWidth()*135/1440, GameScreen.getInstance().getHeight()*2/9));
-                }
-            } else {
-                for (int i = 0; i < 10; i++) {
-                    travelCardDeck.add(new TravelCard(type, GameScreen.getInstance().getWidth()*135/1440, GameScreen.getInstance().getHeight()*2/9));
-                }
-            }
-        }
-
-        Collections.shuffle(travelCardDeck); // shuffle the deck
-
-        return travelCardDeck;
-    }
-
-
     /**
      * Distribute 8 travel cards to each Player by popping from the front of the TravelCardDeck
      */
     public void distributeTravelCards() {
         for (Player p : gameState.getPlayers()) {
             for (int i=0; i<8; i++) {
-                p.getHand().addUnit(gameState.getTravelCardDeck().remove(0));
+                p.getHand().addUnit(gameState.getTravelCardDeck().draw());
             }
         }
     }

@@ -36,6 +36,10 @@ public class LobbyWindow extends JPanel implements ActionListener {
     private String filepathToRepo = ".";
 
     LobbyWindow(){
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        setSize((int) screenSize.getWidth(), (int) screenSize.getHeight());
+
+        background_elvenroads = MainFrame.instance.getElfenroadsBackground();
 
         createButton = new JButton("CREATE NEW SESSION");
         loadButton = new JButton("LOAD SAVED SESSION");
@@ -45,10 +49,6 @@ public class LobbyWindow extends JPanel implements ActionListener {
 
         // add an action listener
 
-
-        ImageIcon background_image =
-                new ImageIcon(filepathToRepo + "/assets/sprites/elfenroads.jpeg");
-        background_elvenroads = new JLabel(background_image);
         gameToJoin = new JLabel();
         gameToJoin.setText("");
         sessions = new JPanel(new BorderLayout());

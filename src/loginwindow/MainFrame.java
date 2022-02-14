@@ -14,7 +14,6 @@ public class MainFrame extends JFrame
     public static CardLayout cardLayout;
     public static JPanel mainPanel;
     public static User loggedIn;
-
     public static MainFrame instance;
 
     private MainFrame()
@@ -37,7 +36,6 @@ public class MainFrame extends JFrame
         GraphicsDevice screen = graphics.getDefaultScreenDevice();
 
         screen.setFullScreenWindow(this);
-
          */
 
     }

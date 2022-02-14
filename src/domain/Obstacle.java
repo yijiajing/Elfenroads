@@ -9,7 +9,7 @@ public class Obstacle extends CounterUnit {
 
     public Obstacle(int resizeWidth, int resizeHeight) {
         super(resizeWidth, resizeHeight, 9);
-        this.getDisplay().addMouseListener(new MouseAdapter() {
+        this.getImage().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (getPlacedOn() == null) {
