@@ -147,6 +147,9 @@ public class GameSession {
         JSONObject details = getSessionDetails(id);
         JSONObject playersAndIPS = new JSONObject(details.get("playerLocations").toString());
 
+        // for some reason, the players array in the server response doesn't show all the players. so, we are getting the information from playerLocations instead because
+        // that one seems to populate fine
+
         for (String player : playersAndIPS.keySet())
         {
             players.add(player);
