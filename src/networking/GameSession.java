@@ -136,6 +136,20 @@ public class GameSession {
         return addresses;
     }
 
+
+    // TODO: IMPLEMENT
+    /**
+     * similar logic to GameSession.getPlayerAddresses(), but will use long polling instead
+     * we will call this variant in the waiting screen so that we can constantly update players on the screen
+     * @param id
+     * @return
+     * @throws IOException
+     */
+    public static ArrayList<String> getPlayersLongPoll(String id) throws IOException
+    {
+        return new ArrayList<String>();
+    }
+
     /**
      *
      * @param id the id of the session we want to access
