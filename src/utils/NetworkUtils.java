@@ -16,10 +16,14 @@ import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.math.BigInteger;
 import java.net.HttpURLConnection;
 import java.net.InetAddress;
 import java.net.URL;
 import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.regex.Pattern;
@@ -169,7 +173,31 @@ public class NetworkUtils {
 
     }
 
-    // other UI-API crossover stuff
+    /**
+     * based on code from https://www.geeksforgeeks.org/md5-hash-in-java/
+     * @param input the stuff to hash (will be a payload for long polling)
+     * @return the hashed version of the stuff
+     */
+    public static String md5Hash(String input)
+    {
+        MessageDigest md5 = null;
+        try {
+            md5 = MessageDigest.getInstance("MD5");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        byte [] stuff = md5.digest(input.getBytes());
+        BigInteger num = new BigInteger (1, stuff);
+
+        String hash = num.toString(16);
+
+        // bit extend the hash to 32 bits
+        while (hash.length() < 32)
+        {
+            hash = "0" + hash;
+        }
+        return hash;
+    }
 
     /**
      * designed to be called inside the LobbyWindow to display game information
