@@ -26,7 +26,12 @@ public class PlayerServer
         wait = pConnections;
     }
 
-    public void start(int port)
+    /**
+     *
+     * @param port the port to use (not sure if this even does anything with ngrok)
+     * @param token the user's ngrok token
+     */
+    public void start(int port, String token)
     {
         try {
             System.out.println("Address this time around: " + NetworkUtils.ngrokAddrToPassToLS());
@@ -39,7 +44,7 @@ public class PlayerServer
         { 
             // Open ServerSocket and set the message for the other incomming connections
             serverSocket = new ServerSocket(port);
-            startNgrok("23pqd8dMfU3nAVUXDPkJfk6v4qO_5LPatNkgcUPXZn9rHuGAc"); // TODO: change token
+            startNgrok(token); //
             Thread.sleep(1000);
             System.out.println(NetworkUtils.getServerInfo());
             
