@@ -39,7 +39,7 @@ public class PlayerServer
         { 
             // Open ServerSocket and set the message for the other incomming connections
             serverSocket = new ServerSocket(port);
-            startNgrok("23pqd8dMfU3nAVUXDPkJfk6v4qO_5LPatNkgcUPXZn9rHuGAc");
+            startNgrok("23pqd8dMfU3nAVUXDPkJfk6v4qO_5LPatNkgcUPXZn9rHuGAc"); // TODO: change token
             Thread.sleep(1000);
             System.out.println(NetworkUtils.getServerInfo());
             
@@ -60,7 +60,7 @@ public class PlayerServer
 
             // Reinitialize "wait" variable to the number of initial connections for futur message and close connection
             wait = aConnections;
-            stop();
+            stopNgrok();
         }
         catch (Exception e)
         {
@@ -70,6 +70,7 @@ public class PlayerServer
 
     public static void startNgrok(String token) throws IOException
     {
+
         String os = System.getProperty("os.name").toLowerCase();
         String command1 = "ngrok " + token;
         String command2 = "ngrok tcp 6666";
@@ -87,13 +88,13 @@ public class PlayerServer
         message = msg;
     }
 
-    public void stop()
+    public static void stopNgrok()
     {
         try
         {
-            serverSocket.close();
+            //serverSocket.close();
             String command = "killall ngrok";
-            //Process proc = Runtime.getRuntime().exec(command);
+            Process proc = Runtime.getRuntime().exec(command);
         }
         catch(IOException e)
         {

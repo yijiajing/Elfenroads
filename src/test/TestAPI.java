@@ -7,6 +7,12 @@ import networking.User;
 import utils.NetworkUtils;
 
 import java.io.IOException;
+import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.util.ArrayList;
+
+import static networking.GameSession.*;
 
 public class TestAPI {
 
@@ -14,40 +20,30 @@ public class TestAPI {
 
     {
 
-        System.out.println(User.doesUsernameExist("maex"));
+        ArrayList<String> ids = getAllSessionID();
 
-        System.out.println(NetworkUtils.ngrokAddrToPassToLS());
-
-        // System.out.println(GameSession.getFirstSessionID());
-        // System.out.println(NetworkUtils.getServerInfo());
-        // System.out.println(GameSession.getAllSessionID());
-
-
-        User alex = User.init("alex", "abc123_ABC123");
-        User.resetUser();
-        User nick = User.init("nick", "abc123_ABC123");
-        System.out.println("Nick's role is: " + nick.getRole());
-
-        GameSession sesh = new GameSession(alex, "testGame", "saveGameName1");
-        GameSession sesh2 = new GameSession(alex, "testGame", "saveGame2");
-        System.out.println("Alex IP is: " + NetworkUtils.ngrokAddrToPassToLS());
-        User.resetUser();
-
-        //System.out.println(NetworkUtils.dnsLookupNgrok());
-
-/*
-        User nick = User.init("nick", "abc123_ABC123");
-
-        System.out.println("Nick's IP is: " + NetworkUtils.ngrokAddrToPassToLS());
-
-        for (String id : GameSession.getAllSessionID())
+        for (String id : ids)
         {
-            GameSession.joinSession(nick, id);
+            System.out.println("Showing game details for session with id: " + id);
+            System.out.println(getSessionDetails(id));
+            System.out.println("The player names are: " + getPlayerNames(id));
         }
 
+        MessageDigest md5 = MessageDigest.getInstance("MD5");
 
-*/
-        System.out.println(GameSession.getSessions());
+        byte [] messageDigest = md5.digest("{}".getBytes(StandardCharsets.UTF_8));
+
+        BigInteger no = new BigInteger(1, messageDigest);
+
+        String hashtext = no.toString(16);
+
+        while (hashtext.length() < 32)
+        {
+            hashtext = "0" + hashtext;
+        }
+
+        System.out.println("The hash is: " + hashtext);
+
 
 
     }
@@ -56,8 +52,6 @@ public class TestAPI {
 
         //User createNew = User.createNewUser(username, password, User.Role.PLAYER);
         //createNew.printTokenRelatedFields();
-
-        
     }
 
 

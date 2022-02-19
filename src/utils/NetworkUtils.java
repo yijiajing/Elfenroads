@@ -16,16 +16,33 @@ import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.math.BigInteger;
 import java.net.HttpURLConnection;
 import java.net.InetAddress;
 import java.net.URL;
 import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 public class NetworkUtils {
 
     // a class to hold some static utility methods that don't really fit anywhere else
+
+
+    /**
+     * from max's code
+     * makes sure a (potential) LS password conforms to the constraints of the system
+     * @param password
+     * @return
+     */
+    public static boolean isValidPassword(String password)
+    {
+        return Pattern.compile("(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,32}").matcher(password).find();
+    }
 
     /**
      * @pre we have validated ngrok setup using validateNgrok()
@@ -156,39 +173,31 @@ public class NetworkUtils {
 
     }
 
-    // Popups for network-related errors
-
-    public static Popup initializeNgrokErrorPopup(LoginWindow loginScreen)
+    /**
+     * based on code from https://www.geeksforgeeks.org/md5-hash-in-java/
+     * @param input the stuff to hash (will be a payload for long polling)
+     * @return the hashed version of the stuff
+     */
+    public static String md5Hash(String input)
     {
-        PopupFactory factory = new PopupFactory();
-        JLabel display = new JLabel("Ngrok did not start properly. Please check your token input and try again.");
+        MessageDigest md5 = null;
+        try {
+            md5 = MessageDigest.getInstance("MD5");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        byte [] stuff = md5.digest(input.getBytes());
+        BigInteger num = new BigInteger (1, stuff);
 
-        Popup out = factory.getPopup(loginScreen, display, 800, 225);
+        String hash = num.toString(16);
 
-        return out;
+        // bit extend the hash to 32 bits
+        while (hash.length() < 32)
+        {
+            hash = "0" + hash;
+        }
+        return hash;
     }
-
-    public static Popup initializeWrongUsernameErrorPopup(LoginWindow loginScreen)
-    {
-        PopupFactory factory = new PopupFactory();
-        JLabel display = new JLabel("That username does not exist in the LS system. Please try again.");
-
-        Popup out = factory.getPopup(loginScreen, display, 800, 225);
-
-        return out;
-    }
-
-    public static Popup initializeWrongPasswordErrorPopup(LoginWindow loginScreen)
-    {
-        PopupFactory factory = new PopupFactory();
-        JLabel display = new JLabel("The password entered is incorrect. Please try again.");
-
-        Popup out = factory.getPopup(loginScreen, display, 800, 225);
-
-        return out;
-    }
-
-    // other UI-API crossover stuff
 
     /**
      * designed to be called inside the LobbyWindow to display game information

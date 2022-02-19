@@ -38,7 +38,6 @@ public class GameSession {
         String token = creator.getAccessToken();
 
 
-        // TODO: deal with the location--do we even need to for P2P?
         URL url = new URL("http://35.182.122.111:4242/api/sessions?access_token=" + token + "&location=" + locationIP);
 
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -109,7 +108,13 @@ public class GameSession {
         return saveGameName;
     }
 
-    // TODO: implement
+
+    /**
+     *
+     * @param id the id of the game session we want information for
+     * @return all IPs of the players in the session
+     * @throws IOException
+     */
     public static ArrayList<String> getPlayerAddresses(String id) throws IOException
     {
         // parse the session info to get enough info about the players
@@ -130,7 +135,27 @@ public class GameSession {
 
         return addresses;
     }
+    /**
+     *
+     * @param id the id of the session we want to access
+     * @return a list of all of the players (by name) in the sessions
+     */
+    public static ArrayList<String> getPlayerNames(String id) throws IOException
+    {
+        ArrayList<String> players = new ArrayList<String>();
+        JSONObject details = getSessionDetails(id);
+        JSONObject playersAndIPS = new JSONObject(details.get("playerLocations").toString());
 
+        // for some reason, the players array in the server response doesn't show all the players. so, we are getting the information from playerLocations instead because
+        // that one seems to populate fine
+
+        for (String player : playersAndIPS.keySet())
+        {
+            players.add(player);
+        }
+
+        return players;
+    }
 
     public static JSONObject getSessionDetails(String id) throws IOException
     {
