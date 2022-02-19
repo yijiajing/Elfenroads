@@ -40,16 +40,20 @@ public class GameState {
     private RoundPhaseType currentPhase;
     private Player currentPlayer;
 
-    private ArrayList<TravelCard> travelCardDeck = new ArrayList<>();
+    private TravelCardDeck travelCardDeck;
+    private CounterPile counterPile;
+    private ArrayList<TransportationCounter> faceUpCounters = new ArrayList<>();
 
     private ArrayList<ElfBoot> elfBoots;
 
-    private GameState (GameScreen pScreen)
+    private GameState (GameScreen pScreen, int numRounds)
     {
         this.screen = pScreen;
         this.elfBoots = new ArrayList<>();
         this.currentRound = 1;
-        this.totalRounds = 3; // TODO depends on version
+        this.totalRounds = numRounds;
+        this.travelCardDeck = new TravelCardDeck();
+        this.counterPile = new CounterPile();
     }
 
     // TODO: implement this second constructor
@@ -82,9 +86,9 @@ public class GameState {
         players.add(new Player(Colour.YELLOW, screen));
     }
     
-    public static GameState init(GameScreen pScreen) {
+    public static GameState init(GameScreen pScreen, int numRounds) {
         if (instance == null) {
-            instance = new GameState(pScreen);
+            instance = new GameState(pScreen, numRounds);
         }
     	return instance;
     }
@@ -166,19 +170,28 @@ public class GameState {
         currentPlayer = players.get(0);
     }
 
-    public void addTravelCard(TravelCard pCard) {
-        this.travelCardDeck.add(pCard);
-    }
-
     public void addElfBoot(ElfBoot boot) {
         this.elfBoots.add(boot);
     }
 
-    public ArrayList<TravelCard> getTravelCardDeck() {
+    public TravelCardDeck getTravelCardDeck() {
         return travelCardDeck;
     }
 
-    public void setTravelCardDeck(ArrayList<TravelCard> travelCards) {
-        this.travelCardDeck = travelCards;
+    public ArrayList<TransportationCounter> getFaceUpCounters() {
+        return this.faceUpCounters;
+    }
+
+    public CounterPile getCounterPile() {
+        return this.counterPile;
+    }
+
+    public void addFaceUpCounterFromPile() {
+        if (counterPile.getSize() > 0) {
+            TransportationCounter counter = counterPile.draw();
+            faceUpCounters.add(counter);
+        } else {
+            // TODO what to do if the counter pile is empty?? reshuffle?
+        }
     }
 }

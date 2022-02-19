@@ -59,7 +59,7 @@ public class LoginWindow extends JPanel implements Runnable{
 
         infoPanel = new JPanel(new BorderLayout());
 
-        background_elvenroads = MainFrame.instance.getElfenroadsBackground();
+        background_elvenroads = MainFrame.getInstance().getElfenroadsBackground();
 
         GridBagLayout layout = new GridBagLayout();
         GridBagConstraints gbc = new GridBagConstraints();

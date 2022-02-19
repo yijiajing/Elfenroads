@@ -5,28 +5,28 @@ import java.awt.*;
 
 public abstract class CounterUnit extends Drawable{
 
-    String filepathToRepo = ".";
-    String imageFilepath;
-    ImageIcon image;
-    JLabel display;
+    private JLabel image;
+    private Road placedOn;
 
     CounterUnit(int resizeWidth, int resizeHeight, int imageNumber) {
+
         // find the picture of the card based on what type it is
         // since the images are named similarly and ordered the same way as they are in the enum declaration,
-        // we can get the filepath just by using the type.
-        this.imageFilepath = ("./assets/sprites/M0" + imageNumber + ".png");
-        this.image = new ImageIcon (this.imageFilepath);
-        Image toResize = this.image.getImage();
+        // we can get the filepath just by using the type
+        String filepath = ("./assets/sprites/M0" + imageNumber + ".png");
+        ImageIcon imageIcon = new ImageIcon(filepath);
+        Image toResize = imageIcon.getImage();
         Image resized = toResize.getScaledInstance(resizeWidth, resizeHeight,  java.awt.Image.SCALE_SMOOTH);
-        this.image = new ImageIcon(resized);
-
-        // add JLabel
-        this.display = new JLabel(this.image);
+        this.image = new JLabel(new ImageIcon(resized));
     }
 
-    public ImageIcon getImage() {return this.image;}
+    public Road getPlacedOn() {
+        return placedOn;
+    }
 
-    public String getImageFilepath() {return this.imageFilepath;}
+    public void setPlacedOn(Road placedOn) {
+        this.placedOn = placedOn;
+    }
 
-    public JLabel getDisplay() {return this.display;}
+    public JLabel getImage() {return this.image;}
 }

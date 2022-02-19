@@ -60,7 +60,7 @@ public class LoadGameWindow extends JPanel implements ActionListener{
 
         gamesPanel.add(gamePanel, BorderLayout.LINE_START);
 
-        background_elvenroads = MainFrame.instance.getElfenroadsBackground();
+        background_elvenroads = MainFrame.getInstance().getElfenroadsBackground();
         GridBagLayout layout = new GridBagLayout();
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;

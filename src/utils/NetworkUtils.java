@@ -254,7 +254,7 @@ public class NetworkUtils {
             startButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    GameState state = GameState.init(GameScreen.init(MainFrame.getInstance()));
+                    GameState state = GameState.init(GameScreen.init(MainFrame.getInstance()), 3);
                     GameManager.init(Optional.empty(), Optional.of(id));
                 }
             });

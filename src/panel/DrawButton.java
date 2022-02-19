@@ -1,14 +1,14 @@
 package panel;// package testing;
 
-import domain.Deck;
+import domain.CounterPile;
 
 import javax.swing.*;
 
 public class DrawButton extends JButton {
 
-    private final Deck drawnFrom;
+    private final CounterPile drawnFrom;
 
-    public DrawButton(Deck pDrawnFrom)
+    public DrawButton(CounterPile pDrawnFrom)
     {
         this.drawnFrom = pDrawnFrom;
         // this.addActionListener(new panel.DrawListener(drawnFrom));

@@ -2,6 +2,7 @@ package panel;
 
 import domain.*;
 import enums.CounterType;
+import networking.ActionManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -32,13 +33,14 @@ public class CounterPanel extends JPanel {
                 //TODO: this is only for demonstration,
                 // need to implement a mechanism to place a selected transportation counter
                 setTransportationCounter(new TransportationCounter(CounterType.MAGICCLOUD, 30, 30));
+                ActionManager.getInstance().setSelectedRoad(CounterPanel.this.road);
                 update();
             }
         });
     }
 
     public void setTransportationCounter(TransportationCounter transportationCounter) {
-        this.add(transportationCounter.getDisplay());
+        this.add(transportationCounter.getImage());
     }
 
     public void placeObstacle() {

@@ -65,11 +65,7 @@ public class GameScreen extends JPanel implements Serializable
 	private GameMap gameMap;
 
 	private JTable leaderboard = new JTable();
-	
-	private Deck transportationCountersToDraw;
-	//private String filepathToRepo = "/Users/nicktriantos/Desktop/f2021-hexanome-12"; // change this depending on whose machine we are using
-	// private String filepathToRepo = "/Users/charlescouture/eclipse-workspace/COMP361";
-	private String filepathToRepo = ".";
+
 	private boolean myTurn;
 
 	// TODO: change this on the other computer
@@ -108,7 +104,7 @@ public class GameScreen extends JPanel implements Serializable
 	}
 
 	/**
-	 * You must call this function to draw all of the UI components to the screen
+	 * Draws all of the UI components to the screen
 	 */
 	public void draw() {
 		initialization();
@@ -143,7 +139,6 @@ public class GameScreen extends JPanel implements Serializable
 		initializeDeckOfTransportationCounters();
 		initializeDeckOfTransportationCountersImage();
 		initializeLeaderboard();
-		initializeTransportationCounters();
 		initializeLeaderboard();
 	}
 
@@ -187,9 +182,9 @@ public class GameScreen extends JPanel implements Serializable
 		Border whiteLine = BorderFactory.createLineBorder(Color.WHITE);
 		
 		JPanel panel1 = new JPanel();
-		panel1.setBounds(width*1210/1440, height*290/900, width*70/1440, height*60/900);
+		panel1.setBounds(width*1210/1440, height*290/900, width*70/1440, height*65/900);
 		panel1.setOpaque(false);
-		panel1.setBorder(whiteLine);
+		//panel1.setBorder(whiteLine);
 		panelForDeckOfTransportationCounters = panel1;
 	}
 	
@@ -197,33 +192,33 @@ public class GameScreen extends JPanel implements Serializable
 	{
 		Border whiteLine = BorderFactory.createLineBorder(Color.WHITE);
 		JPanel panel2 = new JPanel();
-		panel2.setBounds(width*1315/1440, height*290/900, width*70/1440, height*60/900);
+		panel2.setBounds(width*1315/1440, height*290/900, width*70/1440, height*65/900);
 		panel2.setOpaque(false);
-		panel2.setBorder(whiteLine);
+		//panel2.setBorder(whiteLine);
 		panelForFaceUpTransportationCounters[0] = panel2;
 		
 		JPanel panel3 = new JPanel();
-		panel3.setBounds(width*1210/1440, height*390/900, width*70/1440, height*60/900);
+		panel3.setBounds(width*1210/1440, height*385/900, width*70/1440, height*65/900);
 		panel3.setOpaque(false);
-		panel3.setBorder(whiteLine);
+		//panel3.setBorder(whiteLine);
 		panelForFaceUpTransportationCounters[1] = panel3;
 		
 		JPanel panel4 = new JPanel();
-		panel4.setBounds(width*1315/1440, height*390/900, width*70/1440, height*60/900);
+		panel4.setBounds(width*1315/1440, height*385/900, width*70/1440, height*65/900);
 		panel4.setOpaque(false);
-		panel4.setBorder(whiteLine);
+		//panel4.setBorder(whiteLine);
 		panelForFaceUpTransportationCounters[2] = panel4;
 		
 		JPanel panel5 = new JPanel();
-		panel5.setBounds(width*1210/1440, height*490/900, width*70/1440, height*60/900);
+		panel5.setBounds(width*1210/1440, height*480/900, width*70/1440, height*65/900);
 		panel5.setOpaque(false);
-		panel5.setBorder(whiteLine);
+		//panel5.setBorder(whiteLine);
 		panelForFaceUpTransportationCounters[3] = panel5;
 		
 		JPanel panel6 = new JPanel();
-		panel6.setBounds(width*1315/1440, height*490/900, width*70/1440, height*60/900);
+		panel6.setBounds(width*1315/1440, height*480/900, width*70/1440, height*65/900);
 		panel6.setOpaque(false);
-		panel6.setBorder(whiteLine);
+		//panel6.setBorder(whiteLine);
 		panelForFaceUpTransportationCounters[4] = panel6;
 	}
 	
@@ -284,20 +279,20 @@ public class GameScreen extends JPanel implements Serializable
 			JPanel panel= new JPanel();
 			panel.setOpaque(false);
 			panel.setBorder(whiteLine);
-			panel.setBounds(xCoordinate, height*630/900, width*70/1440, height*60/900);
+			panel.setBounds(xCoordinate, height*625/900, width*70/1440, height*65/900);
 			panelForPlayerTransportationCounters[i] = panel;
 			xCoordinate += width*200/1440;
 		}
 		
 		// Obstacle
 		panelForObstacle.setOpaque(false);
-		panelForObstacle.setBorder(whiteLine);
-		panelForObstacle.setBounds(width*1077/1440, height*630/900, width*70/1440, height*60/900);
+		//panelForObstacle.setBorder(whiteLine);
+		panelForObstacle.setBounds(width*1077/1440, height*625/900, width*70/1440, height*65/900);
 	}
 	
 	public void initializeMapImage()
 	{
-		ImageIcon mapImage = new ImageIcon(filepathToRepo + "/assets/sprites/map.png");
+		ImageIcon mapImage = new ImageIcon("./assets/sprites/map.png");
 		Image map = mapImage.getImage();
 		Image mapResized = map.getScaledInstance(width*1140/1440, height*625/900,  java.awt.Image.SCALE_SMOOTH);
 		mapImage = new ImageIcon(mapResized);
@@ -306,8 +301,7 @@ public class GameScreen extends JPanel implements Serializable
 	
 	public void initializeRoundCardImage(int round)
 	{
-		String image = filepathToRepo + "R" + String.valueOf(round) + ".png";
-		ImageIcon roundImage = new ImageIcon(filepathToRepo + "/assets/sprites/R1.png");
+		ImageIcon roundImage = new ImageIcon("./assets/sprites/R1.png");
 		Image Round = roundImage.getImage();
 		Image RoundResized = Round.getScaledInstance(width*90/1440, height*130/900,  java.awt.Image.SCALE_SMOOTH);
 		roundImage = new ImageIcon(RoundResized);
@@ -316,7 +310,7 @@ public class GameScreen extends JPanel implements Serializable
 	
 	public void initializeInformationCardImage()
 	{
-		ImageIcon gridImage = new ImageIcon(filepathToRepo + "/assets/sprites/grid.png");
+		ImageIcon gridImage = new ImageIcon("./assets/sprites/grid.png");
 		Image grid = gridImage.getImage();
 		Image gridResized = grid.getScaledInstance(width*290/1440, height*325/900,  java.awt.Image.SCALE_SMOOTH);
 		gridImage = new ImageIcon(gridResized);
@@ -325,9 +319,9 @@ public class GameScreen extends JPanel implements Serializable
 	
 	public void initializeDeckOfTransportationCountersImage()
 	{
-		ImageIcon gridImage = new ImageIcon(filepathToRepo + "/assets/sprites/M08.png");
+		ImageIcon gridImage = new ImageIcon("./assets/sprites/M08.png");
 		Image grid = gridImage.getImage();
-		Image gridResized = grid.getScaledInstance(width*67/1440, height*52/900,  java.awt.Image.SCALE_SMOOTH);
+		Image gridResized = grid.getScaledInstance(width*67/1440, height*60/900,  java.awt.Image.SCALE_SMOOTH);
 		gridImage = new ImageIcon(gridResized);
 		deckOfTransportationCountersImage_TopLayer = new JLabel(gridImage);
 	}
@@ -364,10 +358,17 @@ public class GameScreen extends JPanel implements Serializable
 	}
 	
 	public void addFaceUpTransportationCounters()
-	{	
-		for (JPanel panel : panelForFaceUpTransportationCounters)
-		{
+	{
+		ArrayList<TransportationCounter> faceUpCounters = GameState.instance().getFaceUpCounters();
+
+		for (int i = 0; i < 5; i++) {
+			JPanel panel = panelForFaceUpTransportationCounters[i];
+			TransportationCounter counter = faceUpCounters.get(i);
+			panel.add(counter.getImage());
+
 			boardGame_Layers.add(panel, 0);
+			panel.repaint();
+			panel.revalidate();
 		}
 	}
 	
@@ -383,6 +384,7 @@ public class GameScreen extends JPanel implements Serializable
 			JPanel panel = panelForPlayerCards[p];
 			CardUnit card = myCards.get(p);
 			panel.add(card.getImage());
+
 			boardGame_Layers.add(panel, 0);
 			panel.repaint();
 			panel.revalidate();
@@ -399,25 +401,10 @@ public class GameScreen extends JPanel implements Serializable
 		}
 		
 		// Obstacle
+		// TODO: this code assumes that the player viewing the GUI is the black player, fix this
+		Obstacle o = GameState.instance().getPlayerByColour(Colour.BLACK).getHand().getObstacle();
+		panelForObstacle.add(o.getImage());
 		boardGame_Layers.add(panelForObstacle,0);
-	}
-
-	public void initializeTransportationCounters()
-	{
-		// we have 8 of each counter in the game
-		Stack<TransportationCounter> toAddToDeck = new Stack<TransportationCounter>();
-
-		for (int i = 1; i <= 8; i++)
-		{
-			toAddToDeck.push(new TransportationCounter(CounterType.DRAGON, width*67/1440, height*52/900));
-			toAddToDeck.push(new TransportationCounter(CounterType.GIANTPIG, width*67/1440, height*52/900));
-			toAddToDeck.push(new TransportationCounter(CounterType.UNICORN, width*67/1440, height*52/900));
-			toAddToDeck.push(new TransportationCounter(CounterType.TROLLWAGON, width*67/1440, height*52/900));
-			toAddToDeck.push(new TransportationCounter(CounterType.ELFCYCLE, width*67/1440, height*52/900));
-			toAddToDeck.push(new TransportationCounter(CounterType.MAGICCLOUD, width*67/1440, height*52/900));
-		}
-
-		transportationCountersToDraw = new Deck(toAddToDeck);
 	}
 	
 	public void initializeListenerToDraw()
@@ -427,12 +414,12 @@ public class GameScreen extends JPanel implements Serializable
 		deckOfTransportationCountersImage_TopLayer.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				TransportationCounter drawn = transportationCountersToDraw.draw(); // draw a counter
+				TransportationCounter drawn = GameState.instance().getCounterPile().draw(); // draw a counter
 				for (int i = 0; i < 5; i++)
 				{
 					if (panelForPlayerTransportationCounters[i].getComponentCount() == 0) // if spot is empty, put card there
 					{
-						panelForPlayerTransportationCounters[i].add(drawn.getDisplay());
+						panelForPlayerTransportationCounters[i].add(drawn.getImage());
 						mainframe.repaint();
 						mainframe.revalidate();
 						break;
