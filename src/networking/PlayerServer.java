@@ -72,11 +72,14 @@ public class PlayerServer
     {
 
         String os = System.getProperty("os.name").toLowerCase();
+        // for some reason ngrok seems to not have run permissions by default
+        String permissionsCommand = "chmod +x ngrok";
         String command1 = "ngrok " + token;
         String command2 = "ngrok tcp 6666";
         if (!os.contains("win")) {
             command1 = "./" + command1;
             command2 = "./" + command2;
+            Process permissions = Runtime.getRuntime().exec(permissionsCommand); // not sure if this works on Windows but it seems to be necessary for Mac users
         }
 
         Process proc1 = Runtime.getRuntime().exec(command1);
