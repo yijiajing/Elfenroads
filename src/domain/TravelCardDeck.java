@@ -37,4 +37,8 @@ public class TravelCardDeck {
     public TravelCard draw() {
         return cards.pop();
     }
+
+    public void shuffle() {
+        Collections.shuffle(cards); // shuffle the deck
+    }
 }

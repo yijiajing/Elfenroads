@@ -1,5 +1,6 @@
 package domain;
 
+import enums.Colour;
 import enums.CounterType;
 import enums.RoundPhaseType;
 import enums.TravelCardType;
@@ -9,10 +10,7 @@ import panel.ElfBootPanel;
 import panel.GameScreen;
 
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Optional;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * A Singleton class that controls the main game loop
@@ -23,8 +21,11 @@ public class GameManager {
 
     private GameState gameState;
     private ActionManager actionManager;
+    private Player thisPlayer; // represents the Player who is using this GUI, set by ChooseBootWindow
+    private boolean loaded;
 
     /**
+     * Constructor is called when "join" is clicked
      * If the User is starting a new game, then loadedState == null and sessionID != null
      * If the User is loading a previous game, then loadedState != null and sessionID == null (change this?)
      */
@@ -34,26 +35,33 @@ public class GameManager {
 
         // start a new game if there is no state to be loaded
         if (!loadedState.isPresent() && sessionID.isPresent()) {
-            gameState = GameState.init(GameScreen.getInstance(), 3);
+            gameState = GameState.init(3);
             actionManager = ActionManager.init(gameState);
+            loaded = false;
 
-            // TODO: delete this - need to add players to gameState based on users in gameSession
-            gameState.setDummyPlayers();
-
-            setUpNewGame();
+            // prompt user to choose a boot colour
+            MainFrame.mainPanel.add(new ChooseBootWindow(), "choose-boot");
+            MainFrame.cardLayout.show(MainFrame.mainPanel, "choose-boot");
         }
 
         // load state
         else {
             gameState = loadedState.get();
+            loaded = true;
             //TODO implement
         }
+    }
+
+    /**
+     * Called when "start" is clicked
+     */
+    public void launch() {
+        if (!loaded) setUpNewGame();
 
         GameScreen.getInstance().draw();
         MainFrame.cardLayout.show(MainFrame.mainPanel,"gameScreen");
 
         //gameLoop();
-
     }
 
     public static GameManager init(Optional<GameState> loadedState, Optional<String> sessionID) {
@@ -70,6 +78,15 @@ public class GameManager {
         return INSTANCE;
     }
 
+    /**
+     * Called by ChooseBootWindow after the user chooses a boot colour
+     * Sets the Player of "this" GUI
+     */
+    public void setThisPlayer(Player p) {
+        thisPlayer = p;
+        gameState.addPlayer(p);
+    }
+
     private void setUpNewGame() {
         // put 5 counters face up
         for (int i=0; i<5; i++) {
@@ -81,11 +98,9 @@ public class GameManager {
             p.getHand().addUnit(new Obstacle(MainFrame.instance.getWidth()*67/1440, MainFrame.instance.getHeight()*60/900));
         }
 
-        distributeTravelCards(); // distribute cards to each player
+        distributeTravelCards();
 
         initializeElfBoots();
-
-        // TODO: add more stuff to set up from game rules
     }
 
 
@@ -95,15 +110,10 @@ public class GameManager {
 
             setUpRound();
 
-            // **** DRAW CARDS **** //
-            while (gameState.getCurrentPhase().equals(RoundPhaseType.DRAWCARDS)) {
-                // TODO IMPLEMENT
-                break;
-            }
-
             // **** DRAW COUNTERS **** //
             while (gameState.getCurrentPhase().equals(RoundPhaseType.DRAWCOUNTERS)) {
                 // TODO IMPLEMENT
+
                 break;
             }
 
@@ -149,11 +159,17 @@ public class GameManager {
 
 
     /**
-     * Distribute 8 travel cards to each Player by popping from the front of the TravelCardDeck
+     * Distribute travel cards to each Player by popping from the front of the TravelCardDeck
+     * Fills the Player's hand to have 8 travel cards
      */
     public void distributeTravelCards() {
+
+        gameState.getTravelCardDeck().shuffle();
+
         for (Player p : gameState.getPlayers()) {
-            for (int i=0; i<8; i++) {
+            int numCards = p.getHand().getNumTravelCards();
+
+            for (int i=numCards; i<8; i++) {
                 p.getHand().addUnit(gameState.getTravelCardDeck().draw());
             }
         }
@@ -192,8 +208,8 @@ public class GameManager {
     }
 
     private void setUpRound() {
-        //TODO
-
+        distributeTravelCards(); // distribute cards to each player
+        gameState.setCurrentPhase(RoundPhaseType.DRAWCOUNTERS);
         gameState.setToFirstPlayer();
     }
 
@@ -223,5 +239,19 @@ public class GameManager {
 
     public GameState getGameState() {
         return this.gameState;
+    }
+
+    public static ArrayList<Colour> getAvailableColours() {
+        // TODO: this method is WRONG - we need to get the available colours by communicating with
+        // TODO: the other players in the session about what colours they chose
+
+        ArrayList<Colour> availableColours = new ArrayList<>();
+        availableColours.addAll(Arrays.asList(Colour.values()));
+
+        return availableColours;
+    }
+
+    public Player getThisPlayer() {
+        return thisPlayer;
     }
 }

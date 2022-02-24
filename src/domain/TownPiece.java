@@ -14,14 +14,12 @@ public class TownPiece {
     private int width;
     private int height;
     private Town town;
-    private GameScreen gameScreen;
 
-    public TownPiece(Colour pColour, Town pTown, GameScreen pScreen) {
+    public TownPiece(Colour pColour, Town pTown) {
         this.colour = pColour;
         this.town = pTown;
-        this.gameScreen = pScreen;
-        this.width = MainFrame.getInstance().getWidth() * 1/144;
-        this.height = MainFrame.getInstance().getHeight() * 1/90;
+        this.width = MainFrame.getInstance().getWidth()/144;
+        this.height = MainFrame.getInstance().getHeight()/90;
 
         ImageIcon pieceIcon = new ImageIcon("./assets/boppels-and-boots/boppel-" + this.colour + ".png");
         Image pieceImage = pieceIcon.getImage();

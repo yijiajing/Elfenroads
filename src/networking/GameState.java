@@ -25,7 +25,6 @@ public class GameState {
     3. 
      */
 
-    private GameScreen screen;
     private JSONObject serialized;
 
     // Global variable holding the singleton GameState instance
@@ -46,9 +45,8 @@ public class GameState {
 
     private ArrayList<ElfBoot> elfBoots;
 
-    private GameState (GameScreen pScreen, int numRounds)
+    private GameState (int numRounds)
     {
-        this.screen = pScreen;
         this.elfBoots = new ArrayList<>();
         this.currentRound = 1;
         this.totalRounds = numRounds;
@@ -78,17 +76,17 @@ public class GameState {
 
     // TODO: remove this method, only using it for testing of UI before networking stuff is set up
     public void setDummyPlayers() {
-        players.add(new Player(Colour.BLACK, screen));
-        players.add(new Player(Colour.BLUE, screen));
-        players.add(new Player(Colour.GREEN, screen));
-        players.add(new Player(Colour.PURPLE, screen));
-        players.add(new Player(Colour.RED, screen));
-        players.add(new Player(Colour.YELLOW, screen));
+        players.add(new Player(Colour.BLACK));
+        players.add(new Player(Colour.BLUE));
+        players.add(new Player(Colour.GREEN));
+        players.add(new Player(Colour.PURPLE));
+        players.add(new Player(Colour.RED));
+        players.add(new Player(Colour.YELLOW));
     }
     
-    public static GameState init(GameScreen pScreen, int numRounds) {
+    public static GameState init(int numRounds) {
         if (instance == null) {
-            instance = new GameState(pScreen, numRounds);
+            instance = new GameState(numRounds);
         }
     	return instance;
     }
@@ -193,5 +191,9 @@ public class GameState {
         } else {
             // TODO what to do if the counter pile is empty?? reshuffle?
         }
+    }
+
+    public void addPlayer(Player p) {
+        players.add(p);
     }
 }

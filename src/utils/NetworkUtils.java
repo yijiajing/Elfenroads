@@ -243,6 +243,7 @@ public class NetworkUtils {
                     // join the game
                     try {
                         GameSession.joinSession(MainFrame.loggedIn, id);
+                        GameManager.init(Optional.empty(), Optional.of(id)); // pulls up ChooseBootWindow
                     } catch (Exception ex) {
                         System.out.println("There was a problem attempting to join the session with User" + MainFrame.loggedIn.getUsername());
                         ex.printStackTrace();
@@ -254,13 +255,9 @@ public class NetworkUtils {
             startButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    GameState state = GameState.init(GameScreen.init(MainFrame.getInstance()), 3);
-                    GameManager.init(Optional.empty(), Optional.of(id));
+                    GameManager.getInstance().launch(); // pulls up GameScreen
                 }
             });
-
-
-
 
 
             // initialize the box

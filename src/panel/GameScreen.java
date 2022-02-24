@@ -139,7 +139,6 @@ public class GameScreen extends JPanel implements Serializable
 		initializeDeckOfTransportationCounters();
 		initializeDeckOfTransportationCountersImage();
 		initializeLeaderboard();
-		initializeLeaderboard();
 	}
 
 	
@@ -333,9 +332,21 @@ public class GameScreen extends JPanel implements Serializable
 		backgroundPanel_ForInformationCard.add(informationCardImage_TopLayer);
 		panelForDeckOfTransportationCounters.add(deckOfTransportationCountersImage_TopLayer);
 
+		drawTownPieces();
+
 		notifyObservers();
 	}
-	
+
+	public void drawTownPieces() {
+
+		// put town pieces on every town except for Elvenhold
+		for (Town t : GameMap.getInstance().getTownList()) {
+			if (!t.getName().equalsIgnoreCase("Elvenhold")) {
+				t.initializeTownPieces();
+			}
+		}
+	}
+
 	public void addPanelToScreen()
 	{
 		boardGame_Layers.add(backgroundPanel_ForRound, 0);
@@ -374,10 +385,7 @@ public class GameScreen extends JPanel implements Serializable
 	
 	public void addCards()
 	{
-		// TODO: this code assumes that the player viewing the GUI is the black player
-		// TODO: this is obviously wrong - we need to create a method to get the identity of the
-		// TODO: player looking at this screen to determine which travel cards to show them
-		List<CardUnit> myCards = GameState.instance().getPlayerByColour(Colour.BLACK).getHand().getCards();
+		List<CardUnit> myCards = GameManager.getInstance().getThisPlayer().getHand().getCards();
 
 		for (int p=0; p<panelForPlayerCards.length; p++)
 		{
@@ -401,8 +409,7 @@ public class GameScreen extends JPanel implements Serializable
 		}
 		
 		// Obstacle
-		// TODO: this code assumes that the player viewing the GUI is the black player, fix this
-		Obstacle o = GameState.instance().getPlayerByColour(Colour.BLACK).getHand().getObstacle();
+		Obstacle o = GameManager.getInstance().getThisPlayer().getHand().getObstacle();
 		panelForObstacle.add(o.getImage());
 		boardGame_Layers.add(panelForObstacle,0);
 	}
