@@ -37,6 +37,10 @@ public class Hand {
 		return this.cardList;
 	}
 
+	public int getNumTravelCards() {
+		return this.cardList.size();
+	}
+
 	public Obstacle getObstacle() {
 		if (obstacle.isPresent()) {
 			return obstacle.get();

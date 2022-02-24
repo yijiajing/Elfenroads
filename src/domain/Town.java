@@ -2,10 +2,12 @@ package domain;
 
 import enums.Colour;
 import loginwindow.MainFrame;
+import networking.GameState;
 import panel.GameScreen;
 import panel.TownPanel;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Town implements Comparable<Town> {
@@ -27,14 +29,7 @@ public class Town implements Comparable<Town> {
         this.width = MainFrame.getInstance().getWidth() * pWidth / 1440;
         this.height = MainFrame.getInstance().getHeight() * pHeight / 900;
         this.townPieces = new ArrayList<>();
-
-        // put town pieces on every town except for Elvenhold
-        if (!name.equalsIgnoreCase("Elvenhold")) {
-            initializeTownPieces();
-        }
-
         this.panel = new TownPanel(name, this.x, this.y, width, height, pScreen, this);
-
     }
 
     public String getName() {
@@ -45,15 +40,15 @@ public class Town implements Comparable<Town> {
         return panel;
     }
 
+    /**
+     * Create town pieces for the colours of players in the game
+     */
     public void initializeTownPieces() {
-        // TODO : get current players and add town pieces for those colours only
+        List<Player> players = GameState.instance().getPlayers();
 
-        townPieces.add(new TownPiece(Colour.BLACK, this, gameScreen));
-        townPieces.add(new TownPiece(Colour.BLUE, this, gameScreen));
-        townPieces.add(new TownPiece(Colour.GREEN, this, gameScreen));
-        townPieces.add(new TownPiece(Colour.PURPLE, this, gameScreen));
-        townPieces.add(new TownPiece(Colour.RED, this, gameScreen));
-        townPieces.add(new TownPiece(Colour.YELLOW, this, gameScreen));
+        for (Player p : players) {
+            townPieces.add(new TownPiece(p.getColour(), this));
+        }
     }
 
     public ArrayList<TownPiece> getTownPieces() {

@@ -30,7 +30,7 @@ public class Player {
     private Hand hand; //The Hand of this Player, including hand of CardUnit and hand of CounterUnit
 
     // TODO: implement the constructor
-    public Player(Colour pColour, GameScreen pScreen)
+    public Player(Colour pColour)
     {
         this.curTown = GameMap.getInstance().getTownByName("Elvenhold");
         this.colour = pColour;

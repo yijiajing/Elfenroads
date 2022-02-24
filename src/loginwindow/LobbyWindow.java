@@ -1,5 +1,6 @@
 package loginwindow;
 
+import domain.GameManager;
 import org.json.JSONObject;
 import networking.*;
 import utils.NetworkUtils;
@@ -8,6 +9,7 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
 import java.io.IOException;
+import java.util.Optional;
 
 public class LobbyWindow extends JPanel implements ActionListener {
 
