@@ -28,17 +28,17 @@ public class CommunicationsManager {
     // private ArrayList<Socket> senders; // responsible for sending out information
     private GameUpdateListener listener; // listens for GameState updates from other players
 
-    private GameManager game; // we can access the GameState through here
+    private GameManager managedBy; // we can access the GameState through here
     private String sessionID; // the ID for the GameSession the player is in (this will be the same value across all players)
     private ArrayList<String> playerAddresses; // this will store the addresses of players. It will be used only at initialization
 
     private MoveBootCommand lastCommandReceived; // this will be used to update the GameState/GameScreen with whatever command we just received
 
 
-    public CommunicationsManager(GameManager pGame, String gameSessionID)
+    public CommunicationsManager(GameManager pManagedBy, String gameSessionID)
     {
         sessionID = gameSessionID;
-        game = pGame;
+        managedBy = pManagedBy;
 
         // first, get all the Player addresses so we can set up the sockets
         recordPlayerAddresses();
@@ -199,7 +199,7 @@ public class CommunicationsManager {
 
         // now, actually move the boot on the screen
         MoveBootCommand toExecuteLocally = new MoveBootCommand(startPanelLocally, destPanelLocally, toMove);
-        toExecuteLocally.execute(game);
+        toExecuteLocally.execute(managedBy);
         // execute method takes care of updating the ElfBootPanels
 
         // now redraw the game screen

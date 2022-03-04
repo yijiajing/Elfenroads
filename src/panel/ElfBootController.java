@@ -3,10 +3,13 @@ package panel;
 import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.IOException;
 import java.util.ArrayList;
 
+import commands.MoveBootCommand;
 import domain.ElfBoot;
 import domain.GameManager;
+import enums.Colour;
 import networking.*;
 
 /**
@@ -58,19 +61,42 @@ public class ElfBootController implements MouseListener {
         GameState state = GameManager.getInstance().getGameState();
         ArrayList<ElfBoot> elfBoots = state.getElfBoots();
 
+        // gathering information to construct the MoveBootCommand to send over the network
+        ElfBootPanel startForCommand = null; // need to intialize these null so the compiler won't complain
+        ElfBootPanel destinationForCommand = null;
+        ElfBoot bootForCommand = null;
+
         for ( ElfBoot boot : elfBoots ) {
             if (boot.isSelected()) {
-
+                startForCommand = boot.getCurPanel();
+                bootForCommand = boot;
                 // update model with new spot of boot
                 if (itemClicked instanceof ElfBootPanel) {
                     boot.setCurPanel((ElfBootPanel) itemClicked);
+                    destinationForCommand = ((ElfBootPanel) itemClicked);
                 } else if (itemClicked instanceof TownPanel) {
                     ElfBootPanel elfBootPanel = ((TownPanel) itemClicked).getElfBootPanel();
                     boot.setCurPanel(elfBootPanel);
+                    destinationForCommand = ((TownPanel) itemClicked).getElfBootPanel();
+                }
+
+                // TODO: remove this. just for testing
+                if (startForCommand.equals(null) || destinationForCommand.equals(null) || bootForCommand.equals(null))
+                {
+                    System.out.println("Something went wrong! The fields in the command to send were not determined correctly!");
                 }
 
                 // boot has been successfully moved and is no longer selected
                 boot.setSelected(false);
+
+                // now, construct a command and notify the CommunicationsManager so that it can send the movement to other players in the game
+                MoveBootCommand toSendOverNetwork = new MoveBootCommand(startForCommand, destinationForCommand, bootForCommand);
+                try {
+                    GameManager.getInstance().getComs().sendGameCommand(toSendOverNetwork);
+                } catch (IOException e) {
+                    System.out.println("There was a problem sending the command to move the boot!");
+                    e.printStackTrace();
+                }
 
                 return;
             }

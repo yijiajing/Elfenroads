@@ -5,6 +5,7 @@ import domain.GameManager;
 import domain.GameMap;
 import domain.Town;
 import enums.Colour;
+import networking.ActionManager;
 import networking.GameState;
 import panel.ElfBootPanel;
 import panel.GameScreen;
@@ -29,10 +30,10 @@ public class MoveBootCommand implements GameCommand, Serializable {
         destination = pDestination.getTown().getName();
     }
 
-    public void execute(GameManager game)
+    public void execute(GameManager manager)
     {
         GameMap map = GameScreen.getInstance().getGameMap();
-        GameState state = game.getGameState();
+        GameState state = manager.getGameState();
         ElfBoot moved = state.getBootByColour(colorBootMoved);
 
         Town startTown = map.getTown(start);

@@ -25,8 +25,8 @@ public class GameManager {
     private boolean loaded;
 
     // stuff for managing networking operations
-    private CommunicationsManager coms;
     private String sessionID;
+    private CommunicationsManager coms;
 
     /**
      * Constructor is called when "join" is clicked
@@ -37,8 +37,7 @@ public class GameManager {
 
         MainFrame.mainPanel.add(GameScreen.init(MainFrame.getInstance()), "gameScreen");
         sessionID = pSessionID;
-        coms = new CommunicationsManager(this, sessionID); // initializes the CommunicationsManager
-
+        coms = new CommunicationsManager(this, sessionID);
 
         // start a new game if there is no state to be loaded
         if (!loadedState.isPresent()) {
@@ -336,5 +335,9 @@ public class GameManager {
         for (Player p : gameState.getPlayers()) {
             p.getHand().addUnit(gameState.getCounterPile().draw());
         }
+    }
+
+    public CommunicationsManager getComs() {
+        return coms;
     }
 }
