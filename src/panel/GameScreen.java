@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import java.util.Arrays;
 import java.util.List;
 
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ import javax.swing.border.Border;
 import enums.Colour;
 import enums.CounterType;
 import domain.*;
+import enums.RoundPhaseType;
 import networking.GameState;
 import org.minueto.MinuetoTool;
 
@@ -45,28 +47,26 @@ public class GameScreen extends JPanel implements Serializable
 	private JLabel informationCardImage_TopLayer;
 	private JLabel deckOfTransportationCountersImage_TopLayer;
 	
-	private JPanel backgroundPanel_ForMap = new JPanel();
-	private JPanel backgroundPanel_ForRound = new JPanel();
-	private JPanel backgroundPanel_ForObstacle = new JPanel();
-	private JPanel backgroundPanel_ForCards = new JPanel();
-	private JPanel backgroundPanel_ForTransportationCounters = new JPanel();
-	private JPanel backgroundPanel_ForInformationCard = new JPanel();
-	private JPanel backgroundPanel_ForDeckOfTransportationCounters = new JPanel();
-	private JPanel backgroundPanel_ForLeaderboard = new JPanel();
+	private final JPanel backgroundPanel_ForMap = new JPanel();
+	private final JPanel backgroundPanel_ForRound = new JPanel();
+	private final JPanel backgroundPanel_ForObstacle = new JPanel();
+	private final JPanel backgroundPanel_ForCards = new JPanel();
+	private final JPanel backgroundPanel_ForTransportationCounters = new JPanel();
+	private final JPanel backgroundPanel_ForInformationCard = new JPanel();
+	private final JPanel backgroundPanel_ForDeckOfTransportationCounters = new JPanel();
+	private final JPanel backgroundPanel_ForLeaderboard = new JPanel();
 
-	private JPanel[] panelForPlayerTransportationCounters = new JPanel[5];
-	private JPanel[] panelForPlayerCards = new JPanel[8];
-	private JPanel[] panelForFaceUpTransportationCounters = new JPanel[5];
-	private JPanel panelForDeckOfTransportationCounters = new JPanel();
-	private JPanel panelForObstacle = new JPanel();
+	private final JPanel[] panelForPlayerTransportationCounters = new JPanel[5];
+	private final JPanel[] panelForPlayerCards = new JPanel[8];
+	private final JPanel[] panelForFaceUpTransportationCounters = new JPanel[5];
+	private final JPanel panelForDeckOfTransportationCounters = new JPanel();
+	private final JPanel panelForObstacle = new JPanel();
 
 	private ArrayList<ObserverPanel> observerPanels = new ArrayList<>();
 
 	private GameMap gameMap;
 
 	private JTable leaderboard = new JTable();
-
-	private boolean myTurn;
 
 	// TODO: change this on the other computer
 	private String otherPlayerIP = "192.168.2.253"; // Nick's IP address
@@ -126,6 +126,12 @@ public class GameScreen extends JPanel implements Serializable
 		panel.revalidate();
 	}
 
+	public void updateAll() {
+		addTransportationCountersAndObstacle(); // updates the player's counter area
+		addCards(); // update's the player's cards
+		addFaceUpTransportationCounters(); // updates the face-up transportation counters
+		notifyObservers(); // updates elf boots and town pieces
+	}
 
 	public void initialization()
 	{
@@ -180,11 +186,11 @@ public class GameScreen extends JPanel implements Serializable
 	{
 		Border whiteLine = BorderFactory.createLineBorder(Color.WHITE);
 		
-		JPanel panel1 = new JPanel();
-		panel1.setBounds(width*1210/1440, height*290/900, width*70/1440, height*65/900);
-		panel1.setOpaque(false);
-		//panel1.setBorder(whiteLine);
-		panelForDeckOfTransportationCounters = panel1;
+		JPanel panel = panelForDeckOfTransportationCounters;
+		panel.setBounds(width*1210/1440, height*290/900, width*70/1440, height*65/900);
+		panel.setOpaque(false);
+		//panel.setBorder(whiteLine);
+		boardGame_Layers.add(panel, 0);
 	}
 	
 	public void initializeFaceUpTransportationCounters()
@@ -195,30 +201,35 @@ public class GameScreen extends JPanel implements Serializable
 		panel2.setOpaque(false);
 		//panel2.setBorder(whiteLine);
 		panelForFaceUpTransportationCounters[0] = panel2;
+		boardGame_Layers.add(panel2, 0);
 		
 		JPanel panel3 = new JPanel();
 		panel3.setBounds(width*1210/1440, height*385/900, width*70/1440, height*65/900);
 		panel3.setOpaque(false);
 		//panel3.setBorder(whiteLine);
 		panelForFaceUpTransportationCounters[1] = panel3;
+		boardGame_Layers.add(panel3, 0);
 		
 		JPanel panel4 = new JPanel();
 		panel4.setBounds(width*1315/1440, height*385/900, width*70/1440, height*65/900);
 		panel4.setOpaque(false);
 		//panel4.setBorder(whiteLine);
 		panelForFaceUpTransportationCounters[2] = panel4;
+		boardGame_Layers.add(panel4, 0);
 		
 		JPanel panel5 = new JPanel();
 		panel5.setBounds(width*1210/1440, height*480/900, width*70/1440, height*65/900);
 		panel5.setOpaque(false);
 		//panel5.setBorder(whiteLine);
 		panelForFaceUpTransportationCounters[3] = panel5;
+		boardGame_Layers.add(panel5, 0);
 		
 		JPanel panel6 = new JPanel();
 		panel6.setBounds(width*1315/1440, height*480/900, width*70/1440, height*65/900);
 		panel6.setOpaque(false);
 		//panel6.setBorder(whiteLine);
 		panelForFaceUpTransportationCounters[4] = panel6;
+		boardGame_Layers.add(panel6, 0);
 	}
 	
 	public void initializeLeaderboard()
@@ -265,6 +276,7 @@ public class GameScreen extends JPanel implements Serializable
 			panel.setBounds(xCoordinate, height*690/900, width*144/1440, height*3/9);
 			panelForPlayerCards[i] = panel;
 			xCoordinate += width*144/1440;
+			boardGame_Layers.add(panel, 0);
 		}
 	}
 	
@@ -281,12 +293,14 @@ public class GameScreen extends JPanel implements Serializable
 			panel.setBounds(xCoordinate, height*625/900, width*70/1440, height*65/900);
 			panelForPlayerTransportationCounters[i] = panel;
 			xCoordinate += width*200/1440;
+			boardGame_Layers.add(panel, 0);
 		}
 		
 		// Obstacle
 		panelForObstacle.setOpaque(false);
 		//panelForObstacle.setBorder(whiteLine);
 		panelForObstacle.setBounds(width*1077/1440, height*625/900, width*70/1440, height*65/900);
+		boardGame_Layers.add(panelForObstacle,0);
 	}
 	
 	public void initializeMapImage()
@@ -351,9 +365,6 @@ public class GameScreen extends JPanel implements Serializable
 	{
 		boardGame_Layers.add(backgroundPanel_ForRound, 0);
 		boardGame_Layers.add(panelForDeckOfTransportationCounters,0);
-		addFaceUpTransportationCounters();
-		addTransportationCountersAndObstacle();
-		addCards();
 		boardGame_Layers.add(backgroundPanel_ForTransportationCounters, -1);
 		boardGame_Layers.add(backgroundPanel_ForMap, -1); 
 		boardGame_Layers.add(backgroundPanel_ForObstacle,-1);
@@ -376,8 +387,6 @@ public class GameScreen extends JPanel implements Serializable
 			JPanel panel = panelForFaceUpTransportationCounters[i];
 			TransportationCounter counter = faceUpCounters.get(i);
 			panel.add(counter.getImage());
-
-			boardGame_Layers.add(panel, 0);
 			panel.repaint();
 			panel.revalidate();
 		}
@@ -392,8 +401,6 @@ public class GameScreen extends JPanel implements Serializable
 			JPanel panel = panelForPlayerCards[p];
 			CardUnit card = myCards.get(p);
 			panel.add(card.getImage());
-
-			boardGame_Layers.add(panel, 0);
 			panel.repaint();
 			panel.revalidate();
 		}
@@ -401,72 +408,55 @@ public class GameScreen extends JPanel implements Serializable
 	
 	public void addTransportationCountersAndObstacle()
 	{
-		// Transportation Counters
-		for (JPanel panel : panelForPlayerTransportationCounters)
+		List<TransportationCounter> counters = GameManager.getInstance().getThisPlayer().getHand().getCounters();
+
+		// Transportation counters
+		int i = 0;
+
+		for ( TransportationCounter c : counters )
 		{
-			panel.setOpaque(false);
-			boardGame_Layers.add(panel, 0);
+			c.setOwned(true);
+			JPanel panel = panelForPlayerTransportationCounters[i];
+			panel.removeAll(); // clear it if something is already there
+			panel.add(c.getImage());
+			panel.repaint();
+			panel.revalidate();
+
+			i++;
 		}
 		
 		// Obstacle
 		Obstacle o = GameManager.getInstance().getThisPlayer().getHand().getObstacle();
-		panelForObstacle.add(o.getImage());
-		boardGame_Layers.add(panelForObstacle,0);
+
+		if (o != null) {
+			panelForObstacle.add(o.getImage());
+			panelForObstacle.repaint();
+			panelForObstacle.revalidate();
+		}
 	}
-	
+
+	/**
+	 * Adds a MouseListener to deckOfTransportationCountersImage_TopLayer
+	 */
 	public void initializeListenerToDraw()
 	{
-		// here we will add a MouseListener to deckOfTransportationCountersImage_TopLayer
-
 		deckOfTransportationCountersImage_TopLayer.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				TransportationCounter drawn = GameState.instance().getCounterPile().draw(); // draw a counter
-				for (int i = 0; i < 5; i++)
-				{
-					if (panelForPlayerTransportationCounters[i].getComponentCount() == 0) // if spot is empty, put card there
-					{
-						panelForPlayerTransportationCounters[i].add(drawn.getImage());
-						mainframe.repaint();
-						mainframe.revalidate();
-						break;
+				if (GameState.instance().getCurrentPhase().equals(RoundPhaseType.DRAWCOUNTERS)) {
+					TransportationCounter drawn = GameState.instance().getCounterPile().draw(); // draw a counter
+					GameManager.getInstance().getThisPlayer().getHand().addUnit(drawn); // add to player's hand
+					updateAll(); // update GUI
+
+					GameManager.getInstance().endTurn();
+
+					// this code should never execute but is used for testing with a single player
+					if (GameState.instance().getCurrentPlayer().equals(GameManager.getInstance().getThisPlayer())) {
+						GameManager.getInstance().planTravelRoutes(); // PHASE 4
 					}
-					// if we don't find an open spot, we do nothing. we can't put the counter anywhere.
-				}
-			}
+				}}
 		});
 	}
-
-	/*
-	public void moveBlackBoot(JPanel newCurrentPanel)
-	{
-		ElfBoot blackBoot = gameState.getBootByColour(Colour.BLACK);
-
-		// this is what we will use to update the game state based on the information sent over the network
-		blackBoot.getCurPanel().remove(blackBoot.getImage());
-		update(blackBoot.getCurPanel());
-
-		// now switch the current panel
-		blackBoot.setCurPanel((ElfBootPanel) newCurrentPanel);
-		blackBoot.getCurPanel().add(blackBoot.getImage());
-		update(blackBoot.getCurPanel());
-
-	}
-
-	public void setCurrentPanelOfBlueBoot(JPanel newCurrentPanel)
-	{
-		ElfBoot blueBoot = gameState.getBootByColour(Colour.BLUE);
-
-		// this is what we will use to update the game state based on the information sent over the network
-		blueBoot.getCurPanel().remove(blueBoot.getImage());
-		update(blueBoot.getCurPanel());
-
-		// now switch the current panel
-		blueBoot.setCurPanel((ElfBootPanel) newCurrentPanel);
-		blueBoot.getCurPanel().add(blueBoot.getImage());
-		update(blueBoot.getCurPanel());
-
-	}*/
 
 	public static void main(String[] args) 
 	{
@@ -500,15 +490,6 @@ public class GameScreen extends JPanel implements Serializable
 	public void listen(int port) throws IOException
 	{
 		ServerSocket listener = new ServerSocket(port);
-	}
-
-	public boolean getMyTurn() {return myTurn;}
-
-	public void setMyTurn(boolean pMyTurn) { this.myTurn = pMyTurn; }
-
-	// only using this for the demo. See networking.NetworkDemoPlayer2 loop
-	public void reverseTurn() {
-		myTurn = !myTurn;
 	}
 
 	public void addElement(JPanel panel) {

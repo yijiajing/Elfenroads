@@ -188,6 +188,7 @@ public class GameState {
         if (counterPile.getSize() > 0) {
             TransportationCounter counter = counterPile.draw();
             faceUpCounters.add(counter);
+            counter.setOwned(false);
         } else {
             // TODO what to do if the counter pile is empty?? reshuffle?
         }
@@ -196,4 +197,5 @@ public class GameState {
     public void addPlayer(Player p) {
         players.add(p);
     }
+
 }

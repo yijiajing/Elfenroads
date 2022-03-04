@@ -6,6 +6,7 @@ import loginwindow.MainFrame;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 import java.util.Stack;
 
 /**
@@ -14,6 +15,7 @@ import java.util.Stack;
 public class CounterPile {
 
     private Stack<TransportationCounter> counters;
+    private int seed = 3; // TODO somehow make the seed different for each game
 
     public CounterPile() {
         this.counters = new Stack<>();
@@ -24,14 +26,14 @@ public class CounterPile {
             }
         }
 
-        Collections.shuffle(counters);
+        shuffle();
     }
 
     public TransportationCounter draw() {return counters.pop();}
 
     public Stack<TransportationCounter> getCounters() {return this.counters;}
 
-    public void shuffle() {Collections.shuffle(this.counters);}
+    public void shuffle() {Collections.shuffle(this.counters, new Random(seed));}
 
     public int getSize() {
         return counters.size();

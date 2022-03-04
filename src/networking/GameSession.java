@@ -278,7 +278,7 @@ public class GameSession {
         if (!joiner.getRole().equals(User.Role.PLAYER)) {
             throw new Exception("Only players can join games.");
         }
-
+        /*
         String token = joiner.getAccessToken();
 
         // get ip to pass
@@ -298,6 +298,6 @@ public class GameSession {
         in.close();
         con.disconnect();
         System.out.println("Response status: " + status);
-        System.out.println(content.toString());
+        System.out.println(content.toString());*/
     }
 }

@@ -2,7 +2,10 @@ package domain;
 
 import enums.CounterType;
 import enums.RegionType;
+import enums.RoundPhaseType;
 import networking.ActionManager;
+import networking.GameState;
+import panel.GameScreen;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -10,20 +13,32 @@ import java.util.Objects;
 
 public class TransportationCounter extends CounterUnit implements Comparable<TransportationCounter> {
 
-    // another rudimentary class to go along with domain.Deck
-
-    // will represent, for now, a Transportation Counter. It will contain information about how to display said counter.
-
     private CounterType type;
+    private boolean owned; // indicates if the counter is owned by any player
 
     public TransportationCounter (CounterType pType, int resizeWidth, int resizeHeight)
     {
         super(resizeWidth, resizeHeight, pType.ordinal() + 1); // since the images start from M01, not M00
         this.type = pType;
+        this.owned = false;
+
         this.getImage().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (getPlacedOn() == null) {
+                if (!isOwned()) { // counter is face-up and available to be chosen
+                    if (GameState.instance().getCurrentPhase().equals(RoundPhaseType.DRAWCOUNTERS)) {
+                        GameState.instance().getFaceUpCounters().remove(TransportationCounter.this); // remove the counter from the face-up pile
+                        GameManager.getInstance().getThisPlayer().getHand().addUnit(TransportationCounter.this); // add to player's hand
+                        GameScreen.getInstance().updateAll(); // update GUI
+                        GameManager.getInstance().endTurn();
+                        TransportationCounter.this.owned = true;
+
+                        // this code should never execute but is used for testing with a single player
+                        if (GameState.instance().getCurrentPlayer().equals(GameManager.getInstance().getThisPlayer())) {
+                            GameManager.getInstance().planTravelRoutes(); // PHASE 4
+                        }
+                    }
+                } else if (getPlacedOn() == null) {
                     ActionManager.getInstance().setSelectedCounter(TransportationCounter.this);
                 } else {
                     // If the counter is placed on a road, then the user's intention is to click on the road
@@ -98,5 +113,13 @@ public class TransportationCounter extends CounterUnit implements Comparable<Tra
     @Override
     public int compareTo(TransportationCounter o) {
         return type.compareTo(o.type);
+    }
+
+    public boolean isOwned() {
+        return this.owned;
+    }
+
+    public void setOwned(boolean b) {
+        this.owned = b;
     }
 }

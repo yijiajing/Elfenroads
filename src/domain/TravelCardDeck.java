@@ -5,11 +5,13 @@ import panel.GameScreen;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 import java.util.Stack;
 
 public class TravelCardDeck {
 
     private Stack<TravelCard> cards = new Stack<>();
+    private int seed = 3; // TODO somehow make the seed different for each game
 
     public TravelCardDeck() {
 
@@ -31,7 +33,7 @@ public class TravelCardDeck {
             }
         }
 
-        Collections.shuffle(cards); // shuffle the deck
+        shuffle();
     }
 
     public TravelCard draw() {
@@ -39,6 +41,6 @@ public class TravelCardDeck {
     }
 
     public void shuffle() {
-        Collections.shuffle(cards); // shuffle the deck
+        Collections.shuffle(cards, new Random(seed)); // shuffle the deck
     }
 }
