@@ -202,7 +202,7 @@ public class CommunicationsManager {
         // execute method takes care of updating the ElfBootPanels
 
         // now redraw the game screen
-        thisComputer.draw();
+        GameScreen.getInstance().draw();
 
         // the move should now be visible
     }
