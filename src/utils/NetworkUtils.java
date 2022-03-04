@@ -310,7 +310,7 @@ public class NetworkUtils {
                     // join the game
                     try {
                         GameSession.joinSession(MainFrame.loggedIn, id);
-                        GameManager.init(Optional.empty(), Optional.of(id));
+                        GameManager.init(Optional.empty(), id);
                     } catch (Exception ex) {
                         System.out.println("There was a problem attempting to join the session with User" + MainFrame.loggedIn.getUsername());
                         ex.printStackTrace();

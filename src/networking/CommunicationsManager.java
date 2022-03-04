@@ -23,6 +23,7 @@ public class CommunicationsManager {
     // this class will be responsible for all inbound and outbound communication during the game
     // it will be comprised of 2 sockets per player--one to listen and one to send information
     // designed to be a singleton, initialized upon joining a game
+    // TODO: turn into a singleton
 
     // private ArrayList<Socket> senders; // responsible for sending out information
     private GameUpdateListener listener; // listens for GameState updates from other players
