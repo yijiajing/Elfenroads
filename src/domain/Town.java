@@ -3,6 +3,7 @@ package domain;
 import enums.Colour;
 import loginwindow.MainFrame;
 import networking.GameState;
+import panel.ElfBootPanel;
 import panel.GameScreen;
 import panel.TownPanel;
 
@@ -80,5 +81,11 @@ public class Town implements Comparable<Town> {
     @Override
     public int compareTo(Town o) {
         return name.compareTo(o.name);
+    }
+
+    // not truly a getter method since this is not a field, but functions similarly
+    public ElfBootPanel getElfBootPanel()
+    {
+        return panel.getElfBootPanel();
     }
 }

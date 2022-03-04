@@ -1,18 +1,14 @@
 package networking;
 
-import domain.GameManager;
-import domain.Player;
-import enums.Colour;
-import loginwindow.ChooseBootWindow;
-import loginwindow.MainFrame;
 import org.json.JSONObject;
 import utils.NetworkUtils;
 
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
 import java.net.InetAddress;
+import java.util.Set;
 
 public class GameSession {
 
@@ -26,15 +22,17 @@ public class GameSession {
     // its constructor will intialize a networking.GameSession
 
 
-    public GameSession(User pCreator, String pGameName, String pSaveGameName) throws IOException
+    public GameSession(User pCreator, String pGameName, String pSaveGameName) throws Exception
     {
         creator = pCreator;
         gameName = pGameName;
         saveGameName = pSaveGameName;
-        locationIP = NetworkUtils.ngrokAddrToPassToLS();
-
+        // locationIP = NetworkUtils.ngrokAddrToPassToLS();
+        // changed this 03/02 because ngrok addresses are changing. local multiplayer only for now
+        locationIP = NetworkUtils.getLocalIPAddPort();
         createNewSession();
     }
+
 
 
     private void createNewSession() throws IOException
@@ -73,6 +71,7 @@ public class GameSession {
 
         id = content.toString();
         System.out.println("The session ID is " + id);
+
     }
 
     public void launch() throws IOException
@@ -273,16 +272,21 @@ public class GameSession {
      *
      * @param joiner
      */
-    public static void joinSession(User joiner, String sessionID) throws Exception {
+    public static void joinSession(User joiner, String sessionID) throws Exception
+    {
 
-        if (!joiner.getRole().equals(User.Role.PLAYER)) {
-            throw new Exception("Only players can join games.");
+        if (!joiner.getRole().equals(User.Role.PLAYER))
+        {
+            throw new Exception ("Only players can join games.");
         }
-        /*
+
+
         String token = joiner.getAccessToken();
 
         // get ip to pass
-        String ip = NetworkUtils.ngrokAddrToPassToLS();
+        //String ip = NetworkUtils.ngrokAddrToPassToLS();
+        // 03/02 changing to pass local address to ls instead
+        String ip = NetworkUtils.getLocalIPAddPort();
 
         URL url = new URL("http://35.182.122.111:4242/api/sessions/" + sessionID +"/players/" + joiner.getUsername() + "?location=" + ip + "&access_token=" + token);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -298,6 +302,9 @@ public class GameSession {
         in.close();
         con.disconnect();
         System.out.println("Response status: " + status);
-        System.out.println(content.toString());*/
+        System.out.println(content.toString());
+
+
+
     }
 }

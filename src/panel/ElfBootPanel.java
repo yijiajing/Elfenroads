@@ -65,4 +65,31 @@ public class ElfBootPanel extends JPanel implements ObserverPanel {
     public Town getTown() {
         return this.town;
     }
+
+    /**
+     * takes 2 panels and determines if they are equivalent
+     * we will use this to sort of "translate" MoveBootCommand as it is sent across the network
+     * called match() instead of equals() since equals() is not a static method and I didn't want to create any confusion
+     * @param p1
+     * @param p2
+     * @return we return true iff the two panels correspond to towns with the same name
+     */
+    public static boolean match (ElfBootPanel p1, ElfBootPanel p2)
+    {
+        String p1TownName = p1.getTown().getName();
+        String p2TownName = p2.getTown().getName();
+
+        if (p1TownName.equals(p2TownName))
+        {
+            return true;
+        }
+
+        else return false;
+
+    }
+
+    // TODO: should we return a shallow copy instead of passing reference?
+    public ArrayList<ElfBoot> getBootsOnPanel() {
+        return bootsOnPanel;
+    }
 }

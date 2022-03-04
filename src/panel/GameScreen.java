@@ -515,4 +515,8 @@ public class GameScreen extends JPanel implements Serializable
 	public int getHeight() {
 		return this.height;
 	}
+
+	public GameMap getGameMap() {
+		return gameMap;
+	}
 }
