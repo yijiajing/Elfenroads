@@ -35,8 +35,8 @@ public class GameScreen extends JPanel implements Serializable
 	private static GameScreen INSTANCE; // Singleton instance 
 
 	private JFrame mainframe;
-	private Integer width;
-	private Integer height;
+	private static Integer width;
+	private static Integer height;
 	
 	private JLayeredPane boardGame_Layers;
 
@@ -497,5 +497,23 @@ public class GameScreen extends JPanel implements Serializable
 
 	public GameMap getGameMap() {
 		return gameMap;
+	}
+
+	public static void displayMessage(String message, boolean passOption, boolean doneOption) {
+		String[] options;
+
+		if (passOption) { // write a message with "OK" and "PASS" buttons
+			options = new String[]{"OK", "PASS"};
+		}
+
+		else if (doneOption) { // write a message with "DONE" button
+			options = new String[]{"DONE"};
+		}
+
+		else { // write a message with "OK" button
+			options = new String[]{"OK"};
+		}
+
+		JOptionPane.showOptionDialog(null, message, null, JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
 	}
 }

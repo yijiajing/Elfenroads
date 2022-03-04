@@ -1,5 +1,6 @@
 package enums;
 
 public enum RoundPhaseType {
-    SETUP, DRAWCOUNTERS, AUCTION, PLANROUTES, MOVE, COMPLETED
+    DRAWCOUNTERS, PLANROUTES, MOVE, COMPLETED
+    // removed AUCTION for now because it is not part of this version yet
 }

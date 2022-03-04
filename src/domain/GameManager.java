@@ -135,7 +135,9 @@ public class GameManager {
             updateGameState();
             System.out.println("Current phase: DRAW COUNTERS");
 
-            // TODO: display message to let the user know that they need to select a counter
+            // display message to let the user know that they need to select a counter
+            GameScreen.displayMessage("Please select a transportation counter to add to your hand. You may choose one of " +
+                    "the face-up counters or a counter from the deck, shown on the right side of the screen.", false, false);
 
             // all logic is implemented in the mouse listeners of the counters
         }
@@ -145,14 +147,46 @@ public class GameManager {
      * PHASE 4
      */
     public void planTravelRoutes() {
-        System.out.println("Current phase: PLAN TRAVEL ROUTES");
+        if (gameState.getCurrentRound() <= gameState.getTotalRounds()
+                && gameState.getCurrentPhase().equals(RoundPhaseType.PLANROUTES)
+                && gameState.getCurrentPlayer().equals(thisPlayer)) {
+
+            updateGameState();
+            System.out.println("Current phase: PLAN TRAVEL ROUTES");
+
+            // display message
+            GameScreen.displayMessage("""
+                    It is time to plan your travel routes! Begin by clicking the transportation counter in your hand that you want to use, then click on the road that you want to travel.
+                    The chart in the bottom right corner indicates which transportation counters may be used on which road.
+                    Alternatively, you may choose to place your Obstacle on a road that already has a counter. But be warned... you can only do this once!
+                    Alternatively, you can pass your turn.
+                    """, true, false);
+
+            // TODO implement all logic in listeners and action manager
+        }
     }
 
     /**
      * PHASE 5
      */
     public void moveOnMap() {
-        System.out.println("Current phase: MOVE ON MAP");
+        if (gameState.getCurrentRound() <= gameState.getTotalRounds()
+                && gameState.getCurrentPhase().equals(RoundPhaseType.MOVE)
+                && gameState.getCurrentPlayer().equals(thisPlayer)) {
+
+            updateGameState();
+            System.out.println("Current phase: MOVE ON MAP");
+
+            // display message
+            GameScreen.displayMessage("""
+                    It is time to travel across the map and collect your town pieces! Begin by clicking the travel card(s) that you want to use, then click on the town that you want to travel to.
+                    The number of required travel cards depends on the region and is indicated by the chart in the bottom right corner. 
+                    You can repeat this as many times as you want. When you are done travelling, click "DONE". 
+                    
+                    """, false, true);
+
+            // TODO implement all logic in listeners and action manager
+        }
     }
 
 
