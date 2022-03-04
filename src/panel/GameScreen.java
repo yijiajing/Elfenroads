@@ -519,26 +519,4 @@ public class GameScreen extends JPanel implements Serializable
 	public GameMap getGameMap() {
 		return gameMap;
 	}
-
-	/**
-	 * search for a specific Town's ElfBootPanel
-	 * this method is necessary since we do not have a field for the ElfBootPanel inside a town
-	 * @param town the town of the ElfBootPanel we are looking for
-	 * @return the ElfBootPanel of that town or null if it is not initialized for some reason
-	 */
-	public static ElfBootPanel getBootPanelByTown (Town town)
-	{
-		for (ObserverPanel cur : GameScreen.getInstance().observerPanels)
-		{
-			if (cur instanceof ElfBootPanel)
-			{
-				if (((ElfBootPanel) cur).getTown().equals(town))
-				{
-					return (ElfBootPanel) cur;
-				}
-			}
-
-		}
-		return null;
-	}
 }

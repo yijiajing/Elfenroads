@@ -170,8 +170,8 @@ public class CommunicationsManager {
         Town startTown = map.getTown(startTownName);
         Town destinationTown = map.getTown(destinationTownName);
 
-        ElfBootPanel startPanelFromCommmand = startTown.getBootPanel();
-        ElfBootPanel destPanelFromCommand = destinationTown.getBootPanel();
+        ElfBootPanel startPanelFromCommand = startTown.getElfBootPanel();
+        ElfBootPanel destPanelFromCommand = destinationTown.getElfBootPanel();
 
         // first, since we receive UI objects, we need to be able to translate those to UI objects on our own computer
         // then, we can execute the command
@@ -181,8 +181,8 @@ public class CommunicationsManager {
         // we need to check every panel in the towns list to see which one we are supposed to update
         for (Town cur : towns)
         {
-            ElfBootPanel curPanelToCheck = cur.getPanel().getElfBootPanel();
-            if (ElfBootPanel.match(curPanelToCheck, startPanelFromCommmand))
+            ElfBootPanel curPanelToCheck = cur.getElfBootPanel();
+            if (ElfBootPanel.match(curPanelToCheck, startPanelFromCommand))
             {
                 startPanelLocally = curPanelToCheck;
             }
