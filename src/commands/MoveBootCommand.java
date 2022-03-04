@@ -38,8 +38,8 @@ public class MoveBootCommand implements GameCommand, Serializable {
         Town startTown = map.getTown(start);
         Town destinationTown = map.getTown(destination);
 
-        ElfBootPanel startPanel = startTown.getBootPanel();
-        ElfBootPanel destinationPanel = destinationTown.getBootPanel();
+        ElfBootPanel startPanel = startTown.getElfBootPanel();
+        ElfBootPanel destinationPanel = destinationTown.getElfBootPanel();
 
         startPanel.removeBootFromPanel(moved);
         destinationPanel.addBootToPanel(moved);
