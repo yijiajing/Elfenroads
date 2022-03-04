@@ -203,9 +203,6 @@ public class CommunicationsManager {
         toExecuteLocally.execute(managedBy);
         // execute method takes care of updating the ElfBootPanels
 
-        // now redraw the game screen
-        GameScreen.getInstance().draw();
-
         // the move should now be visible
     }
 
