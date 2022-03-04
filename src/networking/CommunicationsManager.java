@@ -67,6 +67,7 @@ public class CommunicationsManager {
      */
     private ArrayList<Socket> setUpSenders()
     {
+        recordPlayerAddresses();
         ArrayList <Socket> senders = new ArrayList<Socket>();
         try {
             // String localAddress = NetworkUtils.ngrokAddrToPassToLS();
