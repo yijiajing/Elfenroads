@@ -29,6 +29,7 @@ public class TransportationCounter extends CounterUnit implements Comparable<Tra
                     if (GameState.instance().getCurrentPhase().equals(RoundPhaseType.DRAWCOUNTERS)) {
                         GameState.instance().getFaceUpCounters().remove(TransportationCounter.this); // remove the counter from the face-up pile
                         GameManager.getInstance().getThisPlayer().getHand().addUnit(TransportationCounter.this); // add to player's hand
+                        GameState.instance().addFaceUpCounterFromPile(); // replenish the face-up counters with one from the pile
                         GameScreen.getInstance().updateAll(); // update GUI
                         GameManager.getInstance().endTurn();
                         TransportationCounter.this.owned = true;
