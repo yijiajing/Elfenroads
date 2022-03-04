@@ -163,7 +163,7 @@ public class CommunicationsManager {
         ElfBootPanel destPanelLocally = null; // initialized these to null to force them to compile
         ElfBootPanel bootToMoveLocally;
 
-        GameMap map = game.getScreen().getGameMap();
+        GameMap map = GameMap.getInstance();
 
         String startTownName = lastCommandReceived.getStart();
         String destinationTownName = lastCommandReceived.getDestination();
