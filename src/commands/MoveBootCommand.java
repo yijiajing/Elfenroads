@@ -31,7 +31,7 @@ public class MoveBootCommand implements GameCommand, Serializable {
 
     public void execute(GameManager game)
     {
-        GameMap map = game.getScreen().getGameMap();
+        GameMap map = GameScreen.getInstance().getGameMap();
         GameState state = game.getGameState();
         ElfBoot moved = state.getBootByColour(colorBootMoved);
 

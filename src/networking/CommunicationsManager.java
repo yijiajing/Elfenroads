@@ -175,10 +175,8 @@ public class CommunicationsManager {
 
         // first, since we receive UI objects, we need to be able to translate those to UI objects on our own computer
         // then, we can execute the command
-        GameScreen thisComputer = game.getScreen();
-
         // go find the panels to update in the GameScreen
-        List<Town> towns = thisComputer.getGameMap().getTownList();
+        List<Town> towns = GameScreen.getInstance().getGameMap().getTownList();
 
         // we need to check every panel in the towns list to see which one we are supposed to update
         for (Town cur : towns)
