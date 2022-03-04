@@ -41,11 +41,11 @@ public class Hand {
 		return this.cardList.size();
 	}
 
+	public List<TransportationCounter> getCounters() {
+		return this.counterList;
+	}
+
 	public Obstacle getObstacle() {
-		if (obstacle.isPresent()) {
-			return obstacle.get();
-		} else {
-			return null;
-		}
+		return obstacle.orElse(null);
 	}
 }

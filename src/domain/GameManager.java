@@ -21,7 +21,7 @@ public class GameManager {
 
     private GameState gameState;
     private ActionManager actionManager;
-    private Player thisPlayer; // represents the Player who is using this GUI, set by ChooseBootWindow
+    private Player thisPlayer = null; // represents the Player who is using this GUI, set by ChooseBootWindow
     private boolean loaded;
 
     /**
@@ -61,7 +61,10 @@ public class GameManager {
         GameScreen.getInstance().draw();
         MainFrame.cardLayout.show(MainFrame.mainPanel,"gameScreen");
 
-        //gameLoop();
+        setUpRound(); // includes dealing travel cards (PHASE 1) and drawing 1 face down counter for each player (PHASE 2)
+
+        // TODO : should not immediately start phase 3, need some indication that it is my turn
+        drawCounters(); // PHASE 3
     }
 
     public static GameManager init(Optional<GameState> loadedState, Optional<String> sessionID) {
@@ -98,56 +101,124 @@ public class GameManager {
             p.getHand().addUnit(new Obstacle(MainFrame.instance.getWidth()*67/1440, MainFrame.instance.getHeight()*60/900));
         }
 
-        distributeTravelCards();
-
         initializeElfBoots();
     }
 
+    /**
+     * PHASE 1 & 2
+     */
+    private void setUpRound() {
 
+        distributeTravelCards(); // distribute cards to each player (PHASE 1)
+        distributeHiddenCounter(); // distribute 1 face down counter to each player (PHASE 2)
+
+        GameScreen.getInstance().updateAll();
+
+        gameState.setCurrentPhase(RoundPhaseType.DRAWCOUNTERS);
+        gameState.setToFirstPlayer();
+    }
+
+    /**
+     * PHASE 3
+     */
+    public void drawCounters() {
+        if (gameState.getCurrentRound() <= gameState.getTotalRounds()
+                && gameState.getCurrentPhase().equals(RoundPhaseType.DRAWCOUNTERS)
+                && gameState.getCurrentPlayer().equals(thisPlayer)) {
+
+            updateGameState();
+            System.out.println("Current phase: DRAW COUNTERS");
+
+            // TODO: display message to let the user know that they need to select a counter
+
+            // all logic is implemented in the mouse listeners of the counters
+        }
+    }
+
+    /**
+     * PHASE 4
+     */
+    public void planTravelRoutes() {
+        System.out.println("Current phase: PLAN TRAVEL ROUTES");
+    }
+
+    /**
+     * PHASE 5
+     */
+    public void moveOnMap() {
+        System.out.println("Current phase: MOVE ON MAP");
+    }
+
+
+    /* GAME LOOP DOES NOT WORK -- TO BE DELETED
     private void gameLoop() {
 
         while (gameState.getCurrentRound() <= gameState.getTotalRounds()) {
 
+            // includes dealing travel cards (STAGE 1) and drawing 1 face down counter for each player (STAGE 2)
             setUpRound();
 
-            // **** DRAW COUNTERS **** //
+            // **** STAGE 3 - DRAW COUNTERS **** //
             while (gameState.getCurrentPhase().equals(RoundPhaseType.DRAWCOUNTERS)) {
-                // TODO IMPLEMENT
-
-                break;
-            }
-
-            // **** PLAN TRAVEL ROUTES **** //
-            while (gameState.getCurrentPhase().equals(RoundPhaseType.PLANROUTES)) {
 
                 // wait for other players to take their turns
-                while (!gameState.getCurrentPlayer().getUser().equals(User.getInstance()));
+                while (!gameState.getCurrentPlayer().equals(thisPlayer));
 
                 // its my turn
-                if (gameState.getCurrentPlayer().getUser().equals(User.getInstance())) {
+                if (gameState.getCurrentPlayer().equals(thisPlayer)){
                     updateGameState();
 
-                    // TODO implement all logic for my turn
+                    // TODO: display message to let the user know that they need to select a counter
 
+                    // waiting for the user to click a counter, either from the deck or face-up
+                    while (!GameScreen.getInstance().getDeckSelected() && !GameState.instance().getAnyFaceUpCounterSelectedToOwn());
+
+                    if (GameScreen.getInstance().getDeckSelected()) { // player wants to draw a counter from the pile
+                        TransportationCounter drawn = GameState.instance().getCounterPile().draw();
+                        thisPlayer.getHand().addUnit(drawn);
+                        GameScreen.getInstance().setDeckSelected(false);
+                    } else if (GameState.instance().getAnyFaceUpCounterSelectedToOwn()) { // player wants to take a face-up counter
+                        TransportationCounter selected = GameState.instance().getFaceUpCounterSelectedToOwn();
+                        thisPlayer.getHand().addUnit(selected);
+                        selected.setSelectedToOwn(false);
+                    }
+
+                    endTurn(); // updates the GUI
                     sendGameState();
-                    endTurn();
                 }
             }
 
-            // **** MOVE ON MAP **** //
-            while (gameState.getCurrentPhase().equals(RoundPhaseType.MOVE)) {
+            // **** STAGE 4 - PLAN TRAVEL ROUTES **** //
+            while (gameState.getCurrentPhase().equals(RoundPhaseType.PLANROUTES)) {
 
                 // wait for other players to take their turns
-                while (!gameState.getCurrentPlayer().getUser().equals(User.getInstance()));
+                while (!gameState.getCurrentPlayer().equals(thisPlayer));
 
                 // its my turn
-                if (gameState.getCurrentPlayer().getUser().equals(User.getInstance())) {
+                if (gameState.getCurrentPlayer().equals(thisPlayer)) {
                     updateGameState();
 
                     // TODO implement all logic for my turn
 
-                    sendGameState();
                     endTurn();
+                    sendGameState();
+                }
+            }
+
+            // **** STAGE 5 - MOVE ON MAP **** //
+            while (gameState.getCurrentPhase().equals(RoundPhaseType.MOVE)) {
+
+                // wait for other players to take their turns
+                while (!gameState.getCurrentPlayer().equals(thisPlayer));
+
+                // its my turn
+                if (gameState.getCurrentPlayer().equals(thisPlayer)) {
+                    updateGameState();
+
+                    // TODO implement all logic for my turn
+
+                    endTurn();
+                    sendGameState();
                 }
             }
 
@@ -155,25 +226,7 @@ public class GameManager {
         }
 
         endGame();
-    }
-
-
-    /**
-     * Distribute travel cards to each Player by popping from the front of the TravelCardDeck
-     * Fills the Player's hand to have 8 travel cards
-     */
-    public void distributeTravelCards() {
-
-        gameState.getTravelCardDeck().shuffle();
-
-        for (Player p : gameState.getPlayers()) {
-            int numCards = p.getHand().getNumTravelCards();
-
-            for (int i=numCards; i<8; i++) {
-                p.getHand().addUnit(gameState.getTravelCardDeck().draw());
-            }
-        }
-    }
+    } */
 
 
     private void initializeElfBoots() {
@@ -188,6 +241,7 @@ public class GameManager {
 
     // totalRounds Round <--in-- numOfRoundPhaseType Phases <--in-- numOfPlayer Turns
     public void endTurn() {
+        GameScreen.getInstance().updateAll(); // update the GUI
         actionManager.clearSelection();
 
         // all players have passed their turn in the current phase
@@ -207,12 +261,6 @@ public class GameManager {
         gameState.setToNextPlayer();
     }
 
-    private void setUpRound() {
-        distributeTravelCards(); // distribute cards to each player
-        gameState.setCurrentPhase(RoundPhaseType.DRAWCOUNTERS);
-        gameState.setToFirstPlayer();
-    }
-
     private void endRound() {
         gameState.setToFirstPlayer();
         gameState.incrementCurrentRound();
@@ -228,9 +276,9 @@ public class GameManager {
     }
 
     private void updateGameState() {
-        // TODO implement
+        // TODO implement get game state from peers
 
-        // get game state from peers and update
+        GameScreen.getInstance().updateAll();
     }
 
     private void sendGameState() {
@@ -253,5 +301,33 @@ public class GameManager {
 
     public Player getThisPlayer() {
         return thisPlayer;
+    }
+
+
+    /**
+     * Distribute travel cards to each Player by popping from the TravelCardDeck
+     * Fills the Player's hand to have 8 travel cards
+     */
+    public void distributeTravelCards() {
+
+        gameState.getTravelCardDeck().shuffle();
+
+        for (Player p : gameState.getPlayers()) {
+            int numCards = p.getHand().getNumTravelCards();
+
+            for (int i=numCards; i<8; i++) {
+                p.getHand().addUnit(gameState.getTravelCardDeck().draw());
+            }
+        }
+    }
+
+
+    /**
+     * Distribute 1 face-down transportation counter to each Player by popping from the CounterPile
+     */
+    public void distributeHiddenCounter() {
+        for (Player p : gameState.getPlayers()) {
+            p.getHand().addUnit(gameState.getCounterPile().draw());
+        }
     }
 }
