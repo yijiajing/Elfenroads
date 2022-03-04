@@ -24,17 +24,23 @@ public class GameManager {
     private Player thisPlayer = null; // represents the Player who is using this GUI, set by ChooseBootWindow
     private boolean loaded;
 
+    // stuff for managing networking operations
+    private String sessionID;
+    private CommunicationsManager coms;
+
     /**
      * Constructor is called when "join" is clicked
      * If the User is starting a new game, then loadedState == null and sessionID != null
      * If the User is loading a previous game, then loadedState != null and sessionID == null (change this?)
      */
-    private GameManager(Optional<GameState> loadedState, Optional<String> sessionID) {
+    private GameManager(Optional<GameState> loadedState, String pSessionID) {
 
         MainFrame.mainPanel.add(GameScreen.init(MainFrame.getInstance()), "gameScreen");
+        sessionID = pSessionID;
+        coms = new CommunicationsManager(this, sessionID);
 
         // start a new game if there is no state to be loaded
-        if (!loadedState.isPresent() && sessionID.isPresent()) {
+        if (!loadedState.isPresent()) {
             gameState = GameState.init(3);
             actionManager = ActionManager.init(gameState);
             loaded = false;
@@ -67,7 +73,7 @@ public class GameManager {
         drawCounters(); // PHASE 3
     }
 
-    public static GameManager init(Optional<GameState> loadedState, Optional<String> sessionID) {
+    public static GameManager init(Optional<GameState> loadedState, String sessionID) {
         if (INSTANCE == null) {
             INSTANCE = new GameManager(loadedState, sessionID);
         }
@@ -329,5 +335,9 @@ public class GameManager {
         for (Player p : gameState.getPlayers()) {
             p.getHand().addUnit(gameState.getCounterPile().draw());
         }
+    }
+
+    public CommunicationsManager getComs() {
+        return coms;
     }
 }

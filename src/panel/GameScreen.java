@@ -68,9 +68,6 @@ public class GameScreen extends JPanel implements Serializable
 
 	private JTable leaderboard = new JTable();
 
-	// TODO: change this on the other computer
-	private String otherPlayerIP = "192.168.2.253"; // Nick's IP address
-
 	private GameScreen (JFrame frame)
 	{
 		// layout is necessary for JLayeredPane to be added to the JPanel
@@ -467,24 +464,6 @@ public class GameScreen extends JPanel implements Serializable
 
 		game_screen.add(init(game_screen));
 		game_screen.setVisible(true);
-	}
-
-	public void sendGameState(JPanel elfBootLocation) throws IOException
-	{
-		System.out.println("Sending the game state...");
-		Socket connection = new Socket(otherPlayerIP, 4444); // start up the connection
-		System.out.println("Outwards socket is up and running...");
-
-		// send the Elf boot's new location
-		JPanel toSend = elfBootLocation;
-		OutputStream out = connection.getOutputStream();
-		ObjectOutputStream payload = new ObjectOutputStream(out);
-		payload.writeObject(toSend);
-		System.out.println("Done writing the elf boot current location into payload...");
-		payload.flush();
-		System.out.println("Payload has been flushed.");
-		connection.close();
-		System.out.print("Done. connection has been closed.");
 	}
 
 	public void listen(int port) throws IOException
