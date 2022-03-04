@@ -173,6 +173,50 @@ public class NetworkUtils {
 
     }
 
+    // as of 03-02-2022, ngrok public address changes (at least the DNS -> IP mapping does) too often to work with
+    // this method exists to get the local (only usable on the local network) IP to pass to the LS for the local-multiplayer-only implementation
+    public static String getLocalIP() throws Exception {
+        // need to get the local IP address
+        // InetAddress.getLocalHost() returns the loopback address sometimes, so we have to do this a different way
+
+        InetAddress local = InetAddress.getLocalHost();
+        String localHostname = local.getHostName();
+        InetAddress [] allAddresses = InetAddress.getAllByName(localHostname);
+
+        for (InetAddress address : allAddresses)
+        {
+            if (address.isLoopbackAddress()) // we don't want the loopback address
+            {
+                // do nothing and keep going
+            }
+
+            else
+            {
+                return address.getHostAddress();
+            }
+        }
+
+        throw new Exception ("Could not find an IP that was not a loopback.");
+    }
+
+    /**
+     * used for adding a port onto an address since, the LS wants one
+     * for now, we are going to use port 999
+     * if, for some reason, we want to use a different port, we can overload this method and take port as argument
+     * @return the local IP address with a port tacked onto it, to send to the LobbyService
+     * @throws UnknownHostException
+     */
+    public static String getLocalIPAddPort() throws Exception
+    {
+        // hardcode port 999. this is what everyone will use
+        String port = "999";
+        // tack the desired port onto the local IP address to make it valid for the LS
+        String localIP = getLocalIP();
+        String localIPPlusPort = localIP + ":" + port;
+
+        return localIPPlusPort;
+    }
+
     /**
      * based on code from https://www.geeksforgeeks.org/md5-hash-in-java/
      * @param input the stuff to hash (will be a payload for long polling)
@@ -197,6 +241,29 @@ public class NetworkUtils {
             hash = "0" + hash;
         }
         return hash;
+    }
+
+    /**
+     * @param address: a valid IP address in the format IP: port, returned from an API call to the LS
+     * will be called in CommunicationsManager.setUpSenders()
+     * @return the IP address (without the port)
+     */
+    public static String getAddress(String address)
+    {
+        String [] wholeThingSplit = address.split(":");
+        return wholeThingSplit[0];
+    }
+
+    /**
+     *
+     * @param address a valid IP address in the format IP:port, returned from an API call to the LS
+     * will be called in CommunicationsManager.setUpSenders()
+     * @return the port number
+     */
+    public static int getPort(String address)
+    {
+        String [] wholeThingSplit = address.split(":");
+        return Integer.parseInt(wholeThingSplit[1]);
     }
 
     /**
@@ -243,7 +310,7 @@ public class NetworkUtils {
                     // join the game
                     try {
                         GameSession.joinSession(MainFrame.loggedIn, id);
-                        GameManager.init(Optional.empty(), Optional.of(id)); // pulls up ChooseBootWindow
+                        GameManager.init(Optional.empty(), id);
                     } catch (Exception ex) {
                         System.out.println("There was a problem attempting to join the session with User" + MainFrame.loggedIn.getUsername());
                         ex.printStackTrace();
@@ -255,9 +322,13 @@ public class NetworkUtils {
             startButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    GameManager.getInstance().launch(); // pulls up GameScreen
+                    GameManager.getInstance().launch();
+                    // GameManager.init(Optional.empty(), id);
                 }
             });
+
+
+
 
 
             // initialize the box
