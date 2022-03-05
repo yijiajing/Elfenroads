@@ -340,4 +340,8 @@ public class GameManager {
     public CommunicationsManager getComs() {
         return coms;
     }
+
+    public String getSessionID() {
+        return sessionID;
+    }
 }

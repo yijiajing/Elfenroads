@@ -441,7 +441,8 @@ public class GameScreen extends JPanel implements Serializable
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (GameState.instance().getCurrentPhase().equals(RoundPhaseType.DRAWCOUNTERS)) {
-					TransportationCounter drawn = GameState.instance().getCounterPile().draw(); // draw a counter
+					// we know this will be a TransportationCounter, so we can typecast
+					TransportationCounter drawn = (TransportationCounter) GameState.instance().getCounterPile().draw(); // draw a counter
 					GameManager.getInstance().getThisPlayer().getHand().addUnit(drawn); // add to player's hand
 					updateAll(); // update GUI
 

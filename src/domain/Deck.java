@@ -44,6 +44,11 @@ public abstract class Deck {
 
     public void shuffle() {Collections.shuffle(components, rand);}
 
+    public int getSize() {return components.size();}
+
+    // should probably not return the actual reference
+    public Stack<Drawable> getComponents() {return components;}
+
 
 
 

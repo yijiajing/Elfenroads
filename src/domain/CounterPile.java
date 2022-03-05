@@ -3,6 +3,7 @@ package domain;
 import enums.CounterType;
 import loginwindow.MainFrame;
 
+import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,30 +13,18 @@ import java.util.Stack;
 /**
  * The face-down pile of transportation counters
  */
-public class CounterPile {
+public class CounterPile extends Deck {
 
-    private Stack<TransportationCounter> counters;
-    private int seed = 3; // TODO somehow make the seed different for each game
+    public CounterPile(String sessionID) {
 
-    public CounterPile() {
-        this.counters = new Stack<>();
+        super(sessionID);
 
         for (CounterType type : CounterType.values()) {
             for (int i = 0; i < 8; i++) {
-                counters.add(new TransportationCounter(type, MainFrame.instance.getWidth()*67/1440, MainFrame.instance.getHeight()*60/900));
+                components.add(new TransportationCounter(type, MainFrame.instance.getWidth()*67/1440, MainFrame.instance.getHeight()*60/900));
             }
         }
 
         shuffle();
-    }
-
-    public TransportationCounter draw() {return counters.pop();}
-
-    public Stack<TransportationCounter> getCounters() {return this.counters;}
-
-    public void shuffle() {Collections.shuffle(this.counters, new Random(seed));}
-
-    public int getSize() {
-        return counters.size();
     }
 }
