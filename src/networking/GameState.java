@@ -187,8 +187,7 @@ public class GameState {
 
     public void addFaceUpCounterFromPile() {
         if (counterPile.getSize() > 0) {
-            // we know this will be a TransportationCounter
-            TransportationCounter counter = (TransportationCounter) counterPile.draw();
+            CounterUnit counter = counterPile.draw();
             faceUpCounters.add(counter);
             counter.setOwned(false);
         } else {

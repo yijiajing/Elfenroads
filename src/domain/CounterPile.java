@@ -13,7 +13,7 @@ import java.util.Stack;
 /**
  * The face-down pile of transportation counters
  */
-public class CounterPile extends Deck {
+public class CounterPile <CounterUnit> extends Deck <CounterUnit> {
 
     public CounterPile(String sessionID) {
 

@@ -1,6 +1,7 @@
 package panel;// package testing;
 
 import domain.CounterPile;
+import domain.CounterUnit;
 import domain.TransportationCounter;
 
 import javax.swing.*;
@@ -32,7 +33,7 @@ public class DrawListener implements ActionListener {
             // if we find an empty spot, put the card there and break
             if (toPlace[i].getComponentCount() == 0)
             {
-                TransportationCounter toMove = (TransportationCounter) this.drawnFrom.draw();
+                CounterUnit toMove = this.drawnFrom.draw();
                 toPlace[i].add(toMove.getDisplay());
                 break;
             }

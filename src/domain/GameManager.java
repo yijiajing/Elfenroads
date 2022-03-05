@@ -387,6 +387,7 @@ public class GameManager {
 
     public String getSessionID() {
         return sessionID;
+    }
       
     public boolean isLocalPlayerTurn() {
         return thisPlayer.equals(gameState.getCurrentPlayer());
