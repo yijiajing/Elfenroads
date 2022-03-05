@@ -61,4 +61,8 @@ public class Road {
         this.obstacle = null;
         counterPanel.clear();
     }
+
+    public CounterPanel getCounterPanel() {
+        return counterPanel;
+    }
 }

@@ -16,7 +16,7 @@ public class TransportationCounter extends CounterUnit implements Comparable<Tra
     private CounterType type;
     private boolean owned; // indicates if the counter is owned by any player
 
-    public TransportationCounter (CounterType pType, int resizeWidth, int resizeHeight)
+    public TransportationCounter(CounterType pType, int resizeWidth, int resizeHeight)
     {
         super(resizeWidth, resizeHeight, pType.ordinal() + 1); // since the images start from M01, not M00
         this.type = pType;

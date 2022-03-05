@@ -1,6 +1,7 @@
 package networking;
 
 import commands.MoveBootCommand;
+import commands.PlaceTransportationCounterCommand;
 import domain.*;
 import enums.RoundPhaseType;
 import panel.ElfBootPanel;
@@ -52,14 +53,17 @@ public class ActionManager {
         return selectedRoad;
     }
 
-    public void setSelectedRoad(Road selectedRoad) {
-        LOGGER.info("Road on " + selectedRoad.getRegionType() + " selected");
-        this.selectedRoad = selectedRoad;
+    public void setSelectedRoad(Road road) {
+        LOGGER.info("Road on " + road.getRegionType() + " selected");
+        selectedRoad = road;
 
         if (gameState.getCurrentPhase() == RoundPhaseType.PLANROUTES) {
             // Player intends to place an obstacle
             if (selectedCounter instanceof Obstacle) {
-                if (!selectedRoad.placeObstacle((Obstacle) selectedCounter)) {
+                if (selectedRoad.placeObstacle((Obstacle) selectedCounter)) {
+                    //TODO: send a place obstacle command
+
+                } else { // failure
                     GameScreen.displayMessage("""
                     You cannot place an obstacle here. Please try again.
                     """, false, false);
@@ -69,7 +73,15 @@ public class ActionManager {
                 return;
             }
             // Player intends to place a transportation counter
-            if (!selectedRoad.setTransportationCounter((TransportationCounter) selectedCounter)) {
+            if (selectedRoad.setTransportationCounter((TransportationCounter) selectedCounter)) {
+                PlaceTransportationCounterCommand toSendOverNetwork = new PlaceTransportationCounterCommand(selectedRoad, (TransportationCounter) selectedCounter);
+                try {
+                    gameManager.getComs().sendGameCommand(toSendOverNetwork);
+                } catch (IOException e) {
+                    LOGGER.info("There was a problem sending the command to place the transportation counter!");
+                    e.printStackTrace();
+                }
+            } else { // failure
                 GameScreen.displayMessage("""
                 You cannot place a transportation counter here. Please try again.
                 """, false, false);
