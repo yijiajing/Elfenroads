@@ -3,6 +3,7 @@ package domain;
 import enums.CounterType;
 import enums.RegionType;
 import enums.RoundPhaseType;
+import loginwindow.MainFrame;
 import networking.ActionManager;
 import networking.GameState;
 import panel.GameScreen;
@@ -122,5 +123,9 @@ public class TransportationCounter extends CounterUnit implements Comparable<Tra
 
     public void setOwned(boolean b) {
         this.owned = b;
+    }
+
+    public static TransportationCounter getNew(CounterType counterType) {
+        return new TransportationCounter(counterType, MainFrame.instance.getWidth()*67/1440, MainFrame.instance.getHeight()*60/900);
     }
 }

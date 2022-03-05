@@ -13,6 +13,8 @@ import enums.Colour;
 import networking.*;
 
 /**
+ * This class is deprecated. Will be removed.
+ *
  * Controller for ElfBoot movement.
  * Reacts to mouse events on ElfBoots, TownPanels, and ElfBootPanels by updating the model
  */
