@@ -31,28 +31,34 @@ public class MoveBootCommand implements GameCommand, Serializable {
     }
 
     @Override
+    /**
+     * @pre the move has been validated by the ActionManager
+     */
     public void execute()
     {
         // update the current town of the player who moved
         GameState.instance().getCurrentPlayer().setCurrentTown(ActionManager.getInstance().getSelectedTown());
 
         GameMap map = GameMap.getInstance();
-        GameState state = GameManager.getInstance().getGameState();
-        ElfBoot moved = state.getBootByColour(colorBootMoved);
+        Town startTown = map.getTown(start);
+        Town destinationTown = map.getTown(destination);
+
+        // update current panel of the boot
+        ElfBoot moved = GameState.instance().getBootByColour(colorBootMoved);
+        moved.setCurPanel(GameMap.getInstance().getTownByName(destination).getElfBootPanel());
+
+        ElfBootPanel startPanel = startTown.getElfBootPanel();
+        ElfBootPanel destinationPanel = destinationTown.getElfBootPanel();
+
+        // actually move the boot
+        startPanel.removeBootFromPanel(moved);
+        destinationPanel.addBootToPanel(moved);
+
         if (moved == null)
         {
             System.out.println("Execute method failed. Could not find a boot in the list of boots.");
         }
 
-
-        Town startTown = map.getTown(start);
-        Town destinationTown = map.getTown(destination);
-
-        ElfBootPanel startPanel = startTown.getElfBootPanel();
-        ElfBootPanel destinationPanel = destinationTown.getElfBootPanel();
-
-        startPanel.removeBootFromPanel(moved);
-        destinationPanel.addBootToPanel(moved);
 
         startPanel.updateView();
         destinationPanel.updateView();
