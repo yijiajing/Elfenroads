@@ -168,19 +168,16 @@ public class ActionManager {
         selectedTown = town;
 
 
-        //TODO: uncomment this!
-        /*
         if (!(gameState.getCurrentPhase() == RoundPhaseType.MOVE
                 && !selectedCards.isEmpty()
                 && gameManager.isLocalPlayerTurn())) {
             return;
         }
-        */
 
 
-        if (true) {
-        // TODO: uncomment this!
-        // if (GameRuleUtils.validateMove(GameMap.getInstance(), gameState.getCurrentPlayer().getCurrentTown(), selectedTown, selectedCards)) {
+
+
+        if (GameRuleUtils.validateMove(GameMap.getInstance(), gameState.getCurrentPlayer().getCurrentTown(), selectedTown, selectedCards)) {
             // Move Boot
             gameState.getCurrentPlayer().setCurrentTown(selectedTown);
             ElfBoot boot = gameState.getCurrentPlayer().getBoot();
