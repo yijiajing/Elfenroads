@@ -32,8 +32,8 @@ public class DrawListener implements ActionListener {
             // if we find an empty spot, put the card there and break
             if (toPlace[i].getComponentCount() == 0)
             {
-                TransportationCounter toMove = this.drawnFrom.draw();
-                toPlace[i].add(toMove.getImage());
+                TransportationCounter toMove = (TransportationCounter) this.drawnFrom.draw();
+                toPlace[i].add(toMove.getDisplay());
                 break;
             }
             // if we can't find an empty spot, then just break and leave it alone for now

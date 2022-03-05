@@ -37,7 +37,7 @@ public class CounterPanel extends JPanel {
     }
 
     public void setTransportationCounter(TransportationCounter transportationCounter) {
-        this.add(transportationCounter.getImage());
+        this.add(transportationCounter.getDisplay());
     }
 
     public void placeObstacle(Obstacle obstacle) {

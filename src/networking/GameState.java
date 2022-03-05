@@ -50,8 +50,9 @@ public class GameState {
         this.elfBoots = new ArrayList<>();
         this.currentRound = 1;
         this.totalRounds = numRounds;
-        this.travelCardDeck = new TravelCardDeck();
-        this.counterPile = new CounterPile();
+        String sessionID = GameManager.getInstance().getSessionID();
+        this.travelCardDeck = new TravelCardDeck(sessionID);
+        this.counterPile = new CounterPile(sessionID);
     }
 
     // TODO: implement this second constructor
@@ -186,7 +187,8 @@ public class GameState {
 
     public void addFaceUpCounterFromPile() {
         if (counterPile.getSize() > 0) {
-            TransportationCounter counter = counterPile.draw();
+            // we know this will be a TransportationCounter
+            TransportationCounter counter = (TransportationCounter) counterPile.draw();
             faceUpCounters.add(counter);
             counter.setOwned(false);
         } else {

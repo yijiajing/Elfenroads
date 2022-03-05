@@ -23,7 +23,7 @@ public class TransportationCounter extends CounterUnit implements Comparable<Tra
         this.type = pType;
         this.owned = false;
 
-        this.getImage().addMouseListener(new MouseAdapter() {
+        this.getDisplay().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (!isOwned()) { // counter is face-up and available to be chosen

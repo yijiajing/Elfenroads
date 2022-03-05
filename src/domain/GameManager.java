@@ -384,7 +384,12 @@ public class GameManager {
         return coms;
     }
 
+
+    public String getSessionID() {
+        return sessionID;
+      
     public boolean isLocalPlayerTurn() {
         return thisPlayer.equals(gameState.getCurrentPlayer());
+
     }
 }
