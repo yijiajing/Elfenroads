@@ -32,7 +32,7 @@ public class CommunicationsManager {
     private String sessionID; // the ID for the GameSession the player is in (this will be the same value across all players)
     private ArrayList<String> playerAddresses; // this will store the addresses of players. It will be used only at initialization
 
-    private MoveBootCommand lastCommandReceived; // this will be used to update the GameState/GameScreen with whatever command we just received
+    private GameCommand lastCommandReceived; // this will be used to update the GameState/GameScreen with whatever command we just received
 
 
     public CommunicationsManager(GameManager pManagedBy, String gameSessionID)
@@ -150,7 +150,7 @@ public class CommunicationsManager {
     public void updateFromListener()
     {
         System.out.println("Received an update from the listener! Getting ready to update the UI...");
-        lastCommandReceived = (MoveBootCommand) listener.getCommand();
+        lastCommandReceived = listener.getCommand();
         lastCommandReceived.execute();
     }
 
