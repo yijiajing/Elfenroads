@@ -8,10 +8,10 @@ import java.util.Collections;
 import java.util.Random;
 import java.util.Stack;
 
-public class TravelCardDeck extends Deck {
+public class TravelCardDeck extends Deck <CardUnit> {
 
 
-    public TravelCardDeck(String sessionID) {
+    public TravelCardDeck (String sessionID) {
 
         super(sessionID);
 
