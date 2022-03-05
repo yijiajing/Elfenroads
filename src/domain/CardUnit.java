@@ -15,4 +15,20 @@ public abstract class CardUnit extends Drawable{
     }
 
 
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        if (selected && !this.selected) {
+            // this card is selected
+            //TODO: add a highlight border when selected
+
+        } else if (!selected && this.selected) {
+            // this card is deselected
+            //TODO: remove the highlight border when deselected
+
+        }
+        this.selected = selected;
+    }
 }

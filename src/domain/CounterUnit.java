@@ -26,4 +26,5 @@ public abstract class CounterUnit extends Drawable{
     public void setPlacedOn(Road placedOn) {
         this.placedOn = placedOn;
     }
+
 }

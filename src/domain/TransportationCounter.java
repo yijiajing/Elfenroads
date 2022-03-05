@@ -3,6 +3,7 @@ package domain;
 import enums.CounterType;
 import enums.RegionType;
 import enums.RoundPhaseType;
+import loginwindow.MainFrame;
 import networking.ActionManager;
 import networking.GameState;
 import panel.GameScreen;
@@ -16,7 +17,7 @@ public class TransportationCounter extends CounterUnit implements Comparable<Tra
     private CounterType type;
     private boolean owned; // indicates if the counter is owned by any player
 
-    public TransportationCounter (CounterType pType, int resizeWidth, int resizeHeight)
+    public TransportationCounter(CounterType pType, int resizeWidth, int resizeHeight)
     {
         super(resizeWidth, resizeHeight, pType.ordinal() + 1); // since the images start from M01, not M00
         this.type = pType;
@@ -29,6 +30,7 @@ public class TransportationCounter extends CounterUnit implements Comparable<Tra
                     if (GameState.instance().getCurrentPhase().equals(RoundPhaseType.DRAWCOUNTERS)) {
                         GameState.instance().getFaceUpCounters().remove(TransportationCounter.this); // remove the counter from the face-up pile
                         GameManager.getInstance().getThisPlayer().getHand().addUnit(TransportationCounter.this); // add to player's hand
+                        GameState.instance().addFaceUpCounterFromPile(); // replenish the face-up counters with one from the pile
                         GameScreen.getInstance().updateAll(); // update GUI
                         GameManager.getInstance().endTurn();
                         TransportationCounter.this.owned = true;
@@ -121,5 +123,9 @@ public class TransportationCounter extends CounterUnit implements Comparable<Tra
 
     public void setOwned(boolean b) {
         this.owned = b;
+    }
+
+    public static TransportationCounter getNew(CounterType counterType) {
+        return new TransportationCounter(counterType, MainFrame.instance.getWidth()*67/1440, MainFrame.instance.getHeight()*60/900);
     }
 }

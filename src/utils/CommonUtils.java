@@ -15,4 +15,9 @@ public final class CommonUtils {
         Collections.sort(l2);
         return l1.equals(l2);
     }
+
+    public static boolean isWindows() {
+        String os = System.getProperty("os.name").toLowerCase();
+        return os.contains("win");
+    }
 }

@@ -65,6 +65,15 @@ public class Player {
         return this.colour;
     }
 
+    public ElfBoot getBoot() {
+        for (ElfBoot boot: GameState.instance().getElfBoots()) {
+            if (boot.getColour() == colour) {
+                return boot;
+            }
+        }
+        return null;
+    }
+
     public Hand getHand() { return this.hand; }
 
     public User getUser() {
