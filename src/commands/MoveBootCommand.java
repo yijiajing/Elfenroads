@@ -33,6 +33,9 @@ public class MoveBootCommand implements GameCommand, Serializable {
     @Override
     public void execute()
     {
+        // update the current town of the player who moved
+        GameState.instance().getCurrentPlayer().setCurrentTown(ActionManager.getInstance().getSelectedTown());
+
         GameMap map = GameMap.getInstance();
         GameState state = GameManager.getInstance().getGameState();
         ElfBoot moved = state.getBootByColour(colorBootMoved);

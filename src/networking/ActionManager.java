@@ -179,7 +179,8 @@ public class ActionManager {
 
         if (GameRuleUtils.validateMove(GameMap.getInstance(), gameState.getCurrentPlayer().getCurrentTown(), selectedTown, selectedCards)) {
             // Move Boot
-            gameState.getCurrentPlayer().setCurrentTown(selectedTown);
+            // gameState.getCurrentPlayer().setCurrentTown(selectedTown);
+            // MoveBootCommand.execute() does the above line now. I just left this here for reference
             ElfBoot boot = gameState.getCurrentPlayer().getBoot();
             ElfBootPanel startForCommand = boot.getCurPanel();
             ElfBoot bootForCommand = boot;
