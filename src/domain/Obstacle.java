@@ -1,5 +1,6 @@
 package domain;
 
+import loginwindow.MainFrame;
 import networking.ActionManager;
 
 import java.awt.event.MouseAdapter;
@@ -22,4 +23,7 @@ public class Obstacle extends CounterUnit {
         });
     }
 
+    public static Obstacle getNew() {
+        return new Obstacle(MainFrame.instance.getWidth()*67/1440, MainFrame.instance.getHeight()*60/900);
+    }
 }

@@ -1,6 +1,7 @@
 package networking;
 
 import commands.MoveBootCommand;
+import commands.PlaceObstacleCommand;
 import commands.PlaceTransportationCounterCommand;
 import domain.*;
 import enums.RoundPhaseType;
@@ -57,22 +58,31 @@ public class ActionManager {
         LOGGER.info("Road on " + road.getRegionType() + " selected");
         selectedRoad = road;
 
-        if (gameState.getCurrentPhase() == RoundPhaseType.PLANROUTES) {
-            // Player intends to place an obstacle
-            if (selectedCounter instanceof Obstacle) {
-                if (selectedRoad.placeObstacle((Obstacle) selectedCounter)) {
-                    //TODO: send a place obstacle command
+        if (!(gameState.getCurrentPhase() == RoundPhaseType.PLANROUTES
+                && gameManager.isLocalPlayerTurn())) {
+            return;
+        }
 
-                } else { // failure
-                    GameScreen.displayMessage("""
-                    You cannot place an obstacle here. Please try again.
-                    """, false, false);
-                    assert selectedCounter.isSelected();
-                    selectedCounter.setSelected(false);
+        // Player intends to place an obstacle
+        if (selectedCounter instanceof Obstacle) {
+            if (selectedRoad.placeObstacle((Obstacle) selectedCounter)) {
+                PlaceObstacleCommand toSendOverNetwork = new PlaceObstacleCommand(selectedRoad);
+                try {
+                    gameManager.getComs().sendGameCommand(toSendOverNetwork);
+                } catch (IOException e) {
+                    LOGGER.info("There was a problem sending the command to place the obstacle!");
+                    e.printStackTrace();
                 }
-                return;
+            } else { // Invalid move
+                GameScreen.displayMessage("""
+                You cannot place an obstacle here. Please try again.
+                """, false, false);
+                selectedCounter = null;
             }
-            // Player intends to place a transportation counter
+        }
+
+        // Player intends to place a transportation counter
+        else if (selectedCounter instanceof TransportationCounter) {
             if (selectedRoad.setTransportationCounter((TransportationCounter) selectedCounter)) {
                 PlaceTransportationCounterCommand toSendOverNetwork = new PlaceTransportationCounterCommand(selectedRoad, (TransportationCounter) selectedCounter);
                 try {
@@ -81,12 +91,11 @@ public class ActionManager {
                     LOGGER.info("There was a problem sending the command to place the transportation counter!");
                     e.printStackTrace();
                 }
-            } else { // failure
+            } else { // Invalid move
                 GameScreen.displayMessage("""
-                You cannot place a transportation counter here. Please try again.
-                """, false, false);
-                assert selectedCounter.isSelected();
-                selectedCounter.setSelected(false);
+                        You cannot place a transportation counter here. Please try again.
+                        """, false, false);
+                selectedCounter = null;
             }
         }
     }
@@ -101,11 +110,8 @@ public class ActionManager {
         } else if (selectedCounter instanceof TransportationCounter) {
             LOGGER.info("Counter " + ((TransportationCounter) selectedCounter).getType() + " selected");
         }
-        if (this.selectedCounter.equals(selectedCounter)) {
-            clearSelectedCounter();
-        } else {
-            this.selectedCounter = selectedCounter;
-        }
+
+        this.selectedCounter = selectedCounter;
     }
 
     public List<TravelCard> getSelectedCards() {
@@ -121,6 +127,7 @@ public class ActionManager {
         } else {
             // add to selected cards
             this.selectedCards.add(selectedCard);
+            assert !selectedCard.isSelected();
             selectedCard.setSelected(true);
         }
     }
@@ -137,49 +144,46 @@ public class ActionManager {
         LOGGER.info("Town " + selectedTown.getName() + " selected");
         this.selectedTown = selectedTown;
 
-        if (gameState.getCurrentPhase() == RoundPhaseType.MOVE
+        if (!(gameState.getCurrentPhase() == RoundPhaseType.MOVE
                 && !selectedCards.isEmpty()
-                && gameManager.getThisPlayer().equals(gameState.getCurrentPlayer())) {
-            if (!GameRuleUtils.validateMove(GameMap.getInstance(), gameState.getCurrentPlayer().getCurrentTown(), selectedTown, selectedCards)) {
-                /**
-                 * Move Boot
-                 */
-                gameState.getCurrentPlayer().setCurrentTown(selectedTown);
-                ElfBoot boot = gameState.getCurrentPlayer().getBoot();
-                ElfBootPanel startForCommand = boot.getCurPanel();
-                ElfBoot bootForCommand = boot;
-                ElfBootPanel destinationForCommand = this.selectedTown.getPanel().getElfBootPanel();
-                boot.setCurPanel(destinationForCommand);
-                // TODO: remove this. just for testing
-                if (startForCommand == null || destinationForCommand == null || bootForCommand == null)
-                {
-                    System.out.println("Something went wrong! The fields in the command to send were not determined correctly!");
-                }
-
-                // boot has been successfully moved and is no longer selected
-                boot.setSelected(false);
-
-                // now, construct a command and notify the CommunicationsManager so that it can send the movement to other players in the game
-                MoveBootCommand toSendOverNetwork = new MoveBootCommand(startForCommand, destinationForCommand, bootForCommand);
-                try {
-                    gameManager.getComs().sendGameCommand(toSendOverNetwork);
-                } catch (IOException e) {
-                    LOGGER.info("There was a problem sending the command to move the boot!");
-                    e.printStackTrace();
-                }
-            } else {
-                /**
-                 * Move Boot fails
-                 */
-                //TODO: in UI, deselect all currently selected cards in UI
-                GameScreen.displayMessage("""
-                You cannot move to the destination town with the selected cards. Please try again.
-                """, false, false);
-                this.selectedTown = null;
-                assert this.selectedCards.stream().allMatch(CardUnit::isSelected);
-                this.selectedCards.forEach(this::clearSelectedCard);
-            }
+                && gameManager.isLocalPlayerTurn())) {
+            return;
         }
+
+        if (GameRuleUtils.validateMove(GameMap.getInstance(), gameState.getCurrentPlayer().getCurrentTown(), selectedTown, selectedCards)) {
+            // Move Boot
+            gameState.getCurrentPlayer().setCurrentTown(selectedTown);
+            ElfBoot boot = gameState.getCurrentPlayer().getBoot();
+            ElfBootPanel startForCommand = boot.getCurPanel();
+            ElfBoot bootForCommand = boot;
+            ElfBootPanel destinationForCommand = this.selectedTown.getPanel().getElfBootPanel();
+            boot.setCurPanel(destinationForCommand);
+            // TODO: remove this. just for testing
+            if (startForCommand == null || destinationForCommand == null || bootForCommand == null)
+            {
+                System.out.println("Something went wrong! The fields in the command to send were not determined correctly!");
+            }
+
+            // boot has been successfully moved and is no longer selected
+            boot.setSelected(false);
+
+            // now, construct a command and notify the CommunicationsManager so that it can send the movement to other players in the game
+            MoveBootCommand toSendOverNetwork = new MoveBootCommand(startForCommand, destinationForCommand, bootForCommand);
+            try {
+                gameManager.getComs().sendGameCommand(toSendOverNetwork);
+            } catch (IOException e) {
+                LOGGER.info("There was a problem sending the command to move the boot!");
+                e.printStackTrace();
+            }
+        } else { // Move Boot fails
+            GameScreen.displayMessage("""
+            You cannot move to the destination town with the selected cards. Please try again.
+            """, false, false);
+            this.selectedTown = null;
+            assert this.selectedCards.stream().allMatch(CardUnit::isSelected);
+            this.selectedCards.forEach(this::clearSelectedCard);
+        }
+
     }
 
     public void clearSelectedCard(TravelCard card) {
@@ -187,12 +191,6 @@ public class ActionManager {
         assert card.isSelected();
         selectedCards.remove(card);
         card.setSelected(false);
-    }
-
-    public void clearSelectedCounter() {
-        assert selectedCounter.isSelected();
-        selectedCounter.setSelected(false);
-        selectedCounter = null;
     }
 
     /**

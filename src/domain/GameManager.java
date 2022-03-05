@@ -383,4 +383,8 @@ public class GameManager {
     public CommunicationsManager getComs() {
         return coms;
     }
+
+    public boolean isLocalPlayerTurn() {
+        return thisPlayer.equals(gameState.getCurrentPlayer());
+    }
 }
