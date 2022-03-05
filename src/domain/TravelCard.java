@@ -16,7 +16,6 @@ public class TravelCard extends CardUnit {
         this.getImage().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                //TODO: add a highlight border when selected
                 ActionManager.getInstance().addSelectedCard(TravelCard.this);
             }
         });

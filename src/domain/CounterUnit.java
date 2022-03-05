@@ -7,6 +7,7 @@ public abstract class CounterUnit extends Drawable{
 
     private JLabel image;
     private Road placedOn;
+    private boolean selected;
 
     CounterUnit(int resizeWidth, int resizeHeight, int imageNumber) {
 
@@ -29,4 +30,21 @@ public abstract class CounterUnit extends Drawable{
     }
 
     public JLabel getImage() {return this.image;}
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        if (selected && !this.selected) {
+            // this counter is selected
+            //TODO: add a highlight border when selected
+
+        } else if (!selected && this.selected) {
+            // this counter is deselected
+            //TODO: remove the highlight border when deselected
+
+        }
+        this.selected = selected;
+    }
 }

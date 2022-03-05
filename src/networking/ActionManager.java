@@ -1,9 +1,13 @@
 package networking;
 
+import commands.MoveBootCommand;
 import domain.*;
 import enums.RoundPhaseType;
+import panel.ElfBootPanel;
+import panel.GameScreen;
 import utils.GameRuleUtils;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -14,11 +18,12 @@ public class ActionManager {
 
     private final static Logger LOGGER = Logger.getLogger("game state");
 
-    private GameState gameState;
+    private final GameState gameState;
+    private final GameManager gameManager = GameManager.getInstance();
 
     private Road selectedRoad;
-    private TransportationCounter selectedCounter;
-    private List<TravelCard> selectedCards = new ArrayList<>();
+    private CounterUnit selectedCounter;
+    private final List<TravelCard> selectedCards = new ArrayList<>();
     private Town selectedTown;
     boolean obstacleSelected = false;
 
@@ -53,31 +58,42 @@ public class ActionManager {
 
         if (gameState.getCurrentPhase() == RoundPhaseType.PLANROUTES) {
             // Player intends to place an obstacle
-            if (obstacleSelected) {
-                if (!selectedRoad.placeObstacle()) {
-                    //TODO: display failure message and deselect obstacle in UI
+            if (selectedCounter instanceof Obstacle) {
+                if (!selectedRoad.placeObstacle((Obstacle) selectedCounter)) {
+                    GameScreen.displayMessage("""
+                    You cannot place an obstacle here. Please try again.
+                    """, false, false);
+                    assert selectedCounter.isSelected();
+                    selectedCounter.setSelected(false);
                 }
+                return;
             }
             // Player intends to place a transportation counter
-            if (!selectedRoad.setTransportationCounter(selectedCounter)) {
-                //TODO: display failure message and deselect counter in UI
+            if (!selectedRoad.setTransportationCounter((TransportationCounter) selectedCounter)) {
+                GameScreen.displayMessage("""
+                You cannot place a transportation counter here. Please try again.
+                """, false, false);
+                assert selectedCounter.isSelected();
+                selectedCounter.setSelected(false);
             }
         }
     }
 
-    public void obstacleSelected() {
-        LOGGER.info("Obstacle selected");
-        obstacleSelected = !obstacleSelected;
-        selectedCounter = null;
-    }
-
-    public TransportationCounter getSelectedCounter() {
+    public CounterUnit getSelectedCounter() {
         return selectedCounter;
     }
 
-    public void setSelectedCounter(TransportationCounter selectedCounter) {
-        LOGGER.info("Counter " + selectedCounter.getType() + " selected");
-        this.selectedCounter = selectedCounter;
+    public void setSelectedCounter(CounterUnit selectedCounter) {
+        if (selectedCounter instanceof Obstacle) {
+            LOGGER.info("Obstacle selected");
+        } else if (selectedCounter instanceof TransportationCounter) {
+            LOGGER.info("Counter " + ((TransportationCounter) selectedCounter).getType() + " selected");
+        }
+        if (this.selectedCounter.equals(selectedCounter)) {
+            clearSelectedCounter();
+        } else {
+            this.selectedCounter = selectedCounter;
+        }
     }
 
     public List<TravelCard> getSelectedCards() {
@@ -87,13 +103,18 @@ public class ActionManager {
     public void addSelectedCard(TravelCard selectedCard) {
         LOGGER.info("Card " + selectedCard.getType() + " selected");
         if (selectedCards.contains(selectedCard)) {
+            // if clicked twice, then deselect this card
             this.selectedCards.remove(selectedCard);
+            selectedCard.setSelected(false);
+        } else {
+            // add to selected cards
+            this.selectedCards.add(selectedCard);
+            selectedCard.setSelected(true);
         }
-        this.selectedCards.add(selectedCard);
     }
 
     public void setSelectedCards(List<TravelCard> selectedCards) {
-        this.selectedCards = selectedCards;
+        selectedCards.forEach(this::addSelectedCard);
     }
 
     public Town getSelectedTown() {
@@ -104,17 +125,62 @@ public class ActionManager {
         LOGGER.info("Town " + selectedTown.getName() + " selected");
         this.selectedTown = selectedTown;
 
-        if (gameState.getCurrentPhase() == RoundPhaseType.MOVE && !selectedCards.isEmpty()) {
+        if (gameState.getCurrentPhase() == RoundPhaseType.MOVE
+                && !selectedCards.isEmpty()
+                && gameManager.getThisPlayer().equals(gameState.getCurrentPlayer())) {
             if (!GameRuleUtils.validateMove(GameMap.getInstance(), gameState.getCurrentPlayer().getCurrentTown(), selectedTown, selectedCards)) {
+                /**
+                 * Move Boot
+                 */
                 gameState.getCurrentPlayer().setCurrentTown(selectedTown);
+                ElfBoot boot = gameState.getCurrentPlayer().getBoot();
+                ElfBootPanel startForCommand = boot.getCurPanel();
+                ElfBoot bootForCommand = boot;
+                ElfBootPanel destinationForCommand = this.selectedTown.getPanel().getElfBootPanel();
+                boot.setCurPanel(destinationForCommand);
+                // TODO: remove this. just for testing
+                if (startForCommand == null || destinationForCommand == null || bootForCommand == null)
+                {
+                    System.out.println("Something went wrong! The fields in the command to send were not determined correctly!");
+                }
+
+                // boot has been successfully moved and is no longer selected
+                boot.setSelected(false);
+
+                // now, construct a command and notify the CommunicationsManager so that it can send the movement to other players in the game
+                MoveBootCommand toSendOverNetwork = new MoveBootCommand(startForCommand, destinationForCommand, bootForCommand);
+                try {
+                    gameManager.getComs().sendGameCommand(toSendOverNetwork);
+                } catch (IOException e) {
+                    LOGGER.info("There was a problem sending the command to move the boot!");
+                    e.printStackTrace();
+                }
             } else {
-                //TODO: in UI
-                // - deselect all currently selected cards in UI
-                // - display message that prompts Player for re-selection
+                /**
+                 * Move Boot fails
+                 */
+                //TODO: in UI, deselect all currently selected cards in UI
+                GameScreen.displayMessage("""
+                You cannot move to the destination town with the selected cards. Please try again.
+                """, false, false);
                 this.selectedTown = null;
-                this.selectedCards.clear();
+                assert this.selectedCards.stream().allMatch(CardUnit::isSelected);
+                this.selectedCards.forEach(this::clearSelectedCard);
             }
         }
+    }
+
+    public void clearSelectedCard(TravelCard card) {
+        assert selectedCards.contains(card);
+        assert card.isSelected();
+        selectedCards.remove(card);
+        card.setSelected(false);
+    }
+
+    public void clearSelectedCounter() {
+        assert selectedCounter.isSelected();
+        selectedCounter.setSelected(false);
+        selectedCounter = null;
     }
 
     /**
@@ -124,6 +190,7 @@ public class ActionManager {
     public void clearSelection() {
         selectedRoad = null;
         selectedCounter = null;
+        selectedCards.forEach(c -> c.setSelected(false));
         selectedCards.clear();
         selectedTown = null;
         obstacleSelected = false;

@@ -13,7 +13,7 @@ public class Obstacle extends CounterUnit {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (getPlacedOn() == null) {
-                    ActionManager.getInstance().obstacleSelected();
+                    ActionManager.getInstance().setSelectedCounter(Obstacle.this);
                 } else {
                     // If the counter is placed on a road, then the user's intention is to click on the road
                     ActionManager.getInstance().setSelectedRoad(getPlacedOn());
