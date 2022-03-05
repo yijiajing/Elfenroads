@@ -85,10 +85,6 @@ public final class GameRuleUtils {
         return false;
     }
 
-    public int validateDrawCounter()
-    {
-
-    }
 
 
 }
