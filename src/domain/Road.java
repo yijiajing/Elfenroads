@@ -65,4 +65,10 @@ public class Road {
     public CounterPanel getCounterPanel() {
         return counterPanel;
     }
+
+    // TODO
+    public boolean hasObstacle()
+    {
+        return true;
+    }
 }

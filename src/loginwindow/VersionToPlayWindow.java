@@ -61,17 +61,32 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                GameSession session;
+                GameSession session = null;
 
                 // TODO : add panel for user to input their game name and save game name
-                try {
+                try 
+                {
                     session = new GameSession(User.getInstance(), "testGame", "My Save Game Name");
-                } catch (Exception problem) {
+                } 
+                catch (Exception problem) 
+                {
                     problem.printStackTrace();
+                    return;
                 }
                 track1.play();
-                MainFrame.mainPanel.add(new LobbyWindow(), "lobby");
-                MainFrame.cardLayout.show(MainFrame.mainPanel, "lobby");
+                //MainFrame.mainPanel.add(new LobbyWindow(), "lobby");
+                //MainFrame.cardLayout.show(MainFrame.mainPanel, "lobby");
+                try 
+                {
+                    MainFrame.mainPanel.add(new HostWaitWindow(session.getId()), "hostwait");
+                    MainFrame.cardLayout.show(MainFrame.mainPanel, "hostwait");
+                } 
+                catch (IOException e1) 
+                {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
+                
             }
         });
 

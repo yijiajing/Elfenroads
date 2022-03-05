@@ -3,6 +3,7 @@ package utils;
 import domain.GameManager;
 import loginwindow.LoginWindow;
 import loginwindow.MainFrame;
+import loginwindow.PlayerWaitWindow;
 import networking.GameSession;
 import networking.GameState;
 import networking.User;
@@ -305,18 +306,35 @@ public class NetworkUtils {
             JButton joinButton = new JButton("JOIN");
             JButton startButton = new JButton("START");
 
-            joinButton.addActionListener(new ActionListener() {
+            joinButton.addActionListener(new ActionListener() 
+            {
                 @Override
-                public void actionPerformed(ActionEvent e) {
+                public void actionPerformed(ActionEvent e) 
+                {
                     // join the game
-                    try {
+                    try 
+                    {
                         GameSession.joinSession(MainFrame.loggedIn, id);
-                        GameManager.init(Optional.empty(), id);
-                    } catch (Exception ex) {
+                        //GameManager.init(Optional.empty(), id);
+                    } 
+                    catch (Exception ex) 
+                    {
                         System.out.println("There was a problem attempting to join the session with User" + User.getInstance().getUsername());
                         ex.printStackTrace();
                         return;
                     }
+
+                    try 
+                    {
+                        MainFrame.mainPanel.add(new PlayerWaitWindow(id), "playerwait");
+                    } 
+                    catch (IOException e1) 
+                    {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                        return;
+                    }
+                    MainFrame.cardLayout.show(MainFrame.mainPanel,"playerwait");
                 }
             });
 
