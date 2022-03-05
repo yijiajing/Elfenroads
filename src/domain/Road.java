@@ -35,6 +35,7 @@ public class Road {
         if (regionType == RegionType.LAKE || regionType == RegionType.RIVER || this.transportationCounter != null) {
             return false;
         }
+        transportationCounter.setPlacedOn(this);
         this.transportationCounter = transportationCounter;
         counterPanel.setTransportationCounter(transportationCounter); // update UI
         return true;
@@ -58,6 +59,9 @@ public class Road {
     }
 
     public void clear() {
+        this.transportationCounter.setPlacedOn(null);
+        this.transportationCounter = null;
+        this.hasObstacle = false;
         counterPanel.clear();
     }
 }
