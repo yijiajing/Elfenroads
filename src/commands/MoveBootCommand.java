@@ -35,9 +35,7 @@ public class MoveBootCommand implements GameCommand, Serializable {
     {
         GameMap map = GameMap.getInstance();
         GameState state = GameManager.getInstance().getGameState();
-        // ElfBoot moved = state.getBootByColour(colorBootMoved);
-        // TODO: uncomment that line and remove the below one. just using this one for testing
-        ElfBoot moved = state.getElfBoots().get(0);
+        ElfBoot moved = state.getBootByColour(colorBootMoved);
         if (moved == null)
         {
             System.out.println("Execute method failed. Could not find a boot in the list of boots.");
