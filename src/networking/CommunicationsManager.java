@@ -154,6 +154,7 @@ public class CommunicationsManager {
         lastCommandReceived.execute();
     }
 
+    // TODO: remove this once it's tested
     /**
      * will be called once an update has been received and the GameScreen needs to be updated
      * this will be a MoveBoot-specific implementation--we will need to create different versions of this method for other commands
