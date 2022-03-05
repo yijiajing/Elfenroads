@@ -15,13 +15,11 @@ import java.util.Objects;
 public class TransportationCounter extends CounterUnit implements Comparable<TransportationCounter> {
 
     private CounterType type;
-    private boolean owned; // indicates if the counter is owned by any player
 
     public TransportationCounter(CounterType pType, int resizeWidth, int resizeHeight)
     {
         super(resizeWidth, resizeHeight, pType.ordinal() + 1); // since the images start from M01, not M00
         this.type = pType;
-        this.owned = false;
 
         this.getDisplay().addMouseListener(new MouseAdapter() {
             @Override
@@ -117,13 +115,6 @@ public class TransportationCounter extends CounterUnit implements Comparable<Tra
         return type.compareTo(o.type);
     }
 
-    public boolean isOwned() {
-        return this.owned;
-    }
-
-    public void setOwned(boolean b) {
-        this.owned = b;
-    }
 
     public static TransportationCounter getNew(CounterType counterType) {
         return new TransportationCounter(counterType, MainFrame.instance.getWidth()*67/1440, MainFrame.instance.getHeight()*60/900);

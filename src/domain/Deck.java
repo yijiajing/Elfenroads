@@ -36,7 +36,7 @@ public abstract class Deck<E extends Drawable> {
     public void addDrawable(E toAdd) {this.components.add(toAdd);}
 
     // shuffle every time we draw or just upon initialization?
-    public Drawable draw () {return components.pop();}
+    public E draw () {return components.pop();}
 
     public void shuffle() {Collections.shuffle(components, rand);}
 
