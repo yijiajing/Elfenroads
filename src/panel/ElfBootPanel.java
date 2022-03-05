@@ -2,9 +2,12 @@ package panel;
 
 import domain.ElfBoot;
 import domain.Town;
+import networking.ActionManager;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 public class ElfBootPanel extends JPanel implements ObserverPanel {
@@ -30,7 +33,13 @@ public class ElfBootPanel extends JPanel implements ObserverPanel {
         this.setOpaque(false);
         this.setBorder(BorderFactory.createLineBorder(Color.WHITE));
 
-        this.addMouseListener(new ElfBootController(gameScreen, this));
+        this.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                ActionManager.getInstance().setSelectedTown(ElfBootPanel.this.town);
+            }
+        });
+//        this.addMouseListener(new ElfBootController(gameScreen, this));
 
         gameScreen.addObserverPanel(this);
     }

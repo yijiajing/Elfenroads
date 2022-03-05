@@ -1,6 +1,7 @@
 package domain;
 
 import enums.Colour;
+import networking.ActionManager;
 import networking.GameState;
 import panel.ElfBootController;
 import panel.ElfBootPanel;
@@ -8,6 +9,8 @@ import panel.GameScreen;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class ElfBoot extends JLabel {
 
@@ -33,8 +36,7 @@ public class ElfBoot extends JLabel {
         Image bootImage = bootIcon.getImage();
         Image bootResized = bootImage.getScaledInstance(width*15/1440, height*15/900,  java.awt.Image.SCALE_SMOOTH);
         this.bootImage = new JLabel(new ImageIcon(bootResized));
-
-        this.bootImage.addMouseListener(new ElfBootController(pGameScreen, this));
+//        this.bootImage.addMouseListener(new ElfBootController(pGameScreen, this));
     }
 
     public boolean isSelected() { return this.selected; }

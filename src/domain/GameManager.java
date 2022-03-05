@@ -129,7 +129,7 @@ public class GameManager {
      */
     public void drawCounters() {
         if (gameState.getCurrentRound() <= gameState.getTotalRounds()
-                && gameState.getCurrentPhase().equals(RoundPhaseType.DRAWCOUNTERS)
+                && gameState.getCurrentPhase() == RoundPhaseType.DRAWCOUNTERS
                 && gameState.getCurrentPlayer().equals(thisPlayer)) {
 
             updateGameState();
@@ -292,13 +292,20 @@ public class GameManager {
                 endRound();
             } else {
                 // go to the next phase within the same round
-                gameState.setCurrentPhase(RoundPhaseType.values()[nextOrdinal]);
+                endPhase();
             }
             return;
         }
 
         // within the same phase, next player will take action
         gameState.setToNextPlayer();
+    }
+
+    private void endPhase() {
+        int nextOrdinal = gameState.getCurrentPhase().ordinal() + 1;
+        gameState.setCurrentPhase(RoundPhaseType.values()[nextOrdinal]);
+        gameState.setToFirstPlayer();
+
     }
 
     private void endRound() {
@@ -308,6 +315,8 @@ public class GameManager {
             endGame();
             return;
         }
+        GameMap.getInstance().clearAllCounters();
+        gameState.setCurrentPhase(RoundPhaseType.DRAWCOUNTERS);
         //TODO: update round card in UI
     }
 
