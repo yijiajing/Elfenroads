@@ -14,6 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+/**
+ * Selection handling:
+ * counter unit + road + PLANROUTES phase -> place a counter unit on the road
+ * - card + town + MOVE phase -> requested player move to a town
+ */
 public class ActionManager {
 
     private static ActionManager INSTANCE;
@@ -44,16 +49,18 @@ public class ActionManager {
         return INSTANCE;
     }
 
-    /*
-    Selection handling:
-    - counter unit + road + PLANROUTES phase -> place a counter unit on the road
-    - card + town + MOVE phase -> requested player move to a town
-    */
-
     public Road getSelectedRoad() {
         return selectedRoad;
     }
 
+    /**
+     * If the player selects a transportation counter before selecting the road, a place transportation counter
+     * command is triggered.
+     * If the player selects an obstacle before selecting the road, a place obstacle command is triggered.
+     *
+     * Preconditions: the current phase is PLAN ROUTES and the requested player is the current player
+     * @param road the road that the player clicks on
+     */
     public void setSelectedRoad(Road road) {
         LOGGER.info("Road on " + road.getRegionType() + " selected");
         selectedRoad = road;
@@ -104,31 +111,37 @@ public class ActionManager {
         return selectedCounter;
     }
 
-    public void setSelectedCounter(CounterUnit selectedCounter) {
-        if (selectedCounter instanceof Obstacle) {
+    public void setSelectedCounter(CounterUnit counter) {
+        if (counter instanceof Obstacle) {
             LOGGER.info("Obstacle selected");
-        } else if (selectedCounter instanceof TransportationCounter) {
-            LOGGER.info("Counter " + ((TransportationCounter) selectedCounter).getType() + " selected");
+        } else if (counter instanceof TransportationCounter) {
+            LOGGER.info("Counter " + ((TransportationCounter) counter).getType() + " selected");
         }
-
-        this.selectedCounter = selectedCounter;
+        selectedCounter = counter;
     }
 
     public List<TravelCard> getSelectedCards() {
         return selectedCards;
     }
 
-    public void addSelectedCard(TravelCard selectedCard) {
-        LOGGER.info("Card " + selectedCard.getType() + " selected");
-        if (selectedCards.contains(selectedCard)) {
+    /**
+     * Add the selected card to all selected cards.
+     * If the card is already selected, we de-select it. i.e. remove from selected cards.
+     *
+     * @param card the card that the player clicks on
+     */
+    public void addSelectedCard(TravelCard card) {
+        LOGGER.info("Card " + card.getType() + " selected");
+        if (selectedCards.contains(card)) {
             // if clicked twice, then deselect this card
-            this.selectedCards.remove(selectedCard);
-            selectedCard.setSelected(false);
+            selectedCards.remove(card);
+            assert card.isSelected();
+            card.setSelected(false);
         } else {
             // add to selected cards
-            this.selectedCards.add(selectedCard);
-            assert !selectedCard.isSelected();
-            selectedCard.setSelected(true);
+            selectedCards.add(card);
+            assert !card.isSelected();
+            card.setSelected(true);
         }
     }
 
@@ -140,9 +153,16 @@ public class ActionManager {
         return selectedTown;
     }
 
-    public void setSelectedTown(Town selectedTown) {
-        LOGGER.info("Town " + selectedTown.getName() + " selected");
-        this.selectedTown = selectedTown;
+    /**
+     * If the player selects some cards before selecting the road, a move boot command is triggered.
+     *
+     * Preconditions: the current phase is MOVE, some cards are selected, and the requested player
+     * is the current player
+     * @param town the town that the player clicks on
+     */
+    public void setSelectedTown(Town town) {
+        LOGGER.info("Town " + town.getName() + " selected");
+        selectedTown = town;
 
         if (!(gameState.getCurrentPhase() == RoundPhaseType.MOVE
                 && !selectedCards.isEmpty()
@@ -156,7 +176,7 @@ public class ActionManager {
             ElfBoot boot = gameState.getCurrentPlayer().getBoot();
             ElfBootPanel startForCommand = boot.getCurPanel();
             ElfBoot bootForCommand = boot;
-            ElfBootPanel destinationForCommand = this.selectedTown.getPanel().getElfBootPanel();
+            ElfBootPanel destinationForCommand = selectedTown.getPanel().getElfBootPanel();
             boot.setCurPanel(destinationForCommand);
             // TODO: remove this. just for testing
             if (startForCommand == null || destinationForCommand == null || bootForCommand == null)
@@ -179,9 +199,9 @@ public class ActionManager {
             GameScreen.displayMessage("""
             You cannot move to the destination town with the selected cards. Please try again.
             """, false, false);
-            this.selectedTown = null;
-            assert this.selectedCards.stream().allMatch(CardUnit::isSelected);
-            this.selectedCards.forEach(this::clearSelectedCard);
+            selectedTown = null;
+            assert selectedCards.stream().allMatch(CardUnit::isSelected);
+            selectedCards.forEach(this::clearSelectedCard);
         }
 
     }
