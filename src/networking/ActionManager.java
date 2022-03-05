@@ -21,7 +21,8 @@ public class ActionManager {
     private final static Logger LOGGER = Logger.getLogger("game state");
 
     private final GameState gameState;
-    private final GameManager gameManager = GameManager.getInstance();
+    // private final GameManager gameManager = GameManager.getInstance(); this wasn't working because GameManager instance is still null when ActionManager.init is first called (since it's called inside the GameManager constructor)
+    private GameManager gameManager;
 
     private Road selectedRoad;
     private CounterUnit selectedCounter;
@@ -29,15 +30,17 @@ public class ActionManager {
     private Town selectedTown;
     boolean obstacleSelected = false;
 
-    public static ActionManager init(GameState gameState) {
+    public static ActionManager init(GameState gameState, GameManager gameManager) {
         if (INSTANCE == null) {
-            INSTANCE = new ActionManager(gameState);
+            INSTANCE = new ActionManager(gameState, gameManager);
         }
         return INSTANCE;
     }
 
-    private ActionManager(GameState gameState) {
+    private ActionManager(GameState gameState, GameManager gameManager) {
+
         this.gameState = gameState;
+        this.gameManager = gameManager;
     }
 
     public static ActionManager getInstance() {

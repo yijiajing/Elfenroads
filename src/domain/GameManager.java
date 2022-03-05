@@ -41,7 +41,7 @@ public class GameManager {
         // start a new game if there is no state to be loaded
         if (!loadedState.isPresent()) {
             gameState = GameState.init(3, pSessionID);
-            actionManager = ActionManager.init(gameState);
+            actionManager = ActionManager.init(gameState, this);
             loaded = false;
 
             // prompt user to choose a boot colour
