@@ -1,7 +1,9 @@
 package networking;
 
 import commands.GameCommand;
+import commands.GetBootColourCommand;
 import commands.MoveBootCommand;
+import commands.SendBootColourCommand;
 import domain.ElfBoot;
 import domain.GameManager;
 import domain.GameMap;
@@ -32,7 +34,7 @@ public class CommunicationsManager {
     private String sessionID; // the ID for the GameSession the player is in (this will be the same value across all players)
     private ArrayList<String> playerAddresses; // this will store the addresses of players. It will be used only at initialization
 
-    private MoveBootCommand lastCommandReceived; // this will be used to update the GameState/GameScreen with whatever command we just received
+    private GameCommand lastCommandReceived; // this will be used to update the GameState/GameScreen with whatever command we just received
 
 
     public CommunicationsManager(GameManager pManagedBy, String gameSessionID)
@@ -84,8 +86,6 @@ public class CommunicationsManager {
                     senders.add(toThatPlayer);
                     System.out.println("Successfully initialized the connection to " + otherPlayerIP + "!");
                 }
-
-
             }
         }
         catch (Exception e)
@@ -122,10 +122,10 @@ public class CommunicationsManager {
 
     /**
      * @pre CommunicationsManager has been initialized with valid fields
-     * by default, sends the GameState to all other players in the game
+     * Sends the GameCommand to all other players in the game
      * @throws IOException
      */
-    public void sendGameCommand(GameCommand command) throws IOException
+    public void sendGameCommandToAllPlayers(GameCommand command) throws IOException
     {
         ArrayList<Socket> senders = setUpSenders();
 
@@ -144,14 +144,55 @@ public class CommunicationsManager {
     }
 
     /**
-     * will be called by the GameUpdateListener when an update has been received and is ready to be processed on the UI
-     * this is a specific MoveBootCommand implementation for now
+     * @pre CommunicationsManager has been initialized with valid fields
+     * Sends the GameCommand to the player specified by otherPlayerIP
+     * @throws IOException
+     */
+    public void sendGameCommandToPlayer(GameCommand command, String otherPlayerIP) throws IOException {
+
+        try {
+            String localAddress = NetworkUtils.getLocalIPAddPort();
+            if (otherPlayerIP.equals(localAddress)) {
+                return; // don't send a command to ourself
+            }
+        } catch (Exception e) {
+            System.out.println("There was a problem retrieving the local address.");
+        }
+
+        System.out.println("Now connecting to... " + otherPlayerIP);
+        String ip = NetworkUtils.getAddress(otherPlayerIP);
+        int port = NetworkUtils.getPort(otherPlayerIP); // the port should always be 999. we will leave this just in case
+        Socket thatPlayer = new Socket(ip, port);
+        System.out.println("Successfully initialized the connection to " + otherPlayerIP + "!");
+
+        System.out.println("Sending the game command to the other user!");
+        OutputStream out = thatPlayer.getOutputStream();
+        ObjectOutputStream payload = new ObjectOutputStream(out);
+        payload.writeObject(command);
+        System.out.println("Wrote the command to the payload.");
+        payload.flush(); // TODO: do we need to actually flush for the receiver to get the info?
+        System.out.println("Flushed the payload.");
+        thatPlayer.close(); // TODO: do we want to close the connection? do we leave it open? do we have to reinitialize next time?
+        System.out.println("Closed the socket.");
+    }
+
+
+    /**
+     * Called by the GameUpdateListener when an update has been received and is ready to be processed on the UI
      */
     public void updateFromListener()
     {
         System.out.println("Received an update from the listener! Getting ready to update the UI...");
-        lastCommandReceived = (MoveBootCommand) listener.getCommand();
-        updateUI();
+
+        lastCommandReceived = listener.getCommand();
+
+        if (lastCommandReceived instanceof MoveBootCommand) {
+            updateUI();
+        } else if (lastCommandReceived instanceof GetBootColourCommand) {
+            lastCommandReceived.execute(managedBy);
+        } else if (lastCommandReceived instanceof SendBootColourCommand) {
+            lastCommandReceived.execute(managedBy);
+        }
     }
 
     /**
@@ -167,8 +208,8 @@ public class CommunicationsManager {
 
         GameMap map = GameMap.getInstance();
 
-        String startTownName = lastCommandReceived.getStart();
-        String destinationTownName = lastCommandReceived.getDestination();
+        String startTownName = ((MoveBootCommand)lastCommandReceived).getStart();
+        String destinationTownName = ((MoveBootCommand)lastCommandReceived).getDestination();
         Town startTown = map.getTown(startTownName);
         Town destinationTown = map.getTown(destinationTownName);
 

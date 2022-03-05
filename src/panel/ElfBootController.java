@@ -92,7 +92,7 @@ public class ElfBootController implements MouseListener {
                 // now, construct a command and notify the CommunicationsManager so that it can send the movement to other players in the game
                 MoveBootCommand toSendOverNetwork = new MoveBootCommand(startForCommand, destinationForCommand, bootForCommand);
                 try {
-                    GameManager.getInstance().getComs().sendGameCommand(toSendOverNetwork);
+                    GameManager.getInstance().getComs().sendGameCommandToAllPlayers(toSendOverNetwork);
                 } catch (IOException e) {
                     System.out.println("There was a problem sending the command to move the boot!");
                     e.printStackTrace();

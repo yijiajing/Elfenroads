@@ -52,7 +52,7 @@ public class ChooseBootWindow extends JPanel {
     }
 
     void displayAvailableColours() {
-        ArrayList<Colour> colours = GameManager.getAvailableColours();
+        ArrayList<Colour> colours = GameManager.getInstance().getAvailableColours();
 
         for (Colour c : colours) {
             ImageIcon bootIcon = new ImageIcon("./assets/boppels-and-boots/boot-" + c + ".png");

@@ -1,5 +1,6 @@
 package domain;
 
+import commands.GetBootColourCommand;
 import enums.Colour;
 import enums.CounterType;
 import enums.RoundPhaseType;
@@ -8,8 +9,10 @@ import loginwindow.*;
 import networking.*;
 import panel.ElfBootPanel;
 import panel.GameScreen;
+import utils.NetworkUtils;
 
 import javax.swing.*;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -40,7 +43,7 @@ public class GameManager {
         coms = new CommunicationsManager(this, sessionID);
 
         // start a new game if there is no state to be loaded
-        if (!loadedState.isPresent()) {
+        if (loadedState.isEmpty()) {
             gameState = GameState.init(3);
             actionManager = ActionManager.init(gameState);
             loaded = false;
@@ -329,7 +332,19 @@ public class GameManager {
         return this.gameState;
     }
 
-    public static ArrayList<Colour> getAvailableColours() {
+    public ArrayList<Colour> getAvailableColours() {
+
+        try {
+            String localAddress = NetworkUtils.getLocalIPAddPort();
+            coms.sendGameCommandToAllPlayers(new GetBootColourCommand(localAddress));
+        } catch (IOException e) {
+            System.out.println("There was a problem sending the command to get players' boot colours!");
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("There was a problem getting the local IP.");
+            e.printStackTrace();
+        }
+
         // TODO: this method is WRONG - we need to get the available colours by communicating with
         // TODO: the other players in the session about what colours they chose
 
