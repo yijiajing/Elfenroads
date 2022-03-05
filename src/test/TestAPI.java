@@ -20,6 +20,8 @@ public class TestAPI {
 
     {
 
+        createASession();
+
         ArrayList<String> ids = getAllSessionID();
 
         for (String id : ids)
@@ -52,6 +54,20 @@ public class TestAPI {
 
         //User createNew = User.createNewUser(username, password, User.Role.PLAYER);
         //createNew.printTokenRelatedFields();
+    }
+
+    public static void createASession()
+    {
+        try {
+            User alex = User.init("dontforget", "abc123_ABC123");
+            GameSession sesh = new GameSession(alex, "testGame", "savegame1234");
+        }
+        catch (Exception e)
+        {
+            System.out.println("There was a problem setting up the test game session.");
+        }
+
+
     }
 
 

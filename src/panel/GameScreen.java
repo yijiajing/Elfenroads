@@ -35,8 +35,8 @@ public class GameScreen extends JPanel implements Serializable
 	private static GameScreen INSTANCE; // Singleton instance 
 
 	private JFrame mainframe;
-	private Integer width;
-	private Integer height;
+	private static Integer width;
+	private static Integer height;
 	
 	private JLayeredPane boardGame_Layers;
 
@@ -67,9 +67,6 @@ public class GameScreen extends JPanel implements Serializable
 	private GameMap gameMap;
 
 	private JTable leaderboard = new JTable();
-
-	// TODO: change this on the other computer
-	private String otherPlayerIP = "192.168.2.253"; // Nick's IP address
 
 	private GameScreen (JFrame frame)
 	{
@@ -469,24 +466,6 @@ public class GameScreen extends JPanel implements Serializable
 		game_screen.setVisible(true);
 	}
 
-	public void sendGameState(JPanel elfBootLocation) throws IOException
-	{
-		System.out.println("Sending the game state...");
-		Socket connection = new Socket(otherPlayerIP, 4444); // start up the connection
-		System.out.println("Outwards socket is up and running...");
-
-		// send the Elf boot's new location
-		JPanel toSend = elfBootLocation;
-		OutputStream out = connection.getOutputStream();
-		ObjectOutputStream payload = new ObjectOutputStream(out);
-		payload.writeObject(toSend);
-		System.out.println("Done writing the elf boot current location into payload...");
-		payload.flush();
-		System.out.println("Payload has been flushed.");
-		connection.close();
-		System.out.print("Done. connection has been closed.");
-	}
-
 	public void listen(int port) throws IOException
 	{
 		ServerSocket listener = new ServerSocket(port);
@@ -514,5 +493,27 @@ public class GameScreen extends JPanel implements Serializable
 
 	public int getHeight() {
 		return this.height;
+	}
+
+	public GameMap getGameMap() {
+		return gameMap;
+	}
+
+	public static void displayMessage(String message, boolean passOption, boolean doneOption) {
+		String[] options;
+
+		if (passOption) { // write a message with "OK" and "PASS" buttons
+			options = new String[]{"OK", "PASS"};
+		}
+
+		else if (doneOption) { // write a message with "DONE" button
+			options = new String[]{"DONE"};
+		}
+
+		else { // write a message with "OK" button
+			options = new String[]{"OK"};
+		}
+
+		JOptionPane.showOptionDialog(null, message, null, JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
 	}
 }

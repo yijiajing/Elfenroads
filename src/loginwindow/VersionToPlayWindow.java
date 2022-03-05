@@ -66,8 +66,8 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
                 // TODO : add panel for user to input their game name and save game name
                 try {
                     session = new GameSession(User.getInstance(), "testGame", "My Save Game Name");
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
+                } catch (Exception problem) {
+                    problem.printStackTrace();
                 }
                 track1.play();
                 MainFrame.mainPanel.add(new LobbyWindow(), "lobby");

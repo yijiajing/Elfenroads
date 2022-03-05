@@ -128,4 +128,8 @@ public class ActionManager {
         selectedTown = null;
         obstacleSelected = false;
     }
+
+    public GameState getGameState() {
+        return gameState;
+    }
 }
