@@ -31,10 +31,10 @@ public class MoveBootCommand implements GameCommand, Serializable {
     }
 
     @Override
-    public void execute(GameManager manager)
+    public void execute()
     {
         GameMap map = GameMap.getInstance();
-        GameState state = manager.getGameState();
+        GameState state = GameManager.getInstance().getGameState();
         // ElfBoot moved = state.getBootByColour(colorBootMoved);
         // TODO: uncomment that line and remove the below one. just using this one for testing
         ElfBoot moved = state.getElfBoots().get(0);
@@ -55,6 +55,9 @@ public class MoveBootCommand implements GameCommand, Serializable {
 
         startPanel.updateView();
         destinationPanel.updateView();
+
+        // NEW CODE FROM UPDATEUI()
+
     }
 
     public String getStart() {

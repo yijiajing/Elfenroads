@@ -18,7 +18,7 @@ public class PlaceObstacleCommand implements GameCommand {
     }
 
     @Override
-    public void execute(GameManager manager) {
+    public void execute() {
         GameMap map = GameMap.getInstance();
 
         Town startTown = map.getTown(start);

@@ -151,59 +151,9 @@ public class CommunicationsManager {
     {
         System.out.println("Received an update from the listener! Getting ready to update the UI...");
         lastCommandReceived = (MoveBootCommand) listener.getCommand();
-        updateUI();
+        lastCommandReceived.execute();
     }
 
-    /**
-     * will be called once an update has been received and the GameScreen needs to be updated
-     * this will be a MoveBoot-specific implementation--we will need to create different versions of this method for other commands
-     */
-    public void updateUI()
-    {
-        // TODO: figure out wtf i did here last week
-        ElfBootPanel startPanelLocally = null;
-        ElfBootPanel destPanelLocally = null; // initialized these to null to force them to compile
-        ElfBootPanel bootToMoveLocally;
 
-        GameMap map = GameMap.getInstance();
-
-        String startTownName = lastCommandReceived.getStart();
-        String destinationTownName = lastCommandReceived.getDestination();
-        Town startTown = map.getTown(startTownName);
-        Town destinationTown = map.getTown(destinationTownName);
-
-        ElfBootPanel startPanelFromCommand = startTown.getElfBootPanel();
-        ElfBootPanel destPanelFromCommand = destinationTown.getElfBootPanel();
-
-        // first, since we receive UI objects, we need to be able to translate those to UI objects on our own computer
-        // then, we can execute the command
-        // go find the panels to update in the GameScreen
-        List<Town> towns = GameScreen.getInstance().getGameMap().getTownList();
-
-        // we need to check every panel in the towns list to see which one we are supposed to update
-        for (Town cur : towns)
-        {
-            ElfBootPanel curPanelToCheck = cur.getElfBootPanel();
-            if (ElfBootPanel.match(curPanelToCheck, startPanelFromCommand))
-            {
-                startPanelLocally = curPanelToCheck;
-            }
-            else if (ElfBootPanel.match(curPanelToCheck, destPanelFromCommand))
-            {
-                destPanelLocally = curPanelToCheck;
-            }
-        }
-
-        // now we know which panels to update. for testing purposes, we'll just arbitrarily pick a boot from the starting panel to move
-        // TODO: update this to move the correct boot
-        ElfBoot toMove = startPanelLocally.getBootsOnPanel().get(0);
-
-        // now, actually move the boot on the screen
-        MoveBootCommand toExecuteLocally = new MoveBootCommand(startPanelLocally, destPanelLocally, toMove);
-        toExecuteLocally.execute(managedBy);
-        // execute method takes care of updating the ElfBootPanels
-
-        // the move should now be visible
-    }
 
 }

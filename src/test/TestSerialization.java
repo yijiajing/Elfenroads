@@ -11,7 +11,8 @@ public class TestSerialization {
 
 
 
-
+// I don't think we need this anymore?
+    /*
     public static void serializeGameScreen()
     {
         MainFrame main = MainFrame.getInstance();
@@ -22,7 +23,7 @@ public class TestSerialization {
 
 
     }
-
+*/
 
 
 

@@ -95,7 +95,7 @@ public class User {
      * I wrote this for testing so I could use multiple users consecutively
      * Delete if causing problems
      */
-    public static void resetUser()
+    public static void logout()
     {
         instance = null;
     }
