@@ -10,4 +10,13 @@ public abstract class Drawable {
     
     //TODO: Since the constructors of CounterUnit and CardUnit are almost the same, we shall implement it in this abstract class. 
     //The only difference is that they have different file path for the image.
+
+    // TODO: implement
+    // abstract class constructor
+    /* protected Drawable(pImageFilepath, pDisplay)
+    {
+
+    }
+    */
+
 }
