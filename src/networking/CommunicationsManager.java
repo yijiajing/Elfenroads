@@ -151,7 +151,7 @@ public class CommunicationsManager {
     {
         System.out.println("Received an update from the listener! Getting ready to update the UI...");
         lastCommandReceived = (MoveBootCommand) listener.getCommand();
-        updateUI();
+        lastCommandReceived.execute();
     }
 
     /**
@@ -160,7 +160,6 @@ public class CommunicationsManager {
      */
     public void updateUI()
     {
-        // TODO: figure out wtf i did here last week
         ElfBootPanel startPanelLocally = null;
         ElfBootPanel destPanelLocally = null; // initialized these to null to force them to compile
         ElfBootPanel bootToMoveLocally;
@@ -200,7 +199,7 @@ public class CommunicationsManager {
 
         // now, actually move the boot on the screen
         MoveBootCommand toExecuteLocally = new MoveBootCommand(startPanelLocally, destPanelLocally, toMove);
-        toExecuteLocally.execute(managedBy);
+        toExecuteLocally.execute();
         // execute method takes care of updating the ElfBootPanels
 
         // the move should now be visible

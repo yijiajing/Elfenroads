@@ -11,7 +11,7 @@ public class DrawCardCommand implements GameCommand {
     }
 
     @Override
-    public void execute(GameManager manager) {
+    public void execute() {
 
     }
 }
