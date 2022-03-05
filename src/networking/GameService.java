@@ -79,7 +79,7 @@ public class GameService {
             System.out.println("Response status: " + status);
             System.out.println(content.toString());
 
-           //  User gameServiceUser = new User(gameServiceName, gameServiceAccountPassword);
+           // User gameServiceUser = new User(gameServiceName, gameServiceAccountPassword);
             // this.gameServiceUser = gameServiceUser;
             // System.out.println("The token for the gameServiceUser is: " + this.gameServiceUser.getAccessToken());
         }

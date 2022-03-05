@@ -20,6 +20,15 @@ public class TestAPI {
 
     {
 
+        User maex = User.init("testGame", "abc123_ABC123");
+        System.out.println(maex.getAccessToken());
+        // GameService testGame = new GameService(maex, "testGame", "testGame", "abc123_ABC123", 2, 6);
+
+
+
+
+
+
         createASession();
 
         ArrayList<String> ids = getAllSessionID();
@@ -52,9 +61,9 @@ public class TestAPI {
         {
             System.out.println("There was a problem setting up the test game session.");
         }
-
-
     }
+
+
 
 
 
