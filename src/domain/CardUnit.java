@@ -5,7 +5,7 @@ import java.awt.*;
 
 public abstract class CardUnit extends Drawable{
 
-    private boolean selected;
+    boolean selected;
 
     public CardUnit(int resizeWidth, int resizeHeight, String filename) {
 
