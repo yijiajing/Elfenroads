@@ -33,7 +33,7 @@ public class DrawListener implements ActionListener {
             if (toPlace[i].getComponentCount() == 0)
             {
                 TransportationCounter toMove = this.drawnFrom.draw();
-                toPlace[i].add(toMove.getImage());
+                toPlace[i].add(toMove.getDisplay());
                 break;
             }
             // if we can't find an empty spot, then just break and leave it alone for now

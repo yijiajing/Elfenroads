@@ -18,6 +18,8 @@ public abstract class Deck {
         sessionID = sessionID.trim(); // just in case there were some lingering whitespaces or something
         seed = Long.parseLong(sessionID);
         rand = new Random(seed);
+        components = new Stack<Drawable>();
+
         for (Drawable toAdd : pComponents)
         {
             components.add(toAdd);
@@ -25,6 +27,14 @@ public abstract class Deck {
 
         // shuffle upon creation
         shuffle();
+    }
+
+    protected Deck (String sessionID) // to initialize an empty deck
+    {
+        sessionID = sessionID.trim();
+        seed = Long.parseLong(sessionID);
+        rand = new Random(seed);
+        components = new Stack <Drawable>();
     }
 
     public void addDrawable(Drawable toAdd) {this.components.add(toAdd);}
