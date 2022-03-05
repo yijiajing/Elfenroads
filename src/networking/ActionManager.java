@@ -168,15 +168,6 @@ public class ActionManager {
         selectedTown = town;
 
 
-        if (!(gameState.getCurrentPhase() == RoundPhaseType.MOVE
-                && !selectedCards.isEmpty()
-                && gameManager.isLocalPlayerTurn())) {
-            return;
-        }
-
-
-
-
         if (GameRuleUtils.validateMove(GameMap.getInstance(), gameState.getCurrentPlayer().getCurrentTown(), selectedTown, selectedCards)) {
             // Move Boot
             // gameState.getCurrentPlayer().setCurrentTown(selectedTown);
