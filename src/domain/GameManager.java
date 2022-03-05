@@ -37,7 +37,6 @@ public class GameManager {
 
         MainFrame.mainPanel.add(GameScreen.init(MainFrame.getInstance()), "gameScreen");
         sessionID = pSessionID;
-        coms = new CommunicationsManager(this, sessionID);
 
         // start a new game if there is no state to be loaded
         if (!loadedState.isPresent()) {
@@ -56,6 +55,8 @@ public class GameManager {
             loaded = true;
             //TODO implement
         }
+        coms = new CommunicationsManager(this, sessionID);
+
     }
 
     /**
