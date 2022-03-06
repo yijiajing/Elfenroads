@@ -174,6 +174,13 @@ public class ActionManager {
         }
 
         if (GameRuleUtils.validateMove(GameMap.getInstance(), gameState.getCurrentPlayer().getCurrentTown(), selectedTown, selectedCards)) {
+            // remove cards from the local player's hand
+            gameState.getCurrentPlayer().getHand().removeUnits(selectedCards);
+            // add cards back to local deck
+            gameState.getTravelCardDeck().addDrawables(selectedCards);
+            //TODO: add cards to other peers' remote decks
+
+
             // Move Boot
             // gameState.getCurrentPlayer().setCurrentTown(selectedTown);
             // MoveBootCommand.execute() does the above line now. I just left this here for reference

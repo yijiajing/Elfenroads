@@ -33,6 +33,10 @@ public class Hand {
 		}
 	}
 
+	public void removeUnits(List<? extends Drawable> units) {
+		units.forEach(this::removeUnit);
+	}
+
 	public List<CardUnit> getCards() {
 		return this.cardList;
 	}
