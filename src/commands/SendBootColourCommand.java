@@ -4,7 +4,7 @@ import domain.GameManager;
 import enums.Colour;
 
 /**
- * A command to send our boot colour to another player 
+ * A command to send our boot colour to another player
  */
 
 public class SendBootColourCommand implements GameCommand {
