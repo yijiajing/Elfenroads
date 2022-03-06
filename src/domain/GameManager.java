@@ -49,7 +49,7 @@ public class GameManager {
         sessionID = pSessionID;
 
         // start a new game if there is no state to be loaded
-        if (!loadedState.isPresent()) {
+        if (loadedState.isEmpty()) {
             gameState = GameState.init(3, pSessionID);
             actionManager = ActionManager.init(gameState, this);
 
@@ -78,9 +78,6 @@ public class GameManager {
         MainFrame.cardLayout.show(MainFrame.mainPanel,"gameScreen");
 
         setUpRound(); // includes dealing travel cards (PHASE 1) and drawing 1 face down counter for each player (PHASE 2)
-
-        // TODO : should not immediately start phase 3, need some indication that it is my turn
-        drawCounters(); // PHASE 3
     }
 
     public static GameManager init(Optional<GameState> loadedState, String sessionID) {
@@ -107,15 +104,13 @@ public class GameManager {
     }
 
     private void setUpNewGame() {
-        // put 5 counters face up
+        // put 5 counters face up, there are shared across peers
         for (int i=0; i<5; i++) {
             this.gameState.addFaceUpCounterFromPile();
         }
 
-        // give all players an obstacle
-        for (Player p : gameState.getPlayers()) {
-            p.getHand().addUnit(new Obstacle(MainFrame.instance.getWidth()*67/1440, MainFrame.instance.getHeight()*60/900));
-        }
+        // give all players (each peer) an obstacle
+        thisPlayer.getHand().addUnit(new Obstacle(MainFrame.instance.getWidth()*67/1440, MainFrame.instance.getHeight()*60/900));
 
         initializeElfBoots();
     }
@@ -147,18 +142,16 @@ public class GameManager {
         for (int i = numCards; i < 8; i++) {
             thisPlayer.getHand().addUnit(gameState.getTravelCardDeck().draw());
         }
-        endTurn();
 
         int numDrawn = 8 - numCards;
         DrawCardCommand drawCardCommand = new DrawCardCommand(numDrawn);
-        NotifyTurnCommand notifyTurnCommand = new NotifyTurnCommand(RoundPhaseType.DEAL_CARDS);
         try {
             coms.sendGameCommandToAllPlayers(drawCardCommand);
-            //TODO: send notifying command to the current player
         } catch (IOException e) {
             LOGGER.info("There was a problem sending the command to draw cards!");
             e.printStackTrace();
         }
+        endTurn();
     }
 
 
@@ -167,10 +160,10 @@ public class GameManager {
      * Distribute 1 face-down transportation counter to each Player by popping from the CounterPile
      */
     public void distributeHiddenCounter() {
-        //TODO: modify this
-        for (Player p : gameState.getPlayers()) {
-            p.getHand().addUnit(gameState.getCounterPile().draw());
-        }
+        if (!(isLocalPlayerTurn() && gameState.getCurrentPhase() == RoundPhaseType.DEAL_HIDDEN_COUNTERS)) return;
+        thisPlayer.getHand().addUnit(gameState.getCounterPile().draw());
+        //TODO: remove one counter from all peers
+        endTurn();
     }
 
     /**
@@ -179,7 +172,7 @@ public class GameManager {
     public void drawCounters() {
         if (gameState.getCurrentRound() <= gameState.getTotalRounds()
                 && gameState.getCurrentPhase() == RoundPhaseType.DRAW_COUNTERS
-                && gameState.getCurrentPlayer().equals(thisPlayer)) {
+                && isLocalPlayerTurn()) {
 
             updateGameState();
             System.out.println("Current phase: DRAW COUNTERS");
@@ -198,7 +191,7 @@ public class GameManager {
     public void planTravelRoutes() {
         if (gameState.getCurrentRound() <= gameState.getTotalRounds()
                 && gameState.getCurrentPhase().equals(RoundPhaseType.PLAN_ROUTES)
-                && gameState.getCurrentPlayer().equals(thisPlayer)) {
+                && isLocalPlayerTurn()) {
 
             updateGameState();
             System.out.println("Current phase: PLAN TRAVEL ROUTES");
@@ -238,86 +231,6 @@ public class GameManager {
         }
     }
 
-
-    /* GAME LOOP DOES NOT WORK -- TO BE DELETED
-    private void gameLoop() {
-
-        while (gameState.getCurrentRound() <= gameState.getTotalRounds()) {
-
-            // includes dealing travel cards (STAGE 1) and drawing 1 face down counter for each player (STAGE 2)
-            setUpRound();
-
-            // **** STAGE 3 - DRAW COUNTERS **** //
-            while (gameState.getCurrentPhase().equals(RoundPhaseType.DRAWCOUNTERS)) {
-
-                // wait for other players to take their turns
-                while (!gameState.getCurrentPlayer().equals(thisPlayer));
-
-                // its my turn
-                if (gameState.getCurrentPlayer().equals(thisPlayer)){
-                    updateGameState();
-
-                    // TODO: display message to let the user know that they need to select a counter
-
-                    // waiting for the user to click a counter, either from the deck or face-up
-                    while (!GameScreen.getInstance().getDeckSelected() && !GameState.instance().getAnyFaceUpCounterSelectedToOwn());
-
-                    if (GameScreen.getInstance().getDeckSelected()) { // player wants to draw a counter from the pile
-                        TransportationCounter drawn = GameState.instance().getCounterPile().draw();
-                        thisPlayer.getHand().addUnit(drawn);
-                        GameScreen.getInstance().setDeckSelected(false);
-                    } else if (GameState.instance().getAnyFaceUpCounterSelectedToOwn()) { // player wants to take a face-up counter
-                        TransportationCounter selected = GameState.instance().getFaceUpCounterSelectedToOwn();
-                        thisPlayer.getHand().addUnit(selected);
-                        selected.setSelectedToOwn(false);
-                    }
-
-                    endTurn(); // updates the GUI
-                    sendGameState();
-                }
-            }
-
-            // **** STAGE 4 - PLAN TRAVEL ROUTES **** //
-            while (gameState.getCurrentPhase().equals(RoundPhaseType.PLANROUTES)) {
-
-                // wait for other players to take their turns
-                while (!gameState.getCurrentPlayer().equals(thisPlayer));
-
-                // its my turn
-                if (gameState.getCurrentPlayer().equals(thisPlayer)) {
-                    updateGameState();
-
-                    // TODO implement all logic for my turn
-
-                    endTurn();
-                    sendGameState();
-                }
-            }
-
-            // **** STAGE 5 - MOVE ON MAP **** //
-            while (gameState.getCurrentPhase().equals(RoundPhaseType.MOVE)) {
-
-                // wait for other players to take their turns
-                while (!gameState.getCurrentPlayer().equals(thisPlayer));
-
-                // its my turn
-                if (gameState.getCurrentPlayer().equals(thisPlayer)) {
-                    updateGameState();
-
-                    // TODO implement all logic for my turn
-
-                    endTurn();
-                    sendGameState();
-                }
-            }
-
-            endRound();
-        }
-
-        endGame();
-    } */
-
-
     private void initializeElfBoots() {
 
         ElfBootPanel elvenholdBootPanel = GameMap.getInstance().getTown("Elvenhold").getPanel().getElfBootPanel();
@@ -336,10 +249,12 @@ public class GameManager {
         // all players have passed their turn in the current phase
         if (gameState.getCurrentPlayerIdx() + 1 == gameState.getNumOfPlayers()) {
             endPhase();
+        } else {
+            // within the same phase, next player will take action
+            gameState.setToNextPlayer();
+            NotifyTurnCommand notifyTurnCommand = new NotifyTurnCommand(gameState.getCurrentPhase());
+            //TODO: send notifying command to the current player, need network utils on get player name/ip
         }
-
-        // within the same phase, next player will take action
-        gameState.setToNextPlayer();
     }
 
     private void endPhase() {
@@ -350,11 +265,13 @@ public class GameManager {
             endRound();
         } else { // go to the next phase within the same round
             gameState.setCurrentPhase(RoundPhaseType.values()[nextOrdinal]);
+            LOGGER.info("...Going to the next phase : " + gameState.getCurrentPhase());
             gameState.setToFirstPlayer();
         }
     }
 
     private void endRound() {
+        LOGGER.info("...Going to the next round #" + gameState.getCurrentRound());
         actionManager.clearSelection();
         gameState.setToFirstPlayer();
         gameState.incrementCurrentRound();
