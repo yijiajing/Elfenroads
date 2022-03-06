@@ -1,5 +1,6 @@
 package networking;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import utils.NetworkUtils;
 
@@ -94,7 +95,45 @@ public class GameSession {
         con.disconnect();
         System.out.println("Response status: " + status);
         System.out.println(content.toString());
+    }
 
+    /**
+     * alternative static version of launch() that takes the required information as arguments instead
+     * called from HostWaitingWindow where we can assume the User instance is the creator of the game (since we have already checked)
+     * @throws IOException
+     */
+    public static void launch(User creator, String sessionID) throws IOException
+    {
+        String creatorToken = creator.getAccessToken();
+
+        URL url = new URL("http://35.182.122.111:4242/api/sessions/" + sessionID + "?access_token=" + creatorToken);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("POST");
+
+        int status = con.getResponseCode();
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer content = new StringBuffer();
+        while((inputLine = in.readLine()) != null) {
+            content.append(inputLine);
+        }
+        in.close();
+        con.disconnect();
+        System.out.println("Response status: " + status);
+        System.out.println(content.toString());
+    }
+
+    /**
+     * static method to check if a session has been lost
+     * @param sessionID the id of the session to check
+     * @return
+     */
+    public static boolean isLaunched(String sessionID) throws IOException
+    {
+        JSONObject details = getSessionDetails(sessionID);
+        String isLaunched = details.get("launched").toString();
+        boolean launched = Boolean.parseBoolean(isLaunched);
+        return launched;
 
     }
 
@@ -147,15 +186,23 @@ public class GameSession {
     {
         ArrayList<String> players = new ArrayList<String>();
         JSONObject details = getSessionDetails(id);
-        JSONObject playersAndIPS = new JSONObject(details.get("playerLocations").toString());
+        //JSONObject playersAndIPS = new JSONObject(details.get("playerLocations").toString());
+        //JSONObject playersAndIPS = new JSONObject(details.get("players").toString());
+        JSONArray names = details.optJSONArray("players");
+        
+        for (int i = 0; i < names.length(); i++)
+        {
+            String name = names.getString(i);
+            players.add(name);
+        }
 
         // for some reason, the players array in the server response doesn't show all the players. so, we are getting the information from playerLocations instead because
         // that one seems to populate fine
 
-        for (String player : playersAndIPS.keySet())
+        /*for (String player : names)
         {
             players.add(player);
-        }
+        }*/
 
         return players;
     }
@@ -281,7 +328,6 @@ public class GameSession {
             throw new Exception ("Only players can join games.");
         }
 
-
         String token = joiner.getAccessToken();
 
         // get ip to pass
@@ -289,7 +335,7 @@ public class GameSession {
         // 03/02 changing to pass local address to ls instead
         String ip = NetworkUtils.getLocalIPAddPort();
 
-        URL url = new URL("http://35.182.122.111:4242/api/sessions/" + sessionID +"/players/" + joiner.getUsername() + "?location=" + ip + "&access_token=" + token);
+        URL url = new URL("http://35.182.122.111:4242/api/sessions/" + sessionID + "/players/" + joiner.getUsername() + "?location=" + ip + "&access_token=" + token);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("PUT");
 

@@ -4,6 +4,7 @@ import domain.GameManager;
 import loginwindow.ChooseBootWindow;
 import loginwindow.LoginWindow;
 import loginwindow.MainFrame;
+import loginwindow.PlayerWaitWindow;
 import networking.GameSession;
 import networking.GameState;
 import networking.User;
@@ -306,24 +307,44 @@ public class NetworkUtils {
             JButton joinButton = new JButton("JOIN");
             JButton startButton = new JButton("START");
 
-            joinButton.addActionListener(new ActionListener() {
+            joinButton.addActionListener(new ActionListener() 
+            {
                 @Override
-                public void actionPerformed(ActionEvent e) {
+                public void actionPerformed(ActionEvent e) 
+                {
                     // join the game
-                    try {
+                    try 
+                    {
                         GameSession.joinSession(MainFrame.loggedIn, id);
                         GameManager.init(Optional.empty(), id);
 
                         // prompt user to choose a boot colour
-                        MainFrame.mainPanel.add(new ChooseBootWindow(id), "choose-boot");
-                        MainFrame.cardLayout.show(MainFrame.mainPanel, "choose-boot");
+                        ChooseBootWindow window = new ChooseBootWindow(id);
+                        GameManager.getInstance().setChooseBootWindow(window);
+                        window.launch();
 
-                    } catch (Exception ex) {
+                        MainFrame.mainPanel.add(window, "choose-boot");
+                        MainFrame.cardLayout.show(MainFrame.mainPanel, "choose-boot");
+                    }  
+                    catch (Exception ex) {
                         System.out.println("There was a problem attempting to join the session with User" + User.getInstance().getUsername());
                         ex.printStackTrace();
                         return;
                     }
-                }
+
+                  /* TODO FIX THIS
+                    try 
+                    {
+                        MainFrame.mainPanel.add(new PlayerWaitWindow(id), "playerwait");
+                    } 
+                    catch (IOException e1) 
+                    {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                        return;
+                    }
+                    MainFrame.cardLayout.show(MainFrame.mainPanel,"playerwait");
+                } */
             });
 
             startButton.addActionListener(new ActionListener() {
