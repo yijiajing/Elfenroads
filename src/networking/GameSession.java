@@ -8,6 +8,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.net.InetAddress;
+import java.util.HashMap;
 import java.util.Set;
 
 public class GameSession {
@@ -306,5 +307,29 @@ public class GameSession {
 
 
 
+    }
+
+    /**
+     * @param id the sessionID of the game
+     * @return a HashMap with players' names as the keys and their respective ips as the values
+     */
+    public static HashMap<String, String> getPlayersWithLocations(String id) throws Exception
+    {
+        // parse the session info to get enough info about the players
+        // we only really need their IPs
+
+        HashMap<String, String> playerNamesAndAddresses = new HashMap<String, String>();
+
+        JSONObject details = getSessionDetails(id);
+
+        JSONObject playersAndIPS = new JSONObject(details.get("playerLocations").toString());
+
+        for (String playerName : playersAndIPS.keySet())
+        {
+            String playerAddress = playersAndIPS.get(playerName).toString();
+            playerNamesAndAddresses.put(playerName, playerAddress);
+        }
+
+        return playerNamesAndAddresses;
     }
 }
