@@ -315,7 +315,7 @@ public class NetworkUtils {
                     try 
                     {
                         GameSession.joinSession(MainFrame.loggedIn, id);
-                        //GameManager.init(Optional.empty(), id);
+                        GameManager.init(Optional.empty(), id);
                     } 
                     catch (Exception ex) 
                     {

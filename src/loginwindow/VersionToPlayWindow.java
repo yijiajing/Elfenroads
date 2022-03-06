@@ -67,6 +67,8 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
                 try 
                 {
                     session = new GameSession(User.getInstance(), "testGame", "My Save Game Name");
+                    String id = session.getId();
+                    GameManager.init(Optional.empty(), id);
                 } 
                 catch (Exception problem) 
                 {

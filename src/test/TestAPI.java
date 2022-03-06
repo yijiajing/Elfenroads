@@ -30,11 +30,8 @@ public class TestAPI {
 
         // System.out.println(GameSession.isLaunched("4501488078472682875"));
 
-
-        for (String id : GameSession.getAllSessionID())
-        {
-            System.out.println(GameSession.isLaunched(id));
-        }
+        User maex = User.init("maex", "abc123_ABC123");
+        System.out.println(maex.getAccessToken());
 
     }
 
