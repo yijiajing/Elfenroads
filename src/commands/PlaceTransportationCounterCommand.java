@@ -3,15 +3,13 @@ package commands;
 import domain.*;
 import enums.CounterType;
 import enums.RegionType;
-import loginwindow.MainFrame;
-import panel.CounterPanel;
 
 public class PlaceTransportationCounterCommand implements GameCommand {
 
-    private String start;
-    private String destination;
-    private RegionType regionType;
-    private CounterType counterType;
+    private final String start;
+    private final String destination;
+    private final RegionType regionType;
+    private final CounterType counterType;
 
     public PlaceTransportationCounterCommand(Road road, TransportationCounter counter) {
         GameMap map = GameMap.getInstance();
@@ -28,7 +26,6 @@ public class PlaceTransportationCounterCommand implements GameCommand {
         Town startTown = map.getTown(start);
         Town destinationTown = map.getTown(destination);
         Road road = map.getRoadBetween(startTown, destinationTown, regionType);
-
         TransportationCounter counter = TransportationCounter.getNew(counterType);
         road.setTransportationCounter(counter);
     }

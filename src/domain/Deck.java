@@ -45,13 +45,9 @@ public abstract class Deck<E extends Drawable> {
     // should probably not return the actual reference
     public Stack<E> getComponents() {return components;}
 
-
-
-
-
-
-
-
-
-
+    public void removeFirst(int num) {
+        for (int i = 0; i < num; i++) {
+            components.pop();
+        }
+    }
 }

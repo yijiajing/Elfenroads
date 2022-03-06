@@ -56,6 +56,12 @@ public class GameMap {
         return mapGraph.getAllEdges(srcTown, destTown);
     }
 
+    /**
+     * @param srcTown the source town
+     * @param destTown the destination town
+     * @param regionType the region type
+     * @return the road uniquely defined by the towns that it connects and the region type
+     */
     public Road getRoadBetween(Town srcTown, Town destTown, RegionType regionType) {
         for (Road r: getRoadsBetween(srcTown, destTown)) {
             if (r.getRegionType() == regionType) {

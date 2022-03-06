@@ -4,24 +4,16 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.io.Serializable;
 import java.net.ServerSocket;
-import java.net.Socket;
 
-import java.util.Arrays;
 import java.util.List;
 
 import java.util.ArrayList;
 
-import java.util.Stack;
-
 import javax.swing.*;
 import javax.swing.border.Border;
 
-import enums.Colour;
-import enums.CounterType;
 import domain.*;
 import enums.RoundPhaseType;
 import networking.GameState;
@@ -440,7 +432,7 @@ public class GameScreen extends JPanel implements Serializable
 		deckOfTransportationCountersImage_TopLayer.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (GameState.instance().getCurrentPhase().equals(RoundPhaseType.DRAWCOUNTERS)) {
+				if (GameState.instance().getCurrentPhase().equals(RoundPhaseType.DRAW_COUNTERS)) {
 					CounterUnit drawn = GameState.instance().getCounterPile().draw(); // draw a counter
 					GameManager.getInstance().getThisPlayer().getHand().addUnit(drawn); // add to player's hand
 					updateAll(); // update GUI

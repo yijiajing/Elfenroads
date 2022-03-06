@@ -17,9 +17,9 @@ public class MoveBootCommand implements GameCommand, Serializable {
 
     // use town names instead of panel objects because panel stuff is not serializable over the network (and neither is a town, since it contains Panel stuff)
     // Elf Boot can also not be serialized since it contains GUI elements
-    private String start;
-    private String destination;
-    private Colour colorBootMoved;
+    private final String start;
+    private final String destination;
+    private final Colour colorBootMoved;
 
     public MoveBootCommand (ElfBootPanel pStart, ElfBootPanel pDestination, ElfBoot pMoved)
     {
