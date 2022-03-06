@@ -102,6 +102,7 @@ public class HostWaitWindow extends JPanel implements Runnable
                 catch (Exception e2)
                 {
                     System.out.println("There was a problem launching the session.");
+                    e2.printStackTrace();
                 }
                 // enter the game ui
                 GameManager.getInstance().launch();
