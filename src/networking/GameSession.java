@@ -94,8 +94,6 @@ public class GameSession {
         con.disconnect();
         System.out.println("Response status: " + status);
         System.out.println(content.toString());
-
-
     }
 
     /**
@@ -122,6 +120,20 @@ public class GameSession {
         con.disconnect();
         System.out.println("Response status: " + status);
         System.out.println(content.toString());
+    }
+
+    /**
+     * static method to check if a session has been lost
+     * @param sessionID the id of the session to check
+     * @return
+     */
+    public static boolean isLaunched(String sessionID) throws IOException
+    {
+        JSONObject details = getSessionDetails(sessionID);
+        String isLaunched = details.get("launched").toString();
+        boolean launched = Boolean.parseBoolean(isLaunched);
+        return launched;
+
     }
 
 

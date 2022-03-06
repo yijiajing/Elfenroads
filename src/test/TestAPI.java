@@ -1,5 +1,6 @@
 package test;
 
+import commands.GameCommand;
 import networking.DNSLookup;
 import networking.GameService;
 import networking.GameSession;
@@ -20,33 +21,20 @@ public class TestAPI {
 
     {
 
-        createASession();
+        // createASession();
+        // User nick = User.init("nick", "abc123_ABC123");
+        // joinSession(nick, "4501488078472682875");
 
-        ArrayList<String> ids = getAllSessionID();
+        //User creator = User.init("dontforget", "abc123_ABC123");
+        // GameSession.launch(creator, "4501488078472682875");
 
-        for (String id : ids)
+        // System.out.println(GameSession.isLaunched("4501488078472682875"));
+
+
+        for (String id : GameSession.getAllSessionID())
         {
-            System.out.println("Showing game details for session with id: " + id);
-            System.out.println(getSessionDetails(id));
-            System.out.println("The player names are: " + getPlayerNames(id));
+            System.out.println(GameSession.isLaunched(id));
         }
-
-        MessageDigest md5 = MessageDigest.getInstance("MD5");
-
-        byte [] messageDigest = md5.digest("{}".getBytes(StandardCharsets.UTF_8));
-
-        BigInteger no = new BigInteger(1, messageDigest);
-
-        String hashtext = no.toString(16);
-
-        while (hashtext.length() < 32)
-        {
-            hashtext = "0" + hashtext;
-        }
-
-        System.out.println("The hash is: " + hashtext);
-
-
 
     }
 

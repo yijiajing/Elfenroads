@@ -1,5 +1,6 @@
 package loginwindow;
 
+import domain.GameManager;
 import org.json.JSONObject;
 
 import domain.Player;
@@ -93,6 +94,12 @@ public class PlayerWaitWindow extends JPanel implements Runnable
         {   
             try
             {
+                // if the session has been launched, go into the game ui
+                // TODO: is it fine to do this here? do we need to leave the thread?
+                if (GameSession.isLaunched(aId))
+                {
+                    break;
+                }
                 // create a new table
                 String[] titles = {"PLAYERS", "NAMES"};
 
@@ -141,6 +148,8 @@ public class PlayerWaitWindow extends JPanel implements Runnable
                 e.printStackTrace();
             }
         }
+
+        GameManager.getInstance().launch();
 
     }
 }
