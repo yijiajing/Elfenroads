@@ -23,17 +23,17 @@ public abstract class CardUnit extends Drawable{
         return selected;
     }
 
-    public void setSelected(boolean selected) {
-        if (selected && !this.selected) {
+    public void setSelected(boolean pSelected) {
+        if (pSelected && !this.selected) {
             // this card is selected
-            //TODO: add a highlight border when selected
+            display.setBorder(BorderFactory.createLineBorder(Color.yellow));
 
-        } else if (!selected && this.selected) {
+        } else if (!pSelected && this.selected) {
             // this card is deselected
-            //TODO: remove the highlight border when deselected
+            display.setBorder(BorderFactory.createEmptyBorder());
 
         }
-        this.selected = selected;
+        this.selected = pSelected;
     }
 
 
