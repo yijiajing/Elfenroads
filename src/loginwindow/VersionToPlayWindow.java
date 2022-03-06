@@ -68,12 +68,23 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
                 {
                     track1.play();
                     session = new GameSession(User.getInstance(), "testGame", "My Save Game Name");
+
+                    GameManager.init(Optional.empty(), session.getId());
+
+                    // prompt user to choose a boot colour
+                    ChooseBootWindow window = new ChooseBootWindow(session.getId());
+                    GameManager.getInstance().setChooseBootWindow(window);
+                    window.launch();
+
+                    MainFrame.mainPanel.add(window, "choose-boot");
+                    MainFrame.cardLayout.show(MainFrame.mainPanel, "choose-boot");
+
+                    /* TODO FIX THIS 
                     String id = session.getId();
                     GameManager.init(Optional.empty(), id);
                     MainFrame.mainPanel.add(new HostWaitWindow(session.getId()), "hostwait");
-                    MainFrame.cardLayout.show(MainFrame.mainPanel, "hostwait");
-                    // MainFrame.mainPanel.add(new ChooseBootWindow(session.getId()), "choose-boot");
-                    // MainFrame.cardLayout.show(MainFrame.mainPanel, "choose-boot");
+                    MainFrame.cardLayout.show(MainFrame.mainPanel, "hostwait"); */
+                  
                 } 
                 catch (Exception problem) 
                 {

@@ -318,18 +318,23 @@ public class NetworkUtils {
                         GameSession.joinSession(MainFrame.loggedIn, id);
                         GameManager.init(Optional.empty(), id);
 
+                        // prompt user to choose a boot colour
+                        ChooseBootWindow window = new ChooseBootWindow(id);
+                        GameManager.getInstance().setChooseBootWindow(window);
+                        window.launch();
+
+                        MainFrame.mainPanel.add(window, "choose-boot");
+                        MainFrame.cardLayout.show(MainFrame.mainPanel, "choose-boot");
                     }  
                     catch (Exception ex) {
-
                         System.out.println("There was a problem attempting to join the session with User" + User.getInstance().getUsername());
                         ex.printStackTrace();
                         return;
                     }
 
+                  /* TODO FIX THIS
                     try 
                     {
-                        // MainFrame.mainPanel.add(new ChooseBootWindow(id), "choose-boot");
-                        // MainFrame.cardLayout.show(MainFrame.mainPanel, "choose-boot");
                         MainFrame.mainPanel.add(new PlayerWaitWindow(id), "playerwait");
                     } 
                     catch (IOException e1) 
@@ -339,7 +344,7 @@ public class NetworkUtils {
                         return;
                     }
                     MainFrame.cardLayout.show(MainFrame.mainPanel,"playerwait");
-                }
+                } */
             });
 
             startButton.addActionListener(new ActionListener() {
