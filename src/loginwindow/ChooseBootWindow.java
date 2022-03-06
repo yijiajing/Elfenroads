@@ -47,8 +47,10 @@ public class ChooseBootWindow extends JPanel {
         JLabel text = new JLabel("Please choose from one of the available boot colours below.");
         text.setFont(new Font("Serif", Font.PLAIN, 30));
         this.textPanel.add(text);
+    }
 
 
+    public void launch() {
         try {
             int numPlayers = GameSession.getPlayerNames(sessionID).size();
 
@@ -63,6 +65,7 @@ public class ChooseBootWindow extends JPanel {
             e.printStackTrace();
         }
     }
+
 
     public void displayAvailableColours() {
         ArrayList<Colour> colours = GameManager.getInstance().getAvailableColours();

@@ -315,7 +315,11 @@ public class NetworkUtils {
                         GameManager.init(Optional.empty(), id);
 
                         // prompt user to choose a boot colour
-                        MainFrame.mainPanel.add(new ChooseBootWindow(id), "choose-boot");
+                        ChooseBootWindow window = new ChooseBootWindow(id);
+                        GameManager.getInstance().setChooseBootWindow(window);
+                        window.launch();
+
+                        MainFrame.mainPanel.add(window, "choose-boot");
                         MainFrame.cardLayout.show(MainFrame.mainPanel, "choose-boot");
 
                     } catch (Exception ex) {

@@ -32,9 +32,9 @@ public class GameManager {
     private CommunicationsManager coms;
 
     // manages choosing a boot colour
-    private ChooseBootWindow bootWindow;
     private ArrayList<Colour> availableColours = new ArrayList<>();
     private HashMap<Colour, String> bootColours = new HashMap<>(); // <boot colour, player IP> TODO change to Player
+    private ChooseBootWindow bootWindow;
 
     /**
      * Constructor is called when "join" is clicked
@@ -404,7 +404,7 @@ public class GameManager {
             if (thisPlayer == null) { // I haven't chosen a boot colour yet
                 int numPlayers = GameSession.getPlayerNames(sessionID).size();
 
-                if (availableColours.size() == 6-numPlayers) { // we have received the boot colours from all players who have joined
+                if (availableColours.size() == 7-numPlayers) { // we have received the boot colours from all players who have joined
                     bootWindow.displayAvailableColours();
                 }
             }
@@ -428,7 +428,10 @@ public class GameManager {
       
     public boolean isLocalPlayerTurn() {
         return thisPlayer.equals(gameState.getCurrentPlayer());
+    }
 
-
+    public void setChooseBootWindow (ChooseBootWindow window)
+    {
+        bootWindow = window;
     }
 }
