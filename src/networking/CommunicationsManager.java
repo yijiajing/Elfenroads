@@ -1,7 +1,9 @@
 package networking;
 
 import commands.GameCommand;
+import commands.GetBootColourCommand;
 import commands.MoveBootCommand;
+import commands.SendBootColourCommand;
 import domain.ElfBoot;
 import domain.GameManager;
 import domain.GameMap;
@@ -96,8 +98,6 @@ public class CommunicationsManager {
                     senders.add(toThatPlayer);
                     System.out.println("Successfully initialized the connection to " + otherPlayerIP + "!");
                 }
-
-
             }
         }
         catch (Exception e)
@@ -134,10 +134,10 @@ public class CommunicationsManager {
 
     /**
      * @pre CommunicationsManager has been initialized with valid fields
-     * by default, sends the GameState to all other players in the game
+     * Sends the GameCommand to all other players in the game
      * @throws IOException
      */
-    public void sendGameCommand(GameCommand command) throws IOException
+    public void sendGameCommandToAllPlayers(GameCommand command) throws IOException
     {
         ArrayList<Socket> senders = setUpSenders();
 
@@ -154,6 +154,40 @@ public class CommunicationsManager {
             System.out.println("Closed the socket.");
         }
     }
+
+    /**
+     * @pre CommunicationsManager has been initialized with valid fields
+     * Sends the GameCommand to the player specified by otherPlayerIP
+     * @throws IOException
+     */
+    public void sendGameCommandToPlayer(GameCommand command, String otherPlayerIP) throws IOException {
+
+        try {
+            String localAddress = NetworkUtils.getLocalIPAddPort();
+            if (otherPlayerIP.equals(localAddress)) {
+                return; // don't send a command to ourself
+            }
+        } catch (Exception e) {
+            System.out.println("There was a problem retrieving the local address.");
+        }
+
+        System.out.println("Now connecting to... " + otherPlayerIP);
+        String ip = NetworkUtils.getAddress(otherPlayerIP);
+        int port = NetworkUtils.getPort(otherPlayerIP); // the port should always be 999. we will leave this just in case
+        Socket thatPlayer = new Socket(ip, port);
+        System.out.println("Successfully initialized the connection to " + otherPlayerIP + "!");
+
+        System.out.println("Sending the game command to the other user!");
+        OutputStream out = thatPlayer.getOutputStream();
+        ObjectOutputStream payload = new ObjectOutputStream(out);
+        payload.writeObject(command);
+        System.out.println("Wrote the command to the payload.");
+        payload.flush(); // TODO: do we need to actually flush for the receiver to get the info?
+        System.out.println("Flushed the payload.");
+        thatPlayer.close(); // TODO: do we want to close the connection? do we leave it open? do we have to reinitialize next time?
+        System.out.println("Closed the socket.");
+    }
+
 
     /**
      * sends a command to only a single player
@@ -173,11 +207,10 @@ public class CommunicationsManager {
         payload.writeObject(command);
         payload.flush();
         sendCmd.close();
-
     }
 
     /**
-     * will be called by the GameUpdateListener when an update has been received and is ready to be processed on the UI
+     * Called by the GameUpdateListener when an update has been received and is ready to be processed on the UI
      * this is a specific MoveBootCommand implementation for now
      */
     public void updateFromListener()
@@ -186,7 +219,4 @@ public class CommunicationsManager {
         lastCommandReceived = listener.getCommand();
         lastCommandReceived.execute();
     }
-
-
-
 }

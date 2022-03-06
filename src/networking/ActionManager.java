@@ -78,7 +78,7 @@ public class ActionManager {
             if (selectedRoad.placeObstacle((Obstacle) selectedCounter)) {
                 PlaceObstacleCommand toSendOverNetwork = new PlaceObstacleCommand(selectedRoad);
                 try {
-                    gameManager.getComs().sendGameCommand(toSendOverNetwork);
+                    gameManager.getComs().sendGameCommandToAllPlayers(toSendOverNetwork);
                 } catch (IOException e) {
                     LOGGER.info("There was a problem sending the command to place the obstacle!");
                     e.printStackTrace();
@@ -95,7 +95,7 @@ public class ActionManager {
             if (selectedRoad.setTransportationCounter((TransportationCounter) selectedCounter)) {
                 PlaceTransportationCounterCommand toSendOverNetwork = new PlaceTransportationCounterCommand(selectedRoad, (TransportationCounter) selectedCounter);
                 try {
-                    gameManager.getComs().sendGameCommand(toSendOverNetwork);
+                    gameManager.getComs().sendGameCommandToAllPlayers(toSendOverNetwork);
                 } catch (IOException e) {
                     LOGGER.info("There was a problem sending the command to place the transportation counter!");
                     e.printStackTrace();
@@ -167,7 +167,6 @@ public class ActionManager {
         LOGGER.info("Town " + town.getName() + " selected");
         selectedTown = town;
 
-
         if (!(gameState.getCurrentPhase() == RoundPhaseType.MOVE
                 && !selectedCards.isEmpty()
                 && gameManager.isLocalPlayerTurn())) {
@@ -176,12 +175,15 @@ public class ActionManager {
 
         if (GameRuleUtils.validateMove(GameMap.getInstance(), gameState.getCurrentPlayer().getCurrentTown(), selectedTown, selectedCards)) {
             // Move Boot
-            gameState.getCurrentPlayer().setCurrentTown(selectedTown);
+            // gameState.getCurrentPlayer().setCurrentTown(selectedTown);
+            // MoveBootCommand.execute() does the above line now. I just left this here for reference
             ElfBoot boot = gameState.getCurrentPlayer().getBoot();
             ElfBootPanel startForCommand = boot.getCurPanel();
             ElfBoot bootForCommand = boot;
             ElfBootPanel destinationForCommand = selectedTown.getPanel().getElfBootPanel();
-            boot.setCurPanel(destinationForCommand);
+            // boot.setCurPanel(destinationForCommand);
+            // leaving that here for reference as well.
+
             // TODO: remove this. just for testing
             if (startForCommand == null || destinationForCommand == null || bootForCommand == null)
             {
@@ -191,10 +193,15 @@ public class ActionManager {
             // boot has been successfully moved and is no longer selected
             boot.setSelected(false);
 
-            // now, construct a command and notify the CommunicationsManager so that it can send the movement to other players in the game
-            MoveBootCommand toSendOverNetwork = new MoveBootCommand(startForCommand, destinationForCommand, bootForCommand);
+            // now, construct a command
+            MoveBootCommand cmd = new MoveBootCommand(startForCommand, destinationForCommand, bootForCommand);
+
+            // execute locally
+            cmd.execute();
+
+            // send the command using the CommunicationsManager
             try {
-                gameManager.getComs().sendGameCommand(toSendOverNetwork);
+                gameManager.getComs().sendGameCommandToAllPlayers(cmd);
             } catch (IOException e) {
                 LOGGER.info("There was a problem sending the command to move the boot!");
                 e.printStackTrace();

@@ -2,13 +2,16 @@ package domain;
 
 import commands.DrawCardCommand;
 import commands.NotifyTurnCommand;
+import commands.GetBootColourCommand;
 import enums.Colour;
 import enums.RoundPhaseType;
 import loginwindow.*;
 import networking.*;
 import panel.ElfBootPanel;
 import panel.GameScreen;
+import utils.NetworkUtils;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.util.*;
 import java.util.logging.Logger;
@@ -30,10 +33,15 @@ public class GameManager {
     private String sessionID;
     private CommunicationsManager coms;
 
+    // manages choosing a boot colour
+    private ChooseBootWindow bootWindow;
+    private ArrayList<Colour> availableColours = new ArrayList<>();
+    private HashMap<Colour, String> bootColours = new HashMap<>(); // <boot colour, player IP> TODO change to Player
+
     /**
      * Constructor is called when "join" is clicked
-     * If the User is starting a new game, then loadedState == null and sessionID != null
-     * If the User is loading a previous game, then loadedState != null and sessionID == null (change this?)
+     * If the User is starting a new game, then loadedState == null
+     * If the User is loading a previous game, then loadedState != null
      */
     private GameManager(Optional<GameState> loadedState, String pSessionID) {
 
@@ -44,11 +52,10 @@ public class GameManager {
         if (!loadedState.isPresent()) {
             gameState = GameState.init(3, pSessionID);
             actionManager = ActionManager.init(gameState, this);
+
             loaded = false;
 
-            // prompt user to choose a boot colour
-            MainFrame.mainPanel.add(new ChooseBootWindow(), "choose-boot");
-            MainFrame.cardLayout.show(MainFrame.mainPanel, "choose-boot");
+            availableColours.addAll(Arrays.asList(Colour.values())); // all colours are available
         }
 
         // load state
@@ -146,7 +153,7 @@ public class GameManager {
         DrawCardCommand drawCardCommand = new DrawCardCommand(numDrawn);
         NotifyTurnCommand notifyTurnCommand = new NotifyTurnCommand(RoundPhaseType.DEAL_CARDS);
         try {
-            coms.sendGameCommand(drawCardCommand);
+            coms.sendGameCommandToAllPlayers(drawCardCommand);
             //TODO: send notifying command to the current player
         } catch (IOException e) {
             LOGGER.info("There was a problem sending the command to draw cards!");
@@ -378,14 +385,17 @@ public class GameManager {
         return this.gameState;
     }
 
-    public static ArrayList<Colour> getAvailableColours() {
-        // TODO: this method is WRONG - we need to get the available colours by communicating with
-        // TODO: the other players in the session about what colours they chose
-
-        ArrayList<Colour> availableColours = new ArrayList<>();
-        availableColours.addAll(Arrays.asList(Colour.values()));
-
-        return availableColours;
+    public void requestAvailableColours() {
+        try {
+            String localAddress = NetworkUtils.getLocalIPAddPort();
+            coms.sendGameCommandToAllPlayers(new GetBootColourCommand(localAddress));
+        } catch (IOException e) {
+            System.out.println("There was a problem sending the command to get players' boot colours!");
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("There was a problem getting the local IP.");
+            e.printStackTrace();
+        }
     }
 
     public Player getThisPlayer() {
@@ -397,12 +407,37 @@ public class GameManager {
     }
 
 
+    public void removeAvailableColour(Colour c, String playerIP) {
+        availableColours.remove(c);
+        addPairToBootColours(c, playerIP);
+
+        try {
+            if (thisPlayer == null) { // I haven't chosen a boot colour yet
+                int numPlayers = GameSession.getPlayerNames(sessionID).size();
+
+                if (availableColours.size() == 6-numPlayers) { // we have received the boot colours from all players who have joined
+                    bootWindow.displayAvailableColours();
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("There was a problem getting the players' names in the session.");
+            e.printStackTrace();
+        }
+    }
+
+    public void addPairToBootColours(Colour c, String playerIP) {
+        bootColours.put(c, playerIP);
+    }
+
+    public ArrayList<Colour> getAvailableColours() {
+        return this.availableColours;
+    }
+
     public String getSessionID() {
         return sessionID;
     }
       
     public boolean isLocalPlayerTurn() {
         return thisPlayer.equals(gameState.getCurrentPlayer());
-
     }
 }
