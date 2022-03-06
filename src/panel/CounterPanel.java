@@ -30,9 +30,6 @@ public class CounterPanel extends JPanel {
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                //TODO: this is only for demonstration,
-                // need to implement a mechanism to place a selected transportation counter
-                setTransportationCounter(new TransportationCounter(CounterType.MAGICCLOUD, 30, 30));
                 ActionManager.getInstance().setSelectedRoad(CounterPanel.this.road);
                 update();
             }
@@ -40,10 +37,10 @@ public class CounterPanel extends JPanel {
     }
 
     public void setTransportationCounter(TransportationCounter transportationCounter) {
-        this.add(transportationCounter.getImage());
+        this.add(transportationCounter.getDisplay());
     }
 
-    public void placeObstacle() {
+    public void placeObstacle(Obstacle obstacle) {
         //TODO: display obstacle image on top of (maybe a bit on the bottom of) the transportation counter
     }
 

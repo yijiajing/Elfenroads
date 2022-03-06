@@ -1,6 +1,7 @@
 package panel;// package testing;
 
-import domain.CounterPile;
+import domain.TransportationCounterPile;
+import domain.CounterUnit;
 import domain.TransportationCounter;
 
 import javax.swing.*;
@@ -8,10 +9,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class DrawListener implements ActionListener {
-    private final CounterPile drawnFrom;
+    private final TransportationCounterPile drawnFrom;
     private JPanel[] destination;
 
-    public DrawListener(CounterPile pDrawnFrom, JPanel[] pDestination)
+    public DrawListener(TransportationCounterPile pDrawnFrom, JPanel[] pDestination)
 
     {
         this.drawnFrom = pDrawnFrom;
@@ -32,8 +33,8 @@ public class DrawListener implements ActionListener {
             // if we find an empty spot, put the card there and break
             if (toPlace[i].getComponentCount() == 0)
             {
-                TransportationCounter toMove = this.drawnFrom.draw();
-                toPlace[i].add(toMove.getImage());
+                CounterUnit toMove = this.drawnFrom.draw();
+                toPlace[i].add(toMove.getDisplay());
                 break;
             }
             // if we can't find an empty spot, then just break and leave it alone for now

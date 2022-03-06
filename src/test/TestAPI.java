@@ -26,25 +26,11 @@ public class TestAPI {
 
         for (String id : ids)
         {
-            System.out.println("Showing game details for session with id: " + id);
-            System.out.println(getSessionDetails(id));
-            System.out.println("The player names are: " + getPlayerNames(id));
+            // System.out.println("Showing game details for session with id: " + id);
+            // System.out.println(getSessionDetails(id));
+            //  System.out.println("The player names are: " + getPlayerNames(id));
+            System.out.println("The creator of the game with id " + id + " is " + getSessionDetails(id).get("creator"));
         }
-
-        MessageDigest md5 = MessageDigest.getInstance("MD5");
-
-        byte [] messageDigest = md5.digest("{}".getBytes(StandardCharsets.UTF_8));
-
-        BigInteger no = new BigInteger(1, messageDigest);
-
-        String hashtext = no.toString(16);
-
-        while (hashtext.length() < 32)
-        {
-            hashtext = "0" + hashtext;
-        }
-
-        System.out.println("The hash is: " + hashtext);
 
 
 
@@ -66,9 +52,9 @@ public class TestAPI {
         {
             System.out.println("There was a problem setting up the test game session.");
         }
-
-
     }
+
+
 
 
 

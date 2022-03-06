@@ -45,12 +45,12 @@ public class GameManager {
 
         MainFrame.mainPanel.add(GameScreen.init(MainFrame.getInstance()), "gameScreen");
         sessionID = pSessionID;
-        coms = new CommunicationsManager(this, sessionID);
 
         // start a new game if there is no state to be loaded
-        if (loadedState.isEmpty()) {
-            gameState = GameState.init(3);
-            actionManager = ActionManager.init(gameState);
+        if (!loadedState.isPresent()) {
+            gameState = GameState.init(3, pSessionID);
+            actionManager = ActionManager.init(gameState, this);
+
             loaded = false;
 
             availableColours.addAll(Arrays.asList(Colour.values())); // all colours are available
@@ -62,6 +62,8 @@ public class GameManager {
             loaded = true;
             //TODO implement
         }
+        coms = new CommunicationsManager(this, sessionID);
+
     }
 
     /**
@@ -135,7 +137,7 @@ public class GameManager {
      */
     public void drawCounters() {
         if (gameState.getCurrentRound() <= gameState.getTotalRounds()
-                && gameState.getCurrentPhase().equals(RoundPhaseType.DRAWCOUNTERS)
+                && gameState.getCurrentPhase() == RoundPhaseType.DRAWCOUNTERS
                 && gameState.getCurrentPlayer().equals(thisPlayer)) {
 
             updateGameState();
@@ -298,13 +300,20 @@ public class GameManager {
                 endRound();
             } else {
                 // go to the next phase within the same round
-                gameState.setCurrentPhase(RoundPhaseType.values()[nextOrdinal]);
+                endPhase();
             }
             return;
         }
 
         // within the same phase, next player will take action
         gameState.setToNextPlayer();
+    }
+
+    private void endPhase() {
+        int nextOrdinal = gameState.getCurrentPhase().ordinal() + 1;
+        gameState.setCurrentPhase(RoundPhaseType.values()[nextOrdinal]);
+        gameState.setToFirstPlayer();
+
     }
 
     private void endRound() {
@@ -314,6 +323,8 @@ public class GameManager {
             endGame();
             return;
         }
+        GameMap.getInstance().clearAllCounters();
+        gameState.setCurrentPhase(RoundPhaseType.DRAWCOUNTERS);
         //TODO: update round card in UI
     }
 
@@ -384,6 +395,7 @@ public class GameManager {
         return coms;
     }
 
+
     public void removeAvailableColour(Colour c, String playerIP) {
         availableColours.remove(c);
         addPairToBootColours(c, playerIP);
@@ -408,5 +420,15 @@ public class GameManager {
 
     public ArrayList<Colour> getAvailableColours() {
         return this.availableColours;
+
+
+    public String getSessionID() {
+        return sessionID;
+    }
+      
+    public boolean isLocalPlayerTurn() {
+        return thisPlayer.equals(gameState.getCurrentPlayer());
+
+
     }
 }

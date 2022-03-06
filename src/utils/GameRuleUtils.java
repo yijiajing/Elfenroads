@@ -2,7 +2,9 @@ package utils;
 
 import domain.*;
 import enums.RegionType;
+import enums.RoundPhaseType;
 import enums.TravelCardType;
+import networking.GameState;
 
 import java.util.List;
 import java.util.Set;
@@ -23,6 +25,12 @@ public final class GameRuleUtils {
      */
     public static boolean validateMove(GameMap gameMap, Town srcTown, Town destTown, List<TravelCard> cards) {
         if (cards == null || cards.isEmpty()) {
+            return false;
+        }
+
+        else if (!(GameState.instance().getCurrentPhase() == RoundPhaseType.MOVE
+                && !cards.isEmpty()
+                && GameManager.getInstance().isLocalPlayerTurn())) {
             return false;
         }
         Set<Road> roads = gameMap.getRoadsBetween(srcTown, destTown);
@@ -76,6 +84,7 @@ public final class GameRuleUtils {
         }
         return false;
     }
+
 
 
 }

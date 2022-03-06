@@ -383,7 +383,7 @@ public class GameScreen extends JPanel implements Serializable
 		for (int i = 0; i < 5; i++) {
 			JPanel panel = panelForFaceUpTransportationCounters[i];
 			TransportationCounter counter = faceUpCounters.get(i);
-			panel.add(counter.getImage());
+			panel.add(counter.getDisplay());
 			panel.repaint();
 			panel.revalidate();
 		}
@@ -397,7 +397,7 @@ public class GameScreen extends JPanel implements Serializable
 		{
 			JPanel panel = panelForPlayerCards[p];
 			CardUnit card = myCards.get(p);
-			panel.add(card.getImage());
+			panel.add(card.getDisplay());
 			panel.repaint();
 			panel.revalidate();
 		}
@@ -415,7 +415,7 @@ public class GameScreen extends JPanel implements Serializable
 			c.setOwned(true);
 			JPanel panel = panelForPlayerTransportationCounters[i];
 			panel.removeAll(); // clear it if something is already there
-			panel.add(c.getImage());
+			panel.add(c.getDisplay());
 			panel.repaint();
 			panel.revalidate();
 
@@ -426,7 +426,7 @@ public class GameScreen extends JPanel implements Serializable
 		Obstacle o = GameManager.getInstance().getThisPlayer().getHand().getObstacle();
 
 		if (o != null) {
-			panelForObstacle.add(o.getImage());
+			panelForObstacle.add(o.getDisplay());
 			panelForObstacle.repaint();
 			panelForObstacle.revalidate();
 		}
@@ -441,7 +441,7 @@ public class GameScreen extends JPanel implements Serializable
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (GameState.instance().getCurrentPhase().equals(RoundPhaseType.DRAWCOUNTERS)) {
-					TransportationCounter drawn = GameState.instance().getCounterPile().draw(); // draw a counter
+					CounterUnit drawn = GameState.instance().getCounterPile().draw(); // draw a counter
 					GameManager.getInstance().getThisPlayer().getHand().addUnit(drawn); // add to player's hand
 					updateAll(); // update GUI
 
