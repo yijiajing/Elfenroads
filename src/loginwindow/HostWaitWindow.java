@@ -92,6 +92,8 @@ public class HostWaitWindow extends JPanel implements Runnable
             @Override
             public void actionPerformed(ActionEvent e) {
                 // start a game from the current session
+                User host = User.getInstance();
+
                 // steps:
                 // check to make sure we have enough players
                 // launch the session

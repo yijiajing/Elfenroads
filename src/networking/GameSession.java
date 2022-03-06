@@ -98,6 +98,32 @@ public class GameSession {
 
     }
 
+    /**
+     * alternative static version of launch() that takes the required information as arguments instead
+     * called from HostWaitingWindow where we can assume the User instance is the creator of the game (since we have already checked)
+     * @throws IOException
+     */
+    public static void launch(User creator, String sessionID) throws IOException
+    {
+        String creatorToken = creator.getAccessToken();
+
+        URL url = new URL("http://35.182.122.111:4242/api/sessions/" + sessionID + "?access_token=" + creatorToken);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("POST");
+
+        int status = con.getResponseCode();
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer content = new StringBuffer();
+        while((inputLine = in.readLine()) != null) {
+            content.append(inputLine);
+        }
+        in.close();
+        con.disconnect();
+        System.out.println("Response status: " + status);
+        System.out.println(content.toString());
+    }
+
 
     public User getCreator() {
         return creator;
