@@ -95,7 +95,10 @@ public class HostWaitWindow extends JPanel implements Runnable
                 // start a game from the current session
                 // launch
                 User creator = User.getInstance();
-                try{GameSession.launch(creator, aId);}
+                try
+                {GameSession.launch(creator, aId);
+                System.out.println("Session launched!");}
+
                 catch (Exception e2)
                 {
                     System.out.println("There was a problem launching the session.");

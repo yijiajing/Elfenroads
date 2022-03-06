@@ -98,6 +98,7 @@ public class PlayerWaitWindow extends JPanel implements Runnable
                 // TODO: is it fine to do this here? do we need to leave the thread?
                 if (GameSession.isLaunched(aId))
                 {
+                    System.out.println("The game session has been launched already! Time to start!");
                     break;
                 }
                 // create a new table
