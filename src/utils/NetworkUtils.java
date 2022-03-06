@@ -1,6 +1,7 @@
 package utils;
 
 import domain.GameManager;
+import loginwindow.ChooseBootWindow;
 import loginwindow.LoginWindow;
 import loginwindow.MainFrame;
 import loginwindow.PlayerWaitWindow;
@@ -316,9 +317,10 @@ public class NetworkUtils {
                     {
                         GameSession.joinSession(MainFrame.loggedIn, id);
                         GameManager.init(Optional.empty(), id);
-                    } 
-                    catch (Exception ex) 
-                    {
+
+                    }  
+                    catch (Exception ex) {
+
                         System.out.println("There was a problem attempting to join the session with User" + User.getInstance().getUsername());
                         ex.printStackTrace();
                         return;
@@ -326,6 +328,8 @@ public class NetworkUtils {
 
                     try 
                     {
+                        // MainFrame.mainPanel.add(new ChooseBootWindow(id), "choose-boot");
+                        // MainFrame.cardLayout.show(MainFrame.mainPanel, "choose-boot");
                         MainFrame.mainPanel.add(new PlayerWaitWindow(id), "playerwait");
                     } 
                     catch (IOException e1) 

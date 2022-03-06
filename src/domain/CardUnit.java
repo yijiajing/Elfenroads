@@ -5,21 +5,19 @@ import java.awt.*;
 
 public abstract class CardUnit extends Drawable{
 
-    private JLabel image;
-    private boolean selected;
+    boolean selected;
 
     public CardUnit(int resizeWidth, int resizeHeight, String filename) {
 
-        ImageIcon imageIcon = new ImageIcon("./assets/sprites/" + filename + ".png");
-        Image toResize = imageIcon.getImage();
+        super ("./assets/sprites/" + filename + ".png");
+        Image toResize = icon.getImage();
         Image resized = toResize.getScaledInstance(resizeWidth, resizeHeight,  java.awt.Image.SCALE_SMOOTH);
-        this.image = new JLabel(new ImageIcon(resized));
+        display = new JLabel(new ImageIcon(resized));
+        selected = false;
 
     }
 
-    public JLabel getImage() {
-        return this.image;
-    }
+
 
     public boolean isSelected() {
         return selected;
@@ -37,4 +35,6 @@ public abstract class CardUnit extends Drawable{
         }
         this.selected = selected;
     }
+
+
 }

@@ -4,24 +4,16 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.io.Serializable;
 import java.net.ServerSocket;
-import java.net.Socket;
 
-import java.util.Arrays;
 import java.util.List;
 
 import java.util.ArrayList;
 
-import java.util.Stack;
-
 import javax.swing.*;
 import javax.swing.border.Border;
 
-import enums.Colour;
-import enums.CounterType;
 import domain.*;
 import enums.RoundPhaseType;
 import networking.GameState;
@@ -231,34 +223,16 @@ public class GameScreen extends JPanel implements Serializable
 	
 	public void initializeLeaderboard()
 	{	
-//		String[][] players = 
-//		{
-//				{"1", "0"},
-//				{"2", "0"},
-//				{"3", "0"},
-//				{"4", "0"},
-//				{"5", "0"},
-//				{"6", "0"},
-//		};
 		
 		List<Player> aPlayers = GameState.instance().getPlayers();
 		
-		String[][] playerScores = new String [aPlayers.size()][2];
-		for (int i = 0; i < playerScores.length; i++){
-			playerScores[i][0] = String.valueOf(i+1);
-			playerScores[i][1] = String.valueOf(aPlayers.get(i).getScore());
+		backgroundPanel_ForLeaderboard.setLayout(new BoxLayout(backgroundPanel_ForLeaderboard, BoxLayout.Y_AXIS));
+		backgroundPanel_ForLeaderboard.setAlignmentX(CENTER_ALIGNMENT);
+		for (Player player:aPlayers) {
+			backgroundPanel_ForLeaderboard.add(new ScoreBoardPanel(this, player));
+			backgroundPanel_ForLeaderboard.add(Box.createRigidArea(new Dimension(0,5)));
 		}
-		
-		String[] titles = {"PLAYERS", "POINTS"};
-		
-		leaderboard = new JTable (playerScores, titles);
-		leaderboard.setRowHeight(height*40/900);
-		
-		backgroundPanel_ForLeaderboard.setLayout(new BorderLayout());
-		backgroundPanel_ForLeaderboard.add(leaderboard.getTableHeader(), BorderLayout.PAGE_START);
-		backgroundPanel_ForLeaderboard.add(leaderboard, BorderLayout.CENTER);
-		
-		backgroundPanel_ForLeaderboard.add(leaderboard);
+
 	}
 	
 	public void initializeCardPanels()
@@ -383,7 +357,7 @@ public class GameScreen extends JPanel implements Serializable
 		for (int i = 0; i < 5; i++) {
 			JPanel panel = panelForFaceUpTransportationCounters[i];
 			TransportationCounter counter = faceUpCounters.get(i);
-			panel.add(counter.getImage());
+			panel.add(counter.getDisplay());
 			panel.repaint();
 			panel.revalidate();
 		}
@@ -397,7 +371,7 @@ public class GameScreen extends JPanel implements Serializable
 		{
 			JPanel panel = panelForPlayerCards[p];
 			CardUnit card = myCards.get(p);
-			panel.add(card.getImage());
+			panel.add(card.getDisplay());
 			panel.repaint();
 			panel.revalidate();
 		}
@@ -415,7 +389,7 @@ public class GameScreen extends JPanel implements Serializable
 			c.setOwned(true);
 			JPanel panel = panelForPlayerTransportationCounters[i];
 			panel.removeAll(); // clear it if something is already there
-			panel.add(c.getImage());
+			panel.add(c.getDisplay());
 			panel.repaint();
 			panel.revalidate();
 
@@ -426,7 +400,7 @@ public class GameScreen extends JPanel implements Serializable
 		Obstacle o = GameManager.getInstance().getThisPlayer().getHand().getObstacle();
 
 		if (o != null) {
-			panelForObstacle.add(o.getImage());
+			panelForObstacle.add(o.getDisplay());
 			panelForObstacle.repaint();
 			panelForObstacle.revalidate();
 		}
@@ -440,8 +414,8 @@ public class GameScreen extends JPanel implements Serializable
 		deckOfTransportationCountersImage_TopLayer.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (GameState.instance().getCurrentPhase().equals(RoundPhaseType.DRAWCOUNTERS)) {
-					TransportationCounter drawn = GameState.instance().getCounterPile().draw(); // draw a counter
+				if (GameState.instance().getCurrentPhase().equals(RoundPhaseType.DRAW_COUNTERS)) {
+					CounterUnit drawn = GameState.instance().getCounterPile().draw(); // draw a counter
 					GameManager.getInstance().getThisPlayer().getHand().addUnit(drawn); // add to player's hand
 					updateAll(); // update GUI
 

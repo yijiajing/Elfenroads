@@ -407,6 +407,9 @@ public class LoginWindow extends JPanel implements Runnable{
          }
  
          // Print error message for wron ngrok token
+         // commented out because we are not using ngrok at the moment
+
+         /*
          else if (flag_ngrok == 1)
          {
              synchronized(t)
@@ -428,6 +431,7 @@ public class LoginWindow extends JPanel implements Runnable{
                  t.stop();
              }
          }
+         */
  
      }
 

@@ -66,29 +66,21 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
                 // TODO : add panel for user to input their game name and save game name
                 try 
                 {
+                    track1.play();
                     session = new GameSession(User.getInstance(), "testGame", "My Save Game Name");
                     String id = session.getId();
                     GameManager.init(Optional.empty(), id);
+                    MainFrame.mainPanel.add(new HostWaitWindow(session.getId()), "hostwait");
+                    MainFrame.cardLayout.show(MainFrame.mainPanel, "hostwait");
+                    // MainFrame.mainPanel.add(new ChooseBootWindow(session.getId()), "choose-boot");
+                    // MainFrame.cardLayout.show(MainFrame.mainPanel, "choose-boot");
                 } 
                 catch (Exception problem) 
                 {
                     problem.printStackTrace();
                     return;
                 }
-                track1.play();
-                //MainFrame.mainPanel.add(new LobbyWindow(), "lobby");
-                //MainFrame.cardLayout.show(MainFrame.mainPanel, "lobby");
-                try 
-                {
-                    MainFrame.mainPanel.add(new HostWaitWindow(session.getId()), "hostwait");
-                    MainFrame.cardLayout.show(MainFrame.mainPanel, "hostwait");
-                } 
-                catch (IOException e1) 
-                {
-                    // TODO Auto-generated catch block
-                    e1.printStackTrace();
-                }
-                
+
             }
         });
 

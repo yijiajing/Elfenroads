@@ -13,13 +13,6 @@ import java.util.Optional;
 
 public class LobbyWindow extends JPanel implements ActionListener {
 
-    //private static Box boxPanel;
-
-    // private String creator;
-    // private String numPlayers;
-    // TODO: fill out the other fields to represent any info we need to see about a game
-
-
     private JLabel background_elvenroads;
     private static JButton createButton;
     private static JButton loadButton;
@@ -33,9 +26,6 @@ public class LobbyWindow extends JPanel implements ActionListener {
     private JLabel creator;
     private JLabel numPlayers;
     private Box gameInfo;
-
-
-    private String filepathToRepo = ".";
 
     LobbyWindow(){
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -69,29 +59,8 @@ public class LobbyWindow extends JPanel implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 remove(background_elvenroads);
-
                 MainFrame.mainPanel.add(new VersionToPlayWindow(), "version");
                 MainFrame.cardLayout.show(MainFrame.mainPanel,"version");
-
-                // create a new session
-
-                // first, create the gameService
-
-                try
-                {
-                    // networking.User maex = new networking.User("maex", "abc123_ABC123");
-                    // networking.GameService elfenlands = new networking.GameService (maex, "Elfenlands", "Elfenlands", "Password1", 2, 2);
-                    // networking.GameSession newGame = new networking.GameSession(maex, "Elfenlands", "savegame2");
-
-                }
-
-                catch (Exception problem)
-                {
-                    problem.printStackTrace();
-                }
-
-
-
             }
 
         });
@@ -100,12 +69,10 @@ public class LobbyWindow extends JPanel implements ActionListener {
             public void actionPerformed(ActionEvent e) {
                 remove(background_elvenroads);
                 MainFrame.mainPanel.add(new LoadGameWindow(), "load");
-
                 MainFrame.cardLayout.show(MainFrame.mainPanel,"load");
 
             }
         });
-        //gamesButton.addActionListener(this);
         gamesButton.addActionListener(new ActionListener()
         {
 
@@ -115,7 +82,6 @@ public class LobbyWindow extends JPanel implements ActionListener {
 
             }
         });
-
         refreshButton.addActionListener(new ActionListener()
         {
             @Override

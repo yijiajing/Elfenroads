@@ -1,22 +1,20 @@
 package commands;
 
 import domain.*;
-import enums.CounterType;
 import enums.RegionType;
+import panel.CounterPanel;
 
-public class PlaceTransportationCounterCommand implements GameCommand {
+public class PlaceObstacleCommand implements GameCommand {
 
     private final String start;
     private final String destination;
     private final RegionType regionType;
-    private final CounterType counterType;
 
-    public PlaceTransportationCounterCommand(Road road, TransportationCounter counter) {
+    public PlaceObstacleCommand(Road road) {
         GameMap map = GameMap.getInstance();
         start = map.getRoadSource(road).getName();
         destination = map.getRoadTarget(road).getName();
         regionType = road.getRegionType();
-        counterType = counter.getType();
     }
 
     @Override
@@ -26,7 +24,7 @@ public class PlaceTransportationCounterCommand implements GameCommand {
         Town startTown = map.getTown(start);
         Town destinationTown = map.getTown(destination);
         Road road = map.getRoadBetween(startTown, destinationTown, regionType);
-        TransportationCounter counter = TransportationCounter.getNew(counterType);
-        road.setTransportationCounter(counter);
+        Obstacle obstacle = Obstacle.getNew();
+        road.placeObstacle(obstacle);
     }
 }

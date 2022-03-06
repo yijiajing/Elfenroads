@@ -66,9 +66,8 @@ public class Road {
         return counterPanel;
     }
 
-    // TODO
-    public boolean hasObstacle()
-    {
-        return true;
+    public boolean hasObstacle() {
+        return obstacle != null;
+
     }
 }

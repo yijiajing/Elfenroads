@@ -2,12 +2,20 @@ package domain;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import java.awt.*;
 
 public abstract class Drawable {
     String imageFilepath;
-    ImageIcon image;
-    JLabel display;
-    
-    //TODO: Since the constructors of CounterUnit and CardUnit are almost the same, we shall implement it in this abstract class. 
-    //The only difference is that they have different file path for the image.
+    ImageIcon icon;
+    JLabel display; // the GUI element that actually shows the Drawable
+
+    protected Drawable(String pImageFilepath)
+    {
+        imageFilepath = pImageFilepath;
+        icon = new ImageIcon(imageFilepath);
+    }
+
+    public JLabel getDisplay() {
+        return display;
+    }
 }

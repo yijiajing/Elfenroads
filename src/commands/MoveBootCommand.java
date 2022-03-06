@@ -17,9 +17,9 @@ public class MoveBootCommand implements GameCommand, Serializable {
 
     // use town names instead of panel objects because panel stuff is not serializable over the network (and neither is a town, since it contains Panel stuff)
     // Elf Boot can also not be serialized since it contains GUI elements
-    private String start;
-    private String destination;
-    private Colour colorBootMoved;
+    private final String start;
+    private final String destination;
+    private final Colour colorBootMoved;
 
     public MoveBootCommand (ElfBootPanel pStart, ElfBootPanel pDestination, ElfBoot pMoved)
     {
@@ -30,31 +30,42 @@ public class MoveBootCommand implements GameCommand, Serializable {
         destination = pDestination.getTown().getName();
     }
 
+
     @Override
-    public void execute(GameManager manager)
+    /**
+     * @pre the move has been validated by the ActionManager
+     */
+    public void execute()
     {
+        // update the current town of the player who moved
+        GameState.instance().getCurrentPlayer().setCurrentTown(ActionManager.getInstance().getSelectedTown());
+
         GameMap map = GameMap.getInstance();
-        GameState state = manager.getGameState();
-        // ElfBoot moved = state.getBootByColour(colorBootMoved);
-        // TODO: uncomment that line and remove the below one. just using this one for testing
-        ElfBoot moved = state.getElfBoots().get(0);
+        Town startTown = map.getTown(start);
+        Town destinationTown = map.getTown(destination);
+
+        // update current panel of the boot
+        ElfBoot moved = GameState.instance().getBootByColour(colorBootMoved);
+        moved.setCurPanel(GameMap.getInstance().getTownByName(destination).getElfBootPanel());
+
+        ElfBootPanel startPanel = startTown.getElfBootPanel();
+        ElfBootPanel destinationPanel = destinationTown.getElfBootPanel();
+
+        // actually move the boot
+        startPanel.removeBootFromPanel(moved);
+        destinationPanel.addBootToPanel(moved);
+
         if (moved == null)
         {
             System.out.println("Execute method failed. Could not find a boot in the list of boots.");
         }
 
 
-        Town startTown = map.getTown(start);
-        Town destinationTown = map.getTown(destination);
-
-        ElfBootPanel startPanel = startTown.getElfBootPanel();
-        ElfBootPanel destinationPanel = destinationTown.getElfBootPanel();
-
-        startPanel.removeBootFromPanel(moved);
-        destinationPanel.addBootToPanel(moved);
-
         startPanel.updateView();
         destinationPanel.updateView();
+
+        // NEW CODE FROM UPDATEUI()
+
     }
 
     public String getStart() {

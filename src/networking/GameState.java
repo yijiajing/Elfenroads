@@ -40,18 +40,21 @@ public class GameState {
     private Player currentPlayer;
 
     private TravelCardDeck travelCardDeck;
-    private CounterPile counterPile;
+    private TransportationCounterPile counterPile;
     private ArrayList<TransportationCounter> faceUpCounters = new ArrayList<>();
 
     private ArrayList<ElfBoot> elfBoots;
 
-    private GameState (int numRounds)
+    private GameState (int numRounds, String sessionID)
     {
         this.elfBoots = new ArrayList<>();
         this.currentRound = 1;
         this.totalRounds = numRounds;
-        this.travelCardDeck = new TravelCardDeck();
-        this.counterPile = new CounterPile();
+        // the below line gives a nullPointerException when it is called from the GameManager constructor because, inside the constructor, the GameManager.instance() is still null
+        // String sessionID = GameManager.getInstance().getSessionID();
+        // that is why we are passing the sessionID to the GameState constructor instead (there is no reason for it to really be a field)
+        this.travelCardDeck = new TravelCardDeck(sessionID);
+        this.counterPile = new TransportationCounterPile(sessionID);
     }
 
     // TODO: implement this second constructor
@@ -84,9 +87,9 @@ public class GameState {
         players.add(new Player(Colour.YELLOW));
     }
     
-    public static GameState init(int numRounds) {
+    public static GameState init(int numRounds, String sessionID) {
         if (instance == null) {
-            instance = new GameState(numRounds);
+            instance = new GameState(numRounds, sessionID);
         }
     	return instance;
     }
@@ -180,7 +183,7 @@ public class GameState {
         return this.faceUpCounters;
     }
 
-    public CounterPile getCounterPile() {
+    public TransportationCounterPile getCounterPile() {
         return this.counterPile;
     }
 

@@ -25,10 +25,22 @@ public class TestAPI {
         // User nick = User.init("nick", "abc123_ABC123");
         // joinSession(nick, "4501488078472682875");
 
+
         //User creator = User.init("dontforget", "abc123_ABC123");
         // GameSession.launch(creator, "4501488078472682875");
 
         // System.out.println(GameSession.isLaunched("4501488078472682875"));
+
+        ArrayList<String> ids = getAllSessionID();
+
+        for (String id : ids)
+        {
+            // System.out.println("Showing game details for session with id: " + id);
+            // System.out.println(getSessionDetails(id));
+            //  System.out.println("The player names are: " + getPlayerNames(id));
+            System.out.println("The creator of the game with id " + id + " is " + getSessionDetails(id).get("creator"));
+        }
+
 
         User maex = User.init("maex", "abc123_ABC123");
         System.out.println(maex.getAccessToken());
@@ -51,9 +63,9 @@ public class TestAPI {
         {
             System.out.println("There was a problem setting up the test game session.");
         }
-
-
     }
+
+
 
 
 

@@ -13,6 +13,8 @@ import enums.Colour;
 import networking.*;
 
 /**
+ * This class is deprecated. Will be removed.
+ *
  * Controller for ElfBoot movement.
  * Reacts to mouse events on ElfBoots, TownPanels, and ElfBootPanels by updating the model
  */
@@ -81,7 +83,7 @@ public class ElfBootController implements MouseListener {
                 }
 
                 // TODO: remove this. just for testing
-                if (startForCommand.equals(null) || destinationForCommand.equals(null) || bootForCommand.equals(null))
+                if (startForCommand == null || destinationForCommand == null || bootForCommand == null)
                 {
                     System.out.println("Something went wrong! The fields in the command to send were not determined correctly!");
                 }
@@ -92,7 +94,7 @@ public class ElfBootController implements MouseListener {
                 // now, construct a command and notify the CommunicationsManager so that it can send the movement to other players in the game
                 MoveBootCommand toSendOverNetwork = new MoveBootCommand(startForCommand, destinationForCommand, bootForCommand);
                 try {
-                    GameManager.getInstance().getComs().sendGameCommand(toSendOverNetwork);
+                    GameManager.getInstance().getComs().sendGameCommandToAllPlayers(toSendOverNetwork);
                 } catch (IOException e) {
                     System.out.println("There was a problem sending the command to move the boot!");
                     e.printStackTrace();
