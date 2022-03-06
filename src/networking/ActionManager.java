@@ -23,7 +23,7 @@ public class ActionManager {
 
     private static ActionManager INSTANCE;
 
-    private final static Logger LOGGER = Logger.getLogger("game state");
+    private final static Logger LOGGER = Logger.getLogger("Action Manager");
 
     private final GameState gameState;
     // private final GameManager gameManager = GameManager.getInstance(); this wasn't working because GameManager instance is still null when ActionManager.init is first called (since it's called inside the GameManager constructor)
@@ -68,7 +68,7 @@ public class ActionManager {
         LOGGER.info("Road on " + road.getRegionType() + " selected");
         selectedRoad = road;
 
-        if (!(gameState.getCurrentPhase() == RoundPhaseType.PLANROUTES
+        if (!(gameState.getCurrentPhase() == RoundPhaseType.PLAN_ROUTES
                 && gameManager.isLocalPlayerTurn())) {
             return;
         }
@@ -167,6 +167,11 @@ public class ActionManager {
         LOGGER.info("Town " + town.getName() + " selected");
         selectedTown = town;
 
+        if (!(gameState.getCurrentPhase() == RoundPhaseType.MOVE
+                && !selectedCards.isEmpty()
+                && gameManager.isLocalPlayerTurn())) {
+            return;
+        }
 
         if (GameRuleUtils.validateMove(GameMap.getInstance(), gameState.getCurrentPlayer().getCurrentTown(), selectedTown, selectedCards)) {
             // Move Boot

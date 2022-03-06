@@ -6,9 +6,9 @@ import panel.CounterPanel;
 
 public class PlaceObstacleCommand implements GameCommand {
 
-    private String start;
-    private String destination;
-    private RegionType regionType;
+    private final String start;
+    private final String destination;
+    private final RegionType regionType;
 
     public PlaceObstacleCommand(Road road) {
         GameMap map = GameMap.getInstance();

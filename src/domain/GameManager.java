@@ -1,10 +1,10 @@
 package domain;
 
+import commands.DrawCardCommand;
+import commands.NotifyTurnCommand;
 import commands.GetBootColourCommand;
 import enums.Colour;
-import enums.CounterType;
 import enums.RoundPhaseType;
-import enums.TravelCardType;
 import loginwindow.*;
 import networking.*;
 import panel.ElfBootPanel;
@@ -14,6 +14,7 @@ import utils.NetworkUtils;
 import javax.swing.*;
 import java.io.IOException;
 import java.util.*;
+import java.util.logging.Logger;
 
 /**
  * A Singleton class that controls the main game loop
@@ -21,6 +22,7 @@ import java.util.*;
 public class GameManager {
 
     private static GameManager INSTANCE; // Singleton instance
+    private final static Logger LOGGER = Logger.getLogger("Game Manager");
 
     private GameState gameState;
     private ActionManager actionManager;
@@ -122,14 +124,53 @@ public class GameManager {
      * PHASE 1 & 2
      */
     private void setUpRound() {
+        gameState.setCurrentPhase(RoundPhaseType.DEAL_CARDS);
+        gameState.setToFirstPlayer();
+        gameState.getTravelCardDeck().shuffle(); // only shuffle once at the beginning of each round
 
+        // Phase 1 and 2 can be done at the same time
         distributeTravelCards(); // distribute cards to each player (PHASE 1)
         distributeHiddenCounter(); // distribute 1 face down counter to each player (PHASE 2)
 
         GameScreen.getInstance().updateAll();
+    }
 
-        gameState.setCurrentPhase(RoundPhaseType.DRAWCOUNTERS);
-        gameState.setToFirstPlayer();
+    /**
+     * PHASE 1
+     * Distribute travel cards to each Player by popping from the TravelCardDeck
+     * Fills the Player's hand to have 8 travel cards
+     */
+    public void distributeTravelCards() {
+        if (!(isLocalPlayerTurn() && gameState.getCurrentPhase() == RoundPhaseType.DEAL_CARDS)) return;
+
+        int numCards = thisPlayer.getHand().getNumTravelCards();
+        for (int i = numCards; i < 8; i++) {
+            thisPlayer.getHand().addUnit(gameState.getTravelCardDeck().draw());
+        }
+        endTurn();
+
+        int numDrawn = 8 - numCards;
+        DrawCardCommand drawCardCommand = new DrawCardCommand(numDrawn);
+        NotifyTurnCommand notifyTurnCommand = new NotifyTurnCommand(RoundPhaseType.DEAL_CARDS);
+        try {
+            coms.sendGameCommandToAllPlayers(drawCardCommand);
+            //TODO: send notifying command to the current player
+        } catch (IOException e) {
+            LOGGER.info("There was a problem sending the command to draw cards!");
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * PHASE 2
+     * Distribute 1 face-down transportation counter to each Player by popping from the CounterPile
+     */
+    public void distributeHiddenCounter() {
+        //TODO: modify this
+        for (Player p : gameState.getPlayers()) {
+            p.getHand().addUnit(gameState.getCounterPile().draw());
+        }
     }
 
     /**
@@ -137,7 +178,7 @@ public class GameManager {
      */
     public void drawCounters() {
         if (gameState.getCurrentRound() <= gameState.getTotalRounds()
-                && gameState.getCurrentPhase() == RoundPhaseType.DRAWCOUNTERS
+                && gameState.getCurrentPhase() == RoundPhaseType.DRAW_COUNTERS
                 && gameState.getCurrentPlayer().equals(thisPlayer)) {
 
             updateGameState();
@@ -156,7 +197,7 @@ public class GameManager {
      */
     public void planTravelRoutes() {
         if (gameState.getCurrentRound() <= gameState.getTotalRounds()
-                && gameState.getCurrentPhase().equals(RoundPhaseType.PLANROUTES)
+                && gameState.getCurrentPhase().equals(RoundPhaseType.PLAN_ROUTES)
                 && gameState.getCurrentPlayer().equals(thisPlayer)) {
 
             updateGameState();
@@ -294,15 +335,7 @@ public class GameManager {
 
         // all players have passed their turn in the current phase
         if (gameState.getCurrentPlayerIdx() + 1 == gameState.getNumOfPlayers()) {
-            int nextOrdinal = gameState.getCurrentPhase().ordinal() + 1;
-            if (nextOrdinal == RoundPhaseType.values().length) {
-                // all phases are done, go to the next round
-                endRound();
-            } else {
-                // go to the next phase within the same round
-                endPhase();
-            }
-            return;
+            endPhase();
         }
 
         // within the same phase, next player will take action
@@ -310,13 +343,19 @@ public class GameManager {
     }
 
     private void endPhase() {
+        actionManager.clearSelection();
         int nextOrdinal = gameState.getCurrentPhase().ordinal() + 1;
-        gameState.setCurrentPhase(RoundPhaseType.values()[nextOrdinal]);
-        gameState.setToFirstPlayer();
-
+        if (nextOrdinal == RoundPhaseType.values().length) {
+            // all phases are done, go to the next round
+            endRound();
+        } else { // go to the next phase within the same round
+            gameState.setCurrentPhase(RoundPhaseType.values()[nextOrdinal]);
+            gameState.setToFirstPlayer();
+        }
     }
 
     private void endRound() {
+        actionManager.clearSelection();
         gameState.setToFirstPlayer();
         gameState.incrementCurrentRound();
         if (gameState.getCurrentRound() == gameState.getTotalRounds()) {
@@ -324,7 +363,7 @@ public class GameManager {
             return;
         }
         GameMap.getInstance().clearAllCounters();
-        gameState.setCurrentPhase(RoundPhaseType.DRAWCOUNTERS);
+        gameState.setCurrentPhase(RoundPhaseType.DRAW_COUNTERS);
         //TODO: update round card in UI
     }
 
@@ -361,34 +400,6 @@ public class GameManager {
 
     public Player getThisPlayer() {
         return thisPlayer;
-    }
-
-
-    /**
-     * Distribute travel cards to each Player by popping from the TravelCardDeck
-     * Fills the Player's hand to have 8 travel cards
-     */
-    public void distributeTravelCards() {
-
-        gameState.getTravelCardDeck().shuffle();
-
-        for (Player p : gameState.getPlayers()) {
-            int numCards = p.getHand().getNumTravelCards();
-
-            for (int i=numCards; i<8; i++) {
-                p.getHand().addUnit(gameState.getTravelCardDeck().draw());
-            }
-        }
-    }
-
-
-    /**
-     * Distribute 1 face-down transportation counter to each Player by popping from the CounterPile
-     */
-    public void distributeHiddenCounter() {
-        for (Player p : gameState.getPlayers()) {
-            p.getHand().addUnit(gameState.getCounterPile().draw());
-        }
     }
 
     public CommunicationsManager getComs() {
@@ -428,7 +439,5 @@ public class GameManager {
       
     public boolean isLocalPlayerTurn() {
         return thisPlayer.equals(gameState.getCurrentPlayer());
-
-
     }
 }
