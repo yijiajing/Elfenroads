@@ -310,11 +310,9 @@ public class NetworkUtils {
             joinButton.addActionListener(new ActionListener() 
             {
                 @Override
-                public void actionPerformed(ActionEvent e) 
-                {
+                public void actionPerformed(ActionEvent e) {
                     // join the game
-                    try 
-                    {
+                    try {
                         GameSession.joinSession(MainFrame.loggedIn, id);
                         GameManager.init(Optional.empty(), id);
 
@@ -325,8 +323,7 @@ public class NetworkUtils {
 
                         MainFrame.mainPanel.add(window, "choose-boot");
                         MainFrame.cardLayout.show(MainFrame.mainPanel, "choose-boot");
-                    }  
-                    catch (Exception ex) {
+                    } catch (Exception ex) {
                         System.out.println("There was a problem attempting to join the session with User" + User.getInstance().getUsername());
                         ex.printStackTrace();
                         return;
@@ -345,7 +342,7 @@ public class NetworkUtils {
                     }
                     MainFrame.cardLayout.show(MainFrame.mainPanel,"playerwait");
                 } */
-            });
+                }});
 
             startButton.addActionListener(new ActionListener() {
                 @Override

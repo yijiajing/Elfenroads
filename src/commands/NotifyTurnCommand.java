@@ -35,7 +35,11 @@ public class NotifyTurnCommand implements GameCommand {
             case MOVE:
                 gameManager.moveOnMap();
                 break;
-            case COMPLETED:
+            case RETURN_COUNTERS:
+                gameManager.returnCountersPhase();
+                break;
+            case CLEAN_UP:
+                gameManager.endRound();
                 break;
         }
         GameScreen.getInstance().updateAll();

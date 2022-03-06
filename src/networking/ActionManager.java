@@ -26,7 +26,6 @@ public class ActionManager {
     private final static Logger LOGGER = Logger.getLogger("Action Manager");
 
     private final GameState gameState;
-    // private final GameManager gameManager = GameManager.getInstance(); this wasn't working because GameManager instance is still null when ActionManager.init is first called (since it's called inside the GameManager constructor)
     private GameManager gameManager;
 
     private Road selectedRoad;
