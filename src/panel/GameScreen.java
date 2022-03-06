@@ -18,6 +18,7 @@ import domain.*;
 import enums.RoundPhaseType;
 import networking.GameState;
 import org.minueto.MinuetoTool;
+import utils.GameRuleUtils;
 
 /**
  * A Singleton class that represents the main screen in which the board game is played
@@ -414,17 +415,18 @@ public class GameScreen extends JPanel implements Serializable
 		deckOfTransportationCountersImage_TopLayer.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (GameState.instance().getCurrentPhase().equals(RoundPhaseType.DRAW_COUNTERS)) {
+				if (GameRuleUtils.isDrawCountersPhase()) {
 					CounterUnit drawn = GameState.instance().getCounterPile().draw(); // draw a counter
 					GameManager.getInstance().getThisPlayer().getHand().addUnit(drawn); // add to player's hand
 					updateAll(); // update GUI
 
 					GameManager.getInstance().endTurn();
+					//TODO: removes one counter from remote decks
 
-					// this code should never execute but is used for testing with a single player
-					if (GameState.instance().getCurrentPlayer().equals(GameManager.getInstance().getThisPlayer())) {
-						GameManager.getInstance().planTravelRoutes(); // PHASE 4
-					}
+//					// this code should never execute but is used for testing with a single player
+//					if (GameState.instance().getCurrentPlayer().equals(GameManager.getInstance().getThisPlayer())) {
+//						GameManager.getInstance().planTravelRoutes(); // PHASE 4
+//					}
 				}}
 		});
 	}

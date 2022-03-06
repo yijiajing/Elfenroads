@@ -7,9 +7,11 @@ import loginwindow.MainFrame;
 import networking.ActionManager;
 import networking.GameState;
 import panel.GameScreen;
+import utils.GameRuleUtils;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 import java.util.Objects;
 
 public class TransportationCounter extends CounterUnit implements Comparable<TransportationCounter> {
@@ -25,14 +27,14 @@ public class TransportationCounter extends CounterUnit implements Comparable<Tra
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (!isOwned()) { // counter is face-up and available to be chosen
-                    if (GameState.instance().getCurrentPhase().equals(RoundPhaseType.DRAW_COUNTERS)) {
+                    if (GameRuleUtils.isDrawCountersPhase()) {
                         GameState.instance().getFaceUpCounters().remove(TransportationCounter.this); // remove the counter from the face-up pile
                         GameManager.getInstance().getThisPlayer().getHand().addUnit(TransportationCounter.this); // add to player's hand
                         GameState.instance().addFaceUpCounterFromPile(); // replenish the face-up counters with one from the pile
+                        //TODO: remove one counter from remote decks
                         GameScreen.getInstance().updateAll(); // update GUI
                         TransportationCounter.this.owned = true;
-                        //TODO: should only end turn when this is the last counter to draw
-//                        GameManager.getInstance().endTurn();
+                        GameManager.getInstance().endTurn();
 
 //                        // this code should never execute but is used for testing with a single player
 //                        if (GameState.instance().getCurrentPlayer().equals(GameManager.getInstance().getThisPlayer())) {
