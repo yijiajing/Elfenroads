@@ -30,6 +30,7 @@ public class MoveBootCommand implements GameCommand, Serializable {
         destination = pDestination.getTown().getName();
     }
 
+
     @Override
     /**
      * @pre the move has been validated by the ActionManager

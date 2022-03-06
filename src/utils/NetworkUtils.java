@@ -1,6 +1,7 @@
 package utils;
 
 import domain.GameManager;
+import loginwindow.ChooseBootWindow;
 import loginwindow.LoginWindow;
 import loginwindow.MainFrame;
 import networking.GameSession;
@@ -312,6 +313,11 @@ public class NetworkUtils {
                     try {
                         GameSession.joinSession(MainFrame.loggedIn, id);
                         GameManager.init(Optional.empty(), id);
+
+                        // prompt user to choose a boot colour
+                        MainFrame.mainPanel.add(new ChooseBootWindow(id), "choose-boot");
+                        MainFrame.cardLayout.show(MainFrame.mainPanel, "choose-boot");
+
                     } catch (Exception ex) {
                         System.out.println("There was a problem attempting to join the session with User" + User.getInstance().getUsername());
                         ex.printStackTrace();

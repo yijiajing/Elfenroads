@@ -1,15 +1,20 @@
 package loginwindow;
 
+import commands.SendBootColourCommand;
 import domain.GameManager;
 import domain.Player;
 import enums.Colour;
+import networking.CommunicationsManager;
 import networking.GameSession;
 import networking.GameState;
+import networking.User;
+import utils.NetworkUtils;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.IOException;
 import java.util.ArrayList;
 
 
@@ -20,7 +25,8 @@ public class ChooseBootWindow extends JPanel {
     private JPanel bootPanel;
     private JPanel textPanel;
 
-    public ChooseBootWindow() {
+
+    public ChooseBootWindow(String sessionID) {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setSize((int) screenSize.getWidth(), (int) screenSize.getHeight());
         setOpaque(false);
@@ -42,17 +48,24 @@ public class ChooseBootWindow extends JPanel {
         text.setFont(new Font("Serif", Font.PLAIN, 30));
         this.textPanel.add(text);
 
-        displayAvailableColours();
 
-        background_elvenroads.add(textPanel);
-        background_elvenroads.add(bootPanel);
-        add(background_elvenroads);
+        try {
+            int numPlayers = GameSession.getPlayerNames(sessionID).size();
 
-        setVisible(true);
+            if (numPlayers == 1) { // I am the creator of the session
+                displayAvailableColours(); // all colours are available
+            } else {
+                GameManager.getInstance().requestAvailableColours(); // ask the existing players for their colours
+            }
+
+        } catch (IOException e) {
+            System.out.println("There was a problem getting the players' names in the session.");
+            e.printStackTrace();
+        }
     }
 
-    void displayAvailableColours() {
-        ArrayList<Colour> colours = GameManager.getAvailableColours();
+    public void displayAvailableColours() {
+        ArrayList<Colour> colours = GameManager.getInstance().getAvailableColours();
 
         for (Colour c : colours) {
             ImageIcon bootIcon = new ImageIcon("./assets/boppels-and-boots/boot-" + c + ".png");
@@ -64,6 +77,14 @@ public class ChooseBootWindow extends JPanel {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     GameManager.getInstance().setThisPlayer(new Player(c));
+                    try {
+                        String localIP = NetworkUtils.getLocalIP();
+                        GameManager.getInstance().removeAvailableColour(c, localIP);
+                        GameManager.getInstance().getComs().sendGameCommandToAllPlayers(new SendBootColourCommand(c, localIP));
+                    } catch (Exception exception) {
+                        System.out.println("Problem getting local IP.");
+                        exception.printStackTrace();
+                    }
 
                     //TODO: for now this will send the user back to the lobby screen
                     // TODO: but we need to implement an intermediary screen between lobby and gameScreen
@@ -94,6 +115,12 @@ public class ChooseBootWindow extends JPanel {
             });
 
             this.bootPanel.add(bootImage);
+
+            background_elvenroads.add(textPanel);
+            background_elvenroads.add(bootPanel);
+            add(background_elvenroads);
+
+            setVisible(true);
         }
     }
 }
