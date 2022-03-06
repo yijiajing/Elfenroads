@@ -87,6 +87,18 @@ public class HostWaitWindow extends JPanel implements Runnable
         start.setBounds(1440*560/1440, 900*700/900, 1440*380/1440, 900*50/900);
         start.setVisible(false);
 
+        // add ActionListener to start
+        start.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // start a game from the current session
+                // steps:
+                // check to make sure we have enough players
+                // launch the session
+                // enter the game ui
+            }
+        });
+
         // Add everything to the UI
         background_elvenroads.add(start, BorderLayout.CENTER);
         background_elvenroads.add(message, BorderLayout.CENTER)  ;      
