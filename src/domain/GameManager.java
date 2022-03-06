@@ -420,7 +420,7 @@ public class GameManager {
 
     public ArrayList<Colour> getAvailableColours() {
         return this.availableColours;
-
+    }
 
     public String getSessionID() {
         return sessionID;

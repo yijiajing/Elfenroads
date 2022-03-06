@@ -78,7 +78,7 @@ public class ActionManager {
             if (selectedRoad.placeObstacle((Obstacle) selectedCounter)) {
                 PlaceObstacleCommand toSendOverNetwork = new PlaceObstacleCommand(selectedRoad);
                 try {
-                    gameManager.getComs().sendGameCommand(toSendOverNetwork);
+                    gameManager.getComs().sendGameCommandToAllPlayers(toSendOverNetwork);
                 } catch (IOException e) {
                     LOGGER.info("There was a problem sending the command to place the obstacle!");
                     e.printStackTrace();
@@ -95,7 +95,7 @@ public class ActionManager {
             if (selectedRoad.setTransportationCounter((TransportationCounter) selectedCounter)) {
                 PlaceTransportationCounterCommand toSendOverNetwork = new PlaceTransportationCounterCommand(selectedRoad, (TransportationCounter) selectedCounter);
                 try {
-                    gameManager.getComs().sendGameCommand(toSendOverNetwork);
+                    gameManager.getComs().sendGameCommandToAllPlayers(toSendOverNetwork);
                 } catch (IOException e) {
                     LOGGER.info("There was a problem sending the command to place the transportation counter!");
                     e.printStackTrace();
@@ -196,7 +196,7 @@ public class ActionManager {
 
             // send the command using the CommunicationsManager
             try {
-                gameManager.getComs().sendGameCommand(cmd);
+                gameManager.getComs().sendGameCommandToAllPlayers(cmd);
             } catch (IOException e) {
                 LOGGER.info("There was a problem sending the command to move the boot!");
                 e.printStackTrace();
