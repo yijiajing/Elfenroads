@@ -1,5 +1,6 @@
 package loginwindow;
 
+import domain.GameManager;
 import org.json.JSONObject;
 
 import domain.Player;
@@ -100,7 +101,7 @@ public class HostWaitWindow extends JPanel implements Runnable
                     System.out.println("There was a problem launching the session.");
                 }
                 // enter the game ui
-
+                GameManager.getInstance().launch();
             }
         });
 
