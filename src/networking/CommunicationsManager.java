@@ -187,11 +187,9 @@ public class CommunicationsManager {
         lastCommandReceived = listener.getCommand();
 
         if (lastCommandReceived instanceof MoveBootCommand) {
-            updateUI();
-        } else if (lastCommandReceived instanceof GetBootColourCommand) {
-            lastCommandReceived.execute(managedBy);
-        } else if (lastCommandReceived instanceof SendBootColourCommand) {
-            lastCommandReceived.execute(managedBy);
+            updateUI(); // TODO should call execute() instead
+        } else {
+            lastCommandReceived.execute();
         }
     }
 
@@ -241,7 +239,7 @@ public class CommunicationsManager {
 
         // now, actually move the boot on the screen
         MoveBootCommand toExecuteLocally = new MoveBootCommand(startPanelLocally, destPanelLocally, toMove);
-        toExecuteLocally.execute(managedBy);
+        toExecuteLocally.execute();
         // execute method takes care of updating the ElfBootPanels
 
         // the move should now be visible

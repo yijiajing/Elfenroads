@@ -7,6 +7,10 @@ import utils.NetworkUtils;
 
 import java.io.IOException;
 
+/**
+ * A command to request the boot colours of the other players
+ */
+
 public class GetBootColourCommand implements GameCommand {
 
     private String senderIP;
@@ -17,10 +21,9 @@ public class GetBootColourCommand implements GameCommand {
 
     /***
      * The sender has requested our boot colour, so we send it back to them
-     * @param manager
      */
     @Override
-    public void execute(GameManager manager) {
+    public void execute() {
         CommunicationsManager coms = GameManager.getInstance().getComs();
 
         try {

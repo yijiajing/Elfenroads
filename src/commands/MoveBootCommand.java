@@ -30,10 +30,10 @@ public class MoveBootCommand implements GameCommand, Serializable {
         destination = pDestination.getTown().getName();
     }
 
-    public void execute(GameManager manager)
+    public void execute()
     {
         GameMap map = GameScreen.getInstance().getGameMap();
-        GameState state = manager.getGameState();
+        GameState state = GameManager.getInstance().getGameState();
         // ElfBoot moved = state.getBootByColour(colorBootMoved);
         // TODO: uncomment that line and remove the below one. just using this one for testing
         ElfBoot moved = state.getElfBoots().get(0);

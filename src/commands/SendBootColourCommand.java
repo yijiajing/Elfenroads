@@ -3,6 +3,10 @@ package commands;
 import domain.GameManager;
 import enums.Colour;
 
+/**
+ * A command to send our boot colour to another player 
+ */
+
 public class SendBootColourCommand implements GameCommand {
 
     private Colour bootColour;
@@ -13,8 +17,11 @@ public class SendBootColourCommand implements GameCommand {
         this.senderIP = senderIP;
     }
 
+    /**
+     * We have received the boot colour of someone else
+     */
     @Override
-    public void execute(GameManager manager) {
-
+    public void execute() {
+        GameManager.getInstance().removeAvailableColour(bootColour, senderIP);
     }
 }
