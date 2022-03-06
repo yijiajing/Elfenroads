@@ -16,6 +16,7 @@ import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class CommunicationsManager {
@@ -31,6 +32,7 @@ public class CommunicationsManager {
     private GameManager managedBy; // we can access the GameState through here
     private String sessionID; // the ID for the GameSession the player is in (this will be the same value across all players)
     private ArrayList<String> playerAddresses; // this will store the addresses of players. It will be used only at initialization
+    private HashMap<String, String> namesAndAddresses;
 
     private GameCommand lastCommandReceived; // this will be used to update the GameState/GameScreen with whatever command we just received
 
@@ -43,6 +45,7 @@ public class CommunicationsManager {
         // first, get all the Player addresses so we can set up the sockets
         recordPlayerAddresses();
         System.out.println("Done recording player addresses...");
+        recordPlayerNamesAndAddresses();
         // next, set up the ServerSocket to listen for game updates
         System.out.println("Setting up the listener...");
         setUpListener();
@@ -57,6 +60,15 @@ public class CommunicationsManager {
     {
         try{playerAddresses = GameSession.getPlayerAddresses(sessionID);}
         catch (IOException e) {System.out.println("There was a problem getting player addresses for this server from the LS. PLease check the session ID and make sure it corresponds to a real session.");}
+    }
+
+    /**
+     * @pre this method should not be called until after every player has joined the game
+     */
+    private void recordPlayerNamesAndAddresses()
+    {
+        try {namesAndAddresses = GameSession.getPlayersWithLocations(sessionID);}
+        catch (Exception e) {e.printStackTrace();}
     }
 
     /**
@@ -141,6 +153,27 @@ public class CommunicationsManager {
             otherPlayer.close(); // TODO: do we want to close the connection? do we leave it open? do we have to reinitialize next time?
             System.out.println("Closed the socket.");
         }
+    }
+
+    /**
+     * sends a command to only a single player
+     * @param command the command to send for the other player to execute
+     * @param recipientName the name of the player to receive the command
+     */
+    public void sendCommandToIndividual(GameCommand command, String recipientName) throws IOException
+    {
+        String otherPlayerAddressWithPort = namesAndAddresses.get(recipientName);
+        String otherPlayerAddressNoPort = NetworkUtils.getAddress(otherPlayerAddressWithPort);
+        int port = NetworkUtils.getPort(otherPlayerAddressWithPort);
+
+        Socket sendCmd = new Socket (otherPlayerAddressNoPort, port);
+
+        OutputStream out = sendCmd.getOutputStream();
+        ObjectOutputStream payload = new ObjectOutputStream(out);
+        payload.writeObject(command);
+        payload.flush();
+        sendCmd.close();
+
     }
 
     /**
