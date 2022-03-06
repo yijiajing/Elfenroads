@@ -85,6 +85,10 @@ public final class GameRuleUtils {
         return false;
     }
 
-
+    public static boolean isDrawCountersPhase() {
+        return List.of(RoundPhaseType.DRAW_COUNTER_ONE,
+                RoundPhaseType.DRAW_COUNTER_TWO, RoundPhaseType.DRAW_COUNTER_THREE)
+                .contains(GameState.instance().getCurrentPhase());
+    }
 
 }

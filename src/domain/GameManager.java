@@ -9,6 +9,7 @@ import loginwindow.*;
 import networking.*;
 import panel.ElfBootPanel;
 import panel.GameScreen;
+import utils.GameRuleUtils;
 import utils.NetworkUtils;
 
 import javax.swing.*;
@@ -171,11 +172,8 @@ public class GameManager {
      * PHASE 3
      */
     public void drawCounters() {
-        boolean isDrawCounters = List.of(RoundPhaseType.DRAW_COUNTER_ONE,
-                RoundPhaseType.DRAW_COUNTER_TWO, RoundPhaseType.DRAW_COUNTER_THREE)
-                .contains(gameState.getCurrentPhase());
         if (gameState.getCurrentRound() <= gameState.getTotalRounds()
-                && isDrawCounters
+                && GameRuleUtils.isDrawCountersPhase()
                 && isLocalPlayerTurn()) {
 
             updateGameState();
@@ -275,7 +273,6 @@ public class GameManager {
     }
 
     private void endRound() {
-        LOGGER.info("...Going to the next round #" + gameState.getCurrentRound());
         actionManager.clearSelection();
         gameState.setToFirstPlayer();
         gameState.incrementCurrentRound();
@@ -283,6 +280,7 @@ public class GameManager {
             endGame();
             return;
         }
+        LOGGER.info("...Going to the next round #" + gameState.getCurrentRound());
         GameMap.getInstance().clearAllCounters();
         //TODO: add counters back to pile
         gameState.setCurrentPhase(RoundPhaseType.DEAL_CARDS);
@@ -290,6 +288,7 @@ public class GameManager {
     }
 
     private void endGame() {
+        LOGGER.info("Game ends in " + gameState.getCurrentRound() + " rounds");
         //TODO: finishes game ending
     }
 
