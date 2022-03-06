@@ -68,5 +68,6 @@ public class Road {
 
     public boolean hasObstacle() {
         return obstacle != null;
+
     }
 }

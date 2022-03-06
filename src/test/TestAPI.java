@@ -1,5 +1,6 @@
 package test;
 
+import commands.GameCommand;
 import networking.DNSLookup;
 import networking.GameService;
 import networking.GameSession;
@@ -20,7 +21,15 @@ public class TestAPI {
 
     {
 
-        createASession();
+        // createASession();
+        // User nick = User.init("nick", "abc123_ABC123");
+        // joinSession(nick, "4501488078472682875");
+
+
+        //User creator = User.init("dontforget", "abc123_ABC123");
+        // GameSession.launch(creator, "4501488078472682875");
+
+        // System.out.println(GameSession.isLaunched("4501488078472682875"));
 
         ArrayList<String> ids = getAllSessionID();
 
@@ -33,6 +42,8 @@ public class TestAPI {
         }
 
 
+        User maex = User.init("maex", "abc123_ABC123");
+        System.out.println(maex.getAccessToken());
 
     }
 
