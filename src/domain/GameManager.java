@@ -119,6 +119,7 @@ public class GameManager {
      * PHASE 1 & 2
      */
     private void setUpRound() {
+        //TODO: update round card in UI
         gameState.setCurrentPhase(RoundPhaseType.DEAL_CARDS);
         gameState.setToFirstPlayer();
         gameState.getTravelCardDeck().shuffle(); // only shuffle once at the beginning of each round
@@ -160,7 +161,7 @@ public class GameManager {
      * Distribute 1 face-down transportation counter to each Player by popping from the CounterPile
      */
     public void distributeHiddenCounter() {
-        if (!(isLocalPlayerTurn() && gameState.getCurrentPhase() == RoundPhaseType.DEAL_HIDDEN_COUNTERS)) return;
+        if (!(isLocalPlayerTurn() && gameState.getCurrentPhase() == RoundPhaseType.DEAL_HIDDEN_COUNTER)) return;
         thisPlayer.getHand().addUnit(gameState.getCounterPile().draw());
         //TODO: remove one counter from all peers
         endTurn();
@@ -170,8 +171,11 @@ public class GameManager {
      * PHASE 3
      */
     public void drawCounters() {
+        boolean isDrawCounters = List.of(RoundPhaseType.DRAW_COUNTER_ONE,
+                RoundPhaseType.DRAW_COUNTER_TWO, RoundPhaseType.DRAW_COUNTER_THREE)
+                .contains(gameState.getCurrentPhase());
         if (gameState.getCurrentRound() <= gameState.getTotalRounds()
-                && gameState.getCurrentPhase() == RoundPhaseType.DRAW_COUNTERS
+                && isDrawCounters
                 && isLocalPlayerTurn()) {
 
             updateGameState();
@@ -280,8 +284,9 @@ public class GameManager {
             return;
         }
         GameMap.getInstance().clearAllCounters();
-        gameState.setCurrentPhase(RoundPhaseType.DRAW_COUNTERS);
-        //TODO: update round card in UI
+        //TODO: add counters back to pile
+        gameState.setCurrentPhase(RoundPhaseType.DEAL_CARDS);
+        setUpRound();
     }
 
     private void endGame() {
