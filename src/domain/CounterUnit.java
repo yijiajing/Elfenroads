@@ -7,6 +7,7 @@ public abstract class CounterUnit extends Drawable{
 
     private Road placedOn;
     boolean owned;
+    boolean isSecret;
 
     CounterUnit(int resizeWidth, int resizeHeight, int imageNumber) {
 
@@ -15,6 +16,7 @@ public abstract class CounterUnit extends Drawable{
         // we can get the filepath just by using the type
         super("./assets/sprites/M0" + imageNumber + ".png");
         owned = false; // default value
+        isSecret = false;
         // String filepath = ("./assets/sprites/M0" + imageNumber + ".png");
         Image toResize = icon.getImage();
         Image resized = toResize.getScaledInstance(resizeWidth, resizeHeight,  java.awt.Image.SCALE_SMOOTH);
@@ -35,6 +37,14 @@ public abstract class CounterUnit extends Drawable{
 
     public void setOwned(boolean b) {
         this.owned = b;
+    }
+    
+    public boolean isSecret() {
+    	return this.isSecret;
+    }
+    
+    public void setSecret(boolean b) {
+    	this.isSecret = b;
     }
 
 }
