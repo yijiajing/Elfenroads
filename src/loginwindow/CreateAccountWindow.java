@@ -65,7 +65,7 @@ public class CreateAccountWindow extends JPanel {
         confirmPasswordLabel = new JLabel();
 
         usernameLabel.setText("Choose a username:");
-        passwordLabel.setText("Choose a password. If you see this message it means Nick forgot to write what the constraints are.");
+        passwordLabel.setText("Choose a password (Must be 8-32 characters long with uppercase, lowercase and numbers):");
         confirmPasswordLabel.setText("Confirm your password:");
 
         createAccountAndLoginButton = new JButton("Create account and log into the LS");

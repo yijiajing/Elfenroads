@@ -1,9 +1,6 @@
 package domain;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Random;
-import java.util.Stack;
+import java.util.*;
 
 public abstract class Deck<E extends Drawable> {
 
@@ -35,6 +32,8 @@ public abstract class Deck<E extends Drawable> {
 
     public void addDrawable(E toAdd) {this.components.add(toAdd);}
 
+    public void addDrawables(List<? extends E> toAdds) {toAdds.forEach(this::addDrawable);}
+
     // shuffle every time we draw or just upon initialization?
     public E draw () {return components.pop();}
 
@@ -45,13 +44,9 @@ public abstract class Deck<E extends Drawable> {
     // should probably not return the actual reference
     public Stack<E> getComponents() {return components;}
 
-
-
-
-
-
-
-
-
-
+    public void removeFirst(int num) {
+        for (int i = 0; i < num; i++) {
+            components.pop();
+        }
+    }
 }

@@ -61,12 +61,14 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                GameSession session;
+                GameSession session = null;
 
                 // TODO : add panel for user to input their game name and save game name
-                try {
+                try 
+                {
                     track1.play();
                     session = new GameSession(User.getInstance(), "testGame", "My Save Game Name");
+
                     GameManager.init(Optional.empty(), session.getId());
 
                     // prompt user to choose a boot colour
@@ -74,12 +76,22 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
                     GameManager.getInstance().setChooseBootWindow(window);
                     window.launch();
 
-                    // prompt user to choose a boot colour
                     MainFrame.mainPanel.add(window, "choose-boot");
                     MainFrame.cardLayout.show(MainFrame.mainPanel, "choose-boot");
-                } catch (Exception problem) {
+
+                    /* TODO FIX THIS 
+                    String id = session.getId();
+                    GameManager.init(Optional.empty(), id);
+                    MainFrame.mainPanel.add(new HostWaitWindow(session.getId()), "hostwait");
+                    MainFrame.cardLayout.show(MainFrame.mainPanel, "hostwait"); */
+                  
+                } 
+                catch (Exception problem) 
+                {
                     problem.printStackTrace();
+                    return;
                 }
+
             }
         });
 

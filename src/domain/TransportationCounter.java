@@ -25,18 +25,19 @@ public class TransportationCounter extends CounterUnit implements Comparable<Tra
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (!isOwned()) { // counter is face-up and available to be chosen
-                    if (GameState.instance().getCurrentPhase().equals(RoundPhaseType.DRAWCOUNTERS)) {
+                    if (GameState.instance().getCurrentPhase().equals(RoundPhaseType.DRAW_COUNTERS)) {
                         GameState.instance().getFaceUpCounters().remove(TransportationCounter.this); // remove the counter from the face-up pile
                         GameManager.getInstance().getThisPlayer().getHand().addUnit(TransportationCounter.this); // add to player's hand
                         GameState.instance().addFaceUpCounterFromPile(); // replenish the face-up counters with one from the pile
                         GameScreen.getInstance().updateAll(); // update GUI
-                        GameManager.getInstance().endTurn();
                         TransportationCounter.this.owned = true;
+                        //TODO: should only end turn when this is the last counter to draw
+//                        GameManager.getInstance().endTurn();
 
-                        // this code should never execute but is used for testing with a single player
-                        if (GameState.instance().getCurrentPlayer().equals(GameManager.getInstance().getThisPlayer())) {
-                            GameManager.getInstance().planTravelRoutes(); // PHASE 4
-                        }
+//                        // this code should never execute but is used for testing with a single player
+//                        if (GameState.instance().getCurrentPlayer().equals(GameManager.getInstance().getThisPlayer())) {
+//                            GameManager.getInstance().planTravelRoutes(); // PHASE 4
+//                        }
                     }
                 } else if (getPlacedOn() == null) {
                     ActionManager.getInstance().setSelectedCounter(TransportationCounter.this);
