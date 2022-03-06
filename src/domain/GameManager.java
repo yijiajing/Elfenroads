@@ -104,11 +104,10 @@ public class GameManager {
     }
 
     private void setUpNewGame() {
-        // put 5 counters face up
+        // put 5 counters face up, there are shared across peers
         for (int i=0; i<5; i++) {
             this.gameState.addFaceUpCounterFromPile();
         }
-        //TODO: remove 5 counters from remote decks by DrawCounterCommand
 
         // give all players (each peer) an obstacle
         thisPlayer.getHand().addUnit(new Obstacle(MainFrame.instance.getWidth()*67/1440, MainFrame.instance.getHeight()*60/900));
