@@ -141,7 +141,7 @@ public class HostWaitWindow extends JPanel implements Runnable
                 else
                 {
                     wait_message.setText("PLEASE WAIT FOR OTHER PLAYERS...");
-                    start.setOpaque(false);
+                    start.setVisible(false);
                 }
             } 
             catch (IOException e) 
