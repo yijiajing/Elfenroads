@@ -144,25 +144,23 @@ public class LobbyWindow extends JPanel implements ActionListener {
         // iterate through the IDs and get info for each game & add it to the display
         for (String id : gameIDs)
         {
+            // get game info
+            JSONObject sessionDetails = GameSession.getSessionDetails(id);
+            JSONObject sessionParameters = sessionDetails.getJSONObject("gameParameters");
+            ArrayList<String> playerList = GameSession.getPlayerNames(id);
+            int numPlayers = playerList.size();
+            int maxPlayers = Integer.parseInt(sessionParameters.get("maxSessionPlayers").toString());
             // we don't want to display sessions that have already been launched, since we cannot join them anyway
-            if (GameSession.isLaunched(id))
+            if (GameSession.isLaunched(id) || numPlayers == maxPlayers)
             {
                 continue;
             }
-
-            // get game info
-            System.out.println("We are now looking for details about id " + id);
-            JSONObject sessionDetails = GameSession.getSessionDetails(id);
-            JSONObject sessionParameters = sessionDetails.getJSONObject("gameParameters"); // TODO: make sure this method works, otherwise call regular get and cast to JSONObject manually instead
 
             // separate the game info into pieces
             String creator = sessionDetails.get("creator").toString();
             String maxSessionPlayers = sessionParameters.get("maxSessionPlayers").toString();
             String minSessionPlayers = sessionParameters.get("minSessionPlayers").toString();
             String name = sessionParameters.get("name").toString();
-
-            ArrayList<String> playerList = GameSession.getPlayerNames(id);
-            int numPlayers = playerList.size();
             String playersOutOfMax = numPlayers + "/" + minSessionPlayers + "-" + maxSessionPlayers;
 
             String players = "";
@@ -176,7 +174,7 @@ public class LobbyWindow extends JPanel implements ActionListener {
                 }
                 else
                 {
-                    players = players + " " + player;
+                    players = players + ", " + player;
                 }
             }
 
