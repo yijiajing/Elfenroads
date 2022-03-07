@@ -129,6 +129,10 @@ public class HostWaitWindow extends JPanel implements Runnable
         {   
             try
             {
+                if (GameSession.isLaunched(aId))
+                {
+                    break;
+                }
                 // create a new table
                 String[] titles = {"PLAYERS", "NAMES"};
 
