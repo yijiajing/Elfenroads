@@ -76,16 +76,6 @@ public class GameState {
     public List<Player> getPlayers(){
     	return new ArrayList<>(players);
     }
-
-    // TODO: remove this method, only using it for testing of UI before networking stuff is set up
-    public void setDummyPlayers() {
-        players.add(new Player(Colour.BLACK));
-        players.add(new Player(Colour.BLUE));
-        players.add(new Player(Colour.GREEN));
-        players.add(new Player(Colour.PURPLE));
-        players.add(new Player(Colour.RED));
-        players.add(new Player(Colour.YELLOW));
-    }
     
     public static GameState init(int numRounds, String sessionID) {
         if (instance == null) {

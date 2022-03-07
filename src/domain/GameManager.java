@@ -79,6 +79,19 @@ public class GameManager {
         MainFrame.cardLayout.show(MainFrame.mainPanel,"gameScreen");
 
         setUpRound(); // includes dealing travel cards (PHASE 1) and drawing 1 face down counter for each player (PHASE 2)
+
+        // initialize all the players now that the game has been launched and everyone is in
+        try
+        {
+            ArrayList<String> players = GameSession.getPlayerNames(sessionID);
+            // TODO: how to get the boot color of each player?
+            for (String playerName : players)
+            {
+                Player cur = new Player(Colour.BLACK, playerName);
+                GameState.instance().addPlayer(cur);
+            }
+        }
+        catch (Exception e) {e.printStackTrace();}
     }
 
     public static GameManager init(Optional<GameState> loadedState, String sessionID) {
