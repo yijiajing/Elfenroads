@@ -25,7 +25,7 @@ public class ChooseBootWindow extends JPanel {
     private JPanel bootPanel;
     private JPanel textPanel;
 
-    public ChooseBootWindow(String sessionID) {
+    public ChooseBootWindow(String sessionID, ArrayList<Colour> availColours) {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setSize((int) screenSize.getWidth(), (int) screenSize.getHeight());
         setOpaque(false);
@@ -46,28 +46,12 @@ public class ChooseBootWindow extends JPanel {
         JLabel text = new JLabel("Please choose from one of the available boot colours below.");
         text.setFont(new Font("Serif", Font.PLAIN, 30));
         this.textPanel.add(text);
+
+        displayAvailableColours(availColours);
     }
 
 
-    public void launch() {
-        try {
-            int numPlayers = GameSession.getPlayerNames(sessionID).size();
-
-            if (numPlayers == 1) { // I am the creator of the session
-                displayAvailableColours(); // all colours are available
-            } else {
-                GameManager.getInstance().requestAvailableColours(); // ask the existing players for their colours
-            }
-
-        } catch (IOException e) {
-            System.out.println("There was a problem getting the players' names in the session.");
-            e.printStackTrace();
-        }
-    }
-
-
-    public void displayAvailableColours() {
-        ArrayList<Colour> colours = GameManager.getInstance().getAvailableColours();
+    public void displayAvailableColours(ArrayList<Colour> colours) {
 
         for (Colour c : colours) {
             ImageIcon bootIcon = new ImageIcon("./assets/boppels-and-boots/boot-" + c + ".png");

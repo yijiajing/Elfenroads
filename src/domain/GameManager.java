@@ -64,8 +64,8 @@ public class GameManager {
             loaded = true;
             //TODO implement
         }
-        coms = new CommunicationsManager(this, sessionID);
 
+        coms = new CommunicationsManager(this, sessionID);
     }
 
     /**
@@ -414,8 +414,13 @@ public class GameManager {
 
     public void requestAvailableColours() {
         try {
-            String localAddress = NetworkUtils.getLocalIPAddPort();
-            coms.sendGameCommandToAllPlayers(new GetBootColourCommand(localAddress));
+            if (GameSession.isCreator(User.getInstance(), sessionID)) { // I am the creator of the session
+                showBootWindow(); // all colours are available, don't need to send any commands
+            } else {
+                // ask the existing players for their colours
+                String localAddress = NetworkUtils.getLocalIPAddPort();
+                coms.sendGameCommandToAllPlayers(new GetBootColourCommand(localAddress));
+            }
         } catch (IOException e) {
             System.out.println("There was a problem sending the command to get players' boot colours!");
             e.printStackTrace();
@@ -443,7 +448,7 @@ public class GameManager {
                 int numPlayers = GameSession.getPlayerNames(sessionID).size();
 
                 if (availableColours.size() == 7-numPlayers) { // we have received the boot colours from all players who have joined
-                    bootWindow.displayAvailableColours();
+                    showBootWindow();
                 }
             }
         } catch (IOException e) {
@@ -454,10 +459,6 @@ public class GameManager {
 
     public void addPairToBootColours(Colour c, String playerIP) {
         bootColours.put(c, playerIP);
-    }
-
-    public ArrayList<Colour> getAvailableColours() {
-        return this.availableColours;
     }
 
     public String getSessionID() {
@@ -473,5 +474,9 @@ public class GameManager {
         bootWindow = window;
     }
 
-
+    public void showBootWindow() {
+        ChooseBootWindow window = new ChooseBootWindow(sessionID, availableColours);
+        MainFrame.mainPanel.add(window, "choose-boot");
+        MainFrame.cardLayout.show(MainFrame.mainPanel, "choose-boot");
+    }
 }
