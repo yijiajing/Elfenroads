@@ -102,7 +102,7 @@ public class GameService {
         out.writeBytes("    \"minSessionPlayers\": \"" + minSessionPlayers + "\",\n");
         out.writeBytes("    \"name\": \"" + gameServiceName + "\",\n");
         out.writeBytes("    \"displayName\": \"" + gameDisplayName + "\",\n");
-        out.writeBytes("    \"webSupport\": \"true\"\n");
+        out.writeBytes("    \"webSupport\": \"false\"\n");
         out.writeBytes("}");
         out.flush();
         out.close();
