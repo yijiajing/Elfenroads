@@ -31,19 +31,15 @@ public class TestAPI {
 
         // System.out.println(GameSession.isLaunched("4501488078472682875"));
 
-        ArrayList<String> ids = getAllSessionID();
+        createASession();
 
-        for (String id : ids)
+        GameSession.getPlayersWithLocations("324170168704988032");
+        GameSession.getPlayerAddresses("324170168704988032");
+
+        for (String address : GameSession.getPlayerAddresses("324170168704988032"))
         {
-            // System.out.println("Showing game details for session with id: " + id);
-            // System.out.println(getSessionDetails(id));
-            //  System.out.println("The player names are: " + getPlayerNames(id));
-            System.out.println("The creator of the game with id " + id + " is " + getSessionDetails(id).get("creator"));
+            System.out.println(address);
         }
-
-
-        User maex = User.init("maex", "abc123_ABC123");
-        System.out.println(maex.getAccessToken());
 
     }
 

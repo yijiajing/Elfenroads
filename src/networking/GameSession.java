@@ -124,6 +124,34 @@ public class GameSession {
     }
 
     /**
+     * deletes the session from the LS
+     * should work for both launched and unlaunched sessions
+     * @param creator the creator of the session
+     * @param sessionID the session to delete
+     * @throws IOException
+     */
+    public static void delete(User creator, String sessionID) throws IOException
+    {
+        String creatorToken = creator.getAccessToken();
+
+        URL url = new URL("http://35.182.122.111:4242/api/sessions/" + sessionID + "?access_token=" + creatorToken);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("DELETE");
+
+        int status = con.getResponseCode();
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer content = new StringBuffer();
+        while((inputLine = in.readLine()) != null) {
+            content.append(inputLine);
+        }
+        in.close();
+        con.disconnect();
+        System.out.println("Response status: " + status);
+        System.out.println(content.toString());
+    }
+
+    /**
      * static method to check if a session has been lost
      * @param sessionID the id of the session to check
      * @return
@@ -134,7 +162,6 @@ public class GameSession {
         String isLaunched = details.get("launched").toString();
         boolean launched = Boolean.parseBoolean(isLaunched);
         return launched;
-
     }
 
 
@@ -338,6 +365,32 @@ public class GameSession {
         URL url = new URL("http://35.182.122.111:4242/api/sessions/" + sessionID + "/players/" + joiner.getUsername() + "?location=" + ip + "&access_token=" + token);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("PUT");
+
+        int status = con.getResponseCode();
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer content = new StringBuffer();
+        while((inputLine = in.readLine()) != null) {
+            content.append(inputLine);
+        }
+        in.close();
+        con.disconnect();
+        System.out.println("Response status: " + status);
+        System.out.println(content.toString());
+    }
+
+    /**
+     * @pre the player is in the session
+     * @pre the session has not been launched yet
+     * remove the player from a session
+     */
+    public static void leaveSession(User leaver, String sessionID) throws IOException
+    {
+        String token = leaver.getAccessToken();
+
+        URL url = new URL("http://35.182.122.111:4242/api/sessions/" + sessionID + "/players/" + leaver.getUsername() + "&access_token=" + token);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("DELETE");
 
         int status = con.getResponseCode();
         BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
