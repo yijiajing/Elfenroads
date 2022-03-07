@@ -119,15 +119,13 @@ public class GameManager {
      * PHASE 1 & 2
      */
     private void setUpRound() {
-        //TODO: update round card in UI
         gameState.setCurrentPhase(RoundPhaseType.DEAL_CARDS);
         gameState.setToFirstPlayer();
         gameState.getTravelCardDeck().shuffle(); // only shuffle once at the beginning of each round
 
-        // Triggered only on one instance
+        // Triggered only on one instance (the first player)
         if (isLocalPlayerTurn()) {
             distributeTravelCards(); // distribute cards to each player (PHASE 1)
-//            distributeHiddenCounter(); // distribute 1 face down counter to each player (PHASE 2)
             GameScreen.getInstance().updateAll();
         }
     }
@@ -284,31 +282,9 @@ public class GameManager {
     }
 
     /**
-     * PHASE 7
-     * Clean Up
+     * Called once by each peer within a phase. From here we might go to the next phase and next round.
+     * If we are still in the same phase, we notify the next peer in list to take action.
      */
-    public void endRound() {
-        // still working on it
-//        if (!(isLocalPlayerTurn() && gameState.getCurrentPhase() == RoundPhaseType.CLEAN_UP)) return;
-
-        gameState.incrementCurrentRound();
-        LOGGER.info("...Going to the next round #" + gameState.getCurrentRound());
-
-        actionManager.clearSelection();
-
-        GameMap.getInstance().clearAllCounters();
-        GameState.instance().getCounterPile().shuffle();
-
-        GameScreen.getInstance().initializeRoundCardImage(gameState.getCurrentRound()); // update round card image
-
-        if (gameState.getCurrentRound() > gameState.getTotalRounds()) {
-            endGame();
-        } else {
-            setUpRound(); // start next round
-        }
-    }
-
-
     // totalRounds Round <--in-- numOfRoundPhaseType Phases <--in-- numOfPlayer Turns
     public void endTurn() {
         GameScreen.getInstance().updateAll(); // update the GUI
@@ -329,11 +305,16 @@ public class GameManager {
         } else {
             // within the same phase, next player will take action
             gameState.setToNextPlayer();
+            NotifyTurnCommand notifyTurnCommand = new NotifyTurnCommand(gameState.getCurrentPhase());
+            //TODO: send notifying command to the current player, need network utils on get player name/ip
         }
-        NotifyTurnCommand notifyTurnCommand = new NotifyTurnCommand(gameState.getCurrentPhase());
-        //TODO: send notifying command to the current player, need network utils on get player name/ip
     }
 
+    /**
+     * Triggered for every peers. One peer (the last player) calls it directly in endTurn
+     * and others call it through command execution (endPhaseCommand in endTurn).
+     * If we are still in the same round, we notify the first peer to take action in the new phase.
+     */
     private void endPhase() {
         actionManager.clearSelection();
         int nextOrdinal = gameState.getCurrentPhase().ordinal() + 1;
@@ -344,6 +325,29 @@ public class GameManager {
             gameState.setCurrentPhase(RoundPhaseType.values()[nextOrdinal]);
             LOGGER.info("...Going to the next phase : " + gameState.getCurrentPhase());
             gameState.setToFirstPlayer();
+            NotifyTurnCommand notifyTurnCommand = new NotifyTurnCommand(gameState.getCurrentPhase());
+            //TODO: send notifying command to the current player, need network utils on get player name/ip
+        }
+    }
+
+    /**
+     * Trigger for every peers when endPhase is called
+     */
+    public void endRound() {
+        gameState.incrementCurrentRound();
+        LOGGER.info("...Going to the next round #" + gameState.getCurrentRound());
+
+        actionManager.clearSelection();
+
+        GameMap.getInstance().clearAllCounters();
+        GameState.instance().getCounterPile().shuffle();
+
+        GameScreen.getInstance().initializeRoundCardImage(gameState.getCurrentRound()); // update round card image
+
+        if (gameState.getCurrentRound() > gameState.getTotalRounds()) {
+            endGame();
+        } else {
+            setUpRound(); // start next round
         }
     }
 

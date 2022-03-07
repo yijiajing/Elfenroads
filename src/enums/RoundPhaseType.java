@@ -7,7 +7,6 @@ public enum RoundPhaseType {
     PLAN_ROUTES,
     MOVE,
     COMPLETED,
-    RETURN_COUNTERS,
-    CLEAN_UP
+    RETURN_COUNTERS
     // removed AUCTION for now because it is not part of this version yet
 }
