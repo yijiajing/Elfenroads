@@ -4,6 +4,8 @@ import domain.GameManager;
 import enums.RoundPhaseType;
 import panel.GameScreen;
 
+import java.util.logging.Logger;
+
 /**
  * This command should be sent to a specific player (the current player).
  * On execution, it starts the turn of the recipient player within the specified phase.
@@ -19,6 +21,10 @@ public class NotifyTurnCommand implements GameCommand {
     @Override
     public void execute() {
         GameManager gameManager = GameManager.getInstance();
+        if (!gameManager.isLocalPlayerTurn()) {
+            Logger.getGlobal().info("Pass turn notification sent to the wrong player");
+            return;
+        }
         switch (phase) {
             case DEAL_CARDS:
                 gameManager.distributeTravelCards();

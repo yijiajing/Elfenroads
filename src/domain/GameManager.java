@@ -105,7 +105,7 @@ public class GameManager {
     }
 
     private void setUpNewGame() {
-        // put 5 counters face up, there are shared across peers
+        // put 5 counters face up, these are shared across peers
         for (int i=0; i<5; i++) {
             this.gameState.addFaceUpCounterFromPile();
         }
