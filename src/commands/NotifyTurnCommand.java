@@ -2,6 +2,7 @@ package commands;
 
 import domain.GameManager;
 import enums.RoundPhaseType;
+import networking.GameState;
 import panel.GameScreen;
 
 import java.util.logging.Logger;
@@ -21,10 +22,14 @@ public class NotifyTurnCommand implements GameCommand {
     @Override
     public void execute() {
         GameManager gameManager = GameManager.getInstance();
-        if (!gameManager.isLocalPlayerTurn()) {
-            Logger.getGlobal().info("Pass turn notification sent to the wrong player");
-            return;
-        }
+        Logger.getGlobal().info("It is now my turn");
+        //TODO: this is wrong, delete this
+//        if (!gameManager.isLocalPlayerTurn()) {
+//            Logger.getGlobal().info("Pass turn notification sent to player(s) other than the current player");
+//            return;
+//        }
+//        Logger.getGlobal().info("Pass turn notification sent to the current player");
+        GameState.instance().setCurrentPlayer(gameManager.getThisPlayer());
         switch (phase) {
             case DEAL_CARDS:
                 gameManager.distributeTravelCards();

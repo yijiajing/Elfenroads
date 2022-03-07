@@ -1,9 +1,6 @@
 package domain;
 
-import commands.DrawCardCommand;
-import commands.NotifyTurnCommand;
-import commands.GetBootColourCommand;
-import commands.ReturnTransportationCounterCommand;
+import commands.*;
 import enums.Colour;
 import enums.RoundPhaseType;
 import loginwindow.*;
@@ -127,11 +124,12 @@ public class GameManager {
         gameState.setToFirstPlayer();
         gameState.getTravelCardDeck().shuffle(); // only shuffle once at the beginning of each round
 
-        // Phase 1 and 2 can be done at the same time
-        distributeTravelCards(); // distribute cards to each player (PHASE 1)
-        distributeHiddenCounter(); // distribute 1 face down counter to each player (PHASE 2)
-
-        GameScreen.getInstance().updateAll();
+        // Triggered only on one instance
+        if (isLocalPlayerTurn()) {
+            distributeTravelCards(); // distribute cards to each player (PHASE 1)
+//            distributeHiddenCounter(); // distribute 1 face down counter to each player (PHASE 2)
+            GameScreen.getInstance().updateAll();
+        }
     }
 
     /**
@@ -290,7 +288,8 @@ public class GameManager {
      * Clean Up
      */
     public void endRound() {
-        if (!(isLocalPlayerTurn() && gameState.getCurrentPhase() == RoundPhaseType.CLEAN_UP)) return;
+        // still working on it
+//        if (!(isLocalPlayerTurn() && gameState.getCurrentPhase() == RoundPhaseType.CLEAN_UP)) return;
 
         gameState.incrementCurrentRound();
         LOGGER.info("...Going to the next round #" + gameState.getCurrentRound());
@@ -317,13 +316,22 @@ public class GameManager {
 
         // all players have passed their turn in the current phase
         if (gameState.getCurrentPlayerIdx() + 1 == gameState.getNumOfPlayers()) {
+            // Since players take turns, only one player will first reach endPhase from endTurn.
+            // We then tell everyone to end phase.
             endPhase();
+            GameCommand endPhaseCommand = this::endPhase;
+            try {
+                coms.sendGameCommandToAllPlayers(endPhaseCommand);
+            } catch (IOException e) {
+                System.out.println("There was a problem sending the endPhaseCommand to all players.");
+                e.printStackTrace();
+            }
         } else {
             // within the same phase, next player will take action
             gameState.setToNextPlayer();
-            NotifyTurnCommand notifyTurnCommand = new NotifyTurnCommand(gameState.getCurrentPhase());
-            //TODO: send notifying command to the current player, need network utils on get player name/ip
         }
+        NotifyTurnCommand notifyTurnCommand = new NotifyTurnCommand(gameState.getCurrentPhase());
+        //TODO: send notifying command to the current player, need network utils on get player name/ip
     }
 
     private void endPhase() {
