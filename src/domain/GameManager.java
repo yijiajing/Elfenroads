@@ -87,11 +87,8 @@ public class GameManager {
             // TODO: how to get the boot color of each player?
             for (String playerName : players)
             {
-                if (playerName.equals(localPlayerName))
-                {
-                    // if the player name is the local one, do nothing. we already have his information
-                }
-                else
+                // if the player name is the local one, do nothing. we already have his information
+                if (!playerName.equals(localPlayerName))
                 {
                     // otherwise, send a SendPlayerInfoCommand over
                     SendPlayerInfoCommand cmd = new SendPlayerInfoCommand();

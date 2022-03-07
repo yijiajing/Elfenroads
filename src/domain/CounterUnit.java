@@ -2,8 +2,9 @@ package domain;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.Serializable;
 
-public abstract class CounterUnit extends Drawable{
+public abstract class CounterUnit extends Drawable {
 
     private Road placedOn;
     boolean owned;
