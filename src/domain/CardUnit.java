@@ -2,8 +2,9 @@ package domain;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.Serializable;
 
-public abstract class CardUnit extends Drawable{
+public abstract class CardUnit extends Drawable {
 
     boolean selected;
 
