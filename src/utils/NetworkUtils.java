@@ -199,7 +199,7 @@ public class NetworkUtils {
             }
         }
 
-        throw new Exception ("Could not find an IP that was not a loopback.");
+        throw new Exception ("Could not find an IP that was not a loopback and was a valid IP.");
     }
 
     /**
