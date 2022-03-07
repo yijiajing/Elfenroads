@@ -341,8 +341,7 @@ public class NetworkUtils {
                     }
                     MainFrame.cardLayout.show(MainFrame.mainPanel,"playerwait");
                 } */
-                }
-            });
+                }});
 
             startButton.addActionListener(new ActionListener() {
                 @Override
@@ -351,9 +350,6 @@ public class NetworkUtils {
                     // GameManager.init(Optional.empty(), id);
                 }
             });
-
-
-
 
 
             // initialize the box

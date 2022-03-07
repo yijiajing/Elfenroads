@@ -1,6 +1,7 @@
 package domain;
 
 import enums.RegionType;
+import networking.GameState;
 import org.jgrapht.graph.Pseudograph;
 import panel.GameScreen;
 
@@ -85,6 +86,9 @@ public class GameMap {
 
     public void clearAllCounters() {
         for (Road road: roadList) {
+            TransportationCounter counter = road.getTransportationCounter();
+            GameState.instance().getCounterPile().addDrawable(counter);
+
             road.clear();
         }
     }
