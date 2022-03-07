@@ -144,6 +144,12 @@ public class LobbyWindow extends JPanel implements ActionListener {
         // iterate through the IDs and get info for each game & add it to the display
         for (String id : gameIDs)
         {
+            // we don't want to display sessions that have already been launched, since we cannot join them anyway
+            if (GameSession.isLaunched(id))
+            {
+                continue;
+            }
+
             // get game info
             System.out.println("We are now looking for details about id " + id);
             JSONObject sessionDetails = GameSession.getSessionDetails(id);
