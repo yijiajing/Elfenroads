@@ -353,6 +353,31 @@ public class GameSession {
     }
 
     /**
+     * @pre the player is in the session
+     * remove the player from a session
+     */
+    public static void leaveSession(User leaver, String sessionID) throws IOException
+    {
+        String token = leaver.getAccessToken();
+
+        URL url = new URL("http://35.182.122.111:4242/api/sessions/" + sessionID + "/players/" + leaver.getUsername() + "&access_token=" + token);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("DELETE");
+
+        int status = con.getResponseCode();
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer content = new StringBuffer();
+        while((inputLine = in.readLine()) != null) {
+            content.append(inputLine);
+        }
+        in.close();
+        con.disconnect();
+        System.out.println("Response status: " + status);
+        System.out.println(content.toString());
+    }
+
+    /**
      * @param id the sessionID of the game
      * @return a HashMap with players' names as the keys and their respective ips as the values
      */
