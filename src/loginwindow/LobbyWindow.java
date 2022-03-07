@@ -160,13 +160,16 @@ public class LobbyWindow extends JPanel implements ActionListener {
             String maxSessionPlayers = sessionParameters.get("maxSessionPlayers").toString();
             String minSessionPlayers = sessionParameters.get("minSessionPlayers").toString();
             String name = sessionParameters.get("name").toString();
+            int numPlayers = GameSession.getPlayerNames(id).size();
             // TODO: add support to display other players as well, and any other additional info that would be helpful to the user
 
             // add the game info to labels
-            JLabel creatorLabel = new JLabel("creator: " + creator);
-            JLabel maxPlayersLabel = new JLabel("max session players: " + maxSessionPlayers);
-            JLabel minPlayersLabel = new JLabel("min session players: " + minSessionPlayers);
+            JLabel creatorLabel = new JLabel("Creator: " + creator);
+            JLabel maxPlayersLabel = new JLabel("Max session players: " + maxSessionPlayers);
+            JLabel minPlayersLabel = new JLabel("Min session players: " + minSessionPlayers);
             JLabel nameLabel = new JLabel("name: " + name);
+            JLabel playersInSessionLabel = new JLabel("players: " + numPlayers);
+
             // initialize join button
             JButton joinButton = new JButton("JOIN");
             JButton startButton = new JButton("START");
@@ -217,6 +220,7 @@ public class LobbyWindow extends JPanel implements ActionListener {
             Box gameInfo = Box.createVerticalBox();
             gameInfo.setBorder(BorderFactory.createLineBorder(Color.black));
             // add the button and the labels to the box
+            gameInfo.add(playersInSessionLabel);
             gameInfo.add(creatorLabel);
             gameInfo.add(maxPlayersLabel);
             gameInfo.add(minPlayersLabel);
