@@ -101,6 +101,8 @@ public class GameManager {
                     catch (Exception ugh) {ugh.printStackTrace();}
                 }
             }
+
+            // now we have ordered all the players, so we should sort them
         }
         catch (Exception e) {e.printStackTrace();}
     }

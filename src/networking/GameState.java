@@ -210,4 +210,13 @@ public class GameState {
         return null; // TODO: if we want, we could throw an Exception instead of returning null.
     }
 
+    /**
+     * sorts the list of players so that everyone has the same ordering
+     * called in GameManager.launch() after initializing all the Players
+     */
+    public void sortPlayers()
+    {
+        Collections.sort(players);
+    }
+
 }

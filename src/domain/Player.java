@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class Player {
+public class Player implements Comparable<Player> {
 
     // this represents a player in a game
     // there may be some overlap between this and the networking.User class, but I thought it would be a good idea to keep them separated for now
@@ -71,5 +71,11 @@ public class Player {
 
     public String getName() {
         return name;
+    }
+
+    // need to be able to sort a list of players so that everyone has the same list
+    @Override
+    public int compareTo(Player o) {
+        return name.compareTo(o.getName());
     }
 }
