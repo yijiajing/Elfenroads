@@ -188,7 +188,7 @@ public class NetworkUtils {
 
         for (InetAddress address : allAddresses)
         {
-            if (address.isLoopbackAddress()) // we don't want the loopback address
+            if (address.isLoopbackAddress() || !isValidIP(address.getHostAddress())) // we don't want the loopback address or an invalid one, like a MAC address
             {
                 // do nothing and keep going
             }
@@ -267,6 +267,18 @@ public class NetworkUtils {
     {
         String [] wholeThingSplit = address.split(":");
         return Integer.parseInt(wholeThingSplit[1]);
+    }
+
+    /**
+     * taken from LocationValidator.java at github.com/kartoffelquadrat/LobbyService
+     * we need this to make sure our getLocalAddress method returns the correct, valid IP and not the MAC address or something (it has happened)
+     * @param ip the address to check
+     * @return
+     */
+    public static boolean isValidIP(String ip)
+    {
+        return Pattern.compile("(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|" +
+                "2[0-4][0-9]|25[0-5])").matcher(ip).find();
     }
 
 
