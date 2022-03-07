@@ -89,9 +89,13 @@ public class ChooseBootWindow extends JPanel {
                         exception.printStackTrace();
                     }
 
-                    //TODO: for now this will send the user back to the lobby screen
-                    // TODO: but we need to implement an intermediary screen between lobby and gameScreen
+                    // take the player to either the host or player waiting window, depending on whether they are the host of the session
                     remove(background_elvenroads);
+                    if (GameSession.isCreator(User.getInstance(), sessionID));
+                    {
+                        MainFrame.mainPanel.add(new HostWaitWindow(sessionID), "hostWaitingRoom");
+                        MainFrame.cardLayout.show(MainFrame.mainPanel, "hostWaitingRoom");
+                    }
                     MainFrame.mainPanel.add(new LobbyWindow(), "lobby");
                     MainFrame.cardLayout.show(MainFrame.mainPanel,"lobby");
                 }
