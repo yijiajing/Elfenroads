@@ -307,8 +307,7 @@ public class NetworkUtils {
             JButton joinButton = new JButton("JOIN");
             JButton startButton = new JButton("START");
 
-            joinButton.addActionListener(new ActionListener() 
-            {
+            joinButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     // join the game
@@ -351,9 +350,6 @@ public class NetworkUtils {
                     // GameManager.init(Optional.empty(), id);
                 }
             });
-
-
-
 
 
             // initialize the box

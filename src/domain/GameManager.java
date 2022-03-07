@@ -10,6 +10,7 @@ import loginwindow.*;
 import networking.*;
 import panel.ElfBootPanel;
 import panel.GameScreen;
+import utils.GameRuleUtils;
 import utils.NetworkUtils;
 
 import javax.naming.OperationNotSupportedException;
@@ -121,6 +122,7 @@ public class GameManager {
      * PHASE 1 & 2
      */
     private void setUpRound() {
+        //TODO: update round card in UI
         gameState.setCurrentPhase(RoundPhaseType.DEAL_CARDS);
         gameState.setToFirstPlayer();
         gameState.getTravelCardDeck().shuffle(); // only shuffle once at the beginning of each round
@@ -162,7 +164,7 @@ public class GameManager {
      * Distribute 1 face-down transportation counter to each Player by popping from the CounterPile
      */
     public void distributeHiddenCounter() {
-        if (!(isLocalPlayerTurn() && gameState.getCurrentPhase() == RoundPhaseType.DEAL_HIDDEN_COUNTERS)) return;
+        if (!(isLocalPlayerTurn() && gameState.getCurrentPhase() == RoundPhaseType.DEAL_HIDDEN_COUNTER)) return;
         thisPlayer.getHand().addUnit(gameState.getCounterPile().draw());
         //TODO: remove one counter from all peers
         endTurn();
@@ -173,7 +175,7 @@ public class GameManager {
      */
     public void drawCounters() {
         if (gameState.getCurrentRound() <= gameState.getTotalRounds()
-                && gameState.getCurrentPhase() == RoundPhaseType.DRAW_COUNTERS
+                && GameRuleUtils.isDrawCountersPhase()
                 && isLocalPlayerTurn()) {
 
             updateGameState();
@@ -338,6 +340,7 @@ public class GameManager {
     }
 
     private void endGame() {
+        LOGGER.info("Game ends in " + gameState.getCurrentRound() + " rounds");
         //TODO: finishes game ending
     }
 

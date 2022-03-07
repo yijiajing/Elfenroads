@@ -23,10 +23,10 @@ public class NotifyTurnCommand implements GameCommand {
             case DEAL_CARDS:
                 gameManager.distributeTravelCards();
                 break;
-            case DEAL_HIDDEN_COUNTERS:
+            case DEAL_HIDDEN_COUNTER:
                 gameManager.distributeHiddenCounter();
                 break;
-            case DRAW_COUNTERS:
+            case DRAW_COUNTER_ONE: case DRAW_COUNTER_TWO: case DRAW_COUNTER_THREE:
                 gameManager.drawCounters();
                 break;
             case PLAN_ROUTES:
