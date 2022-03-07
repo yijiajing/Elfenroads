@@ -126,15 +126,15 @@ public class GameSession {
     /**
      * deletes the session from the LS
      * should work for both launched and unlaunched sessions
-     * @param creator the creator of the session
+     * will use admin credentials
      * @param sessionID the session to delete
      * @throws IOException
      */
-    public static void delete(User creator, String sessionID) throws IOException
+    public static void delete(String sessionID) throws IOException
     {
-        String creatorToken = creator.getAccessToken();
+        String adminToken = User.getAccessTokenUsingCreds("maex", "abc123_ABC123");
 
-        URL url = new URL("http://35.182.122.111:4242/api/sessions/" + sessionID + "?access_token=" + creatorToken);
+        URL url = new URL("http://35.182.122.111:4242/api/sessions/" + sessionID + "?access_token=" + adminToken);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("DELETE");
 
