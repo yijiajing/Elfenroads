@@ -3,6 +3,7 @@ package domain;
 import commands.DrawCardCommand;
 import commands.NotifyTurnCommand;
 import commands.GetBootColourCommand;
+import commands.ReturnTransportationCounterCommand;
 import enums.Colour;
 import enums.RoundPhaseType;
 import loginwindow.*;
@@ -12,6 +13,7 @@ import panel.GameScreen;
 import utils.GameRuleUtils;
 import utils.NetworkUtils;
 
+import javax.naming.OperationNotSupportedException;
 import javax.swing.*;
 import java.io.IOException;
 import java.util.*;
@@ -226,19 +228,84 @@ public class GameManager {
                     It is time to travel across the map and collect your town pieces! Begin by clicking the travel card(s) that you want to use, then click on the town that you want to travel to.
                     The number of required travel cards depends on the region and is indicated by the chart in the bottom right corner. 
                     You can repeat this as many times as you want. When you are done travelling, click "DONE". 
-                    
                     """, false, true);
 
             // TODO implement all logic in listeners and action manager
         }
     }
 
-    private void initializeElfBoots() {
+    /**
+     * PHASE 6
+     * Return all counters except one
+     */
+    public void returnCountersPhase() {
+        if (!(isLocalPlayerTurn() && gameState.getCurrentPhase() == RoundPhaseType.RETURN_COUNTERS)) return;
 
-        ElfBootPanel elvenholdBootPanel = GameMap.getInstance().getTown("Elvenhold").getPanel().getElfBootPanel();
+        // no need to return the counters if we are at the end of the game
+        if (gameState.getCurrentRound()+1 == gameState.getTotalRounds()) {
+            endTurn();
+            return;
+        }
 
-        for (Player p : gameState.getPlayers()) {
-            gameState.addElfBoot(new ElfBoot(p.getColour(), GameScreen.getInstance().getWidth(), GameScreen.getInstance().getHeight(), elvenholdBootPanel, GameScreen.getInstance()));
+        actionManager.clearSelection();
+
+        GameScreen.displayMessage("""
+                The round is over! All of your transportation counters must be returned except for one. 
+                Please select the transportation counter from your hand that you wish to keep.
+                """, false, false);
+
+        // once the player clicks a transportation counter it will call returnAllCountersExceptOne()
+    }
+
+    /**
+     * Part of phase 6, called when a transportation counter from the player's hand is clicked
+     * @param toKeep
+     * @throws IllegalArgumentException
+     */
+    public void returnAllCountersExceptOne(TransportationCounter toKeep) throws IllegalArgumentException {
+        List<TransportationCounter> myCounters = thisPlayer.getHand().getCounters();
+
+        if (!myCounters.contains(toKeep)) { // the user selected a counter that is not in their hand
+            throw new IllegalArgumentException();
+        }
+
+        for ( TransportationCounter c : myCounters ) {
+            if (c.equals(toKeep)) continue;
+
+            thisPlayer.getHand().removeUnit(c); // remove counter from my hand
+            GameState.instance().getCounterPile().addDrawable(c); // put counter back in the deck
+            try {
+                coms.sendGameCommandToAllPlayers(new ReturnTransportationCounterCommand(c));
+            } catch (IOException e) {
+                System.out.println("There was a problem sending the ReturnTransportationCounterCommand to all players.");
+                e.printStackTrace();
+            }
+        }
+
+        endTurn();
+    }
+
+    /**
+     * PHASE 7
+     * Clean Up
+     */
+    public void endRound() {
+        if (!(isLocalPlayerTurn() && gameState.getCurrentPhase() == RoundPhaseType.CLEAN_UP)) return;
+
+        gameState.incrementCurrentRound();
+        LOGGER.info("...Going to the next round #" + gameState.getCurrentRound());
+
+        actionManager.clearSelection();
+
+        GameMap.getInstance().clearAllCounters();
+        GameState.instance().getCounterPile().shuffle();
+
+        GameScreen.getInstance().initializeRoundCardImage(gameState.getCurrentRound()); // update round card image
+
+        if (gameState.getCurrentRound() > gameState.getTotalRounds()) {
+            endGame();
+        } else {
+            setUpRound(); // start next round
         }
     }
 
@@ -272,24 +339,18 @@ public class GameManager {
         }
     }
 
-    private void endRound() {
-        actionManager.clearSelection();
-        gameState.setToFirstPlayer();
-        gameState.incrementCurrentRound();
-        if (gameState.getCurrentRound() == gameState.getTotalRounds()) {
-            endGame();
-            return;
-        }
-        LOGGER.info("...Going to the next round #" + gameState.getCurrentRound());
-        GameMap.getInstance().clearAllCounters();
-        //TODO: add counters back to pile
-        gameState.setCurrentPhase(RoundPhaseType.DEAL_CARDS);
-        setUpRound();
-    }
-
     private void endGame() {
         LOGGER.info("Game ends in " + gameState.getCurrentRound() + " rounds");
         //TODO: finishes game ending
+    }
+
+    private void initializeElfBoots() {
+
+        ElfBootPanel elvenholdBootPanel = GameMap.getInstance().getTown("Elvenhold").getPanel().getElfBootPanel();
+
+        for (Player p : gameState.getPlayers()) {
+            gameState.addElfBoot(new ElfBoot(p.getColour(), GameScreen.getInstance().getWidth(), GameScreen.getInstance().getHeight(), elvenholdBootPanel, GameScreen.getInstance()));
+        }
     }
 
     private void updateGameState() {
@@ -366,4 +427,6 @@ public class GameManager {
     {
         bootWindow = window;
     }
+
+
 }
