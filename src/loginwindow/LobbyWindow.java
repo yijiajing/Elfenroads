@@ -190,6 +190,7 @@ public class LobbyWindow extends JPanel implements ActionListener {
 
             // initialize join button
             JButton joinButton = new JButton("JOIN");
+            // TODO: get rid of the start button entirely
             JButton startButton = new JButton("START");
 
             joinButton.addActionListener(new ActionListener() {
