@@ -1,11 +1,6 @@
 package domain;
 
-import commands.DrawCardCommand;
-import commands.NotifyTurnCommand;
-import commands.GetBootColourCommand;
-import commands.SendPlayerInfoCommand;
-import commands.ReturnTransportationCounterCommand;
-
+import commands.*;
 import enums.Colour;
 import enums.RoundPhaseType;
 import loginwindow.*;
@@ -134,7 +129,7 @@ public class GameManager {
     }
 
     private void setUpNewGame() {
-        // put 5 counters face up, there are shared across peers
+        // put 5 counters face up, these are shared across peers
         for (int i=0; i<5; i++) {
             this.gameState.addFaceUpCounterFromPile();
         }
@@ -149,16 +144,15 @@ public class GameManager {
      * PHASE 1 & 2
      */
     private void setUpRound() {
-        //TODO: update round card in UI
         gameState.setCurrentPhase(RoundPhaseType.DEAL_CARDS);
         gameState.setToFirstPlayer();
         gameState.getTravelCardDeck().shuffle(); // only shuffle once at the beginning of each round
 
-        // Phase 1 and 2 can be done at the same time
-        distributeTravelCards(); // distribute cards to each player (PHASE 1)
-        distributeHiddenCounter(); // distribute 1 face down counter to each player (PHASE 2)
-
-        GameScreen.getInstance().updateAll();
+        // Triggered only on one instance (the first player)
+        if (isLocalPlayerTurn()) {
+            distributeTravelCards(); // distribute cards to each player (PHASE 1)
+            GameScreen.getInstance().updateAll();
+        }
     }
 
     /**
@@ -313,12 +307,58 @@ public class GameManager {
     }
 
     /**
-     * PHASE 7
-     * Clean Up
+     * Called once by each peer within a phase. From here we might go to the next phase and next round.
+     * If we are still in the same phase, we notify the next peer in list to take action.
+     */
+    // totalRounds Round <--in-- numOfRoundPhaseType Phases <--in-- numOfPlayer Turns
+    public void endTurn() {
+        GameScreen.getInstance().updateAll(); // update the GUI
+        actionManager.clearSelection();
+
+        // all players have passed their turn in the current phase
+        if (gameState.getCurrentPlayerIdx() + 1 == gameState.getNumOfPlayers()) {
+            // Since players take turns, only one player will first reach endPhase from endTurn.
+            // We then tell everyone to end phase.
+            endPhase();
+            GameCommand endPhaseCommand = this::endPhase;
+            try {
+                coms.sendGameCommandToAllPlayers(endPhaseCommand);
+            } catch (IOException e) {
+                System.out.println("There was a problem sending the endPhaseCommand to all players.");
+                e.printStackTrace();
+            }
+        } else {
+            // within the same phase, next player will take action
+            gameState.setToNextPlayer();
+            NotifyTurnCommand notifyTurnCommand = new NotifyTurnCommand(gameState.getCurrentPhase());
+            //TODO: send notifying command to the current player, need network utils on get player name/ip
+        }
+    }
+
+    /**
+     * Triggered for every peers. One peer (the last player) calls it directly in endTurn
+     * and others call it through command execution (endPhaseCommand in endTurn).
+     * If we are still in the same round, we notify the first peer to take action in the new phase.
+     */
+    private void endPhase() {
+        actionManager.clearSelection();
+        int nextOrdinal = gameState.getCurrentPhase().ordinal() + 1;
+        if (nextOrdinal == RoundPhaseType.values().length) {
+            // all phases are done, go to the next round
+            endRound();
+        } else { // go to the next phase within the same round
+            gameState.setCurrentPhase(RoundPhaseType.values()[nextOrdinal]);
+            LOGGER.info("...Going to the next phase : " + gameState.getCurrentPhase());
+            gameState.setToFirstPlayer();
+            NotifyTurnCommand notifyTurnCommand = new NotifyTurnCommand(gameState.getCurrentPhase());
+            //TODO: send notifying command to the current player, need network utils on get player name/ip
+        }
+    }
+
+    /**
+     * Trigger for every peers when endPhase is called
      */
     public void endRound() {
-        if (!(isLocalPlayerTurn() && gameState.getCurrentPhase() == RoundPhaseType.CLEAN_UP)) return;
-
         gameState.incrementCurrentRound();
         LOGGER.info("...Going to the next round #" + gameState.getCurrentRound());
 
@@ -333,36 +373,6 @@ public class GameManager {
             endGame();
         } else {
             setUpRound(); // start next round
-        }
-    }
-
-
-    // totalRounds Round <--in-- numOfRoundPhaseType Phases <--in-- numOfPlayer Turns
-    public void endTurn() {
-        GameScreen.getInstance().updateAll(); // update the GUI
-        actionManager.clearSelection();
-
-        // all players have passed their turn in the current phase
-        if (gameState.getCurrentPlayerIdx() + 1 == gameState.getNumOfPlayers()) {
-            endPhase();
-        } else {
-            // within the same phase, next player will take action
-            gameState.setToNextPlayer();
-            NotifyTurnCommand notifyTurnCommand = new NotifyTurnCommand(gameState.getCurrentPhase());
-            //TODO: send notifying command to the current player, need network utils on get player name/ip
-        }
-    }
-
-    private void endPhase() {
-        actionManager.clearSelection();
-        int nextOrdinal = gameState.getCurrentPhase().ordinal() + 1;
-        if (nextOrdinal == RoundPhaseType.values().length) {
-            // all phases are done, go to the next round
-            endRound();
-        } else { // go to the next phase within the same round
-            gameState.setCurrentPhase(RoundPhaseType.values()[nextOrdinal]);
-            LOGGER.info("...Going to the next phase : " + gameState.getCurrentPhase());
-            gameState.setToFirstPlayer();
         }
     }
 
