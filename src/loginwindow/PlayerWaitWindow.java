@@ -29,17 +29,22 @@ public class PlayerWaitWindow extends JPanel implements Runnable
     private JPanel panel;
     private JTable table;
 
-    public PlayerWaitWindow(String pId) throws IOException
+    public PlayerWaitWindow(String pId)
     {
-        aId = pId;
-        initThread();
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        setSize((int) screenSize.getWidth(), (int) screenSize.getHeight());
 
-        background_elvenroads = MainFrame.getInstance().getElfenroadsBackground();
-        initUI();
+        try
+        {
+            aId = pId;
+            initThread();
+            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+            setSize((int) screenSize.getWidth(), (int) screenSize.getHeight());
 
-        t.start();
+            background_elvenroads = MainFrame.getInstance().getElfenroadsBackground();
+            initUI();
+
+            t.start();
+        }
+        catch (IOException e) {e.printStackTrace();}
     }
 
     private void initThread()

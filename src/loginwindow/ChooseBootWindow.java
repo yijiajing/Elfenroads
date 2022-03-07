@@ -91,13 +91,17 @@ public class ChooseBootWindow extends JPanel {
 
                     // take the player to either the host or player waiting window, depending on whether they are the host of the session
                     remove(background_elvenroads);
-                    if (GameSession.isCreator(User.getInstance(), sessionID));
+                    if (GameSession.isCreator(User.getInstance(), sessionID)) // the player is the host of the session
                     {
                         MainFrame.mainPanel.add(new HostWaitWindow(sessionID), "hostWaitingRoom");
                         MainFrame.cardLayout.show(MainFrame.mainPanel, "hostWaitingRoom");
                     }
-                    MainFrame.mainPanel.add(new LobbyWindow(), "lobby");
-                    MainFrame.cardLayout.show(MainFrame.mainPanel,"lobby");
+                    // the player is not the host of the session, so he should go to the playerWaitingRoom
+                    else
+                    {
+                        MainFrame.mainPanel.add(new PlayerWaitWindow(sessionID), "playerWaitingRoom");
+                        MainFrame.cardLayout.show(MainFrame.mainPanel, "playerWaitingRoom");
+                    }
                 }
 
                 @Override

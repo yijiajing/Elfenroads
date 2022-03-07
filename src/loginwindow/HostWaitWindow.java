@@ -30,17 +30,21 @@ public class HostWaitWindow extends JPanel implements Runnable
     private JPanel panel;
     private JTable table;
 
-    public HostWaitWindow(String pId) throws IOException
+    public HostWaitWindow(String pId)
     {
-        aId = pId;
-        initThread();
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        setSize((int) screenSize.getWidth(), (int) screenSize.getHeight());
+        try
+        {
+            aId = pId;
+            initThread();
+            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+            setSize((int) screenSize.getWidth(), (int) screenSize.getHeight());
 
-        background_elvenroads = MainFrame.getInstance().getElfenroadsBackground();
-        initUI();
+            background_elvenroads = MainFrame.getInstance().getElfenroadsBackground();
+            initUI();
 
-        t.start();
+            t.start();
+        }
+        catch (IOException e){e.printStackTrace();}
     }
 
     private void initThread()
