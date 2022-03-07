@@ -331,14 +331,19 @@ public class GameManager {
             // within the same phase, next player will take action
             gameState.setToNextPlayer();
             NotifyTurnCommand notifyTurnCommand = new NotifyTurnCommand(gameState.getCurrentPhase());
-            //TODO: send notifying command to the current player, need network utils on get player name/ip
+            try {
+                coms.sendCommandToIndividual(notifyTurnCommand, gameState.getCurrentPlayer().getName());
+            } catch (IOException e) {
+
+                e.printStackTrace();
+            }
         }
     }
 
     /**
-     * Triggered for every peers. One peer (the last player) calls it directly in endTurn
+     * Triggered for every peer. One peer (the last player) calls it directly in endTurn
      * and others call it through command execution (endPhaseCommand in endTurn).
-     * If we are still in the same round, we notify the first peer to take action in the new phase.
+     * If we are still in the same round, the first player will take action in the new phase.
      */
     private void endPhase() {
         actionManager.clearSelection();
@@ -350,8 +355,11 @@ public class GameManager {
             gameState.setCurrentPhase(RoundPhaseType.values()[nextOrdinal]);
             LOGGER.info("...Going to the next phase : " + gameState.getCurrentPhase());
             gameState.setToFirstPlayer();
-            NotifyTurnCommand notifyTurnCommand = new NotifyTurnCommand(gameState.getCurrentPhase());
-            //TODO: send notifying command to the current player, need network utils on get player name/ip
+            // the first player will take action
+            if (isLocalPlayerTurn()) {
+                NotifyTurnCommand notifyTurnCommand = new NotifyTurnCommand(gameState.getCurrentPhase());
+                notifyTurnCommand.execute(); // notify themself to take action
+            }
         }
     }
 
