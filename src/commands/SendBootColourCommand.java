@@ -24,4 +24,6 @@ public class SendBootColourCommand implements GameCommand {
     public void execute() {
         GameManager.getInstance().removeAvailableColour(bootColour, senderIP);
     }
+
+
 }
