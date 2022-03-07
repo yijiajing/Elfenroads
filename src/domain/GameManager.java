@@ -319,8 +319,8 @@ public class GameManager {
         if (gameState.getCurrentPlayerIdx() + 1 == gameState.getNumOfPlayers()) {
             // Since players take turns, only one player will first reach endPhase from endTurn.
             // We then tell everyone to end phase.
-            endPhase();
-            GameCommand endPhaseCommand = this::endPhase;
+            GameCommand endPhaseCommand = new EndPhaseCommand();
+            endPhaseCommand.execute(); // execute locally before sending to everyone else
             try {
                 coms.sendGameCommandToAllPlayers(endPhaseCommand);
             } catch (IOException e) {
@@ -345,7 +345,7 @@ public class GameManager {
      * and others call it through command execution (endPhaseCommand in endTurn).
      * If we are still in the same round, the first player will take action in the new phase.
      */
-    private void endPhase() {
+    public void endPhase() {
         actionManager.clearSelection();
         int nextOrdinal = gameState.getCurrentPhase().ordinal() + 1;
         if (nextOrdinal == RoundPhaseType.values().length) {
