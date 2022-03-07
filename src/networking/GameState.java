@@ -76,16 +76,6 @@ public class GameState {
     public List<Player> getPlayers(){
     	return new ArrayList<>(players);
     }
-
-    // TODO: remove this method, only using it for testing of UI before networking stuff is set up
-    public void setDummyPlayers() {
-        players.add(new Player(Colour.BLACK));
-        players.add(new Player(Colour.BLUE));
-        players.add(new Player(Colour.GREEN));
-        players.add(new Player(Colour.PURPLE));
-        players.add(new Player(Colour.RED));
-        players.add(new Player(Colour.YELLOW));
-    }
     
     public static GameState init(int numRounds, String sessionID) {
         if (instance == null) {
@@ -199,6 +189,34 @@ public class GameState {
 
     public void addPlayer(Player p) {
         players.add(p);
+    }
+
+    /**
+     * @pre GameManager.launch() has already been called and the players have been intialized
+     * MUST BE CAREFUL WITH USAGES! RETURNS NULL IF NO PLAYER FOUND
+     * @param name the name of the player we want
+     * @return the player whose name is name
+     */
+    public Player getPlayerByName(String name)
+    {
+        for (Player candidate : getPlayers())
+        {
+            if (candidate.getName().equals(name))
+            {
+                return candidate;
+            }
+        }
+        System.out.println("Could not find a player named " + name);
+        return null; // TODO: if we want, we could throw an Exception instead of returning null.
+    }
+
+    /**
+     * sorts the list of players so that everyone has the same ordering
+     * called in GameManager.launch() after initializing all the Players
+     */
+    public void sortPlayers()
+    {
+        Collections.sort(players);
     }
 
 }

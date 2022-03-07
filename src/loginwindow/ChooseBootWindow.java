@@ -25,7 +25,6 @@ public class ChooseBootWindow extends JPanel {
     private JPanel bootPanel;
     private JPanel textPanel;
 
-
     public ChooseBootWindow(String sessionID) {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setSize((int) screenSize.getWidth(), (int) screenSize.getHeight());
@@ -79,7 +78,8 @@ public class ChooseBootWindow extends JPanel {
             bootImage.addMouseListener(new MouseListener() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    GameManager.getInstance().setThisPlayer(new Player(c));
+                    String localPlayerName = User.getInstance().getUsername();
+                    GameManager.getInstance().setThisPlayer(new Player(c, localPlayerName));
                     try {
                         String localIP = NetworkUtils.getLocalIP();
                         GameManager.getInstance().removeAvailableColour(c, localIP);

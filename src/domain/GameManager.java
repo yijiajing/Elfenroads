@@ -78,6 +78,31 @@ public class GameManager {
         MainFrame.cardLayout.show(MainFrame.mainPanel,"gameScreen");
 
         setUpRound(); // includes dealing travel cards (PHASE 1) and drawing 1 face down counter for each player (PHASE 2)
+
+        // initialize all the players now that the game has been launched and everyone is in
+        try
+        {
+            ArrayList<String> players = GameSession.getPlayerNames(sessionID);
+            String localPlayerName = getThisPlayer().getName();
+            // TODO: how to get the boot color of each player?
+            for (String playerName : players)
+            {
+                if (playerName.equals(localPlayerName))
+                {
+                    // if the player name is the local one, do nothing. we already have his information
+                }
+                else
+                {
+                    // otherwise, send a SendPlayerInfoCommand over
+                    SendPlayerInfoCommand cmd = new SendPlayerInfoCommand();
+                    try{getComs().sendCommandToIndividual(cmd, playerName);}
+                    catch (Exception ugh) {ugh.printStackTrace();}
+                }
+            }
+
+            // now we have ordered all the players, so we should sort them
+        }
+        catch (Exception e) {e.printStackTrace();}
     }
 
     public static GameManager init(Optional<GameState> loadedState, String sessionID) {
