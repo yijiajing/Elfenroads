@@ -141,9 +141,15 @@ public class GameSession {
         }
         else
         {
-            // if a session has not been launched, it must be deleted by the creator
-            // TODO: this might not work. I'm gonna try to use maex here
-            token = User.getAccessTokenUsingCreds("maex", "abc123_ABC123");
+            // if a session has not been launched, we can delete it with the creator
+            if (isCreator(User.getInstance(), sessionID))
+            {
+                token = User.getInstance().getAccessToken();
+            }
+            else // if the User singleton instance is not the creator, we're out of luck
+            {
+                return;
+            }
         }
 
         URL url = new URL("http://35.182.122.111:4242/api/sessions/" + sessionID + "?access_token=" + token);
