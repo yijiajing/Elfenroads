@@ -174,12 +174,9 @@ public class LobbyWindow extends JPanel implements ActionListener {
                         GameManager.init(Optional.empty(), id);
 
                         // prompt user to choose a boot colour
-                        ChooseBootWindow window = new ChooseBootWindow(id);
-                        GameManager.getInstance().setChooseBootWindow(window);
-                        window.launch();
+                        // this calls the ChooseBootWindow once all players have responded
+                        GameManager.getInstance().requestAvailableColours();
 
-                        MainFrame.mainPanel.add(window, "choose-boot");
-                        MainFrame.cardLayout.show(MainFrame.mainPanel, "choose-boot");
                     } catch (Exception ex) {
                         System.out.println("There was a problem attempting to join the session with User" + User.getInstance().getUsername());
                         ex.printStackTrace();
