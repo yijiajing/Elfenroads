@@ -155,9 +155,9 @@ public class PlayerWaitWindow extends JPanel implements Runnable
             }
         }
 
+        GameManager.getInstance().launch();
         // stop checking for updates
         t.stop();
-        GameManager.getInstance().launch();
 
     }
 }

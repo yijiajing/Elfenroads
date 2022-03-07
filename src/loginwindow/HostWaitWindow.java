@@ -108,10 +108,10 @@ public class HostWaitWindow extends JPanel implements Runnable
                     System.out.println("There was a problem launching the session.");
                     e2.printStackTrace();
                 }
-                // stop checking for updates
-                t.stop();
                 // enter the game ui
                 GameManager.getInstance().launch();
+                // stop checking for updates
+                t.stop();
             }
         });
 
