@@ -34,10 +34,17 @@ public class Road {
         if (regionType == RegionType.LAKE || regionType == RegionType.RIVER || this.transportationCounter != null) {
             return false;
         }
-        transportationCounter.setPlacedOn(this);
-        this.transportationCounter = transportationCounter;
-        counterPanel.setTransportationCounter(transportationCounter); // update UI
-        return true;
+
+        if (transportationCounter.getRequiredNumOfUnitsOn(this) >= 1){
+            transportationCounter.setPlacedOn(this);
+            this.transportationCounter = transportationCounter;
+            counterPanel.setTransportationCounter(transportationCounter); // update UI
+            return true;
+        } else {
+            return false;
+
+        }
+        
     }
 
     public TransportationCounter getTransportationCounter() {
