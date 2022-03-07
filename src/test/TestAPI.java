@@ -31,15 +31,7 @@ public class TestAPI {
 
         // System.out.println(GameSession.isLaunched("4501488078472682875"));
 
-        createASession();
-
-        GameSession.getPlayersWithLocations("324170168704988032");
-        GameSession.getPlayerAddresses("324170168704988032");
-
-        for (String address : GameSession.getPlayerAddresses("324170168704988032"))
-        {
-            System.out.println(address);
-        }
+        System.out.println(getAllSessionID());
 
     }
 
