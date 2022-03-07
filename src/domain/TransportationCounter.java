@@ -35,12 +35,17 @@ public class TransportationCounter extends CounterUnit implements Comparable<Tra
                         GameScreen.getInstance().updateAll(); // update GUI
                         TransportationCounter.this.owned = true;
                         GameManager.getInstance().endTurn();
-
-//                        // this code should never execute but is used for testing with a single player
-//                        if (GameState.instance().getCurrentPlayer().equals(GameManager.getInstance().getThisPlayer())) {
-//                            GameManager.getInstance().planTravelRoutes(); // PHASE 4
-//                        }
                     }
+                } else if (GameState.instance().getCurrentPhase().equals(RoundPhaseType.RETURN_COUNTERS)) {
+                    while (true) { // get the user to try again if there is an error
+                        try {
+                            GameManager.getInstance().returnAllCountersExceptOne(TransportationCounter.this);
+                            return;
+                        } catch (IllegalArgumentException err) { // the user has selected a counter that is not in their hand
+                            GameScreen.displayMessage("You must select a transportation counter from your hand. Try again.", false, false);
+                        }
+                    }
+
                 } else if (getPlacedOn() == null) {
                     ActionManager.getInstance().setSelectedCounter(TransportationCounter.this);
                 } else {

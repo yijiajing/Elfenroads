@@ -286,11 +286,12 @@ public class GameScreen extends JPanel implements Serializable
 	
 	public void initializeRoundCardImage(int round)
 	{
-		ImageIcon roundImage = new ImageIcon("./assets/sprites/R1.png");
+		ImageIcon roundImage = new ImageIcon("./assets/sprites/" + round + ".png");
 		Image Round = roundImage.getImage();
 		Image RoundResized = Round.getScaledInstance(width*90/1440, height*130/900,  java.awt.Image.SCALE_SMOOTH);
 		roundImage = new ImageIcon(RoundResized);
 		roundImage_TopLayer = new JLabel(roundImage);
+		backgroundPanel_ForRound.add(roundImage_TopLayer);
 	}
 	
 	public void initializeInformationCardImage()
@@ -313,8 +314,7 @@ public class GameScreen extends JPanel implements Serializable
 	
 	public void addImages()
 	{
-		backgroundPanel_ForMap.add(mapImage_BottomLayer);		
-		backgroundPanel_ForRound.add(roundImage_TopLayer);
+		backgroundPanel_ForMap.add(mapImage_BottomLayer);
 		backgroundPanel_ForInformationCard.add(informationCardImage_TopLayer);
 		panelForDeckOfTransportationCounters.add(deckOfTransportationCountersImage_TopLayer);
 
