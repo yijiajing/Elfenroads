@@ -3,6 +3,7 @@ package domain;
 import commands.DrawCardCommand;
 import commands.NotifyTurnCommand;
 import commands.GetBootColourCommand;
+import commands.SendPlayerInfoCommand;
 import enums.Colour;
 import enums.RoundPhaseType;
 import loginwindow.*;
@@ -84,11 +85,21 @@ public class GameManager {
         try
         {
             ArrayList<String> players = GameSession.getPlayerNames(sessionID);
+            String localPlayerName = getThisPlayer().getName();
             // TODO: how to get the boot color of each player?
             for (String playerName : players)
             {
-                Player cur = new Player(Colour.BLACK, playerName);
-                GameState.instance().addPlayer(cur);
+                if (playerName.equals(localPlayerName))
+                {
+                    // if the player name is the local one, do nothing. we already have his information
+                }
+                else
+                {
+                    // otherwise, send a SendPlayerInfoCommand over
+                    SendPlayerInfoCommand cmd = new SendPlayerInfoCommand();
+                    try{getComs().sendCommandToIndividual(cmd, playerName);}
+                    catch (Exception ugh) {ugh.printStackTrace();}
+                }
             }
         }
         catch (Exception e) {e.printStackTrace();}

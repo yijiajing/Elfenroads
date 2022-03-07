@@ -11,12 +11,10 @@ public class SendPlayerInfoCommand implements GameCommand {
     // this type of command will be used to get information about players
     // each computer will send this command to every other player once during GameManager.launch()
 
-    String playerName; // the player we want information about, identified by his LS username
     String senderName; // the person sending this command (so that the receiver knows who to send his response to)
 
-    public SendPlayerInfoCommand (String playerNameWeWant)
+    public SendPlayerInfoCommand ()
     {
-        playerName = playerNameWeWant;
         try {senderName = NetworkUtils.getLocalIP();}
         catch (Exception e) {e.printStackTrace();}
     }
