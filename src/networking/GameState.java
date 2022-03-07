@@ -191,4 +191,23 @@ public class GameState {
         players.add(p);
     }
 
+    /**
+     * @pre GameManager.launch() has already been called and the players have been intialized
+     * MUST BE CAREFUL WITH USAGES! RETURNS NULL IF NO PLAYER FOUND
+     * @param name the name of the player we want
+     * @return the player whose name is name
+     */
+    public Player getPlayerByName(String name)
+    {
+        for (Player candidate : getPlayers())
+        {
+            if (candidate.getName().equals(name))
+            {
+                return candidate;
+            }
+        }
+        System.out.println("Could not find a player named " + name);
+        return null; // TODO: if we want, we could throw an Exception instead of returning null.
+    }
+
 }
