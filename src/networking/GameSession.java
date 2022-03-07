@@ -132,11 +132,24 @@ public class GameSession {
      */
     public static void delete(String sessionID) throws IOException
     {
-        String adminToken = User.getAccessTokenUsingCreds("maex", "abc123_ABC123");
+        String token;
+        if (isLaunched(sessionID))
+        {
+            // if a session has been launched already, it must be deleted by the game service admin
+            // TODO: update this to work with all games, not just testGame
+            token = User.getAccessTokenUsingCreds("testGame", "abc123_ABC123");
+        }
+        else
+        {
+            // if a session has not been launched, it must be deleted by the creator
+            // TODO: this might not work. I'm gonna try to use maex here
+            token = User.getAccessTokenUsingCreds("maex", "abc123_ABC123");
+        }
 
-        URL url = new URL("http://35.182.122.111:4242/api/sessions/" + sessionID + "?access_token=" + adminToken);
+        URL url = new URL("http://35.182.122.111:4242/api/sessions/" + sessionID + "?access_token=" + token);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("DELETE");
+        con.setRequestProperty("authorization", "Basic YmdwLWNsaWVudC1uYW1lOmJncC1jbGllbnQtcHc=");
 
         int status = con.getResponseCode();
         BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
