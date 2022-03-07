@@ -428,4 +428,15 @@ public class GameSession {
 
         return playerNamesAndAddresses;
     }
+
+    public static boolean isCreator(User u, String sessionID) {
+        try {
+            JSONObject deets = getSessionDetails(sessionID);
+            String creatorName = deets.getString("creator");
+            return creatorName.equals(u.getUsername());
+        } catch (IOException prob) {
+            prob.printStackTrace();
+        }
+        return false;
+    }
 }
