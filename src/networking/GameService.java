@@ -28,8 +28,8 @@ public class GameService {
         // first, we need to create a user to manage the networking.GameService
         gameServiceName = pGameServiceName;
         gameServiceAccountPassword = pGameServiceAccountPassword;
-        minSessionPlayers = 2;
-        maxSessionPlayers = 2;
+        minSessionPlayers = pMinSessionPlayers;
+        maxSessionPlayers = pMaxSessionPlayers;
         gameDisplayName = pGameDisplayName;
         createGameServiceUser();
         // now, we have created the game service user and we can go on to create the actual game service (using that user)

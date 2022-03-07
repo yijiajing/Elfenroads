@@ -160,15 +160,35 @@ public class LobbyWindow extends JPanel implements ActionListener {
             String maxSessionPlayers = sessionParameters.get("maxSessionPlayers").toString();
             String minSessionPlayers = sessionParameters.get("minSessionPlayers").toString();
             String name = sessionParameters.get("name").toString();
-            int numPlayers = GameSession.getPlayerNames(id).size();
+
+            ArrayList<String> playerList = GameSession.getPlayerNames(id);
+            int numPlayers = playerList.size();
+            String playersOutOfMax = numPlayers + "/" + minSessionPlayers + "-" + maxSessionPlayers;
+
+            String players = "";
+
+            for (String player : playerList)
+            {
+                // conditionals to avoid having a trailing whitespace in the String
+                if (players.equals(""))
+                {
+                    players = players + player;
+                }
+                else
+                {
+                    players = players + " " + player;
+                }
+            }
+
+
+
             // TODO: add support to display other players as well, and any other additional info that would be helpful to the user
 
             // add the game info to labels
             JLabel creatorLabel = new JLabel("Creator: " + creator);
-            JLabel maxPlayersLabel = new JLabel("Max session players: " + maxSessionPlayers);
-            JLabel minPlayersLabel = new JLabel("Min session players: " + minSessionPlayers);
-            JLabel nameLabel = new JLabel("name: " + name);
-            JLabel playersInSessionLabel = new JLabel("players: " + numPlayers);
+            JLabel nameLabel = new JLabel("Name: " + name);
+            JLabel playersInSessionLabel = new JLabel("Players: " + players);
+            JLabel playerCountLabel = new JLabel("Number of Players: " + playersOutOfMax);
 
             // initialize join button
             JButton joinButton = new JButton("JOIN");
@@ -221,9 +241,8 @@ public class LobbyWindow extends JPanel implements ActionListener {
             gameInfo.setBorder(BorderFactory.createLineBorder(Color.black));
             // add the button and the labels to the box
             gameInfo.add(playersInSessionLabel);
+            gameInfo.add(playerCountLabel);
             gameInfo.add(creatorLabel);
-            gameInfo.add(maxPlayersLabel);
-            gameInfo.add(minPlayersLabel);
             gameInfo.add(nameLabel);
             gameInfo.add(joinButton);
             gameInfo.add(startButton);
