@@ -263,7 +263,7 @@ public class GameManager {
         if (!(isLocalPlayerTurn() && gameState.getCurrentPhase() == RoundPhaseType.RETURN_COUNTERS)) return;
 
         // no need to return the counters if we are at the end of the game
-        if (gameState.getCurrentRound()+1 == gameState.getTotalRounds()) {
+        if (gameState.getCurrentRound() == gameState.getTotalRounds()) {
             endTurn();
             return;
         }
@@ -334,7 +334,7 @@ public class GameManager {
             try {
                 coms.sendCommandToIndividual(notifyTurnCommand, gameState.getCurrentPlayer().getName());
             } catch (IOException e) {
-
+                LOGGER.info("There was a problem sending the command to take turns!");
                 e.printStackTrace();
             }
         }
