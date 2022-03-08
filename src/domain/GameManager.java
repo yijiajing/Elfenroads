@@ -224,7 +224,7 @@ public class GameManager {
 
             // display message to let the user know that they need to select a counter
             GameScreen.displayMessage("Please select a transportation counter to add to your hand. You may choose one of " +
-                    "the face-up counters or a counter from the deck, shown on the right side of the screen.", false, false);
+                    "the face-up counters or a counter from the deck, shown on the right side of the screen.", false);
 
             // all logic is implemented in the mouse listeners of the counters
         }
@@ -247,7 +247,7 @@ public class GameManager {
                     The chart in the bottom right corner indicates which transportation counters may be used on which road.
                     Alternatively, you may choose to place your Obstacle on a road that already has a counter. But be warned... you can only do this once!
                     Alternatively, you can pass your turn.
-                    """, true, false);
+                    """, true);
 
             // TODO implement all logic in listeners and action manager
         }
@@ -268,11 +268,10 @@ public class GameManager {
             GameScreen.displayMessage("""
                     It is time to travel across the map and collect your town pieces! Begin by clicking the travel card(s) that you want to use, then click on the town that you want to travel to.
                     The number of required travel cards depends on the region and is indicated by the chart in the bottom right corner. 
-                    You can repeat this as many times as you want. When you are done travelling, click "DONE". 
-                    """, false, true);
+                    You can repeat this as many times as you want. When you are done travelling, click "End Turn". 
+                    """, false);
 
-
-            // TODO implement all logic in listeners and action manager
+            // logic implemented in ActionManager
         }
     }
 
@@ -294,7 +293,7 @@ public class GameManager {
         GameScreen.displayMessage("""
                 The round is over! All of your transportation counters must be returned except for one. 
                 Please select the transportation counter from your hand that you wish to keep.
-                """, false, false);
+                """, false);
 
         // once the player clicks a transportation counter it will call returnAllCountersExceptOne()
     }
@@ -403,7 +402,32 @@ public class GameManager {
 
     private void endGame() {
         LOGGER.info("Game ends in " + gameState.getCurrentRound() + " rounds");
-        //TODO: finishes game ending
+        List<Player> players = gameState.getPlayers();
+        List <Player> winners = new ArrayList<>();
+        winners.add(players.get(0));
+        for (Player p: players) {
+        	if (p.getScore() > winners.get(0).getScore()) {
+        		winners.clear();
+        		winners.add(p);
+        	}else if (p.getScore() == winners.get(0).getScore()) {
+        		if(p.getHand().getNumTravelCards() < winners.get(0).getHand().getNumTravelCards()) {
+        			winners.clear();
+            		winners.add(p);
+        		}else if (p.getHand().getNumTravelCards() == winners.get(0).getHand().getNumTravelCards() && p != winners.get(0)) {
+        			winners.add(p);
+        		}
+        	}
+        }
+        assert winners.size() >= 1;
+       if (winners.size() == 1) {
+    	   GameScreen.displayMessage(winners.get(0).getName() + " is the winner!", false, false);
+       }else {
+    	   String winnersNames = "";
+    	   for (Player winner: winners) {
+    		   winnersNames = winnersNames.concat(" " + winner.getName());  		   
+    	   }
+    	   GameScreen.displayMessage("There is a tie. " + winnersNames + " are the winners!", false, false);
+       }
     }
 
     public void initializeElfBoots() {
