@@ -51,7 +51,7 @@ public class GameManager {
         // start a new game if there is no state to be loaded
         if (loadedState.isEmpty()) {
             //TODO: figure out the game variant and pass it to the constructor
-            gameState = GameState.init(3, pSessionID, GameVariant.ELFENLAND_CLASSIC);
+            gameState = GameState.init(pSessionID, GameVariant.ELFENLAND_CLASSIC);
             actionManager = ActionManager.init(gameState, this);
 
             loaded = false;
