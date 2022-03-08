@@ -207,22 +207,7 @@ public class LobbyWindow extends JPanel implements ActionListener {
                     } catch (Exception ex) {
                         System.out.println("There was a problem attempting to join the session with User" + User.getInstance().getUsername());
                         ex.printStackTrace();
-                        return;
                     }
-
-                  /* TODO FIX THIS
-                    try
-                    {
-                        MainFrame.mainPanel.add(new PlayerWaitWindow(id), "playerwait");
-                    }
-                    catch (IOException e1)
-                    {
-                        // TODO Auto-generated catch block
-                        e1.printStackTrace();
-                        return;
-                    }
-                    MainFrame.cardLayout.show(MainFrame.mainPanel,"playerwait");
-                } */
                 }});
 
             startButton.addActionListener(new ActionListener() {

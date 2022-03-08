@@ -2,6 +2,7 @@ package domain;
 
 import enums.RegionType;
 import networking.GameState;
+import org.jgrapht.alg.shortestpath.BellmanFordShortestPath;
 import org.jgrapht.graph.Pseudograph;
 import panel.GameScreen;
 
@@ -82,6 +83,11 @@ public class GameMap {
 
     public Town getTownByName(String name) {
         return townMap.get(name);
+    }
+
+    public int getDistanceBetween(Town t1, Town t2) {
+        BellmanFordShortestPath<Town, Road> alg = new BellmanFordShortestPath<>(mapGraph);
+        return alg.getPath(t1, t2).getLength();
     }
 
     public void clearAllCounters() {
