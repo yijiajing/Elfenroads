@@ -271,6 +271,7 @@ public class GameManager {
                     You can repeat this as many times as you want. When you are done travelling, click "DONE". 
                     """, false, true);
 
+
             // TODO implement all logic in listeners and action manager
         }
     }
