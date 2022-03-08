@@ -2,6 +2,7 @@ package panel;
 
 import domain.ElfBoot;
 import domain.Town;
+import domain.TownPiece;
 import networking.ActionManager;
 
 import javax.swing.*;
@@ -44,8 +45,21 @@ public class ElfBootPanel extends JPanel implements ObserverPanel {
         gameScreen.addObserverPanel(this);
     }
 
+    /**
+     * Adds the boot to the panel and removes the town piece with that colour if it exists
+     * @param boot
+     */
     public void addBootToPanel(ElfBoot boot) {
         this.bootsOnPanel.add(boot);
+
+        ArrayList<TownPiece> pieces = this.town.getTownPieces();
+
+        for (TownPiece p : pieces) {
+            if (p.getColour().equals(boot.getColour())) {
+                this.town.removeTownPieceByColour(p.getColour());
+                return;
+            }
+        }
     }
 
     public void removeBootFromPanel(ElfBoot boot) {
