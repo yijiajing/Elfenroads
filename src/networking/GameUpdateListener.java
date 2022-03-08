@@ -11,13 +11,16 @@ import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Queue;
+import java.util.Stack;
 
 public class GameUpdateListener implements Runnable
 {
     private int port;
     private ServerSocket listener;
     private GameState mostRecentUpdate; // not using this for now, trying out sending commands instead
-    private GameCommand command;
+    // private GameCommand command;
+    private Queue<GameCommand> commands;
     private CommunicationsManager managedBy;
 
     public GameUpdateListener(int pPort, CommunicationsManager pManagedBy)
@@ -60,7 +63,7 @@ public class GameUpdateListener implements Runnable
 
     private void readInCommand(ObjectInputStream received) throws Exception
     {
-        command = (GameCommand) received.readObject();
+        commands.add((GameCommand) received.readObject());
     }
 
     private void notifyManager()
@@ -73,8 +76,8 @@ public class GameUpdateListener implements Runnable
      * this method will be called by a CommunicationsManager after it has been told there is a game update available
      * @return the last command received by this listener
      */
-    public GameCommand getCommand()
+    public Queue <GameCommand> getCommands()
     {
-        return command;
+        return commands;
     }
 }
