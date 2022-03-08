@@ -274,6 +274,34 @@ public class GameSession {
         JSONObject details = new JSONObject(content.toString());
 
         return details;
+    }
+
+    /**
+     * does the same thing as getSessionDetails, except using long polling
+     * @param id the id of the session we would like information about
+     * @param prevPayload the previous payload (i.e. the last update received)--will be hashed and sent as a parameter
+     * @return unlike the synchronous method, this will just return the content and cast it to a string (because we need it for the next call.) we will JSON-ize the information outside of this method
+     */
+    public static String getSessionDetails(String id, String prevPayload) throws IOException
+    {
+        String hashedPrevPayload = NetworkUtils.md5Hash(prevPayload.toString());
+
+        URL url = new URL("http://35.182.122.111:4242/api/sessions/" + id + "?hash=" + hashedPrevPayload);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("GET");
+
+        int status = con.getResponseCode();
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer content = new StringBuffer();
+        while((inputLine = in.readLine()) != null) {
+            content.append(inputLine);
+        }
+        in.close();
+        con.disconnect();
+        System.out.println("Response status: " + status);
+
+        return content.toString();
 
     }
 
