@@ -430,13 +430,13 @@ public class GameManager {
         }
         assert winners.size() >= 1;
        if (winners.size() == 1) {
-    	   GameScreen.displayMessage(winners.get(0).getName() + " is the winner!", false, false);
-       }else {
+    	   GameScreen.displayMessage(winners.get(0).getName() + " is the winner!", false);
+       } else {
     	   String winnersNames = "";
     	   for (Player winner: winners) {
     		   winnersNames = winnersNames.concat(" " + winner.getName());  		   
     	   }
-    	   GameScreen.displayMessage("There is a tie. " + winnersNames + " are the winners!", false, false);
+    	   GameScreen.displayMessage("There is a tie. " + winnersNames + " are the winners!", false);
        }
     }
 
