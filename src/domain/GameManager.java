@@ -414,41 +414,41 @@ public class GameManager {
     private void endGame() {
         LOGGER.info("Game ends in " + gameState.getCurrentRound() + " rounds");
         List<Player> players = gameState.getPlayers();
-        List <Player> winners = new ArrayList<>();
+        List<Player> winners = new ArrayList<>();
         winners.add(players.get(0));
 
         // calculate final score of each player according to the destination town variant rule
         if (gameState.getGameVariant() == GameVariant.ELFENLAND_DESTINATION) {
-            for (Player p: players) {
+            for (Player p : players) {
                 int townsAway = GameMap.getInstance().getDistanceBetween(p.getCurrentTown(), p.getDestinationTown()) - 1;
                 int newScore = p.getScore() - townsAway;
                 p.setScore(newScore);
             }
         }
 
-        for (Player p: players) {
-        	if (p.getScore() > winners.get(0).getScore()) {
-        		winners.clear();
-        		winners.add(p);
-        	} else if (p.getScore() == winners.get(0).getScore()) {
-        		if (p.getHand().getNumTravelCards() < winners.get(0).getHand().getNumTravelCards()) {
-        			winners.clear();
-            		winners.add(p);
-        		} else if (p.getHand().getNumTravelCards() == winners.get(0).getHand().getNumTravelCards() && p != winners.get(0)) {
-        			winners.add(p);
-        		}
-        	}
+        for (Player p : players) {
+            if (p.getScore() > winners.get(0).getScore()) {
+                winners.clear();
+                winners.add(p);
+            } else if (p.getScore() == winners.get(0).getScore()) {
+                if (p.getHand().getNumTravelCards() < winners.get(0).getHand().getNumTravelCards()) {
+                    winners.clear();
+                    winners.add(p);
+                } else if (p.getHand().getNumTravelCards() == winners.get(0).getHand().getNumTravelCards() && p != winners.get(0)) {
+                    winners.add(p);
+                }
+            }
         }
         assert winners.size() >= 1;
-       if (winners.size() == 1) {
-    	   GameScreen.displayMessage(winners.get(0).getName() + " is the winner!", false);
-       } else {
-    	   String winnersNames = "";
-    	   for (Player winner: winners) {
-    		   winnersNames = winnersNames.concat(" " + winner.getName());  		   
-    	   }
-    	   GameScreen.displayMessage("There is a tie. " + winnersNames + " are the winners!", false);
-       }
+        if (winners.size() == 1) {
+            GameScreen.displayMessage(winners.get(0).getName() + " is the winner!", false);
+        } else {
+            String winnersNames = "";
+            for (Player winner : winners) {
+                winnersNames = winnersNames.concat(" " + winner.getName());
+            }
+            GameScreen.displayMessage("There is a tie. " + winnersNames + " are the winners!", false);
+        }
     }
 
     public void initializeElfBoots() {

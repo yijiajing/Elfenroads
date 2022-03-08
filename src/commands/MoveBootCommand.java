@@ -1,15 +1,9 @@
 package commands;
 
-import domain.ElfBoot;
-import domain.GameManager;
-import domain.GameMap;
-import domain.Town;
+import domain.*;
 import enums.Colour;
-import networking.ActionManager;
 import networking.GameState;
 import panel.ElfBootPanel;
-import panel.GameScreen;
-import panel.TownPanel;
 
 import java.io.Serializable;
 
@@ -20,12 +14,14 @@ public class MoveBootCommand implements GameCommand, Serializable {
     private final String start;
     private final String destination;
     private final Colour colorBootMoved;
+    private final String senderName;
 
-    public MoveBootCommand (ElfBootPanel pStart, ElfBootPanel pDestination, ElfBoot pMoved)
+    public MoveBootCommand (ElfBootPanel pStart, ElfBootPanel pDestination, ElfBoot pMoved, String senderName)
     {
         colorBootMoved = pMoved.getColour();
         start = pStart.getTown().getName();
         destination = pDestination.getTown().getName();
+        this.senderName = senderName;
     }
 
 
@@ -35,23 +31,24 @@ public class MoveBootCommand implements GameCommand, Serializable {
      */
     public void execute()
     {
-        // update the current town of the player who moved
-        GameState.instance().getCurrentPlayer().setCurrentTown(ActionManager.getInstance().getSelectedTown());
-
+        GameState gameState = GameState.instance();
         GameMap map = GameMap.getInstance();
         Town startTown = map.getTown(start);
         Town destinationTown = map.getTown(destination);
-
-        // update current panel of the boot
-        ElfBoot moved = GameState.instance().getBootByColour(colorBootMoved);
-        moved.setCurPanel(GameMap.getInstance().getTownByName(destination).getElfBootPanel());
-
         ElfBootPanel startPanel = startTown.getElfBootPanel();
         ElfBootPanel destinationPanel = destinationTown.getElfBootPanel();
 
-        // actually move the boot
-        startPanel.removeBootFromPanel(moved);
-        destinationPanel.addBootToPanel(moved); // removes the town piece
+        // update the current town of the player who moved
+        Player sender = gameState.getPlayerByName(senderName);
+//      1.  sender.setCurrentTownAndIncrementScore(destinationTown);
+
+        // update current panel of the boot
+        ElfBoot moved = GameState.instance().getBootByColour(colorBootMoved);
+        moved.setCurPanel(destinationPanel); // this method already does the three things marked with numbers
+
+//        // actually move the boot
+//      2.  startPanel.removeBootFromPanel(moved);
+//      3.  destinationPanel.addBootToPanel(moved); // removes the town piece
 
         startPanel.updateView();
         destinationPanel.updateView();
