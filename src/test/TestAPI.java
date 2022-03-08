@@ -23,9 +23,9 @@ public class TestAPI {
     {
         // GameService testGame2 = new GameService("testGame2", "testGame2", "abc123_ABC123",2, 6);
         // GameService elfenlands = new GameService("Elfenroads", "Elfenroads", "abc123_ABC123", 2, 6);
-        // createASession();
-        User.init("dontforget", "abc123_ABC123");
-        deleteAllSessions();
+        createASession();
+        //User.init("dontforget", "abc123_ABC123");
+        //deleteAllSessions();
     }
 
     public static void testCreateUser(String username, String password) throws IOException, Exception {
@@ -38,7 +38,7 @@ public class TestAPI {
     {
         try {
             User alex = User.init("dontforget", "abc123_ABC123");
-            GameSession sesh = new GameSession(alex, "Elfenroads", "savegame1234");
+            GameSession sesh = new GameSession(alex, "elfenlands", "savegame1234");
         }
         catch (Exception e)
         {
