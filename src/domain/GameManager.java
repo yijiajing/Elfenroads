@@ -402,7 +402,32 @@ public class GameManager {
 
     private void endGame() {
         LOGGER.info("Game ends in " + gameState.getCurrentRound() + " rounds");
-        //TODO: finishes game ending
+        List<Player> players = gameState.getPlayers();
+        List <Player> winners = new ArrayList<>();
+        winners.add(players.get(0));
+        for (Player p: players) {
+        	if (p.getScore() > winners.get(0).getScore()) {
+        		winners.clear();
+        		winners.add(p);
+        	}else if (p.getScore() == winners.get(0).getScore()) {
+        		if(p.getHand().getNumTravelCards() < winners.get(0).getHand().getNumTravelCards()) {
+        			winners.clear();
+            		winners.add(p);
+        		}else if (p.getHand().getNumTravelCards() == winners.get(0).getHand().getNumTravelCards() && p != winners.get(0)) {
+        			winners.add(p);
+        		}
+        	}
+        }
+        assert winners.size() >= 1;
+       if (winners.size() == 1) {
+    	   GameScreen.displayMessage(winners.get(0).getName() + " is the winner!", false, false);
+       }else {
+    	   String winnersNames = "";
+    	   for (Player winner: winners) {
+    		   winnersNames = winnersNames.concat(" " + winner.getName());  		   
+    	   }
+    	   GameScreen.displayMessage("There is a tie. " + winnersNames + " are the winners!", false, false);
+       }
     }
 
     public void initializeElfBoots() {
