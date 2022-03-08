@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
 
-public class LobbyWindow extends JPanel implements ActionListener {
+public class LobbyWindow extends JPanel implements ActionListener, Runnable {
 
     private JLabel background_elvenroads;
     private static JButton createButton;
@@ -27,7 +27,17 @@ public class LobbyWindow extends JPanel implements ActionListener {
     private JLabel numPlayers;
     private Box gameInfo;
 
-    LobbyWindow(){
+    private static Thread t;
+    private static int flag = 0;
+
+    private void initThread()
+    {
+        t = new Thread(this);
+    }
+
+    LobbyWindow()
+    {
+        initThread();
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setSize((int) screenSize.getWidth(), (int) screenSize.getHeight());
 
@@ -54,10 +64,13 @@ public class LobbyWindow extends JPanel implements ActionListener {
             gameProblem.printStackTrace();
         }
 
-        createButton.addActionListener(new ActionListener(){
-
+        createButton.addActionListener(new ActionListener()
+        {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e) 
+            {
+                //t.stop();
+                flag = 1;
                 remove(background_elvenroads);
                 MainFrame.mainPanel.add(new VersionToPlayWindow(), "version");
                 MainFrame.cardLayout.show(MainFrame.mainPanel,"version");
@@ -117,6 +130,8 @@ public class LobbyWindow extends JPanel implements ActionListener {
         background_elvenroads.add(sessions,gbc);
 
         add(background_elvenroads);
+
+        t.start();
 
     }
 
@@ -192,11 +207,16 @@ public class LobbyWindow extends JPanel implements ActionListener {
             // TODO: get rid of the start button entirely
             JButton startButton = new JButton("START");
 
-            joinButton.addActionListener(new ActionListener() {
+            joinButton.addActionListener(new ActionListener() 
+            {
                 @Override
-                public void actionPerformed(ActionEvent e) {
+                public void actionPerformed(ActionEvent e) 
+                {
                     // join the game
-                    try {
+                    try 
+                    {
+                        //t.stop();
+                        flag = 1;
                         GameSession.joinSession(MainFrame.loggedIn, id);
                         GameManager.init(Optional.empty(), id);
 
@@ -204,7 +224,9 @@ public class LobbyWindow extends JPanel implements ActionListener {
                         // this calls the ChooseBootWindow once all players have responded
                         GameManager.getInstance().requestAvailableColours();
 
-                    } catch (Exception ex) {
+                    } 
+                    catch (Exception ex) 
+                    {
                         System.out.println("There was a problem attempting to join the session with User" + User.getInstance().getUsername());
                         ex.printStackTrace();
                         return;
@@ -225,9 +247,11 @@ public class LobbyWindow extends JPanel implements ActionListener {
                 } */
                 }});
 
-            startButton.addActionListener(new ActionListener() {
+            startButton.addActionListener(new ActionListener() 
+            {
                 @Override
-                public void actionPerformed(ActionEvent e) {
+                public void actionPerformed(ActionEvent e) 
+                {
                     GameManager.getInstance().initPlayers();
                     // GameManager.init(Optional.empty(), id);
                 }
@@ -268,7 +292,34 @@ public class LobbyWindow extends JPanel implements ActionListener {
 
         }
 
+    }
 
+    @Override
+    public void run() 
+    {
+        // TODO Auto-generated method stub
+        while (true)
+        {System.out.println("thread alive");
+        if (flag == 1){break;}
+            try 
+            {
+                initializeGameInfo(sessions);
+            } 
+            catch (IOException e) 
+            {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
 
+            try 
+            {
+                Thread.sleep(5000);
+            } 
+            catch (InterruptedException e) 
+            {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        } 
     }
 }
