@@ -1,5 +1,6 @@
 package domain;
 
+import commands.DrawCounterCommand;
 import enums.CounterType;
 import enums.RegionType;
 import enums.RoundPhaseType;
@@ -11,45 +12,58 @@ import utils.GameRuleUtils;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 public class TransportationCounter extends CounterUnit implements Comparable<TransportationCounter> {
 
     private CounterType type;
 
-    public TransportationCounter(CounterType pType, int resizeWidth, int resizeHeight)
-    {
+    public TransportationCounter(CounterType pType, int resizeWidth, int resizeHeight) {
         super(resizeWidth, resizeHeight, pType.ordinal() + 1); // since the images start from M01, not M00
         this.type = pType;
 
+        initializeMouseListener();
+    }
+
+    private void initializeMouseListener() {
         this.getDisplay().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (!isOwned()) { // counter is face-up and available to be chosen
+
+                // DRAW COUNTERS PHASE, counter is face-up and available to be chosen
+                if (!isOwned()) {
                     if (GameRuleUtils.isDrawCountersPhase()) {
+
+                        // adding the counter to my hand
                         GameState.instance().getFaceUpCounters().remove(TransportationCounter.this); // remove the counter from the face-up pile
-                        GameManager.getInstance().getThisPlayer().getHand().addUnit(TransportationCounter.this); // add to player's hand
+                        GameManager.getInstance().getThisPlayer().getHand().addUnit(TransportationCounter.this);
                         GameState.instance().addFaceUpCounterFromPile(); // replenish the face-up counters with one from the pile
-                        //TODO: remove one counter from remote decks
                         GameScreen.getInstance().updateAll(); // update GUI
                         TransportationCounter.this.owned = true;
+
+                        // tell the other peers to remove the counter
+                        try {
+                            GameManager.getInstance().getComs().sendGameCommandToAllPlayers(
+                                    new DrawCounterCommand(1, Optional.of(TransportationCounter.this.type)));
+                        } catch (IOException err) {
+                            System.out.println("Error: there was a problem sending the DrawCounterCommand to the other peers.");
+                        }
+
                         GameManager.getInstance().endTurn();
                     }
-                } else if (GameState.instance().getCurrentPhase().equals(RoundPhaseType.RETURN_COUNTERS)) {
-                    while (true) { // get the user to try again if there is an error
-                        try {
-                            GameManager.getInstance().returnAllCountersExceptOne(TransportationCounter.this);
-                            return;
-                        } catch (IllegalArgumentException err) { // the user has selected a counter that is not in their hand
-                            GameScreen.displayMessage("You must select a transportation counter from your hand. Try again.", false, false);
-                        }
-                    }
+                }
+                // RETURN COUNTERS PHASE
+                else if (GameState.instance().getCurrentPhase().equals(RoundPhaseType.RETURN_COUNTERS)) {
+                    GameManager.getInstance().returnAllCountersExceptOne(TransportationCounter.this);
+                }
 
-                } else if (getPlacedOn() == null) {
+                // PLAN TRAVEL ROUTES PHASE
+                else if (getPlacedOn() == null) {
                     ActionManager.getInstance().setSelectedCounter(TransportationCounter.this);
-                } else {
-                    // If the counter is placed on a road, then the user's intention is to click on the road
+                } else { // If the counter is placed on a road, then the user's intention is to click on the road
                     ActionManager.getInstance().setSelectedRoad(getPlacedOn());
                 }
             }
