@@ -1,19 +1,12 @@
 package loginwindow;
 
 import domain.GameManager;
-import org.json.JSONObject;
 
-import domain.Player;
 import networking.*;
-import panel.GameScreen;
-import utils.NetworkUtils;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.awt.event.*;
 import java.awt.*;
 import java.io.IOException;
 import java.awt.BorderLayout;
@@ -29,17 +22,22 @@ public class PlayerWaitWindow extends JPanel implements Runnable
     private JPanel panel;
     private JTable table;
 
-    public PlayerWaitWindow(String pId) throws IOException
+    public PlayerWaitWindow(String pId)
     {
-        aId = pId;
-        initThread();
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        setSize((int) screenSize.getWidth(), (int) screenSize.getHeight());
 
-        background_elvenroads = MainFrame.getInstance().getElfenroadsBackground();
-        initUI();
+        try
+        {
+            aId = pId;
+            initThread();
+            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+            setSize((int) screenSize.getWidth(), (int) screenSize.getHeight());
 
-        t.start();
+            background_elvenroads = MainFrame.getInstance().getElfenroadsBackground();
+            initUI();
+
+            t.start();
+        }
+        catch (IOException e) {e.printStackTrace();}
     }
 
     private void initThread()
@@ -150,7 +148,7 @@ public class PlayerWaitWindow extends JPanel implements Runnable
             }
         }
 
-        GameManager.getInstance().launch();
+        GameManager.getInstance().initPlayers();
 
     }
 }

@@ -8,6 +8,7 @@ import networking.User;
 import utils.NetworkUtils;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -20,27 +21,9 @@ public class TestAPI {
     public static void main (String [] args) throws IOException, Exception
 
     {
-
-        // createASession();
-        // User nick = User.init("nick", "abc123_ABC123");
-        // joinSession(nick, "4501488078472682875");
-
-
-        //User creator = User.init("dontforget", "abc123_ABC123");
-        // GameSession.launch(creator, "4501488078472682875");
-
-        // System.out.println(GameSession.isLaunched("4501488078472682875"));
-
-        createASession();
-
-        GameSession.getPlayersWithLocations("324170168704988032");
-        GameSession.getPlayerAddresses("324170168704988032");
-
-        for (String address : GameSession.getPlayerAddresses("324170168704988032"))
-        {
-            System.out.println(address);
-        }
-
+        // GameService testGame2 = new GameService("testGame2", "testGame2", "abc123_ABC123",2, 6);
+        // GameService elfenlands = new GameService("Elfenroads", "Elfenroads", "abc123_ABC123", 2, 6);
+        deleteAllSessions();
     }
 
     public static void testCreateUser(String username, String password) throws IOException, Exception {
@@ -60,6 +43,20 @@ public class TestAPI {
             System.out.println("There was a problem setting up the test game session.");
         }
     }
+
+    public static void deleteAllSessions() throws IOException
+    {
+        ArrayList<String> ids = getAllSessionID();
+        for (String id : ids)
+        {
+            try {delete(id);}
+            catch (Exception e) {continue;}
+        }
+
+    }
+
+    public static void createGameServices() throws IOException
+    {}
 
 
 

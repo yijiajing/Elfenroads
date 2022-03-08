@@ -3,6 +3,7 @@ package networking;
 import commands.MoveBootCommand;
 import commands.PlaceObstacleCommand;
 import commands.PlaceTransportationCounterCommand;
+import commands.ReturnTravelCardsCommand;
 import domain.*;
 import enums.RoundPhaseType;
 import panel.ElfBootPanel;
@@ -83,9 +84,7 @@ public class ActionManager {
                     e.printStackTrace();
                 }
             } else { // Invalid move
-                GameScreen.displayMessage("""
-                You cannot place an obstacle here. Please try again.
-                """, false, false);
+                GameScreen.displayMessage("You cannot place an obstacle here. Please try again.", false, false);
             }
         }
 
@@ -100,9 +99,7 @@ public class ActionManager {
                     e.printStackTrace();
                 }
             } else { // Invalid move
-                GameScreen.displayMessage("""
-                        You cannot place a transportation counter here. Please try again.
-                        """, false, false);
+                GameScreen.displayMessage("You cannot place a transportation counter here. Please try again.", false, false);
             }
         }
         selectedCounter = null;
@@ -177,8 +174,14 @@ public class ActionManager {
             gameState.getCurrentPlayer().getHand().removeUnits(selectedCards);
             // add cards back to local deck
             gameState.getTravelCardDeck().addDrawables(selectedCards);
-            //TODO: add cards to other peers' remote decks
 
+            // add cards to other peers' remote decks
+            try {
+                gameManager.getComs().sendGameCommandToAllPlayers(new ReturnTravelCardsCommand(selectedCards));
+            } catch (IOException e) {
+                LOGGER.info("There was a problem sending the ReturnTravelCardsCommand!");
+                e.printStackTrace();
+            }
 
             // Move Boot
             // gameState.getCurrentPlayer().setCurrentTown(selectedTown);
@@ -213,9 +216,7 @@ public class ActionManager {
                 e.printStackTrace();
             }
         } else { // Move Boot fails
-            GameScreen.displayMessage("""
-            You cannot move to the destination town with the selected cards. Please try again.
-            """, false, false);
+            GameScreen.displayMessage("You cannot move to the destination town with the selected cards. Please try again.", false, false);
         }
         selectedTown = null;
         assert selectedCards.stream().allMatch(CardUnit::isSelected);

@@ -15,7 +15,6 @@ public class GameService {
     // but a networking.GameService can only be created by a user with the service role
 
     private User gameServiceUser;
-    private User adminUser;
     private String gameServiceAccountPassword;
     private String gameServiceAccountColor = "01FFFF";
     private String gameServiceName;
@@ -24,10 +23,9 @@ public class GameService {
     private String gameDisplayName;
 
 
-    public GameService (User pAdminUser, String pGameServiceName, String pGameDisplayName, String pGameServiceAccountPassword, int pMinSessionPlayers, int pMaxSessionPlayers) throws IOException, Exception
+    public GameService (String pGameServiceName, String pGameDisplayName, String pGameServiceAccountPassword, int pMinSessionPlayers, int pMaxSessionPlayers) throws IOException, Exception
     {
         // first, we need to create a user to manage the networking.GameService
-        adminUser = pAdminUser;
         gameServiceName = pGameServiceName;
         gameServiceAccountPassword = pGameServiceAccountPassword;
         minSessionPlayers = 2;
@@ -43,6 +41,7 @@ public class GameService {
     {
         // first, check if the service user already exists. if we try to create a user that already exists, we will get an exception
         boolean usernameTaken = User.doesUsernameExist(gameServiceName);
+        String adminToken = User.getAccessTokenUsingCreds("maex", "abc123_ABC123");
         if (usernameTaken) // TODO: handle the case in which the username is taken already, which probably won't happen in our implementation
         {}
         // if a user does not already exist, we will just create one
@@ -50,7 +49,7 @@ public class GameService {
         else
         {
             // this method will make a call to Users and create a user with the service role
-            URL url = new URL("http://35.182.122.111:4242/api/users/" + gameServiceName + "?access_token=" + adminUser.getAccessToken());
+            URL url = new URL("http://35.182.122.111:4242/api/users/" + gameServiceName + "?access_token=" + adminToken);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("PUT");
             con.setRequestProperty("Content-Type", "application/json");
@@ -79,16 +78,10 @@ public class GameService {
             System.out.println("Response status: " + status);
             System.out.println(content.toString());
 
-           // User gameServiceUser = new User(gameServiceName, gameServiceAccountPassword);
-            // this.gameServiceUser = gameServiceUser;
+           gameServiceUser = User.init(gameServiceName, gameServiceAccountPassword);
             // System.out.println("The token for the gameServiceUser is: " + this.gameServiceUser.getAccessToken());
         }
 
-
-        // TODO: COME BACK AND FIX THIS!!!
-        // User gameServiceUser = new User(gameServiceName, gameServiceAccountPassword);
-        //is.gameServiceUser = gameServiceUser;
-        // System.out.println("The token for the gameServiceUser is: " + this.gameServiceUser.getAccessToken());
 
     }
 
@@ -109,7 +102,7 @@ public class GameService {
         out.writeBytes("    \"minSessionPlayers\": \"" + minSessionPlayers + "\",\n");
         out.writeBytes("    \"name\": \"" + gameServiceName + "\",\n");
         out.writeBytes("    \"displayName\": \"" + gameDisplayName + "\",\n");
-        out.writeBytes("    \"webSupport\": \"true\"\n");
+        out.writeBytes("    \"webSupport\": \"false\"\n");
         out.writeBytes("}");
         out.flush();
         out.close();

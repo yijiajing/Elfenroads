@@ -126,17 +126,36 @@ public class GameSession {
     /**
      * deletes the session from the LS
      * should work for both launched and unlaunched sessions
-     * @param creator the creator of the session
+     * will use admin credentials
      * @param sessionID the session to delete
      * @throws IOException
      */
-    public static void delete(User creator, String sessionID) throws IOException
+    public static void delete(String sessionID) throws IOException
     {
-        String creatorToken = creator.getAccessToken();
+        String token;
+        if (isLaunched(sessionID))
+        {
+            // if a session has been launched already, it must be deleted by the game service admin
+            // TODO: update this to work with all games, not just testGame
+            token = User.getAccessTokenUsingCreds("Elfenroads", "abc123_ABC123");
+        }
+        else
+        {
+            // if a session has not been launched, we can delete it with the creator
+            if (isCreator(User.getInstance(), sessionID))
+            {
+                token = User.getInstance().getAccessToken();
+            }
+            else // if the User singleton instance is not the creator, we're out of luck
+            {
+                return;
+            }
+        }
 
-        URL url = new URL("http://35.182.122.111:4242/api/sessions/" + sessionID + "?access_token=" + creatorToken);
+        URL url = new URL("http://35.182.122.111:4242/api/sessions/" + sessionID + "?access_token=" + token);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("DELETE");
+        con.setRequestProperty("authorization", "Basic YmdwLWNsaWVudC1uYW1lOmJncC1jbGllbnQtcHc=");
 
         int status = con.getResponseCode();
         BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
@@ -427,5 +446,16 @@ public class GameSession {
         }
 
         return playerNamesAndAddresses;
+    }
+
+    public static boolean isCreator(User u, String sessionID) {
+        try {
+            JSONObject deets = getSessionDetails(sessionID);
+            String creatorName = deets.getString("creator");
+            return creatorName.equals(u.getUsername());
+        } catch (IOException prob) {
+            prob.printStackTrace();
+        }
+        return false;
     }
 }

@@ -3,12 +3,12 @@ package loginwindow;
 import domain.GameManager;
 import org.json.JSONObject;
 import networking.*;
-import utils.NetworkUtils;
 
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Optional;
 
 public class LobbyWindow extends JPanel implements ActionListener {
@@ -48,7 +48,7 @@ public class LobbyWindow extends JPanel implements ActionListener {
         available.setText("Available Sessions");
         sessions.add(available,BorderLayout.PAGE_START);
 
-        try{NetworkUtils.initializeGameInfo(sessions);}
+        try{initializeGameInfo(sessions);}
         catch(IOException gameProblem)
         {
             gameProblem.printStackTrace();
@@ -89,7 +89,7 @@ public class LobbyWindow extends JPanel implements ActionListener {
             {
                 try
                 {
-                    NetworkUtils.initializeGameInfo(sessions);
+                    initializeGameInfo(sessions);
                 }
 
                 catch (IOException e1)
@@ -122,6 +122,124 @@ public class LobbyWindow extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+
+
+    }
+
+    /**
+     * designed to be called inside the LobbyWindow to display game information
+     * can be called multiple times--it will clear the games displayed and reset every time
+     */
+    public static void initializeGameInfo(JPanel sessions) throws IOException
+    {
+        // reset the UI
+        sessions.removeAll();
+
+        // get a list of game sessions by ID
+        ArrayList<String> gameIDs = GameSession.getAllSessionID();
+
+        int counter = 0;
+
+        // iterate through the IDs and get info for each game & add it to the display
+        for (String id : gameIDs)
+        {
+            // get game info
+            System.out.println("We are now looking for details about id " + id);
+            JSONObject sessionDetails = GameSession.getSessionDetails(id);
+            JSONObject sessionParameters = sessionDetails.getJSONObject("gameParameters"); // TODO: make sure this method works, otherwise call regular get and cast to JSONObject manually instead
+
+            // separate the game info into pieces
+            String creator = sessionDetails.get("creator").toString();
+            String maxSessionPlayers = sessionParameters.get("maxSessionPlayers").toString();
+            String minSessionPlayers = sessionParameters.get("minSessionPlayers").toString();
+            String name = sessionParameters.get("name").toString();
+            // TODO: add support to display other players as well, and any other additional info that would be helpful to the user
+
+            // add the game info to labels
+            JLabel creatorLabel = new JLabel("creator: " + creator);
+            JLabel maxPlayersLabel = new JLabel("max session players: " + maxSessionPlayers);
+            JLabel minPlayersLabel = new JLabel("min session players: " + minSessionPlayers);
+            JLabel nameLabel = new JLabel("name: " + name);
+            // initialize join button
+            JButton joinButton = new JButton("JOIN");
+            JButton startButton = new JButton("START");
+
+            joinButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    // join the game
+                    try {
+                        GameSession.joinSession(MainFrame.loggedIn, id);
+                        GameManager.init(Optional.empty(), id);
+
+                        // prompt user to choose a boot colour
+                        // this calls the ChooseBootWindow once all players have responded
+                        GameManager.getInstance().requestAvailableColours();
+
+                    } catch (Exception ex) {
+                        System.out.println("There was a problem attempting to join the session with User" + User.getInstance().getUsername());
+                        ex.printStackTrace();
+                        return;
+                    }
+
+                  /* TODO FIX THIS
+                    try
+                    {
+                        MainFrame.mainPanel.add(new PlayerWaitWindow(id), "playerwait");
+                    }
+                    catch (IOException e1)
+                    {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                        return;
+                    }
+                    MainFrame.cardLayout.show(MainFrame.mainPanel,"playerwait");
+                } */
+                }});
+
+            startButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    GameManager.getInstance().initPlayers();
+                    // GameManager.init(Optional.empty(), id);
+                }
+            });
+
+
+            // initialize the box
+            Box gameInfo = Box.createVerticalBox();
+            gameInfo.setBorder(BorderFactory.createLineBorder(Color.black));
+            // add the button and the labels to the box
+            gameInfo.add(creatorLabel);
+            gameInfo.add(maxPlayersLabel);
+            gameInfo.add(minPlayersLabel);
+            gameInfo.add(nameLabel);
+            gameInfo.add(joinButton);
+            gameInfo.add(startButton);
+
+            // add the box to the sessions panel
+            // sessions.add(gameInfo);
+
+            if (counter == 0)
+            {
+                sessions.add(gameInfo, BorderLayout.CENTER);
+            }
+            else if (counter == 1)
+            {
+                sessions.add(gameInfo, BorderLayout.LINE_END);
+            }
+
+            else if (counter == 2)
+            {
+                sessions.add(gameInfo, BorderLayout.LINE_START);
+            }
+
+            counter++;
+            sessions.repaint();
+            sessions.revalidate();
+
+        }
+
 
 
     }

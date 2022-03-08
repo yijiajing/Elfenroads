@@ -211,7 +211,6 @@ public class CommunicationsManager {
 
     /**
      * Called by the GameUpdateListener when an update has been received and is ready to be processed on the UI
-     * this is a specific MoveBootCommand implementation for now
      */
     public void updateFromListener()
     {

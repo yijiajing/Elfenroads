@@ -67,17 +67,13 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
                 try 
                 {
                     track1.play();
-                    session = new GameSession(User.getInstance(), "testGame", "My Save Game Name");
+                    session = new GameSession(User.getInstance(), "Elfenroads", "My Save Game Name");
 
                     GameManager.init(Optional.empty(), session.getId());
 
                     // prompt user to choose a boot colour
-                    ChooseBootWindow window = new ChooseBootWindow(session.getId());
-                    GameManager.getInstance().setChooseBootWindow(window);
-                    window.launch();
-
-                    MainFrame.mainPanel.add(window, "choose-boot");
-                    MainFrame.cardLayout.show(MainFrame.mainPanel, "choose-boot");
+                    // this calls the ChooseBootWindow once all players have responded
+                    GameManager.getInstance().requestAvailableColours();
 
                     /* TODO FIX THIS 
                     String id = session.getId();
