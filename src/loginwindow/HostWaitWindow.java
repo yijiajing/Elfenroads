@@ -1,17 +1,11 @@
 package loginwindow;
 
 import domain.GameManager;
-import org.json.JSONObject;
 
-import domain.Player;
 import networking.*;
-import panel.GameScreen;
-import utils.NetworkUtils;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.awt.event.*;
 import java.awt.*;
@@ -109,7 +103,7 @@ public class HostWaitWindow extends JPanel implements Runnable
                     e2.printStackTrace();
                 }
                 // enter the game ui
-                GameManager.getInstance().launch();
+                GameManager.getInstance().initPlayers();
             }
         });
 

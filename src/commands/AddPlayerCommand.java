@@ -12,6 +12,7 @@ import panel.GameScreen;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.logging.Logger;
 
 public class AddPlayerCommand implements GameCommand{
 
@@ -34,13 +35,11 @@ public class AddPlayerCommand implements GameCommand{
         try {
             int numPlayers = GameSession.getPlayerNames(GameManager.getInstance().getSessionID()).size();
             if (gameState.getNumOfPlayers() == numPlayers) {
-                // we have added all the players, start by setting up the round
-                gameState.sortPlayers();
-                gameState.setToFirstPlayer();
-                gameManager.initializeElfBoots();
-                gameManager.setUpRound();
+                // we have added all the players to the list, start by setting up the round
+                gameManager.launch();
             }
         } catch (IOException e) {
+            Logger.getGlobal().info("There was a problem sending the AddPlayerCommand");
             e.printStackTrace();
         }
     }

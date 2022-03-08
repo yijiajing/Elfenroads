@@ -3,7 +3,6 @@ package loginwindow;
 import domain.GameManager;
 import org.json.JSONObject;
 import networking.*;
-import utils.NetworkUtils;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -201,7 +200,7 @@ public class LobbyWindow extends JPanel implements ActionListener {
             startButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    GameManager.getInstance().launch();
+                    GameManager.getInstance().initPlayers();
                     // GameManager.init(Optional.empty(), id);
                 }
             });

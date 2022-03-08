@@ -71,17 +71,10 @@ public class GameManager {
     /**
      * Called when "start" is clicked
      */
-    public void launch() {
-        if (!loaded) setUpNewGame();
-
-        GameScreen.getInstance().draw();
-        MainFrame.cardLayout.show(MainFrame.mainPanel,"gameScreen");
-
-//        setUpRound(); // includes dealing travel cards (PHASE 1) and drawing 1 face down counter for each player (PHASE 2)
-
+    public void initPlayers() {
         // Make sure not to do any player list iteration before this block of code, as players are not
         // fully initialized. If you want to do anything right after players are fully initialized,
-        // add it to execute() in AddPlayerCommand.
+        // add it to launch(). Also check AddPlayerCommand.
 
         // initialize all the players now that the game has been launched and everyone is in
         try
@@ -107,6 +100,24 @@ public class GameManager {
             // now we have ordered all the players, so we should sort them
         }
         catch (Exception e) {e.printStackTrace();}
+    }
+
+    /**
+     * Called when we have all the players in the list. Any initialization that utilizes the player list
+     * should be put here.
+     */
+    public void launch() {
+        LOGGER.info("We have all players' info ready, setting up the rounds");
+        if (!loaded) setUpNewGame();
+
+        GameScreen.getInstance().draw();
+        MainFrame.cardLayout.show(MainFrame.mainPanel,"gameScreen");
+
+        gameState.sortPlayers();
+        gameState.setToFirstPlayer();
+        GameScreen.getInstance().draw(); // put here because draw also utilizes the player list
+        initializeElfBoots();
+        setUpRound();
     }
 
     public static GameManager init(Optional<GameState> loadedState, String sessionID) {
@@ -334,6 +345,7 @@ public class GameManager {
             gameState.setToNextPlayer();
             NotifyTurnCommand notifyTurnCommand = new NotifyTurnCommand(gameState.getCurrentPhase());
             try {
+                LOGGER.info("Notifying " + gameState.getCurrentPlayer().getName() + " to take action.");
                 coms.sendCommandToIndividual(notifyTurnCommand, gameState.getCurrentPlayer().getName());
             } catch (IOException e) {
                 LOGGER.info("There was a problem sending the command to take turns!");

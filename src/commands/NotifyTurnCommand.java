@@ -23,12 +23,6 @@ public class NotifyTurnCommand implements GameCommand {
     public void execute() {
         GameManager gameManager = GameManager.getInstance();
         Logger.getGlobal().info("It is now my turn");
-        //TODO: this is wrong, delete this
-//        if (!gameManager.isLocalPlayerTurn()) {
-//            Logger.getGlobal().info("Pass turn notification sent to player(s) other than the current player");
-//            return;
-//        }
-//        Logger.getGlobal().info("Pass turn notification sent to the current player");
         GameState.instance().setCurrentPlayer(gameManager.getThisPlayer());
         switch (phase) {
             case DEAL_CARDS:
