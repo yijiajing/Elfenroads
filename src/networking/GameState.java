@@ -47,11 +47,15 @@ public class GameState {
 
     private ArrayList<ElfBoot> elfBoots;
 
-    private GameState (int numRounds, String sessionID, GameVariant gameVariant)
+    private GameState (String sessionID, GameVariant gameVariant)
     {
         this.elfBoots = new ArrayList<>();
         this.currentRound = 1;
-        this.totalRounds = numRounds;
+        if (gameVariant == GameVariant.ELFENLAND_LONG) {
+            this.totalRounds = 4;
+        } else {
+            this.totalRounds = 3;
+        }
         this.gameVariant = gameVariant;
         // the below line gives a nullPointerException when it is called from the GameManager constructor because, inside the constructor, the GameManager.instance() is still null
         // String sessionID = GameManager.getInstance().getSessionID();
@@ -80,9 +84,9 @@ public class GameState {
     	return new ArrayList<>(players);
     }
     
-    public static GameState init(int numRounds, String sessionID, GameVariant gameVariant) {
+    public static GameState init(String sessionID, GameVariant gameVariant) {
         if (instance == null) {
-            instance = new GameState(numRounds, sessionID, gameVariant);
+            instance = new GameState(sessionID, gameVariant);
         }
     	return instance;
     }
