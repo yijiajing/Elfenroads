@@ -23,8 +23,6 @@ public class MoveBootCommand implements GameCommand, Serializable {
 
     public MoveBootCommand (ElfBootPanel pStart, ElfBootPanel pDestination, ElfBoot pMoved)
     {
-        // start = pStart;
-        // destination = pDestination;
         colorBootMoved = pMoved.getColour();
         start = pStart.getTown().getName();
         destination = pDestination.getTown().getName();
@@ -53,19 +51,10 @@ public class MoveBootCommand implements GameCommand, Serializable {
 
         // actually move the boot
         startPanel.removeBootFromPanel(moved);
-        destinationPanel.addBootToPanel(moved);
-
-        if (moved == null)
-        {
-            System.out.println("Execute method failed. Could not find a boot in the list of boots.");
-        }
-
+        destinationPanel.addBootToPanel(moved); // removes the town piece
 
         startPanel.updateView();
         destinationPanel.updateView();
-
-        // NEW CODE FROM UPDATEUI()
-
     }
 
     public String getStart() {
