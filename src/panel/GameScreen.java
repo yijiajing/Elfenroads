@@ -130,6 +130,7 @@ public class GameScreen extends JPanel implements Serializable
 		initializeFaceUpTransportationCounters();
 		initializeDeckOfTransportationCounters();
 		initializeLeaderboard();
+		initializeEndTurnButton();
 	}
 
 	
@@ -141,7 +142,7 @@ public class GameScreen extends JPanel implements Serializable
 		
 		// Set Bounds for background Obstacle zone
 		backgroundPanel_ForObstacle.setBackground(Color.RED);
-		backgroundPanel_ForObstacle.setBounds(width*1070/1440, height*623/900, width*80/1440, height*70/900);
+		backgroundPanel_ForObstacle.setBounds(width*900/1440, height*623/900, width*80/1440, height*70/900);
 		
 		// Set Bounds for background Image zone
 		backgroundPanel_ForMap.setBounds(width*0/1440, height*0/900, width*1150/1440, height*625/900);
@@ -259,14 +260,14 @@ public class GameScreen extends JPanel implements Serializable
 			panel.setBorder(whiteLine);
 			panel.setBounds(xCoordinate, height*625/900, width*70/1440, height*65/900);
 			panelForPlayerTransportationCounters[i] = panel;
-			xCoordinate += width*200/1440;
+			xCoordinate += width*100/1440;
 			boardGame_Layers.add(panel, 0);
 		}
 		
 		// Obstacle
 		panelForObstacle.setOpaque(false);
 		//panelForObstacle.setBorder(whiteLine);
-		panelForObstacle.setBounds(width*1077/1440, height*625/900, width*70/1440, height*65/900);
+		panelForObstacle.setBounds(width*900/1440, height*625/900, width*70/1440, height*65/900);
 		boardGame_Layers.add(panelForObstacle,0);
 	}
 	
@@ -296,6 +297,17 @@ public class GameScreen extends JPanel implements Serializable
 		Image gridResized = grid.getScaledInstance(width*290/1440, height*325/900,  java.awt.Image.SCALE_SMOOTH);
 		gridImage = new ImageIcon(gridResized);
 		informationCardImage_TopLayer = new JLabel(gridImage);
+	}
+
+	public void initializeEndTurnButton() {
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.setBounds(width*1000/1440, height*625/900, width*100/1440, height*65/900);
+		buttonPanel.setOpaque(false);
+		boardGame_Layers.add(buttonPanel);
+
+		JButton endTurn = new EndTurnButton();
+		endTurn.setBounds(width*1000/1440, height*625/900, width*100/1440, height*65/900);
+		buttonPanel.add(endTurn);
 	}
 
 	public void addImages()
@@ -395,12 +407,10 @@ public class GameScreen extends JPanel implements Serializable
 
 	public static void main(String[] args) 
 	{
-		JFrame game_screen = new JFrame("GameScreen");
+		GameScreen game_screen = GameScreen.init(new JFrame());
 		
 		game_screen.setSize(MinuetoTool.getDisplayWidth(), MinuetoTool.getDisplayHeight());
-		game_screen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-		game_screen.add(init(game_screen));
+		game_screen.draw();
 		game_screen.setVisible(true);
 	}
 
@@ -437,15 +447,11 @@ public class GameScreen extends JPanel implements Serializable
 		return gameMap;
 	}
 
-	public static void displayMessage(String message, boolean passOption, boolean doneOption) {
+	public static void displayMessage(String message, boolean passOption) {
 		String[] options;
 
 		if (passOption) { // write a message with "OK" and "PASS" buttons
 			options = new String[]{"OK", "PASS"};
-		}
-
-		else if (doneOption) { // write a message with "DONE" button
-			options = new String[]{"DONE"};
 		}
 
 		else { // write a message with "OK" button
