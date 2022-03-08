@@ -91,6 +91,8 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
             }
         });
 
+        
+
         classicGame2 = new JButton("Classic");
         travelCards = new JButton("Travel Cards");
         rgtDistribution = new JButton("Random Gold Token Distribution");
