@@ -43,6 +43,7 @@ public class TransportationCounter extends CounterUnit implements Comparable<Tra
                         GameState.instance().addFaceUpCounterFromPile(); // replenish the face-up counters with one from the pile
                         GameScreen.getInstance().updateAll(); // update GUI
                         TransportationCounter.this.owned = true;
+                        TransportationCounter.this.setSecret(false);
 
                         // tell the other peers to remove the counter
                         try {
