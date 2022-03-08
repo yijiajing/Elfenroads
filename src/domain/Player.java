@@ -55,6 +55,10 @@ public class Player implements Comparable<Player> {
     	return score;
     }
 
+    public void setScore(int score) {
+        this.score = score;
+    }
+
     public Colour getColour() {
         return this.colour;
     }
