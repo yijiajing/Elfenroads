@@ -18,6 +18,7 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
     private static JButton loadButton;
     private static JButton gamesButton;
     private static JButton refreshButton;
+    private static String prevPayload;
     private JPanel buttons;
     private JPanel sessions;
     private JLabel gameToJoin;
@@ -145,13 +146,13 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
      * designed to be called inside the LobbyWindow to display game information
      * can be called multiple times--it will clear the games displayed and reset every time
      */
-    public static void initializeGameInfo(JPanel sessions) throws IOException
+    public static void initializeGameInfo(JPanel sessions, String prevPayload) throws IOException
     {
         // reset the UI
         sessions.removeAll();
 
         // get a list of game sessions by ID
-        ArrayList<String> gameIDs = GameSession.getAllSessionID();
+        ArrayList<String> gameIDs = GameSession.getAllSessionIDLongPolling(prevPayload);
 
         int counter = 0;
 

@@ -378,7 +378,21 @@ public class GameSession {
         Set idSet = sessions.keySet();
         ArrayList<String> ids = new ArrayList<String>(idSet);
         return ids;
+    }
 
+    /**
+     * long version of getAllSessionID that uses a long polling request instead
+     * @param prevPayload the previous payload from getSessions api call, to hash
+     * @return
+     */
+    public static ArrayList<String> getAllSessionIDLongPolling (String prevPayload) throws IOException
+    {
+        JSONObject getSessionsResults = new JSONObject(getSessions(prevPayload));
+        Set keys = getSessionsResults.keySet();
+        JSONObject sessions = getSessionsResults.getJSONObject("sessions");
+        Set idSet = sessions.keySet();
+        ArrayList<String> ids = new ArrayList <String> (idSet);
+        return ids;
 
     }
 
