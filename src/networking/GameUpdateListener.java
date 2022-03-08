@@ -14,6 +14,7 @@ import java.net.Socket;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
+import java.util.logging.Logger;
 
 public class GameUpdateListener implements Runnable
 {
@@ -33,10 +34,17 @@ public class GameUpdateListener implements Runnable
 
     @Override
     public void run() {
+        try
+        {listener = new ServerSocket(port);}
+        catch (Exception e)
+        {
+            Logger.getGlobal().info("Listener intialization failed.");
+        }
 
         while (true) {
+
             try {
-                listener = new ServerSocket(port);
+                // listener = new ServerSocket(port);
                 System.out.println("Going into accept() method and waiting for information...");
                 Socket update = listener.accept(); // the accept () will sit there and wait until an update is received
                 System.out.println("Got a message from the thing! Accept method terminated.");
@@ -45,7 +53,7 @@ public class GameUpdateListener implements Runnable
                 ObjectInputStream commandReceived = new ObjectInputStream(updateContents);
                 readInCommand(commandReceived);
                 notifyManager(); // tell the CommunicationsManager that an update has been received
-                listener.close(); // close the connection and do it again
+                // listener.close(); // close the connection and do it again
 
             } catch (Exception e) {
                 System.out.println("There was a problem setting up the ServerSocket.");
