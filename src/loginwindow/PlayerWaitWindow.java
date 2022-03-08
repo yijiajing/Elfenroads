@@ -100,8 +100,7 @@ public class PlayerWaitWindow extends JPanel implements Runnable
             try
             {
                 // if the session has been launched, go into the game ui
-                // TODO: is it fine to do this here? do we need to leave the thread?
-                if (GameSession.isLaunched(aId))
+                if (GameSession.isLaunched(aId)) // stop us from continuing to update game information when it has already been started
                 {
                     System.out.println("The game session has been launched already! Time to start!");
                     break;
@@ -156,8 +155,7 @@ public class PlayerWaitWindow extends JPanel implements Runnable
         }
 
         GameManager.getInstance().launch();
-        // stop checking for updates
-        t.stop();
+
 
     }
 }

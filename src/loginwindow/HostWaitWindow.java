@@ -110,8 +110,6 @@ public class HostWaitWindow extends JPanel implements Runnable
                 }
                 // enter the game ui
                 GameManager.getInstance().launch();
-                // stop checking for updates
-                t.stop();
             }
         });
 
@@ -129,7 +127,7 @@ public class HostWaitWindow extends JPanel implements Runnable
         {   
             try
             {
-                if (GameSession.isLaunched(aId))
+                if (GameSession.isLaunched(aId)) // stop checking for updates once the session has been launched
                 {
                     break;
                 }
