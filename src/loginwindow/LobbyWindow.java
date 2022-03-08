@@ -144,24 +144,52 @@ public class LobbyWindow extends JPanel implements ActionListener {
         for (String id : gameIDs)
         {
             // get game info
-            System.out.println("We are now looking for details about id " + id);
             JSONObject sessionDetails = GameSession.getSessionDetails(id);
-            JSONObject sessionParameters = sessionDetails.getJSONObject("gameParameters"); // TODO: make sure this method works, otherwise call regular get and cast to JSONObject manually instead
+            JSONObject sessionParameters = sessionDetails.getJSONObject("gameParameters");
+            ArrayList<String> playerList = GameSession.getPlayerNames(id);
+            int numPlayers = playerList.size();
+            int maxPlayers = Integer.parseInt(sessionParameters.get("maxSessionPlayers").toString());
+            // we don't want to display sessions that have already been launched, since we cannot join them anyway
+            if (GameSession.isLaunched(id) || numPlayers == maxPlayers)
+            {
+                continue;
+            }
 
             // separate the game info into pieces
             String creator = sessionDetails.get("creator").toString();
             String maxSessionPlayers = sessionParameters.get("maxSessionPlayers").toString();
             String minSessionPlayers = sessionParameters.get("minSessionPlayers").toString();
             String name = sessionParameters.get("name").toString();
+            String playersOutOfMax = numPlayers + "/" + minSessionPlayers + "-" + maxSessionPlayers;
+
+            String players = "";
+
+            for (String player : playerList)
+            {
+                // conditionals to avoid having a trailing whitespace in the String
+                if (players.equals(""))
+                {
+                    players = players + player;
+                }
+                else
+                {
+                    players = players + ", " + player;
+                }
+            }
+
+
+
             // TODO: add support to display other players as well, and any other additional info that would be helpful to the user
 
             // add the game info to labels
-            JLabel creatorLabel = new JLabel("creator: " + creator);
-            JLabel maxPlayersLabel = new JLabel("max session players: " + maxSessionPlayers);
-            JLabel minPlayersLabel = new JLabel("min session players: " + minSessionPlayers);
-            JLabel nameLabel = new JLabel("name: " + name);
+            JLabel creatorLabel = new JLabel("Creator: " + creator);
+            JLabel nameLabel = new JLabel("Name: " + name);
+            JLabel playersInSessionLabel = new JLabel("Players: " + players);
+            JLabel playerCountLabel = new JLabel("Number of Players: " + playersOutOfMax);
+
             // initialize join button
             JButton joinButton = new JButton("JOIN");
+            // TODO: get rid of the start button entirely
             JButton startButton = new JButton("START");
 
             joinButton.addActionListener(new ActionListener() {
@@ -210,9 +238,9 @@ public class LobbyWindow extends JPanel implements ActionListener {
             Box gameInfo = Box.createVerticalBox();
             gameInfo.setBorder(BorderFactory.createLineBorder(Color.black));
             // add the button and the labels to the box
+            gameInfo.add(playersInSessionLabel);
+            gameInfo.add(playerCountLabel);
             gameInfo.add(creatorLabel);
-            gameInfo.add(maxPlayersLabel);
-            gameInfo.add(minPlayersLabel);
             gameInfo.add(nameLabel);
             gameInfo.add(joinButton);
             gameInfo.add(startButton);

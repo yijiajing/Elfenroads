@@ -121,6 +121,10 @@ public class HostWaitWindow extends JPanel implements Runnable
         {   
             try
             {
+                if (GameSession.isLaunched(aId)) // stop checking for updates once the session has been launched
+                {
+                    break;
+                }
                 // create a new table
                 String[] titles = {"PLAYERS", "NAMES"};
 

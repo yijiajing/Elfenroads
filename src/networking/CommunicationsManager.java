@@ -47,7 +47,6 @@ public class CommunicationsManager {
         // first, get all the Player addresses so we can set up the sockets
         recordPlayerAddresses();
         System.out.println("Done recording player addresses...");
-        recordPlayerNamesAndAddresses();
         // next, set up the ServerSocket to listen for game updates
         System.out.println("Setting up the listener...");
         setUpListener();
@@ -161,6 +160,8 @@ public class CommunicationsManager {
      * @throws IOException
      */
     public void sendGameCommandToPlayer(GameCommand command, String otherPlayerIP) throws IOException {
+
+        recordPlayerNamesAndAddresses();
 
         try {
             String localAddress = NetworkUtils.getLocalIPAddPort();
