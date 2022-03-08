@@ -36,7 +36,6 @@ public class GameManager {
     // manages choosing a boot colour
     private ArrayList<Colour> availableColours = new ArrayList<>();
     private HashMap<Colour, String> bootColours = new HashMap<>(); // <boot colour, player IP> TODO change to Player
-    private ChooseBootWindow bootWindow;
 
     /**
      * Constructor is called when "join" is clicked
@@ -140,7 +139,7 @@ public class GameManager {
     }
 
     /**
-     * PHASE 1 & 2
+     * PHASE 1
      */
     public void setUpRound() {
         gameState.setCurrentPhase(RoundPhaseType.DEAL_CARDS);
@@ -185,8 +184,19 @@ public class GameManager {
      */
     public void distributeHiddenCounter() {
         if (!(isLocalPlayerTurn() && gameState.getCurrentPhase() == RoundPhaseType.DEAL_HIDDEN_COUNTER)) return;
-        thisPlayer.getHand().addUnit(gameState.getCounterPile().draw());
-        //TODO: remove one counter from all peers
+
+        // add the counter to our hand
+        TransportationCounter counter = gameState.getCounterPile().draw();
+        counter.setOwned(true);
+        thisPlayer.getHand().addUnit(counter);
+
+        // tell the other peers to remove the counter from the pile
+        try {
+            coms.sendGameCommandToAllPlayers(new DrawCounterCommand(1, Optional.empty()));
+        } catch (IOException e) {
+            System.out.println("Error: there was a problem sending the DrawCounterCommand to the other peers.");
+        }
+
         endTurn();
     }
 
@@ -280,14 +290,9 @@ public class GameManager {
     /**
      * Part of phase 6, called when a transportation counter from the player's hand is clicked
      * @param toKeep
-     * @throws IllegalArgumentException
      */
-    public void returnAllCountersExceptOne(TransportationCounter toKeep) throws IllegalArgumentException {
+    public void returnAllCountersExceptOne(TransportationCounter toKeep) {
         List<TransportationCounter> myCounters = thisPlayer.getHand().getCounters();
-
-        if (!myCounters.contains(toKeep)) { // the user selected a counter that is not in their hand
-            throw new IllegalArgumentException();
-        }
 
         for ( TransportationCounter c : myCounters ) {
             if (c.equals(toKeep)) continue;
@@ -466,11 +471,6 @@ public class GameManager {
       
     public boolean isLocalPlayerTurn() {
         return thisPlayer.equals(gameState.getCurrentPlayer());
-    }
-
-    public void setChooseBootWindow (ChooseBootWindow window)
-    {
-        bootWindow = window;
     }
 
     public void showBootWindow() {

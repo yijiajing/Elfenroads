@@ -177,6 +177,9 @@ public class GameState {
         return this.counterPile;
     }
 
+    /**
+     * Flips over a counter from the pile so that it is face-up
+     */
     public void addFaceUpCounterFromPile() {
         if (counterPile.getSize() > 0) {
             TransportationCounter counter = counterPile.draw();
