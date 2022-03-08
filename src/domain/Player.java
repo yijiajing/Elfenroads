@@ -22,6 +22,7 @@ public class Player implements Comparable<Player> {
     private Colour colour;
     private int score;
     private String name;
+    private Town destinationTown;
     
     private Hand hand; //The Hand of this Player, including hand of CardUnit and hand of CounterUnit
 
@@ -71,6 +72,14 @@ public class Player implements Comparable<Player> {
 
     public String getName() {
         return name;
+    }
+
+    public Town getDestinationTown() {
+        return destinationTown;
+    }
+
+    public void setDestinationTown(Town destinationTown) {
+        this.destinationTown = destinationTown;
     }
 
     // need to be able to sort a list of players so that everyone has the same list

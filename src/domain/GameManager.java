@@ -2,6 +2,7 @@ package domain;
 
 import commands.*;
 import enums.Colour;
+import enums.GameVariant;
 import enums.RoundPhaseType;
 import loginwindow.*;
 import networking.*;
@@ -49,7 +50,8 @@ public class GameManager {
 
         // start a new game if there is no state to be loaded
         if (loadedState.isEmpty()) {
-            gameState = GameState.init(3, pSessionID);
+            //TODO: figure out the game variant and pass it to the constructor
+            gameState = GameState.init(3, pSessionID, GameVariant.ELFENLAND_CLASSIC);
             actionManager = ActionManager.init(gameState, this);
 
             loaded = false;
@@ -147,6 +149,14 @@ public class GameManager {
 
         // give all players (each peer) an obstacle
         thisPlayer.getHand().addUnit(new Obstacle(MainFrame.instance.getWidth()*67/1440, MainFrame.instance.getHeight()*60/900));
+
+        // assign each player a destination town if applicable
+        if (gameState.getGameVariant() == GameVariant.ELFENLAND_DESTINATION) {
+            TownCardDeck townCardDeck = new TownCardDeck(sessionID);
+            for (int i = 0; i < gameState.getNumOfPlayers(); i++) {
+                gameState.getPlayers().get(i).setDestinationTown(townCardDeck.getComponents().get(i).getTown());
+            }
+        }
     }
 
     /**
