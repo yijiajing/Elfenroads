@@ -2,6 +2,7 @@ package networking;
 
 import domain.*;
 import enums.Colour;
+import enums.GameVariant;
 import enums.RoundPhaseType;
 import enums.TravelCardType;
 import org.json.JSONObject;
@@ -32,6 +33,7 @@ public class GameState {
 
     // meta info (possibly separated into another class in the future)
     private int totalRounds;
+    private GameVariant gameVariant;
     private List<Player> players = new ArrayList<>();
 
     // state info
@@ -45,11 +47,16 @@ public class GameState {
 
     private ArrayList<ElfBoot> elfBoots;
 
-    private GameState (int numRounds, String sessionID)
+    private GameState (String sessionID, GameVariant gameVariant)
     {
         this.elfBoots = new ArrayList<>();
         this.currentRound = 1;
-        this.totalRounds = numRounds;
+        if (gameVariant == GameVariant.ELFENLAND_LONG) {
+            this.totalRounds = 4;
+        } else {
+            this.totalRounds = 3;
+        }
+        this.gameVariant = gameVariant;
         // the below line gives a nullPointerException when it is called from the GameManager constructor because, inside the constructor, the GameManager.instance() is still null
         // String sessionID = GameManager.getInstance().getSessionID();
         // that is why we are passing the sessionID to the GameState constructor instead (there is no reason for it to really be a field)
@@ -77,9 +84,9 @@ public class GameState {
     	return new ArrayList<>(players);
     }
     
-    public static GameState init(int numRounds, String sessionID) {
+    public static GameState init(String sessionID, GameVariant gameVariant) {
         if (instance == null) {
-            instance = new GameState(numRounds, sessionID);
+            instance = new GameState(sessionID, gameVariant);
         }
     	return instance;
     }
@@ -175,6 +182,14 @@ public class GameState {
 
     public TransportationCounterPile getCounterPile() {
         return this.counterPile;
+    }
+
+    public GameVariant getGameVariant() {
+        return gameVariant;
+    }
+
+    public void setGameVariant(GameVariant gameVariant) {
+        this.gameVariant = gameVariant;
     }
 
     /**

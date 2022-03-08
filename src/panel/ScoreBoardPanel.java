@@ -18,25 +18,20 @@ public class ScoreBoardPanel extends JPanel implements ObserverPanel{
 
     private GameScreen aScreen;
     private Player aPlayer;
-//    int x;
-//    int y;
+
 
     
     public ScoreBoardPanel(GameScreen pScreen, Player pPlayer) {
     	aScreen = pScreen;
     	aPlayer = pPlayer;
-//    	x = px;
-//    	y = py;
-    	
+
     	this.setPreferredSize(new Dimension(aScreen.getWidth() * 290 / 1440, aScreen.getHeight() * 40 / 900));
-//    	this.setBounds(this.x, this.y, aScreen.getWidth() * 290 / 1440, aScreen.getHeight() * 40 / 900);
     	this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
     	
     	this.setLayout(new FlowLayout());
     	this.add(new JLabel("Player " + GameState.instance().getPlayers().indexOf(pPlayer)));
     	this.add(new JLabel(Integer.toString(aPlayer.getScore())+" pts"));
     	
-    	//TODO: add a panel to display the counters owned by a player when the mouse hovering on this player's scoreboard.
     	JPanel countersPanelOfOtherPlayer = new JPanel();
     	countersPanelOfOtherPlayer.setVisible(false);
     	countersPanelOfOtherPlayer.setLayout(new FlowLayout());
