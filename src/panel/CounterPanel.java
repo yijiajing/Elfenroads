@@ -22,7 +22,7 @@ public class CounterPanel extends JPanel {
         this.road = road;
         this.gameScreen = pScreen;
 
-        pScreen.addElement(this);
+        gameScreen.addElement(this);
 
         this.setBounds(this.x, this.y, gameScreen.getWidth() * 40 / 1440, gameScreen.getHeight() * 40 / 900);
         this.setOpaque(false);
@@ -41,7 +41,9 @@ public class CounterPanel extends JPanel {
     }
 
     public void placeObstacle(Obstacle obstacle) {
-        //TODO: display obstacle image on top of (maybe a bit on the bottom of) the transportation counter
+    	JLabel obstacleDisplay = obstacle.getDisplay();
+    	gameScreen.addAncestorListener(null);
+    	obstacleDisplay.setBounds(this.x, this.y + gameScreen.getHeight() * 40 / 900, gameScreen.getWidth() * 40 / 1440, gameScreen.getHeight() * 40 / 900);
     }
 
     public void update() {
