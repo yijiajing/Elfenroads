@@ -24,6 +24,8 @@ public class HostWaitWindow extends JPanel implements Runnable
     private JPanel panel;
     private JTable table;
 
+    private static String prevPayload = ""; // used for long polling
+
     public HostWaitWindow(String pId)
     {
         try
@@ -53,7 +55,10 @@ public class HostWaitWindow extends JPanel implements Runnable
         panel.setBounds(1440*600/1440, 900*400/900, 1440*290/1440, 900*274/900);
         panel.setBackground(Color.DARK_GRAY);
     
-        List<String> aPlayers = GameSession.getPlayerNames(aId);
+        // List<String> aPlayers = GameSession.getPlayerNames(aId);
+        String getSessionDetailsResponse = GameSession.getSessionDetails(aId, prevPayload);
+        prevPayload = getSessionDetailsResponse;
+        List <String> aPlayers = GameSession.getPlayersFromSessionDetails(prevPayload);
         
         String[][] playerNames = new String [aPlayers.size()][2];
         for (int i = 0; i < playerNames.length; i++){

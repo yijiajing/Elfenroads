@@ -276,6 +276,21 @@ public class GameSession {
         return details;
     }
 
+    public static ArrayList<String> getPlayersFromSessionDetails(String sessionDetailsResponse)
+    {
+        JSONObject details = new JSONObject(sessionDetailsResponse);
+        ArrayList<String> players = new ArrayList<String>();
+        JSONArray names = details.optJSONArray("players");
+
+        for (int i = 0; i < names.length(); i++)
+        {
+            String name = names.getString(i);
+            players.add(name);
+        }
+
+        return players;
+    }
+
     /**
      * does the same thing as getSessionDetails, except using long polling
      * @param id the id of the session we would like information about

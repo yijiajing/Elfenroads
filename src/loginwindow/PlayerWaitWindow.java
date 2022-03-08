@@ -22,6 +22,8 @@ public class PlayerWaitWindow extends JPanel implements Runnable
     private JPanel panel;
     private JTable table;
 
+    private static String prevPayload = "";
+
     public PlayerWaitWindow(String pId)
     {
 
@@ -101,7 +103,9 @@ public class PlayerWaitWindow extends JPanel implements Runnable
                 // create a new table
                 String[] titles = {"PLAYERS", "NAMES"};
 
-                List<String> aPlayers = GameSession.getPlayerNames(aId);
+                String getSessionDetailsResponse = GameSession.getSessionDetails(aId, prevPayload);
+                prevPayload = getSessionDetailsResponse;
+                List <String> aPlayers = GameSession.getPlayersFromSessionDetails(prevPayload);
 
                 String[][] playerNames = new String [aPlayers.size()][2];
                 for (int i = 0; i < playerNames.length; i++)

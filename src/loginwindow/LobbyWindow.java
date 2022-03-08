@@ -18,7 +18,6 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
     private static JButton loadButton;
     private static JButton gamesButton;
     private static JButton refreshButton;
-    private static String prevPayload = "";
     private JPanel buttons;
     private JPanel sessions;
     private JLabel gameToJoin;
@@ -27,6 +26,8 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
     private JLabel creator;
     private JLabel numPlayers;
     private Box gameInfo;
+
+    private static String prevPayload = ""; // used for long polling requests
 
     private static Thread t;
     private static int flag = 0;
