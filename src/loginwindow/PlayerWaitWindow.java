@@ -1,19 +1,12 @@
 package loginwindow;
 
 import domain.GameManager;
-import org.json.JSONObject;
 
-import domain.Player;
 import networking.*;
-import panel.GameScreen;
-import utils.NetworkUtils;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.awt.event.*;
 import java.awt.*;
 import java.io.IOException;
 import java.awt.BorderLayout;
@@ -155,7 +148,7 @@ public class PlayerWaitWindow extends JPanel implements Runnable
             }
         }
 
-        GameManager.getInstance().launch();
+        GameManager.getInstance().initPlayers();
 
     }
 }
