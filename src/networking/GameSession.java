@@ -381,6 +381,21 @@ public class GameSession {
     }
 
     /**
+     * @param resultsOfGetSessions the String results of a getSessions call
+     * @return
+     */
+    public static ArrayList<String> getSessionIDFromSessions(String resultsOfGetSessions)
+    {
+        JSONObject results = new JSONObject(resultsOfGetSessions);
+        Set keys = results.keySet();
+        JSONObject sessions = results.getJSONObject("sessions");
+        Set idSet = sessions.keySet();
+        ArrayList<String> ids = new ArrayList<String>(idSet);
+        return ids;
+
+    }
+
+    /**
      * long version of getAllSessionID that uses a long polling request instead
      * @param prevPayload the previous payload from getSessions api call, to hash
      * @return
