@@ -209,6 +209,7 @@ public class GameManager {
         // add the counter to our hand
         TransportationCounter counter = gameState.getCounterPile().draw();
         counter.setOwned(true);
+        counter.setSecret(true);
         thisPlayer.getHand().addUnit(counter);
 
         // tell the other peers to remove the counter from the pile
