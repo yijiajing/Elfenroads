@@ -159,7 +159,7 @@ public class LobbyWindow extends JPanel implements ActionListener {
             String creator = sessionDetails.get("creator").toString();
             String maxSessionPlayers = sessionParameters.get("maxSessionPlayers").toString();
             String minSessionPlayers = sessionParameters.get("minSessionPlayers").toString();
-            String name = sessionParameters.get("name").toString();
+            String variant = sessionParameters.get("name").toString();
             String playersOutOfMax = numPlayers + "/" + minSessionPlayers + "-" + maxSessionPlayers;
 
             String players = "";
@@ -183,7 +183,7 @@ public class LobbyWindow extends JPanel implements ActionListener {
 
             // add the game info to labels
             JLabel creatorLabel = new JLabel("Creator: " + creator);
-            JLabel nameLabel = new JLabel("Name: " + name);
+            JLabel variantLabel = new JLabel("Variant: " + variant);
             JLabel playersInSessionLabel = new JLabel("Players: " + players);
             JLabel playerCountLabel = new JLabel("Number of Players: " + playersOutOfMax);
 
@@ -209,20 +209,6 @@ public class LobbyWindow extends JPanel implements ActionListener {
                         ex.printStackTrace();
                         return;
                     }
-
-                  /* TODO FIX THIS
-                    try
-                    {
-                        MainFrame.mainPanel.add(new PlayerWaitWindow(id), "playerwait");
-                    }
-                    catch (IOException e1)
-                    {
-                        // TODO Auto-generated catch block
-                        e1.printStackTrace();
-                        return;
-                    }
-                    MainFrame.cardLayout.show(MainFrame.mainPanel,"playerwait");
-                } */
                 }});
 
             startButton.addActionListener(new ActionListener() {
@@ -241,7 +227,7 @@ public class LobbyWindow extends JPanel implements ActionListener {
             gameInfo.add(playersInSessionLabel);
             gameInfo.add(playerCountLabel);
             gameInfo.add(creatorLabel);
-            gameInfo.add(nameLabel);
+            gameInfo.add(variantLabel);
             gameInfo.add(joinButton);
             gameInfo.add(startButton);
 
