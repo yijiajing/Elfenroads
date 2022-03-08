@@ -11,6 +11,7 @@ import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
 
@@ -27,6 +28,7 @@ public class GameUpdateListener implements Runnable
     {
         port = pPort;
         managedBy = pManagedBy;
+        commands = new LinkedList<GameCommand>();
     }
 
     @Override
