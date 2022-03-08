@@ -1,16 +1,12 @@
 package domain;
 
 import enums.Colour;
-import networking.ActionManager;
 import networking.GameState;
-import panel.ElfBootController;
 import panel.ElfBootPanel;
 import panel.GameScreen;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class ElfBoot extends JLabel {
 
@@ -54,7 +50,7 @@ public class ElfBoot extends JLabel {
 
         // if there is a town piece at the new location of the elf boot, remove it and update player's score
         this.curPanel.getTown().removeTownPieceByColour(this.colour);
-        GameState.instance().getPlayerByColour(this.colour).setCurrentTown(curPanel.getTown());
+        GameState.instance().getPlayerByColour(this.colour).setCurrentTownAndIncrementScore(curPanel.getTown());
 
         GameScreen.getInstance().notifyObservers();
     }

@@ -39,7 +39,7 @@ public class Player implements Comparable<Player> {
     }
 
     // called by ElfBoot when it moves to a new town
-    public void setCurrentTown(Town curTown) {
+    public void setCurrentTownAndIncrementScore(Town curTown) {
         this.curTown = curTown;
         if (!townsVisited.contains(curTown)) {
             townsVisited.add(curTown);
@@ -90,5 +90,10 @@ public class Player implements Comparable<Player> {
     @Override
     public int compareTo(Player o) {
         return name.compareTo(o.getName());
+    }
+
+    public String toString()
+    {
+        return name + colour + curTown.getName();
     }
 }

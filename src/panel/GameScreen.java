@@ -137,12 +137,12 @@ public class GameScreen extends JPanel implements Serializable
 	public void initializeBackgroundPanels()
 	{
 		// Set Bounds for background Player's Transportation Counter zone
-		backgroundPanel_ForTransportationCounters.setBounds(width*0/1440, height*623/900, width*1075/1440, height*70/900);
+		backgroundPanel_ForTransportationCounters.setBounds(width*1075/1440, height*623/900, width*900/1440, height*70/900);
 		backgroundPanel_ForTransportationCounters.setBackground(Color.DARK_GRAY);
 		
 		// Set Bounds for background Obstacle zone
 		backgroundPanel_ForObstacle.setBackground(Color.RED);
-		backgroundPanel_ForObstacle.setBounds(width*900/1440, height*623/900, width*80/1440, height*70/900);
+		backgroundPanel_ForObstacle.setBounds(width*1070/1440, height*623/900, width*80/1440, height*70/900);
 		
 		// Set Bounds for background Image zone
 		backgroundPanel_ForMap.setBounds(width*0/1440, height*0/900, width*1150/1440, height*625/900);
@@ -260,14 +260,14 @@ public class GameScreen extends JPanel implements Serializable
 			panel.setBorder(whiteLine);
 			panel.setBounds(xCoordinate, height*625/900, width*70/1440, height*65/900);
 			panelForPlayerTransportationCounters[i] = panel;
-			xCoordinate += width*100/1440;
+			xCoordinate += width*200/1440;
 			boardGame_Layers.add(panel, 0);
 		}
 		
 		// Obstacle
 		panelForObstacle.setOpaque(false);
 		//panelForObstacle.setBorder(whiteLine);
-		panelForObstacle.setBounds(width*900/1440, height*625/900, width*70/1440, height*65/900);
+		panelForObstacle.setBounds(width*1077/1440, height*625/900, width*70/1440, height*65/900);
 		boardGame_Layers.add(panelForObstacle,0);
 	}
 	
@@ -336,7 +336,7 @@ public class GameScreen extends JPanel implements Serializable
 		boardGame_Layers.add(backgroundPanel_ForRound, 0);
 		boardGame_Layers.add(panelForDeckOfTransportationCounters,0);
 		boardGame_Layers.add(backgroundPanel_ForTransportationCounters, -1);
-		boardGame_Layers.add(backgroundPanel_ForMap, -1); 
+		boardGame_Layers.add(backgroundPanel_ForMap, -1);
 		boardGame_Layers.add(backgroundPanel_ForObstacle,-1);
 		boardGame_Layers.add(backgroundPanel_ForCards, -1);
 		boardGame_Layers.add(backgroundPanel_ForInformationCard, -1);
@@ -448,14 +448,23 @@ public class GameScreen extends JPanel implements Serializable
 	}
 
 	public static void displayMessage(String message, boolean passOption) {
-		String[] options;
+		JButton[] options;
 
 		if (passOption) { // write a message with "OK" and "PASS" buttons
-			options = new String[]{"OK", "PASS"};
+			options = new JButton[2];
+			options[0] = new JButton("OK");
+			options[1] = new JButton("PASS");
+			options[1].addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					GameManager.getInstance().endTurn();
+				}
+			});
 		}
 
 		else { // write a message with "OK" button
-			options = new String[]{"OK"};
+			options = new JButton[1];
+			options[0] = new JButton("OK");
 		}
 
 		JOptionPane.showOptionDialog(null, message, null, JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
