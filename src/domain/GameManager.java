@@ -106,14 +106,17 @@ public class GameManager {
      */
     public void launch() {
         LOGGER.info("We have all players' info ready, setting up the rounds");
+        gameState.sortPlayers();
+        gameState.setToFirstPlayer();
+        System.out.print(gameState.getPlayers());
         if (!loaded) setUpNewGame();
 
         GameScreen.getInstance().draw();
         MainFrame.cardLayout.show(MainFrame.mainPanel,"gameScreen");
 
-        gameState.sortPlayers();
-        gameState.setToFirstPlayer();
-        GameScreen.getInstance().draw(); // put here because draw also utilizes the player list
+        // gameState.sortPlayers();
+        // gameState.setToFirstPlayer();
+        // GameScreen.getInstance().draw(); // put here because draw also utilizes the player list
         initializeElfBoots();
         setUpRound();
     }
