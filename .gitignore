@@ -24,3 +24,4 @@ crash.log
 /bin1/
 .classpath
 .project
+src/test/testSwing.java

@@ -47,7 +47,6 @@ public class CommunicationsManager {
         // first, get all the Player addresses so we can set up the sockets
         recordPlayerAddresses();
         System.out.println("Done recording player addresses...");
-        recordPlayerNamesAndAddresses();
         // next, set up the ServerSocket to listen for game updates
         System.out.println("Setting up the listener...");
         setUpListener();
@@ -162,6 +161,8 @@ public class CommunicationsManager {
      */
     public void sendGameCommandToPlayer(GameCommand command, String otherPlayerIP) throws IOException {
 
+        recordPlayerNamesAndAddresses();
+
         try {
             String localAddress = NetworkUtils.getLocalIPAddPort();
             if (otherPlayerIP.equals(localAddress)) {
@@ -211,7 +212,6 @@ public class CommunicationsManager {
 
     /**
      * Called by the GameUpdateListener when an update has been received and is ready to be processed on the UI
-     * this is a specific MoveBootCommand implementation for now
      */
     public void updateFromListener()
     {

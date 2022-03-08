@@ -28,8 +28,8 @@ public class GameScreen extends JPanel implements Serializable
 	private static GameScreen INSTANCE; // Singleton instance 
 
 	private JFrame mainframe;
-	private static Integer width;
-	private static Integer height;
+	public static Integer width;
+	public static Integer height;
 	
 	private JLayeredPane boardGame_Layers;
 
@@ -38,7 +38,6 @@ public class GameScreen extends JPanel implements Serializable
 	private JLabel roundImage_TopLayer;
 	private JLabel mapImage_BottomLayer;
 	private JLabel informationCardImage_TopLayer;
-	private JLabel deckOfTransportationCountersImage_TopLayer;
 	
 	private final JPanel backgroundPanel_ForMap = new JPanel();
 	private final JPanel backgroundPanel_ForRound = new JPanel();
@@ -58,8 +57,6 @@ public class GameScreen extends JPanel implements Serializable
 	private ArrayList<ObserverPanel> observerPanels = new ArrayList<>();
 
 	private GameMap gameMap;
-
-	private JTable leaderboard = new JTable();
 
 	private GameScreen (JFrame frame)
 	{
@@ -101,7 +98,6 @@ public class GameScreen extends JPanel implements Serializable
 
 		// Add the images to their corresponding JPanel
 		addImages();
-		initializeListenerToDraw();
 
 		// Add the JPanels to the main JLayeredPane with their corresponding layer
 		addPanelToScreen();
@@ -133,7 +129,6 @@ public class GameScreen extends JPanel implements Serializable
 		initializeInformationCardImage();
 		initializeFaceUpTransportationCounters();
 		initializeDeckOfTransportationCounters();
-		initializeDeckOfTransportationCountersImage();
 		initializeLeaderboard();
 	}
 
@@ -302,21 +297,12 @@ public class GameScreen extends JPanel implements Serializable
 		gridImage = new ImageIcon(gridResized);
 		informationCardImage_TopLayer = new JLabel(gridImage);
 	}
-	
-	public void initializeDeckOfTransportationCountersImage()
-	{
-		ImageIcon gridImage = new ImageIcon("./assets/sprites/M08.png");
-		Image grid = gridImage.getImage();
-		Image gridResized = grid.getScaledInstance(width*67/1440, height*60/900,  java.awt.Image.SCALE_SMOOTH);
-		gridImage = new ImageIcon(gridResized);
-		deckOfTransportationCountersImage_TopLayer = new JLabel(gridImage);
-	}
-	
+
 	public void addImages()
 	{
 		backgroundPanel_ForMap.add(mapImage_BottomLayer);
 		backgroundPanel_ForInformationCard.add(informationCardImage_TopLayer);
-		panelForDeckOfTransportationCounters.add(deckOfTransportationCountersImage_TopLayer);
+		panelForDeckOfTransportationCounters.add(GameState.instance().getCounterPile().getImage());
 
 		drawTownPieces();
 
@@ -405,30 +391,6 @@ public class GameScreen extends JPanel implements Serializable
 			panelForObstacle.repaint();
 			panelForObstacle.revalidate();
 		}
-	}
-
-	/**
-	 * Adds a MouseListener to deckOfTransportationCountersImage_TopLayer
-	 */
-	public void initializeListenerToDraw()
-	{
-		deckOfTransportationCountersImage_TopLayer.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if (GameRuleUtils.isDrawCountersPhase()) {
-					CounterUnit drawn = GameState.instance().getCounterPile().draw(); // draw a counter
-					GameManager.getInstance().getThisPlayer().getHand().addUnit(drawn); // add to player's hand
-					updateAll(); // update GUI
-
-					GameManager.getInstance().endTurn();
-					//TODO: removes one counter from remote decks
-
-//					// this code should never execute but is used for testing with a single player
-//					if (GameState.instance().getCurrentPlayer().equals(GameManager.getInstance().getThisPlayer())) {
-//						GameManager.getInstance().planTravelRoutes(); // PHASE 4
-//					}
-				}}
-		});
 	}
 
 	public static void main(String[] args) 
