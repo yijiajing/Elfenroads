@@ -197,6 +197,8 @@ public class CommunicationsManager {
      */
     public void sendCommandToIndividual(GameCommand command, String recipientName) throws IOException
     {
+        recordPlayerNamesAndAddresses();
+
         String otherPlayerAddressWithPort = namesAndAddresses.get(recipientName);
         String otherPlayerAddressNoPort = NetworkUtils.getAddress(otherPlayerAddressWithPort);
         int port = NetworkUtils.getPort(otherPlayerAddressWithPort);

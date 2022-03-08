@@ -448,14 +448,23 @@ public class GameScreen extends JPanel implements Serializable
 	}
 
 	public static void displayMessage(String message, boolean passOption) {
-		String[] options;
+		JButton[] options;
 
 		if (passOption) { // write a message with "OK" and "PASS" buttons
-			options = new String[]{"OK", "PASS"};
+			options = new JButton[2];
+			options[0] = new JButton("OK");
+			options[1] = new JButton("PASS");
+			options[1].addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					GameManager.getInstance().endTurn();
+				}
+			});
 		}
 
 		else { // write a message with "OK" button
-			options = new String[]{"OK"};
+			options = new JButton[1];
+			options[0] = new JButton("OK");
 		}
 
 		JOptionPane.showOptionDialog(null, message, null, JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
