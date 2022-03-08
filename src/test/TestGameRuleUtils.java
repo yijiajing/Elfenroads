@@ -38,6 +38,12 @@ public class TestGameRuleUtils {
         assert !GameRuleUtils.validateMove(gameMap, elvenhold, beata, Arrays.asList(cloud));
         assert GameRuleUtils.validateMove(gameMap, elvenhold, beata, Arrays.asList(cloud, cloud));
         assert !GameRuleUtils.validateMove(gameMap, elvenhold, beata, Arrays.asList(cloud, cloud, cloud));
+
+        // test shortest distance algorithm
+        assert gameMap.getDistanceBetween(elvenhold, feodor) == 2;
+        assert gameMap.getDistanceBetween(feodor, elvenhold) == 2;
+        assert gameMap.getDistanceBetween(elvenhold, beata) == 1;
+        assert gameMap.getDistanceBetween(beata, elvenhold) == 1;
     }
 
 

@@ -75,12 +75,6 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
                     // this calls the ChooseBootWindow once all players have responded
                     GameManager.getInstance().requestAvailableColours();
 
-                    /* TODO FIX THIS 
-                    String id = session.getId();
-                    GameManager.init(Optional.empty(), id);
-                    MainFrame.mainPanel.add(new HostWaitWindow(session.getId()), "hostwait");
-                    MainFrame.cardLayout.show(MainFrame.mainPanel, "hostwait"); */
-                  
                 } 
                 catch (Exception problem) 
                 {
