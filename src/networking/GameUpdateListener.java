@@ -64,6 +64,7 @@ public class GameUpdateListener implements Runnable
     private void readInCommand(ObjectInputStream received) throws Exception
     {
         commands.add((GameCommand) received.readObject());
+        notifyManager();
     }
 
     private void notifyManager()
