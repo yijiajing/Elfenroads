@@ -77,7 +77,11 @@ public class GameManager {
         GameScreen.getInstance().draw();
         MainFrame.cardLayout.show(MainFrame.mainPanel,"gameScreen");
 
-        setUpRound(); // includes dealing travel cards (PHASE 1) and drawing 1 face down counter for each player (PHASE 2)
+//        setUpRound(); // includes dealing travel cards (PHASE 1) and drawing 1 face down counter for each player (PHASE 2)
+
+        // Make sure not to do any player list iteration before this block of code, as players are not
+        // fully initialized. If you want to do anything right after players are fully initialized,
+        // add it to execute() in AddPlayerCommand.
 
         // initialize all the players now that the game has been launched and everyone is in
         try
@@ -133,14 +137,12 @@ public class GameManager {
 
         // give all players (each peer) an obstacle
         thisPlayer.getHand().addUnit(new Obstacle(MainFrame.instance.getWidth()*67/1440, MainFrame.instance.getHeight()*60/900));
-
-        initializeElfBoots();
     }
 
     /**
      * PHASE 1 & 2
      */
-    private void setUpRound() {
+    public void setUpRound() {
         gameState.setCurrentPhase(RoundPhaseType.DEAL_CARDS);
         gameState.setToFirstPlayer();
         gameState.getTravelCardDeck().shuffle(); // only shuffle once at the beginning of each round
@@ -386,7 +388,7 @@ public class GameManager {
         //TODO: finishes game ending
     }
 
-    private void initializeElfBoots() {
+    public void initializeElfBoots() {
 
         ElfBootPanel elvenholdBootPanel = GameMap.getInstance().getTown("Elvenhold").getPanel().getElfBootPanel();
 

@@ -1,8 +1,17 @@
 package commands;
 
+import domain.ElfBoot;
+import domain.GameManager;
+import domain.GameMap;
 import domain.Player;
 import enums.Colour;
+import networking.GameSession;
 import networking.GameState;
+import panel.ElfBootPanel;
+import panel.GameScreen;
+
+import java.io.IOException;
+import java.util.Collections;
 
 public class AddPlayerCommand implements GameCommand{
 
@@ -16,11 +25,23 @@ public class AddPlayerCommand implements GameCommand{
         color = playerColor;
     }
 
-    public void execute()
-    {
+    public void execute() {
+        GameState gameState = GameState.instance();
+        GameManager gameManager = GameManager.getInstance();
+
         // just save the player on the receiving computer
-        GameState.instance().addPlayer(new Player(color, name));
+        gameState.addPlayer(new Player(color, name));
+        try {
+            int numPlayers = GameSession.getPlayerNames(GameManager.getInstance().getSessionID()).size();
+            if (gameState.getNumOfPlayers() == numPlayers) {
+                // we have added all the players, start by setting up the round
+                gameState.sortPlayers();
+                gameState.setToFirstPlayer();
+                gameManager.initializeElfBoots();
+                gameManager.setUpRound();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
-
-
 }
