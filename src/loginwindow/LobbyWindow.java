@@ -198,7 +198,7 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
 
             // add the game info to labels
             JLabel creatorLabel = new JLabel("Creator: " + creator);
-            JLabel nameLabel = new JLabel("Name: " + name);
+            JLabel nameLabel = new JLabel("Variant: " + name);
             JLabel playersInSessionLabel = new JLabel("Players: " + players);
             JLabel playerCountLabel = new JLabel("Number of Players: " + playersOutOfMax);
 

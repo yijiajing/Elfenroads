@@ -302,7 +302,33 @@ public class GameSession {
         System.out.println("Response status: " + status);
 
         return content.toString();
+    }
 
+    /**
+     * does the same thing as getSessions, except using long polling
+     * @param prevPayload the previous getSessions response, which we will hash and pass as a parameter
+     * @return once there is updated information(the response was different than the previous one,) return the information
+     * @throws IOException
+     */
+    public static String getSessions(String prevPayload) throws IOException
+    {
+        String prevPayloadHashed = NetworkUtils.md5Hash(prevPayload);
+
+        URL url = new URL("http://35.182.122.111:4242/api/sessions" + "?hash=" + prevPayloadHashed);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("GET");
+
+        int status = con.getResponseCode();
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer content = new StringBuffer();
+        while((inputLine = in.readLine()) != null) {
+            content.append(inputLine);
+        }
+        in.close();
+        con.disconnect();
+        System.out.println("Response status: " + status);
+        return content.toString();
     }
 
     public static JSONObject getGameParameters(String id) throws IOException

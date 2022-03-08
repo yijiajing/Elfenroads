@@ -21,11 +21,10 @@ public class TestAPI {
     public static void main (String [] args) throws IOException, Exception
 
     {
-        // GameService testGame2 = new GameService("testGame2", "testGame2", "abc123_ABC123",2, 6);
-        // GameService elfenlands = new GameService("Elfenroads", "Elfenroads", "abc123_ABC123", 2, 6);
-        // createASession();
-        User.init("dontforget", "abc123_ABC123");
-        deleteAllSessions();
+       // GameService elfenroads = new GameService("elfenroads", "elfenroads", "abc123_ABC123", 1, 6);
+       GameService elfenlands = new GameService("elfenlands", "elfenlands", "abc123_ABC123", 2, 6 );
+       // GameService longGame = new GameService("longGame", "long game", "abc123_ABC123", 2, 6 );
+       // GameService destinationTown = new GameService("destinationTown", "destination town", "abc123_ABC123", 2, 6);
     }
 
     public static void testCreateUser(String username, String password) throws IOException, Exception {
@@ -59,6 +58,44 @@ public class TestAPI {
 
     public static void createGameServices() throws IOException
     {}
+
+    public static void testLongPolling() throws IOException
+    {
+        String gameID = getFirstSessionID();
+        String prevPayload = "";
+
+        while (true)
+        {
+            prevPayload = GameSession.getSessionDetails(gameID, prevPayload);
+            System.out.println("Received new information!");
+            System.out.println(prevPayload);
+        }
+    }
+
+    /**
+     * designed to be called whenever we have to reset the LS. repopulates Users and the GameServices we are using
+     * @pre none of the users already exist in the LS
+     */
+    public static void reInitializeAPI() throws Exception
+    {
+        // add users
+        ArrayList<String> groupMembers = new ArrayList<String>();
+        groupMembers.add("nick");
+        groupMembers.add("charles");
+        groupMembers.add("philippe");
+        groupMembers.add("chloe");
+        groupMembers.add("huasen");
+        groupMembers.add("yijia");
+
+        for (String person : groupMembers)
+        {
+            User.registerNewUser(person, "abc123_ABC123", User.Role.PLAYER);
+        }
+
+        // initialize Elfenroads game service
+        GameService elfenroads = new GameService("Elfenroads", "Elfenroads", "abc123_ABC123", 2, 6);
+
+    }
 
 
 
