@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.net.InetAddress;
 import java.util.HashMap;
 import java.util.Set;
+import java.util.logging.Logger;
 
 public class GameSession {
 
@@ -274,7 +275,130 @@ public class GameSession {
         JSONObject details = new JSONObject(content.toString());
 
         return details;
+    }
 
+    public static String getSessionsReturnString() throws IOException
+    {
+        URL url = new URL("http://35.182.122.111:4242/api/sessions");
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("GET");
+
+        int status = con.getResponseCode();
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer content = new StringBuffer();
+        while((inputLine = in.readLine()) != null) {
+            content.append(inputLine);
+        }
+        in.close();
+        con.disconnect();
+        // System.out.println("Response status: " + status);
+        // System.out.println(content.toString());
+
+        return content.toString();
+    }
+
+    public static String getSessionDetailsReturnString (String id) throws IOException
+    {
+        URL url = new URL("http://35.182.122.111:4242/api/sessions/" + id);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("GET");
+
+        int status = con.getResponseCode();
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer content = new StringBuffer();
+        while((inputLine = in.readLine()) != null) {
+            content.append(inputLine);
+        }
+        in.close();
+        con.disconnect();
+        return content.toString();
+    }
+
+    public static ArrayList<String> getPlayersFromSessionDetails(String sessionDetailsResponse)
+    {
+        JSONObject details = new JSONObject(sessionDetailsResponse);
+        ArrayList<String> players = new ArrayList<String>();
+        JSONArray names = details.optJSONArray("players");
+
+        for (int i = 0; i < names.length(); i++)
+        {
+            String name = names.getString(i);
+            players.add(name);
+        }
+
+        return players;
+    }
+
+    /**
+     * does the same thing as getSessionDetails, except using long polling
+     * @param id the id of the session we would like information about
+     * @param prevPayload the previous payload (i.e. the last update received)--will be hashed and sent as a parameter
+     * @return unlike the synchronous method, this will just return the content and cast it to a string (because we need it for the next call.) we will JSON-ize the information outside of this method
+     */
+    public static String getSessionDetails(String id, String prevPayload) throws IOException
+    {
+        String hashedPrevPayload = NetworkUtils.md5Hash(prevPayload.toString());
+
+        URL url = new URL("http://35.182.122.111:4242/api/sessions/" + id + "?hash=" + hashedPrevPayload);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("GET");
+
+        int status = con.getResponseCode();
+
+        // if we get a timeout, just resend the request
+        if (status == 408)
+        {
+            Logger.getGlobal().info("Session details request timed out. Resending it.");
+            getSessionDetails(id, prevPayload);
+        }
+
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer content = new StringBuffer();
+        while((inputLine = in.readLine()) != null) {
+            content.append(inputLine);
+        }
+        in.close();
+        con.disconnect();
+        System.out.println("Response status: " + status);
+
+        return content.toString();
+    }
+
+    /**
+     * does the same thing as getSessions, except using long polling
+     * @param prevPayload the previous getSessions response, which we will hash and pass as a parameter
+     * @return once there is updated information(the response was different than the previous one,) return the information
+     * @throws IOException
+     */
+    public static String getSessions(String prevPayload) throws IOException
+    {
+        String prevPayloadHashed = NetworkUtils.md5Hash(prevPayload);
+
+        URL url = new URL("http://35.182.122.111:4242/api/sessions" + "?hash=" + prevPayloadHashed);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("GET");
+
+        int status = con.getResponseCode();
+        // if we get a timeout, just resend the request
+        if (status == 408)
+        {
+            Logger.getGlobal().info("GetSessions request timed out. Resending it.");
+            getSessions(prevPayload);
+        }
+
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer content = new StringBuffer();
+        while((inputLine = in.readLine()) != null) {
+            content.append(inputLine);
+        }
+        in.close();
+        con.disconnect();
+        System.out.println("Response status: " + status);
+        return content.toString();
     }
 
     public static JSONObject getGameParameters(String id) throws IOException
@@ -324,8 +448,36 @@ public class GameSession {
         Set idSet = sessions.keySet();
         ArrayList<String> ids = new ArrayList<String>(idSet);
         return ids;
+    }
 
+    /**
+     * @param resultsOfGetSessions the String results of a getSessions call
+     * @return
+     */
+    public static ArrayList<String> getSessionIDFromSessions(String resultsOfGetSessions)
+    {
+        JSONObject results = new JSONObject(resultsOfGetSessions);
+        Set keys = results.keySet();
+        JSONObject sessions = results.getJSONObject("sessions");
+        Set idSet = sessions.keySet();
+        ArrayList<String> ids = new ArrayList<String>(idSet);
+        return ids;
 
+    }
+
+    /**
+     * long version of getAllSessionID that uses a long polling request instead
+     * @param prevPayload the previous payload from getSessions api call, to hash
+     * @return
+     */
+    public static ArrayList<String> getAllSessionIDLongPolling (String prevPayload) throws IOException
+    {
+        JSONObject getSessionsResults = new JSONObject(getSessions(prevPayload));
+        Set keys = getSessionsResults.keySet();
+        JSONObject sessions = getSessionsResults.getJSONObject("sessions");
+        Set idSet = sessions.keySet();
+        ArrayList<String> ids = new ArrayList <String> (idSet);
+        return ids;
     }
 
     public static JSONObject getSessions() throws IOException

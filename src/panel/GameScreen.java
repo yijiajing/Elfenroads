@@ -361,12 +361,16 @@ public class GameScreen extends JPanel implements Serializable
 		for (JPanel panel : panelForFaceUpTransportationCounters) {
 			if (panel != null) {
 				panel.removeAll();
+        panel.repaint();
+        panel.revalidate();
 			}
 		}
 
 		for (int i = 0; i < 5; i++) {
-			Logger.getGlobal().info("Updating face up counter");
 			JPanel panel = panelForFaceUpTransportationCounters[i];
+
+			//TODO: investigate why panel can be null
+
 			TransportationCounter counter = faceUpCounters.get(i);
 			panel.add(counter.getDisplay());
 			panel.repaint();
@@ -486,6 +490,5 @@ public class GameScreen extends JPanel implements Serializable
 
 	public static void displayMessage(String message) {
 		JOptionPane.showMessageDialog(null, message);
-
 	}
 }

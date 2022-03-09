@@ -184,13 +184,18 @@ public class GameManager {
      * Fills the Player's hand to have 8 travel cards
      */
     public void distributeTravelCards() {
-        Logger.getGlobal().info("Local player turn: " + isLocalPlayerTurn());
+
+        LOGGER.info("Distributing travel cards...");
+        LOGGER.info("Local player turn: " + isLocalPlayerTurn());
+
         if (!(isLocalPlayerTurn() && gameState.getCurrentPhase() == RoundPhaseType.DEAL_CARDS)) return;
 
         int numCards = thisPlayer.getHand().getNumTravelCards();
         for (int i = numCards; i < 8; i++) {
             thisPlayer.getHand().addUnit(gameState.getTravelCardDeck().draw());
         }
+        LOGGER.info("Added " + (8-numCards) + " travel cards...");
+        Logger.getGlobal().info(GameManager.getInstance().getThisPlayer().getHand().getCards().toString());
 
         int numDrawn = 8 - numCards;
         DrawCardCommand drawCardCommand = new DrawCardCommand(numDrawn);

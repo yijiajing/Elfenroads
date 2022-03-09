@@ -38,7 +38,7 @@ public class ScoreBoardPanel extends JPanel implements ObserverPanel{
     	scoreCard = new JPanel();
     	scoreCard.setLayout(new FlowLayout());
     	int playerIndex = GameState.instance().getPlayers().indexOf(pPlayer) + 1;
-    	scoreCard.add(new JLabel("Player " + playerIndex));
+    	scoreCard.add(new JLabel(pPlayer.getName()));
     	
     	score = new JLabel(Integer.toString(aPlayer.getScore())+" pts");
     	scoreCard.add(score);

@@ -11,8 +11,9 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.logging.Logger;
 
-public class LobbyWindow extends JPanel implements ActionListener {
+public class LobbyWindow extends JPanel implements ActionListener, Runnable {
 
     private JLabel background_elvenroads;
     private static JButton createButton;
@@ -28,7 +29,19 @@ public class LobbyWindow extends JPanel implements ActionListener {
     private JLabel numPlayers;
     private Box gameInfo;
 
-    LobbyWindow(){
+    private static String prevPayload = ""; // used for long polling requests
+
+    private static Thread t;
+    private static int flag = 0;
+
+    private void initThread()
+    {
+        t = new Thread(this);
+    }
+
+    LobbyWindow()
+    {
+        initThread();
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setSize((int) screenSize.getWidth(), (int) screenSize.getHeight());
 
@@ -38,7 +51,6 @@ public class LobbyWindow extends JPanel implements ActionListener {
         loadButton = new JButton("LOAD SAVED SESSION");
         gamesButton = new JButton("JOIN");
 
-        refreshButton = new JButton("REFRESH");
 
         // add an action listener
 
@@ -55,10 +67,13 @@ public class LobbyWindow extends JPanel implements ActionListener {
             gameProblem.printStackTrace();
         }
 
-        createButton.addActionListener(new ActionListener(){
-
+        createButton.addActionListener(new ActionListener()
+        {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e) 
+            {
+                //t.stop();
+                flag = 1;
                 remove(background_elvenroads);
                 MainFrame.mainPanel.add(new VersionToPlayWindow(), "version");
                 MainFrame.cardLayout.show(MainFrame.mainPanel,"version");
@@ -83,28 +98,12 @@ public class LobbyWindow extends JPanel implements ActionListener {
 
             }
         });
-        refreshButton.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                try
-                {
-                    initializeGameInfo(sessions);
-                }
 
-                catch (IOException e1)
-                {
-                    e1.printStackTrace();
-                }
-            }
-        });
 
 
         buttons = new JPanel();
         buttons.add(createButton);
         buttons.add(loadButton);
-        buttons.add(refreshButton);
         GridBagLayout layout = new GridBagLayout();
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -118,6 +117,8 @@ public class LobbyWindow extends JPanel implements ActionListener {
         background_elvenroads.add(sessions,gbc);
 
         add(background_elvenroads);
+
+        t.start();
 
     }
 
@@ -133,11 +134,36 @@ public class LobbyWindow extends JPanel implements ActionListener {
      */
     public static void initializeGameInfo(JPanel sessions) throws IOException
     {
-        // reset the UI
+        String getSessionsResponse = null;
+
+        if (prevPayload.equals("")) // when we first get into the window, we will have to make a synchronous api call to show the information
+        {
+            Logger.getGlobal().info("Sending the first long polling request now...");
+            getSessionsResponse = GameSession.getSessionsReturnString();
+            prevPayload = getSessionsResponse;
+        }
+
+        else // if it is not our first request
+        {// get a list of game sessions by ID
+            try {
+                getSessionsResponse = GameSession.getSessions(prevPayload);
+                Logger.getGlobal().info("Sending another long poll request...");
+            } catch (IOException e) {
+                // we can assume that the exception is because of long polling timeout, so we'll just resend it
+                getSessionsResponse = GameSession.getSessions(prevPayload);
+            }
+
+            if (getSessionsResponse == null) {
+                Logger.getGlobal().info("Failed to initialize the game info in the LobbyWindow using long polling.");
+            }
+            prevPayload = getSessionsResponse;
+        }
+
+        // now that we have new game information, reset the ui
         sessions.removeAll();
 
-        // get a list of game sessions by ID
-        ArrayList<String> gameIDs = GameSession.getAllSessionID();
+        // parse the String response and turn it into a list of String ids
+        ArrayList<String> gameIDs = GameSession.getSessionIDFromSessions(getSessionsResponse);
 
         int counter = 0;
 
@@ -190,14 +216,17 @@ public class LobbyWindow extends JPanel implements ActionListener {
 
             // initialize join button
             JButton joinButton = new JButton("JOIN");
-            // TODO: get rid of the start button entirely
-            JButton startButton = new JButton("START");
 
-            joinButton.addActionListener(new ActionListener() {
+            joinButton.addActionListener(new ActionListener() 
+            {
                 @Override
-                public void actionPerformed(ActionEvent e) {
+                public void actionPerformed(ActionEvent e) 
+                {
                     // join the game
-                    try {
+                    try 
+                    {
+                        //t.stop();
+                        flag = 1;
                         GameSession.joinSession(MainFrame.loggedIn, id);
                         GameManager.init(Optional.empty(), id, interpretVariant(variant));
 
@@ -205,19 +234,14 @@ public class LobbyWindow extends JPanel implements ActionListener {
                         // this calls the ChooseBootWindow once all players have responded
                         GameManager.getInstance().requestAvailableColours();
 
-                    } catch (Exception ex) {
+                    } 
+                    catch (Exception ex) 
+                    {
                         System.out.println("There was a problem attempting to join the session with User" + User.getInstance().getUsername());
                         ex.printStackTrace();
                     }
                 }});
 
-            startButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    GameManager.getInstance().initPlayers();
-                    // GameManager.init(Optional.empty(), id);
-                }
-            });
 
 
             // initialize the box
@@ -229,7 +253,6 @@ public class LobbyWindow extends JPanel implements ActionListener {
             gameInfo.add(creatorLabel);
             gameInfo.add(variantLabel);
             gameInfo.add(joinButton);
-            gameInfo.add(startButton);
 
             // add the box to the sessions panel
             // sessions.add(gameInfo);
@@ -254,8 +277,38 @@ public class LobbyWindow extends JPanel implements ActionListener {
 
         }
 
+    }
 
+    @Override
+    public void run() 
+    {
+        // TODO Auto-generated method stub
+        while (true)
+        {System.out.println("thread alive");
+        if (flag == 1){break;}
+            try 
+            {
+                initializeGameInfo(sessions);
+            } 
+            catch (IOException e) 
+            {
+                // TODO Auto-generated catch block
+                Logger.getGlobal().info("Caught an IOException in the LobbyWindow. The long polling request probably timed out. Sending a new one.");
+                e.printStackTrace();
+            }
 
+            /* try
+            {
+                // Thread.sleep(5000);
+            } 
+            catch (InterruptedException e) 
+            {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+             */
+        } 
     }
 
     /**
