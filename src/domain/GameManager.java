@@ -269,8 +269,6 @@ public class GameManager {
                     Alternatively, you may choose to place your Obstacle on a road that already has a counter. But be warned... you can only do this once!
                     Alternatively, you can pass your turn by clicking "End Turn".
                     """);
-
-            // TODO implement all logic in listeners and action manager
         }
     }
 
@@ -327,17 +325,24 @@ public class GameManager {
         List<TransportationCounter> myCounters = thisPlayer.getHand().getCounters();
 
         for ( TransportationCounter c : myCounters ) {
-            if (c.equals(toKeep)) continue;
+            if (c.equals(toKeep)) {
+                continue;
+            }
 
-            thisPlayer.getHand().removeUnit(c); // remove counter from my hand
             GameState.instance().getCounterPile().addDrawable(c); // put counter back in the deck
+
             try {
+                Logger.getGlobal().info("Sending return counter command.");
                 coms.sendGameCommandToAllPlayers(new ReturnTransportationCounterCommand(c));
             } catch (IOException e) {
                 System.out.println("There was a problem sending the ReturnTransportationCounterCommand to all players.");
                 e.printStackTrace();
             }
         }
+
+        // clear all counters and then add toKeep back, otherwise we get concurrent modification exception
+        thisPlayer.getHand().getCounters().clear();
+        thisPlayer.getHand().addUnit(toKeep);
 
         endTurn();
     }
