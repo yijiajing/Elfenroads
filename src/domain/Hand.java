@@ -28,7 +28,7 @@ public class Hand {
 			cardList.remove(pUnit);
 		} else if (pUnit instanceof Obstacle) {
 			obstacle = Optional.empty();
-		} else if (pUnit instanceof TransportationCounter){
+		} else if (pUnit instanceof TransportationCounter) {
 			counterList.remove(pUnit);
 		}
 	}
