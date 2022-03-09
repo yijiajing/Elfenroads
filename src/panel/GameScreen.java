@@ -365,8 +365,14 @@ public class GameScreen extends JPanel implements Serializable
 	
 	public void addCards()
 	{
+		// clear the previous cards from the screen
+		for (JPanel panel : panelForPlayerCards) {
+			panel.removeAll();
+		}
+
 		List<CardUnit> myCards = GameManager.getInstance().getThisPlayer().getHand().getCards();
 
+		// draw the cards to the screen
 		for (int p = 0; p < myCards.size(); p++) {
 			JPanel panel = panelForPlayerCards[p];
 			CardUnit card = myCards.get(p);
