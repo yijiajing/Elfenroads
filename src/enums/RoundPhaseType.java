@@ -6,7 +6,6 @@ public enum RoundPhaseType {
     DRAW_COUNTER_ONE, DRAW_COUNTER_TWO, DRAW_COUNTER_THREE,
     PLAN_ROUTES,
     MOVE,
-    COMPLETED,
     RETURN_COUNTERS
     // removed AUCTION for now because it is not part of this version yet
 }

@@ -73,7 +73,9 @@ public class Road {
             this.obstacle.setPlacedOn(null);
             this.obstacle = null;
         }
-        counterPanel.clear();
+        if (counterPanel != null) {
+            counterPanel.clear();
+        }
     }
 
     public CounterPanel getCounterPanel() {
