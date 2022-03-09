@@ -110,6 +110,9 @@ public class GameManager {
         gameState.sortPlayers();
         gameState.setToFirstPlayer();
         System.out.print(gameState.getPlayers());
+        for (Player p : gameState.getPlayers()){
+            System.out.println(p.getDestinationTown());
+        }
         if (!loaded) setUpNewGame();
 
         GameScreen.getInstance().draw();
