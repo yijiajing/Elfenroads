@@ -137,12 +137,12 @@ public class GameScreen extends JPanel implements Serializable
 	public void initializeBackgroundPanels()
 	{
 		// Set Bounds for background Player's Transportation Counter zone
-		backgroundPanel_ForTransportationCounters.setBounds(width*1075/1440, height*623/900, width*900/1440, height*70/900);
+		backgroundPanel_ForTransportationCounters.setBounds(width*0/1440, height*623/900, width*900/1440, height*70/900);
 		backgroundPanel_ForTransportationCounters.setBackground(Color.DARK_GRAY);
 		
 		// Set Bounds for background Obstacle zone
 		backgroundPanel_ForObstacle.setBackground(Color.RED);
-		backgroundPanel_ForObstacle.setBounds(width*1070/1440, height*623/900, width*80/1440, height*70/900);
+		backgroundPanel_ForObstacle.setBounds(width*900/1440, height*623/900, width*80/1440, height*70/900);
 		
 		// Set Bounds for background Image zone
 		backgroundPanel_ForMap.setBounds(width*0/1440, height*0/900, width*1150/1440, height*625/900);
@@ -260,14 +260,14 @@ public class GameScreen extends JPanel implements Serializable
 			panel.setBorder(whiteLine);
 			panel.setBounds(xCoordinate, height*625/900, width*70/1440, height*65/900);
 			panelForPlayerTransportationCounters[i] = panel;
-			xCoordinate += width*200/1440;
+			xCoordinate += width*100/1440;
 			boardGame_Layers.add(panel, 0);
 		}
 		
 		// Obstacle
 		panelForObstacle.setOpaque(false);
 		//panelForObstacle.setBorder(whiteLine);
-		panelForObstacle.setBounds(width*1077/1440, height*625/900, width*70/1440, height*65/900);
+		panelForObstacle.setBounds(width*900/1440, height*625/900, width*70/1440, height*65/900);
 		boardGame_Layers.add(panelForObstacle,0);
 	}
 	
