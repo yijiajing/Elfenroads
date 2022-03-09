@@ -24,5 +24,6 @@ public class ReturnTransportationCounterCommand implements GameCommand {
         Logger.getGlobal().info("Executing ReturnTransportationCounterCommand, return " + type);
         TransportationCounter counter = new TransportationCounter(type, MainFrame.instance.getWidth()*67/1440, MainFrame.instance.getHeight()*60/900);
         GameState.instance().getCounterPile().addDrawable(counter);
+        
     }
 }

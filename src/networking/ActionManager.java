@@ -74,10 +74,12 @@ public class ActionManager {
         if (selectedCounter instanceof Obstacle) {
             if (selectedRoad.placeObstacle((Obstacle) selectedCounter)) {
                 gameManager.getThisPlayer().getHand().removeUnit(selectedCounter);
-                GameScreen.getInstance().updateAll();
+                //GameScreen.getInstance().updateAll();
                 PlaceObstacleCommand toSendOverNetwork = new PlaceObstacleCommand(selectedRoad);
+                
                 try {
                     gameManager.getComs().sendGameCommandToAllPlayers(toSendOverNetwork);
+                    GameScreen.getInstance().updateAll();
                 } catch (IOException e) {
                     LOGGER.info("There was a problem sending the command to place the obstacle!");
                     e.printStackTrace();
@@ -93,11 +95,12 @@ public class ActionManager {
             if (selectedRoad.setTransportationCounter(counter)) {
                 // remove this transportation counter from hand
                 gameManager.getThisPlayer().getHand().removeUnit(counter);
-                GameScreen.getInstance().updateAll(); // update transportation area
+                //GameScreen.getInstance().updateAll(); // update transportation area
                 
                 PlaceTransportationCounterCommand toSendOverNetwork = new PlaceTransportationCounterCommand(selectedRoad, counter);
                 try {
                     gameManager.getComs().sendGameCommandToAllPlayers(toSendOverNetwork);
+                    GameScreen.getInstance().updateAll();
                 } catch (IOException e) {
                     LOGGER.info("There was a problem sending the command to place the transportation counter!");
                     e.printStackTrace();
