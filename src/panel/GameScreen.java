@@ -10,6 +10,7 @@ import java.net.ServerSocket;
 import java.util.List;
 
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -55,6 +56,8 @@ public class GameScreen extends JPanel implements Serializable
 	private final JPanel panelForObstacle = new JPanel();
 
 	private ArrayList<ObserverPanel> observerPanels = new ArrayList<>();
+
+	private boolean initialized = false;
 
 	private GameMap gameMap;
 
@@ -113,6 +116,10 @@ public class GameScreen extends JPanel implements Serializable
 	}
 
 	public void updateAll() {
+		if (!initialized) {
+			draw();
+		}
+
 		addTransportationCountersAndObstacle(); // updates the player's counter area
 		addCards(); // update's the player's cards
 		addFaceUpTransportationCounters(); // updates the face-up transportation counters
@@ -121,6 +128,8 @@ public class GameScreen extends JPanel implements Serializable
 
 	public void initialization()
 	{
+		Logger.getGlobal().info("Initializing...");
+		initialized = true;
 		initializeMapImage();
 		initializeRoundCardImage(1);
 		initializeTransportationCountersAndObstacle();
@@ -181,6 +190,7 @@ public class GameScreen extends JPanel implements Serializable
 	
 	public void initializeFaceUpTransportationCounters()
 	{
+		Logger.getGlobal().info("Initializing face up transportation counters");
 		Border whiteLine = BorderFactory.createLineBorder(Color.WHITE);
 		JPanel panel2 = new JPanel();
 		panel2.setBounds(width*1315/1440, height*290/900, width*70/1440, height*65/900);
@@ -219,8 +229,7 @@ public class GameScreen extends JPanel implements Serializable
 	}
 	
 	public void initializeLeaderboard()
-	{	
-		
+	{
 		List<Player> aPlayers = GameState.instance().getPlayers();
 		
 		backgroundPanel_ForLeaderboard.setLayout(new BoxLayout(backgroundPanel_ForLeaderboard, BoxLayout.Y_AXIS));
@@ -255,7 +264,7 @@ public class GameScreen extends JPanel implements Serializable
 		// Transportation Counters
 		for (int i = 0; i < 5; i++)
 		{
-			JPanel panel= new JPanel();
+			JPanel panel = new JPanel();
 			panel.setOpaque(false);
 			panel.setBorder(whiteLine);
 			panel.setBounds(xCoordinate, height*625/900, width*70/1440, height*65/900);
@@ -354,7 +363,9 @@ public class GameScreen extends JPanel implements Serializable
 		ArrayList<TransportationCounter> faceUpCounters = GameState.instance().getFaceUpCounters();
 
 		for (int i = 0; i < 5; i++) {
+			Logger.getGlobal().info("Updating face up counter");
 			JPanel panel = panelForFaceUpTransportationCounters[i];
+			//TODO: investigate why panel can be null
 			panel.removeAll();
 			TransportationCounter counter = faceUpCounters.get(i);
 			panel.add(counter.getDisplay());
