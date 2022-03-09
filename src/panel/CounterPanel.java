@@ -27,6 +27,8 @@ public class CounterPanel extends JPanel {
         this.setBounds(this.x, this.y, gameScreen.getWidth() * 40 / 1440, gameScreen.getHeight() * 40 / 900);
         this.setOpaque(false);
         this.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		this.setAlignmentX(CENTER_ALIGNMENT);
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -41,8 +43,12 @@ public class CounterPanel extends JPanel {
     }
 
     public void placeObstacle(Obstacle obstacle) {
+<<<<<<< HEAD
     	gameScreen.addAncestorListener(null);
     	this.add(obstacle.getDisplay());
+=======
+    	this.add(obstacle.getMiniDisplay());
+>>>>>>> 7058563ec15873379d04997822cc0336cf76ac05
     }
 
     public void update() {

@@ -134,6 +134,9 @@ public class GameScreen extends JPanel implements Serializable
 		initializeDeckOfTransportationCounters();
 		initializeLeaderboard();
 		initializeEndTurnButton();
+
+		initializeMenuButton();
+
 		updateAll();
 	}
 
@@ -314,13 +317,24 @@ public class GameScreen extends JPanel implements Serializable
 
 	public void initializeEndTurnButton() {
 		JPanel buttonPanel = new JPanel();
-		buttonPanel.setBounds(width*1000/1440, height*625/900, width*100/1440, height*65/900);
+		buttonPanel.setBounds(width*1000/1440, height*625/900 - 20, width*100/1440, height*65/900);
 		buttonPanel.setOpaque(false);
 		boardGame_Layers.add(buttonPanel);
 
 		JButton endTurn = new EndTurnButton();
-		endTurn.setBounds(width*1000/1440, height*625/900, width*100/1440, height*65/900);
+		endTurn.setBounds(width*1000/1440, height*625/900 - 20, width*100/1440, height*65/900);
 		buttonPanel.add(endTurn);
+	}
+
+	public void initializeMenuButton() {
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.setBounds(width*1000/1440 + 75, height*625/900, width*100/1440, height*65/900);
+		buttonPanel.setOpaque(false);
+		boardGame_Layers.add(buttonPanel);
+
+		JButton menu = new MenuButton();
+		menu.setBounds(width*1000/1440 + 75, height*625/900, width*100/1440, height*65/900);
+		buttonPanel.add(menu);
 	}
 
 	public void addImages()
