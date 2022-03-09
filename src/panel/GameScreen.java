@@ -367,7 +367,9 @@ public class GameScreen extends JPanel implements Serializable
 	{
 		// clear the previous cards from the screen
 		for (JPanel panel : panelForPlayerCards) {
-			panel.removeAll();
+			if (panel != null) {
+				panel.removeAll();
+			}
 		}
 
 		List<CardUnit> myCards = GameManager.getInstance().getThisPlayer().getHand().getCards();
@@ -389,7 +391,9 @@ public class GameScreen extends JPanel implements Serializable
 
 		// remove a counter if it was already there
 		for (JPanel panel : panelForPlayerTransportationCounters) {
-			panel.removeAll();
+			if (panel != null) {
+				panel.removeAll();
+			}
 		}
 
 		int i = 0;
