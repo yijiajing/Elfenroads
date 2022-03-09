@@ -2,6 +2,7 @@ package domain;
 
 import commands.*;
 import enums.Colour;
+import enums.GameVariant;
 import enums.RoundPhaseType;
 import loginwindow.*;
 import networking.*;
@@ -42,14 +43,16 @@ public class GameManager {
      * If the User is starting a new game, then loadedState == null
      * If the User is loading a previous game, then loadedState != null
      */
-    private GameManager(Optional<GameState> loadedState, String pSessionID) {
+    private GameManager(Optional<GameState> loadedState, String pSessionID, GameVariant variant) {
 
         MainFrame.mainPanel.add(GameScreen.init(MainFrame.getInstance()), "gameScreen");
         sessionID = pSessionID;
 
         // start a new game if there is no state to be loaded
         if (loadedState.isEmpty()) {
-            gameState = GameState.init(3, pSessionID);
+            //TODO: figure out the game variant and pass it to the constructor
+            //gameState = GameState.init(pSessionID, GameVariant.ELFENLAND_CLASSIC);
+            gameState = GameState.init(pSessionID, variant);
             actionManager = ActionManager.init(gameState, this);
 
             loaded = false;
@@ -104,21 +107,24 @@ public class GameManager {
      */
     public void launch() {
         LOGGER.info("We have all players' info ready, setting up the rounds");
+        gameState.sortPlayers();
+        gameState.setToFirstPlayer();
+        System.out.print(gameState.getPlayers());
         if (!loaded) setUpNewGame();
 
         GameScreen.getInstance().draw();
         MainFrame.cardLayout.show(MainFrame.mainPanel,"gameScreen");
 
-        gameState.sortPlayers();
-        gameState.setToFirstPlayer();
-        GameScreen.getInstance().draw(); // put here because draw also utilizes the player list
+        // gameState.sortPlayers();
+        // gameState.setToFirstPlayer();
+        // GameScreen.getInstance().draw(); // put here because draw also utilizes the player list
         initializeElfBoots();
         setUpRound();
     }
 
-    public static GameManager init(Optional<GameState> loadedState, String sessionID) {
+    public static GameManager init(Optional<GameState> loadedState, String sessionID, GameVariant variant) {
         if (INSTANCE == null) {
-            INSTANCE = new GameManager(loadedState, sessionID);
+            INSTANCE = new GameManager(loadedState, sessionID, variant);
         }
         return INSTANCE;
     }
@@ -147,6 +153,14 @@ public class GameManager {
 
         // give all players (each peer) an obstacle
         thisPlayer.getHand().addUnit(new Obstacle(MainFrame.instance.getWidth()*67/1440, MainFrame.instance.getHeight()*60/900));
+
+        // assign each player a destination town if applicable
+        if (gameState.getGameVariant() == GameVariant.ELFENLAND_DESTINATION) {
+            TownCardDeck townCardDeck = new TownCardDeck(sessionID);
+            for (int i = 0; i < gameState.getNumOfPlayers(); i++) {
+                gameState.getPlayers().get(i).setDestinationTown(townCardDeck.getComponents().get(i).getTown());
+            }
+        }
     }
 
     /**
@@ -170,12 +184,16 @@ public class GameManager {
      * Fills the Player's hand to have 8 travel cards
      */
     public void distributeTravelCards() {
+        LOGGER.info("Distributing travel cards...");
+        LOGGER.info("Local player turn: " + isLocalPlayerTurn());
         if (!(isLocalPlayerTurn() && gameState.getCurrentPhase() == RoundPhaseType.DEAL_CARDS)) return;
 
         int numCards = thisPlayer.getHand().getNumTravelCards();
         for (int i = numCards; i < 8; i++) {
             thisPlayer.getHand().addUnit(gameState.getTravelCardDeck().draw());
         }
+        LOGGER.info("Added " + (8-numCards) + " travel cards...");
+        Logger.getGlobal().info(GameManager.getInstance().getThisPlayer().getHand().getCards().toString());
 
         int numDrawn = 8 - numCards;
         DrawCardCommand drawCardCommand = new DrawCardCommand(numDrawn);
@@ -199,11 +217,12 @@ public class GameManager {
         // add the counter to our hand
         TransportationCounter counter = gameState.getCounterPile().draw();
         counter.setOwned(true);
+        counter.setSecret(true);
         thisPlayer.getHand().addUnit(counter);
 
         // tell the other peers to remove the counter from the pile
         try {
-            coms.sendGameCommandToAllPlayers(new DrawCounterCommand(1, Optional.empty()));
+            coms.sendGameCommandToAllPlayers(new DrawCounterCommand(1, null));
         } catch (IOException e) {
             System.out.println("Error: there was a problem sending the DrawCounterCommand to the other peers.");
         }
@@ -224,7 +243,7 @@ public class GameManager {
 
             // display message to let the user know that they need to select a counter
             GameScreen.displayMessage("Please select a transportation counter to add to your hand. You may choose one of " +
-                    "the face-up counters or a counter from the deck, shown on the right side of the screen.", false, false);
+                    "the face-up counters or a counter from the deck, shown on the right side of the screen.");
 
             // all logic is implemented in the mouse listeners of the counters
         }
@@ -246,8 +265,8 @@ public class GameManager {
                     It is time to plan your travel routes! Begin by clicking the transportation counter in your hand that you want to use, then click on the road that you want to travel.
                     The chart in the bottom right corner indicates which transportation counters may be used on which road.
                     Alternatively, you may choose to place your Obstacle on a road that already has a counter. But be warned... you can only do this once!
-                    Alternatively, you can pass your turn.
-                    """, true, false);
+                    Alternatively, you can pass your turn by clicking "End Turn".
+                    """);
 
             // TODO implement all logic in listeners and action manager
         }
@@ -268,10 +287,10 @@ public class GameManager {
             GameScreen.displayMessage("""
                     It is time to travel across the map and collect your town pieces! Begin by clicking the travel card(s) that you want to use, then click on the town that you want to travel to.
                     The number of required travel cards depends on the region and is indicated by the chart in the bottom right corner. 
-                    You can repeat this as many times as you want. When you are done travelling, click "DONE". 
-                    """, false, true);
+                    You can repeat this as many times as you want. When you are done travelling, click "End Turn". 
+                    """);
 
-            // TODO implement all logic in listeners and action manager
+            // logic implemented in ActionManager
         }
     }
 
@@ -293,7 +312,7 @@ public class GameManager {
         GameScreen.displayMessage("""
                 The round is over! All of your transportation counters must be returned except for one. 
                 Please select the transportation counter from your hand that you wish to keep.
-                """, false, false);
+                """);
 
         // once the player clicks a transportation counter it will call returnAllCountersExceptOne()
     }
@@ -402,7 +421,42 @@ public class GameManager {
 
     private void endGame() {
         LOGGER.info("Game ends in " + gameState.getCurrentRound() + " rounds");
-        //TODO: finishes game ending
+        List<Player> players = gameState.getPlayers();
+        List<Player> winners = new ArrayList<>();
+        winners.add(players.get(0));
+
+        // calculate final score of each player according to the destination town variant rule
+        if (gameState.getGameVariant() == GameVariant.ELFENLAND_DESTINATION) {
+            for (Player p : players) {
+                int townsAway = GameMap.getInstance().getDistanceBetween(p.getCurrentTown(), p.getDestinationTown()) - 1;
+                int newScore = p.getScore() - townsAway;
+                p.setScore(newScore);
+            }
+        }
+
+        for (Player p : players) {
+            if (p.getScore() > winners.get(0).getScore()) {
+                winners.clear();
+                winners.add(p);
+            } else if (p.getScore() == winners.get(0).getScore()) {
+                if (p.getHand().getNumTravelCards() < winners.get(0).getHand().getNumTravelCards()) {
+                    winners.clear();
+                    winners.add(p);
+                } else if (p.getHand().getNumTravelCards() == winners.get(0).getHand().getNumTravelCards() && p != winners.get(0)) {
+                    winners.add(p);
+                }
+            }
+        }
+        assert winners.size() >= 1;
+        if (winners.size() == 1) {
+            GameScreen.displayMessage(winners.get(0).getName() + " is the winner!");
+        } else {
+            String winnersNames = "";
+            for (Player winner : winners) {
+                winnersNames = winnersNames.concat(" " + winner.getName());
+            }
+            GameScreen.displayMessage("There is a tie. " + winnersNames + " are the winners!");
+        }
     }
 
     public void initializeElfBoots() {

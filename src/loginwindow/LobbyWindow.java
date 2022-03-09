@@ -1,6 +1,7 @@
 package loginwindow;
 
 import domain.GameManager;
+import enums.GameVariant;
 import org.json.JSONObject;
 import networking.*;
 
@@ -185,7 +186,7 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
             String creator = sessionDetails.get("creator").toString();
             String maxSessionPlayers = sessionParameters.get("maxSessionPlayers").toString();
             String minSessionPlayers = sessionParameters.get("minSessionPlayers").toString();
-            String name = sessionParameters.get("name").toString();
+            String variant = sessionParameters.get("name").toString();
             String playersOutOfMax = numPlayers + "/" + minSessionPlayers + "-" + maxSessionPlayers;
 
             String players = "";
@@ -209,7 +210,7 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
 
             // add the game info to labels
             JLabel creatorLabel = new JLabel("Creator: " + creator);
-            JLabel nameLabel = new JLabel("Variant: " + name);
+            JLabel variantLabel = new JLabel("Variant: " + variant);
             JLabel playersInSessionLabel = new JLabel("Players: " + players);
             JLabel playerCountLabel = new JLabel("Number of Players: " + playersOutOfMax);
 
@@ -227,7 +228,7 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
                         //t.stop();
                         flag = 1;
                         GameSession.joinSession(MainFrame.loggedIn, id);
-                        GameManager.init(Optional.empty(), id);
+                        GameManager.init(Optional.empty(), id, interpretVariant(variant));
 
                         // prompt user to choose a boot colour
                         // this calls the ChooseBootWindow once all players have responded
@@ -238,22 +239,7 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
                     {
                         System.out.println("There was a problem attempting to join the session with User" + User.getInstance().getUsername());
                         ex.printStackTrace();
-                        return;
                     }
-
-                  /* TODO FIX THIS
-                    try
-                    {
-                        MainFrame.mainPanel.add(new PlayerWaitWindow(id), "playerwait");
-                    }
-                    catch (IOException e1)
-                    {
-                        // TODO Auto-generated catch block
-                        e1.printStackTrace();
-                        return;
-                    }
-                    MainFrame.cardLayout.show(MainFrame.mainPanel,"playerwait");
-                } */
                 }});
 
 
@@ -265,7 +251,7 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
             gameInfo.add(playersInSessionLabel);
             gameInfo.add(playerCountLabel);
             gameInfo.add(creatorLabel);
-            gameInfo.add(nameLabel);
+            gameInfo.add(variantLabel);
             gameInfo.add(joinButton);
 
             // add the box to the sessions panel
@@ -324,4 +310,27 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
              */
         } 
     }
+
+    /**
+     * turns a String into a value from the GameVariant enum
+     * @param variant the variant as a String, obtained from the LS
+     * @return
+     */
+    public static GameVariant interpretVariant(String variant)
+    {
+        switch (variant)
+        {
+            case "Classic": return GameVariant.ELFENLAND_CLASSIC;
+            case "Long": return GameVariant.ELFENLAND_LONG;
+            case "Destination": return GameVariant.ELFENLAND_DESTINATION;
+            case "Elfengold Classic": return GameVariant.ELFENGOLD_CLASSIC;
+            case "Elfengold Travel Cards": return GameVariant.ELFENGOLD_TRAVEL_CARDS;
+            case "Elfengold Random Gold": return GameVariant.ELFENGOLD_RANDOM_GOLD;
+            case "Elfengold Witch": return GameVariant.ELFENGOLD_WITCH;
+            default: return null; // if we set up the LS right, this will never happen
+        }
+    }
+
+
+
 }

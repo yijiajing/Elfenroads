@@ -1,9 +1,7 @@
 package networking;
 
 import domain.*;
-import enums.Colour;
-import enums.RoundPhaseType;
-import enums.TravelCardType;
+import enums.*;
 import org.json.JSONObject;
 import panel.ElfBootPanel;
 import panel.GameScreen;
@@ -12,6 +10,7 @@ import java.util.*;
 
 
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 public class GameState {
 
@@ -24,7 +23,7 @@ public class GameState {
     2. where each player's boot is
     3. 
      */
-
+    private final Logger LOGGER = Logger.getGlobal();
     private JSONObject serialized;
 
     // Global variable holding the singleton GameState instance
@@ -32,6 +31,7 @@ public class GameState {
 
     // meta info (possibly separated into another class in the future)
     private int totalRounds;
+    private GameVariant gameVariant;
     private List<Player> players = new ArrayList<>();
 
     // state info
@@ -45,11 +45,16 @@ public class GameState {
 
     private ArrayList<ElfBoot> elfBoots;
 
-    private GameState (int numRounds, String sessionID)
+    private GameState (String sessionID, GameVariant gameVariant)
     {
         this.elfBoots = new ArrayList<>();
         this.currentRound = 1;
-        this.totalRounds = numRounds;
+        if (gameVariant == GameVariant.ELFENLAND_LONG) {
+            this.totalRounds = 4;
+        } else {
+            this.totalRounds = 3;
+        }
+        this.gameVariant = gameVariant;
         // the below line gives a nullPointerException when it is called from the GameManager constructor because, inside the constructor, the GameManager.instance() is still null
         // String sessionID = GameManager.getInstance().getSessionID();
         // that is why we are passing the sessionID to the GameState constructor instead (there is no reason for it to really be a field)
@@ -77,9 +82,9 @@ public class GameState {
     	return new ArrayList<>(players);
     }
     
-    public static GameState init(int numRounds, String sessionID) {
+    public static GameState init(String sessionID, GameVariant gameVariant) {
         if (instance == null) {
-            instance = new GameState(numRounds, sessionID);
+            instance = new GameState(sessionID, gameVariant);
         }
     	return instance;
     }
@@ -177,16 +182,47 @@ public class GameState {
         return this.counterPile;
     }
 
+    public GameVariant getGameVariant() {
+        return gameVariant;
+    }
+
+    public void setGameVariant(GameVariant gameVariant) {
+        this.gameVariant = gameVariant;
+    }
+
     /**
      * Flips over a counter from the pile so that it is face-up
      */
     public void addFaceUpCounterFromPile() {
         if (counterPile.getSize() > 0) {
+            LOGGER.info("Adding face-up counter from pile");
             TransportationCounter counter = counterPile.draw();
             faceUpCounters.add(counter);
             counter.setOwned(false);
         } else {
             // TODO what to do if the counter pile is empty?? reshuffle?
+        }
+    }
+
+    public void removeFaceUpCounter(CounterType type) {
+        TransportationCounter toRemove = null;
+
+        for (TransportationCounter c : faceUpCounters) {
+            if (c.getType() == type) {
+                toRemove = c;
+            }
+        }
+
+        if (toRemove != null) {
+            Logger.getGlobal().info("There are " + faceUpCounters.size() + " face up counters.");
+            Logger.getGlobal().info("Removing face-up counter of type " + toRemove.getType());
+            faceUpCounters.remove(toRemove);
+            Logger.getGlobal().info("There are now " + faceUpCounters.size() + " face up counters.");
+            addFaceUpCounterFromPile();
+            Logger.getGlobal().info("There are now " + faceUpCounters.size() + " face up counters.");
+            GameScreen.getInstance().updateAll();
+        } else {
+            LOGGER.info("Error: Counter drawn by another player is not present in the face-up counters on this device.");
         }
     }
 

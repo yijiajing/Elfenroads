@@ -43,11 +43,12 @@ public class TransportationCounter extends CounterUnit implements Comparable<Tra
                         GameState.instance().addFaceUpCounterFromPile(); // replenish the face-up counters with one from the pile
                         GameScreen.getInstance().updateAll(); // update GUI
                         TransportationCounter.this.owned = true;
+                        TransportationCounter.this.setSecret(false);
 
                         // tell the other peers to remove the counter
                         try {
                             GameManager.getInstance().getComs().sendGameCommandToAllPlayers(
-                                    new DrawCounterCommand(1, Optional.of(TransportationCounter.this.type)));
+                                    new DrawCounterCommand(1, TransportationCounter.this.type));
                         } catch (IOException err) {
                             System.out.println("Error: there was a problem sending the DrawCounterCommand to the other peers.");
                         }
@@ -140,5 +141,14 @@ public class TransportationCounter extends CounterUnit implements Comparable<Tra
 
     public static TransportationCounter getNew(CounterType counterType) {
         return new TransportationCounter(counterType, MainFrame.instance.getWidth()*67/1440, MainFrame.instance.getHeight()*60/900);
+    }
+
+    @Override
+    public String toString() {
+        return "TransportationCounter{" +
+                "owned=" + owned +
+                ", isSecret=" + isSecret +
+                ", type=" + type +
+                '}';
     }
 }

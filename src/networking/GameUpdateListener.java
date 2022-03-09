@@ -11,27 +11,40 @@ import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Stack;
+import java.util.logging.Logger;
 
 public class GameUpdateListener implements Runnable
 {
     private int port;
     private ServerSocket listener;
     private GameState mostRecentUpdate; // not using this for now, trying out sending commands instead
-    private GameCommand command;
+    // private GameCommand command;
+    private Queue<GameCommand> commands;
     private CommunicationsManager managedBy;
 
     public GameUpdateListener(int pPort, CommunicationsManager pManagedBy)
     {
         port = pPort;
         managedBy = pManagedBy;
+        commands = new LinkedList<GameCommand>();
     }
 
     @Override
     public void run() {
+        try
+        {listener = new ServerSocket(port);}
+        catch (Exception e)
+        {
+            Logger.getGlobal().info("Listener intialization failed.");
+        }
 
         while (true) {
+
             try {
-                listener = new ServerSocket(port);
+                // listener = new ServerSocket(port);
                 System.out.println("Going into accept() method and waiting for information...");
                 Socket update = listener.accept(); // the accept () will sit there and wait until an update is received
                 System.out.println("Got a message from the thing! Accept method terminated.");
@@ -40,7 +53,7 @@ public class GameUpdateListener implements Runnable
                 ObjectInputStream commandReceived = new ObjectInputStream(updateContents);
                 readInCommand(commandReceived);
                 notifyManager(); // tell the CommunicationsManager that an update has been received
-                listener.close(); // close the connection and do it again
+                // listener.close(); // close the connection and do it again
 
             } catch (Exception e) {
                 System.out.println("There was a problem setting up the ServerSocket.");
@@ -60,7 +73,8 @@ public class GameUpdateListener implements Runnable
 
     private void readInCommand(ObjectInputStream received) throws Exception
     {
-        command = (GameCommand) received.readObject();
+        commands.add((GameCommand) received.readObject());
+        notifyManager();
     }
 
     private void notifyManager()
@@ -73,8 +87,8 @@ public class GameUpdateListener implements Runnable
      * this method will be called by a CommunicationsManager after it has been told there is a game update available
      * @return the last command received by this listener
      */
-    public GameCommand getCommand()
+    public Queue <GameCommand> getCommands()
     {
-        return command;
+        return commands;
     }
 }

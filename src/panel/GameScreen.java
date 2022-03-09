@@ -10,6 +10,7 @@ import java.net.ServerSocket;
 import java.util.List;
 
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -121,6 +122,7 @@ public class GameScreen extends JPanel implements Serializable
 
 	public void initialization()
 	{
+		Logger.getGlobal().info("Initializing...");
 		initializeMapImage();
 		initializeRoundCardImage(1);
 		initializeTransportationCountersAndObstacle();
@@ -130,18 +132,20 @@ public class GameScreen extends JPanel implements Serializable
 		initializeFaceUpTransportationCounters();
 		initializeDeckOfTransportationCounters();
 		initializeLeaderboard();
+		initializeEndTurnButton();
+		updateAll();
 	}
 
 	
 	public void initializeBackgroundPanels()
 	{
 		// Set Bounds for background Player's Transportation Counter zone
-		backgroundPanel_ForTransportationCounters.setBounds(width*0/1440, height*623/900, width*1075/1440, height*70/900);
+		backgroundPanel_ForTransportationCounters.setBounds(width*0/1440, height*623/900, width*900/1440, height*70/900);
 		backgroundPanel_ForTransportationCounters.setBackground(Color.DARK_GRAY);
 		
 		// Set Bounds for background Obstacle zone
 		backgroundPanel_ForObstacle.setBackground(Color.RED);
-		backgroundPanel_ForObstacle.setBounds(width*1070/1440, height*623/900, width*80/1440, height*70/900);
+		backgroundPanel_ForObstacle.setBounds(width*900/1440, height*623/900, width*80/1440, height*70/900);
 		
 		// Set Bounds for background Image zone
 		backgroundPanel_ForMap.setBounds(width*0/1440, height*0/900, width*1150/1440, height*625/900);
@@ -180,6 +184,7 @@ public class GameScreen extends JPanel implements Serializable
 	
 	public void initializeFaceUpTransportationCounters()
 	{
+		Logger.getGlobal().info("Initializing face up transportation counters");
 		Border whiteLine = BorderFactory.createLineBorder(Color.WHITE);
 		JPanel panel2 = new JPanel();
 		panel2.setBounds(width*1315/1440, height*290/900, width*70/1440, height*65/900);
@@ -218,8 +223,7 @@ public class GameScreen extends JPanel implements Serializable
 	}
 	
 	public void initializeLeaderboard()
-	{	
-		
+	{
 		List<Player> aPlayers = GameState.instance().getPlayers();
 		
 		backgroundPanel_ForLeaderboard.setLayout(new BoxLayout(backgroundPanel_ForLeaderboard, BoxLayout.Y_AXIS));
@@ -254,19 +258,19 @@ public class GameScreen extends JPanel implements Serializable
 		// Transportation Counters
 		for (int i = 0; i < 5; i++)
 		{
-			JPanel panel= new JPanel();
+			JPanel panel = new JPanel();
 			panel.setOpaque(false);
 			panel.setBorder(whiteLine);
 			panel.setBounds(xCoordinate, height*625/900, width*70/1440, height*65/900);
 			panelForPlayerTransportationCounters[i] = panel;
-			xCoordinate += width*200/1440;
+			xCoordinate += width*100/1440;
 			boardGame_Layers.add(panel, 0);
 		}
 		
 		// Obstacle
 		panelForObstacle.setOpaque(false);
 		//panelForObstacle.setBorder(whiteLine);
-		panelForObstacle.setBounds(width*1077/1440, height*625/900, width*70/1440, height*65/900);
+		panelForObstacle.setBounds(width*900/1440, height*625/900, width*70/1440, height*65/900);
 		boardGame_Layers.add(panelForObstacle,0);
 	}
 	
@@ -281,7 +285,7 @@ public class GameScreen extends JPanel implements Serializable
 	
 	public void initializeRoundCardImage(int round)
 	{
-		ImageIcon roundImage = new ImageIcon("./assets/sprites/" + round + ".png");
+		ImageIcon roundImage = new ImageIcon("./assets/sprites/R" + round + ".png");
 		Image Round = roundImage.getImage();
 		Image RoundResized = Round.getScaledInstance(width*90/1440, height*130/900,  java.awt.Image.SCALE_SMOOTH);
 		roundImage = new ImageIcon(RoundResized);
@@ -296,6 +300,17 @@ public class GameScreen extends JPanel implements Serializable
 		Image gridResized = grid.getScaledInstance(width*290/1440, height*325/900,  java.awt.Image.SCALE_SMOOTH);
 		gridImage = new ImageIcon(gridResized);
 		informationCardImage_TopLayer = new JLabel(gridImage);
+	}
+
+	public void initializeEndTurnButton() {
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.setBounds(width*1000/1440, height*625/900, width*100/1440, height*65/900);
+		buttonPanel.setOpaque(false);
+		boardGame_Layers.add(buttonPanel);
+
+		JButton endTurn = new EndTurnButton();
+		endTurn.setBounds(width*1000/1440, height*625/900, width*100/1440, height*65/900);
+		buttonPanel.add(endTurn);
 	}
 
 	public void addImages()
@@ -324,7 +339,7 @@ public class GameScreen extends JPanel implements Serializable
 		boardGame_Layers.add(backgroundPanel_ForRound, 0);
 		boardGame_Layers.add(panelForDeckOfTransportationCounters,0);
 		boardGame_Layers.add(backgroundPanel_ForTransportationCounters, -1);
-		boardGame_Layers.add(backgroundPanel_ForMap, -1); 
+		boardGame_Layers.add(backgroundPanel_ForMap, -1);
 		boardGame_Layers.add(backgroundPanel_ForObstacle,-1);
 		boardGame_Layers.add(backgroundPanel_ForCards, -1);
 		boardGame_Layers.add(backgroundPanel_ForInformationCard, -1);
@@ -341,8 +356,14 @@ public class GameScreen extends JPanel implements Serializable
 	{
 		ArrayList<TransportationCounter> faceUpCounters = GameState.instance().getFaceUpCounters();
 
+		for (JPanel panel : panelForFaceUpTransportationCounters) {
+			if (panel != null) {
+				panel.removeAll();
+			}
+		}
 		for (int i = 0; i < 5; i++) {
 			JPanel panel = panelForFaceUpTransportationCounters[i];
+			//TODO: investigate why panel can be null
 			TransportationCounter counter = faceUpCounters.get(i);
 			panel.add(counter.getDisplay());
 			panel.repaint();
@@ -352,10 +373,17 @@ public class GameScreen extends JPanel implements Serializable
 	
 	public void addCards()
 	{
+		// clear the previous cards from the screen
+		for (JPanel panel : panelForPlayerCards) {
+			if (panel != null) {
+				panel.removeAll();
+			}
+		}
+
 		List<CardUnit> myCards = GameManager.getInstance().getThisPlayer().getHand().getCards();
 
-		for (int p=0; p<panelForPlayerCards.length; p++)
-		{
+		// draw the cards to the screen
+		for (int p = 0; p < myCards.size(); p++) {
 			JPanel panel = panelForPlayerCards[p];
 			CardUnit card = myCards.get(p);
 			panel.add(card.getDisplay());
@@ -366,20 +394,25 @@ public class GameScreen extends JPanel implements Serializable
 	
 	public void addTransportationCountersAndObstacle()
 	{
+		// Transportation counters
 		List<TransportationCounter> counters = GameManager.getInstance().getThisPlayer().getHand().getCounters();
 
-		// Transportation counters
+		// remove a counter if it was already there
+		for (JPanel panel : panelForPlayerTransportationCounters) {
+			if (panel != null) {
+				panel.removeAll();
+			}
+		}
+
 		int i = 0;
 
 		for ( TransportationCounter c : counters )
 		{
 			c.setOwned(true);
 			JPanel panel = panelForPlayerTransportationCounters[i];
-			panel.removeAll(); // clear it if something is already there
 			panel.add(c.getDisplay());
 			panel.repaint();
 			panel.revalidate();
-
 			i++;
 		}
 		
@@ -390,17 +423,17 @@ public class GameScreen extends JPanel implements Serializable
 			panelForObstacle.add(o.getDisplay());
 			panelForObstacle.repaint();
 			panelForObstacle.revalidate();
+		} else {
+			panelForObstacle.removeAll();
 		}
 	}
 
 	public static void main(String[] args) 
 	{
-		JFrame game_screen = new JFrame("GameScreen");
+		GameScreen game_screen = GameScreen.init(new JFrame());
 		
 		game_screen.setSize(MinuetoTool.getDisplayWidth(), MinuetoTool.getDisplayHeight());
-		game_screen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-		game_screen.add(init(game_screen));
+		game_screen.draw();
 		game_screen.setVisible(true);
 	}
 
@@ -437,21 +470,7 @@ public class GameScreen extends JPanel implements Serializable
 		return gameMap;
 	}
 
-	public static void displayMessage(String message, boolean passOption, boolean doneOption) {
-		String[] options;
-
-		if (passOption) { // write a message with "OK" and "PASS" buttons
-			options = new String[]{"OK", "PASS"};
-		}
-
-		else if (doneOption) { // write a message with "DONE" button
-			options = new String[]{"DONE"};
-		}
-
-		else { // write a message with "OK" button
-			options = new String[]{"OK"};
-		}
-
-		JOptionPane.showOptionDialog(null, message, null, JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+	public static void displayMessage(String message) {
+		JOptionPane.showMessageDialog(null, message);
 	}
 }

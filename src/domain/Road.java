@@ -38,13 +38,14 @@ public class Road {
         if (transportationCounter.getRequiredNumOfUnitsOn(this) >= 1){
             transportationCounter.setPlacedOn(this);
             this.transportationCounter = transportationCounter;
-            counterPanel.setTransportationCounter(transportationCounter); // update UI
+            counterPanel.setTransportationCounter(transportationCounter); // update map
+            GameManager.getInstance().getThisPlayer().getHand().removeUnit(this.transportationCounter);
+            this.transportationCounter.setOwned(false);
+            GameScreen.getInstance().addTransportationCountersAndObstacle(); // update counters in hand on UI
             return true;
         } else {
             return false;
-
         }
-        
     }
 
     public TransportationCounter getTransportationCounter() {
@@ -57,16 +58,24 @@ public class Road {
         }
         this.obstacle = obstacle;
         obstacle.setPlacedOn(this);
-        counterPanel.placeObstacle(obstacle); // update UI
+        counterPanel.placeObstacle(obstacle); // update map
+        GameManager.getInstance().getThisPlayer().getHand().removeUnit(this.obstacle);
+        GameScreen.getInstance().addTransportationCountersAndObstacle(); // update obstacle in hand on UI
         return true;
     }
 
     public void clear() {
-        this.transportationCounter.setPlacedOn(null);
-        this.transportationCounter = null;
-        this.obstacle.setPlacedOn(null);
-        this.obstacle = null;
-        counterPanel.clear();
+        if (this.transportationCounter != null) {
+            this.transportationCounter.setPlacedOn(null);
+            this.transportationCounter = null;
+        }
+        if (this.obstacle != null) {
+            this.obstacle.setPlacedOn(null);
+            this.obstacle = null;
+        }
+        if (counterPanel != null) {
+            counterPanel.clear();
+        }
     }
 
     public CounterPanel getCounterPanel() {

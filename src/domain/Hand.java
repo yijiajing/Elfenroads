@@ -18,18 +18,18 @@ public class Hand {
 			cardList.add((CardUnit)pUnit);
 		} else if (pUnit instanceof Obstacle) {
 			obstacle = Optional.of((Obstacle) pUnit);
-		} else {
+		} else if (pUnit instanceof TransportationCounter) {
 			counterList.add((TransportationCounter) pUnit);
 		}
 	}
-	
+
 	public void removeUnit(Drawable pUnit) {
 		if (pUnit instanceof CardUnit) {
-			cardList.remove((CardUnit)pUnit);
+			cardList.remove(pUnit);
 		} else if (pUnit instanceof Obstacle) {
 			obstacle = Optional.empty();
-		} else {
-			counterList.remove((TransportationCounter) pUnit);
+		} else if (pUnit instanceof TransportationCounter) {
+			counterList.remove(pUnit);
 		}
 	}
 

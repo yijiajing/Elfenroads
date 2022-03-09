@@ -1,4 +1,4 @@
-package test;
+package Test;
 
 import commands.GameCommand;
 import networking.DNSLookup;
@@ -28,6 +28,27 @@ public class TestAPI {
        // createASession("Destination");
         User.init("dontforget", "abc123_ABC123");
         deleteAllSessions();
+
+
+        //GameService testGame2 = new GameService("testGame2", "testGame2", "abc123_ABC123",2, 6);
+        //GameService destination = new GameService("Destination", "Destination", "abc123_ABC123",2, 6);
+        //GameService longvar = new GameService("Elfenland(Long)", "Elfenland(Long)", "abc123_ABC123",2, 6);
+        //GameService longvar = new GameService("Elfenland", "Elfenland", "abc123_ABC123",2, 6);
+
+       //  User.init()
+        //GameService destination = new GameService("Destination", "Destination", "abc123_ABC123", 2, 6);
+        // GameService testGame2 = new GameService("testGame2", "testGame2", "abc123_ABC123",2, 6);
+
+        // GameService elfenlands = new GameService("Elfenroads", "Elfenroads", "abc123_ABC123", 2, 6);
+        //User.init("dontforget", "abc123_ABC123");
+       /* ArrayList<String> sessions = getAllSessionID();
+
+        for (String id : sessions)
+        {
+            System.out.println(getPlayersWithLocations(id));
+        }
+
+        */
     }
 
     public static void testCreateUser(String username, String password) throws IOException, Exception {
@@ -41,6 +62,7 @@ public class TestAPI {
         try {
             User alex = User.init("dontforget", "abc123_ABC123");
             GameSession sesh = new GameSession(alex, variant, "savegame1234");
+            GameSession sesh = new GameSession(alex, "elfenlands", "savegame1234");
         }
         catch (Exception e)
         {

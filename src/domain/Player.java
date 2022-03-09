@@ -22,6 +22,7 @@ public class Player implements Comparable<Player> {
     private Colour colour;
     private int score;
     private String name;
+    private Town destinationTown;
     
     private Hand hand; //The Hand of this Player, including hand of CardUnit and hand of CounterUnit
 
@@ -38,7 +39,7 @@ public class Player implements Comparable<Player> {
     }
 
     // called by ElfBoot when it moves to a new town
-    public void setCurrentTown(Town curTown) {
+    public void setCurrentTownAndIncrementScore(Town curTown) {
         this.curTown = curTown;
         if (!townsVisited.contains(curTown)) {
             townsVisited.add(curTown);
@@ -52,6 +53,10 @@ public class Player implements Comparable<Player> {
 
     public int getScore() {
     	return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 
     public Colour getColour() {
@@ -73,9 +78,21 @@ public class Player implements Comparable<Player> {
         return name;
     }
 
+    public Town getDestinationTown() {
+        return destinationTown;
+    }
+
+    public void setDestinationTown(Town destinationTown) {
+        this.destinationTown = destinationTown;
+    }
+
     // need to be able to sort a list of players so that everyone has the same list
     @Override
     public int compareTo(Player o) {
         return name.compareTo(o.getName());
+    }
+
+    public String toString() {
+        return name + " " + colour + " " + curTown.getName();
     }
 }

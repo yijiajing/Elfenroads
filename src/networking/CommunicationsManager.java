@@ -17,9 +17,7 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class CommunicationsManager {
 
@@ -36,13 +34,16 @@ public class CommunicationsManager {
     private ArrayList<String> playerAddresses; // this will store the addresses of players. It will be used only at initialization
     private HashMap<String, String> namesAndAddresses;
 
-    private GameCommand lastCommandReceived; // this will be used to update the GameState/GameScreen with whatever command we just received
+    // private GameCommand lastCommandReceived; // this will be used to update the GameState/GameScreen with whatever command we just received
+    private Queue<GameCommand> toExecute;
 
 
     public CommunicationsManager(GameManager pManagedBy, String gameSessionID)
     {
         sessionID = gameSessionID;
         managedBy = pManagedBy;
+
+        toExecute = new LinkedList<GameCommand>();
 
         // first, get all the Player addresses so we can set up the sockets
         recordPlayerAddresses();
@@ -197,6 +198,7 @@ public class CommunicationsManager {
      */
     public void sendCommandToIndividual(GameCommand command, String recipientName) throws IOException
     {
+        recordPlayerNamesAndAddresses();
         String otherPlayerAddressWithPort = namesAndAddresses.get(recipientName);
         String otherPlayerAddressNoPort = NetworkUtils.getAddress(otherPlayerAddressWithPort);
         int port = NetworkUtils.getPort(otherPlayerAddressWithPort);
@@ -216,7 +218,11 @@ public class CommunicationsManager {
     public void updateFromListener()
     {
         System.out.println("Received an update from the listener! Getting ready to update the UI...");
-        lastCommandReceived = listener.getCommand();
-        lastCommandReceived.execute();
+
+        while (listener.getCommands().size() > 0)
+        {
+            GameCommand toExecute = listener.getCommands().poll();
+            toExecute.execute();
+        }
     }
 }

@@ -57,7 +57,7 @@ public class TransportationCounterPile extends Deck <TransportationCounter> {
 
                     // tell the other peers to remove the counter from the pile
                     try {
-                        GameManager.getInstance().getComs().sendGameCommandToAllPlayers(new DrawCounterCommand(1, Optional.empty()));
+                        GameManager.getInstance().getComs().sendGameCommandToAllPlayers(new DrawCounterCommand(1, null));
                     } catch (IOException err) {
                         System.out.println("Error: there was a problem sending the DrawCounterCommand to the other peers.");
                     }
