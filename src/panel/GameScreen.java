@@ -137,12 +137,12 @@ public class GameScreen extends JPanel implements Serializable
 	public void initializeBackgroundPanels()
 	{
 		// Set Bounds for background Player's Transportation Counter zone
-		backgroundPanel_ForTransportationCounters.setBounds(width*1075/1440, height*623/900, width*900/1440, height*70/900);
+		backgroundPanel_ForTransportationCounters.setBounds(width*0/1440, height*623/900, width*900/1440, height*70/900);
 		backgroundPanel_ForTransportationCounters.setBackground(Color.DARK_GRAY);
 		
 		// Set Bounds for background Obstacle zone
 		backgroundPanel_ForObstacle.setBackground(Color.RED);
-		backgroundPanel_ForObstacle.setBounds(width*1070/1440, height*623/900, width*80/1440, height*70/900);
+		backgroundPanel_ForObstacle.setBounds(width*900/1440, height*623/900, width*80/1440, height*70/900);
 		
 		// Set Bounds for background Image zone
 		backgroundPanel_ForMap.setBounds(width*0/1440, height*0/900, width*1150/1440, height*625/900);
@@ -260,14 +260,14 @@ public class GameScreen extends JPanel implements Serializable
 			panel.setBorder(whiteLine);
 			panel.setBounds(xCoordinate, height*625/900, width*70/1440, height*65/900);
 			panelForPlayerTransportationCounters[i] = panel;
-			xCoordinate += width*200/1440;
+			xCoordinate += width*100/1440;
 			boardGame_Layers.add(panel, 0);
 		}
 		
 		// Obstacle
 		panelForObstacle.setOpaque(false);
 		//panelForObstacle.setBorder(whiteLine);
-		panelForObstacle.setBounds(width*1077/1440, height*625/900, width*70/1440, height*65/900);
+		panelForObstacle.setBounds(width*900/1440, height*625/900, width*70/1440, height*65/900);
 		boardGame_Layers.add(panelForObstacle,0);
 	}
 	
@@ -282,7 +282,7 @@ public class GameScreen extends JPanel implements Serializable
 	
 	public void initializeRoundCardImage(int round)
 	{
-		ImageIcon roundImage = new ImageIcon("./assets/sprites/" + round + ".png");
+		ImageIcon roundImage = new ImageIcon("./assets/sprites/R" + round + ".png");
 		Image Round = roundImage.getImage();
 		Image RoundResized = Round.getScaledInstance(width*90/1440, height*130/900,  java.awt.Image.SCALE_SMOOTH);
 		roundImage = new ImageIcon(RoundResized);
@@ -352,10 +352,10 @@ public class GameScreen extends JPanel implements Serializable
 	public void addFaceUpTransportationCounters()
 	{
 		ArrayList<TransportationCounter> faceUpCounters = GameState.instance().getFaceUpCounters();
-		System.out.println(faceUpCounters);
 
 		for (int i = 0; i < 5; i++) {
 			JPanel panel = panelForFaceUpTransportationCounters[i];
+			panel.removeAll();
 			TransportationCounter counter = faceUpCounters.get(i);
 			panel.add(counter.getDisplay());
 			panel.repaint();
@@ -365,8 +365,14 @@ public class GameScreen extends JPanel implements Serializable
 	
 	public void addCards()
 	{
+		// clear the previous cards from the screen
+		for (JPanel panel : panelForPlayerCards) {
+			panel.removeAll();
+		}
+
 		List<CardUnit> myCards = GameManager.getInstance().getThisPlayer().getHand().getCards();
 
+		// draw the cards to the screen
 		for (int p = 0; p < myCards.size(); p++) {
 			JPanel panel = panelForPlayerCards[p];
 			CardUnit card = myCards.get(p);
@@ -378,20 +384,23 @@ public class GameScreen extends JPanel implements Serializable
 	
 	public void addTransportationCountersAndObstacle()
 	{
+		// Transportation counters
 		List<TransportationCounter> counters = GameManager.getInstance().getThisPlayer().getHand().getCounters();
 
-		// Transportation counters
+		// remove a counter if it was already there
+		for (JPanel panel : panelForPlayerTransportationCounters) {
+			panel.removeAll();
+		}
+
 		int i = 0;
 
 		for ( TransportationCounter c : counters )
 		{
 			c.setOwned(true);
 			JPanel panel = panelForPlayerTransportationCounters[i];
-			panel.removeAll(); // clear it if something is already there
 			panel.add(c.getDisplay());
 			panel.repaint();
 			panel.revalidate();
-
 			i++;
 		}
 		
@@ -402,6 +411,8 @@ public class GameScreen extends JPanel implements Serializable
 			panelForObstacle.add(o.getDisplay());
 			panelForObstacle.repaint();
 			panelForObstacle.revalidate();
+		} else {
+			panelForObstacle.removeAll();
 		}
 	}
 

@@ -1,9 +1,6 @@
 package networking;
 
-import commands.MoveBootCommand;
-import commands.PlaceObstacleCommand;
-import commands.PlaceTransportationCounterCommand;
-import commands.ReturnTravelCardsCommand;
+import commands.*;
 import domain.*;
 import enums.RoundPhaseType;
 import panel.ElfBootPanel;
@@ -76,6 +73,8 @@ public class ActionManager {
         // Player intends to place an obstacle
         if (selectedCounter instanceof Obstacle) {
             if (selectedRoad.placeObstacle((Obstacle) selectedCounter)) {
+                gameManager.getThisPlayer().getHand().removeUnit(selectedCounter);
+                GameScreen.getInstance().updateAll();
                 PlaceObstacleCommand toSendOverNetwork = new PlaceObstacleCommand(selectedRoad);
                 try {
                     gameManager.getComs().sendGameCommandToAllPlayers(toSendOverNetwork);
@@ -90,8 +89,13 @@ public class ActionManager {
 
         // Player intends to place a transportation counter
         else if (selectedCounter instanceof TransportationCounter) {
-            if (selectedRoad.setTransportationCounter((TransportationCounter) selectedCounter)) {
-                PlaceTransportationCounterCommand toSendOverNetwork = new PlaceTransportationCounterCommand(selectedRoad, (TransportationCounter) selectedCounter);
+            TransportationCounter counter = (TransportationCounter) selectedCounter;
+            if (selectedRoad.setTransportationCounter(counter)) {
+                // remove this transportation counter from hand
+                gameManager.getThisPlayer().getHand().removeUnit(counter);
+                GameScreen.getInstance().updateAll(); // update transportation area
+                
+                PlaceTransportationCounterCommand toSendOverNetwork = new PlaceTransportationCounterCommand(selectedRoad, counter);
                 try {
                     gameManager.getComs().sendGameCommandToAllPlayers(toSendOverNetwork);
                 } catch (IOException e) {
@@ -183,6 +187,8 @@ public class ActionManager {
                 e.printStackTrace();
             }
 
+            GameScreen.getInstance().addCards(); // draws updated hand to the screen
+
             // Move Boot
             // gameState.getCurrentPlayer().setCurrentTown(selectedTown);
             // MoveBootCommand.execute() does the above line now. I just left this here for reference
@@ -220,15 +226,18 @@ public class ActionManager {
         }
         selectedTown = null;
         assert selectedCards.stream().allMatch(CardUnit::isSelected);
-        selectedCards.forEach(this::clearSelectedCard);
-    }
 
+        selectedCards.forEach(c -> c.setSelected(false));
+        selectedCards.clear();
+        //selectedCards.forEach(this::clearSelectedCard);
+    }
+    /*
     public void clearSelectedCard(TravelCard card) {
         assert selectedCards.contains(card);
         assert card.isSelected();
         selectedCards.remove(card);
         card.setSelected(false);
-    }
+    }*/
 
     /**
      * Clears all selection states.
