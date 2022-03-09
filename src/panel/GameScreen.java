@@ -299,6 +299,7 @@ public class GameScreen extends JPanel implements Serializable
 		Image RoundResized = Round.getScaledInstance(width*90/1440, height*130/900,  java.awt.Image.SCALE_SMOOTH);
 		roundImage = new ImageIcon(RoundResized);
 		roundImage_TopLayer = new JLabel(roundImage);
+		backgroundPanel_ForRound.removeAll();
 		backgroundPanel_ForRound.add(roundImage_TopLayer);
 	}
 	
@@ -369,16 +370,13 @@ public class GameScreen extends JPanel implements Serializable
 		for (JPanel panel : panelForFaceUpTransportationCounters) {
 			if (panel != null) {
 				panel.removeAll();
-        panel.repaint();
-        panel.revalidate();
+        		panel.repaint();
+        		panel.revalidate();
 			}
 		}
 
 		for (int i = 0; i < 5; i++) {
 			JPanel panel = panelForFaceUpTransportationCounters[i];
-
-			//TODO: investigate why panel can be null
-
 			TransportationCounter counter = faceUpCounters.get(i);
 			panel.add(counter.getDisplay());
 			panel.repaint();
@@ -420,9 +418,6 @@ public class GameScreen extends JPanel implements Serializable
 	
 	public void addTransportationCountersAndObstacle()
 	{
-		// Transportation counters
-		List<TransportationCounter> counters = GameManager.getInstance().getThisPlayer().getHand().getCounters();
-
 		// remove a counter if it was already there
 		for (JPanel panel : panelForPlayerTransportationCounters) {
 			if (panel != null) {
@@ -432,16 +427,15 @@ public class GameScreen extends JPanel implements Serializable
 			}
 		}
 
-		int i = 0;
+		List<TransportationCounter> counters = GameManager.getInstance().getThisPlayer().getHand().getCounters();
 
-		for ( TransportationCounter c : counters )
-		{
-			c.setOwned(true);
-			JPanel panel = panelForPlayerTransportationCounters[i];
-			panel.add(c.getDisplay());
+		// draw the counters to the screen
+		for (int c = 0; c < counters.size(); c++) {
+			JPanel panel = panelForPlayerTransportationCounters[c];
+			TransportationCounter counter = counters.get(c);
+			panel.add(counter.getDisplay());
 			panel.repaint();
 			panel.revalidate();
-			i++;
 		}
 		
 		// Obstacle
@@ -464,11 +458,6 @@ public class GameScreen extends JPanel implements Serializable
 		game_screen.setSize(MinuetoTool.getDisplayWidth(), MinuetoTool.getDisplayHeight());
 		game_screen.draw();
 		game_screen.setVisible(true);
-	}
-
-	public void listen(int port) throws IOException
-	{
-		ServerSocket listener = new ServerSocket(port);
 	}
 
 	public void addElement(JPanel panel) {
