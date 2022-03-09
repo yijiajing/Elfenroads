@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.net.InetAddress;
 import java.util.HashMap;
 import java.util.Set;
+import java.util.logging.Logger;
 
 public class GameSession {
 
@@ -306,6 +307,14 @@ public class GameSession {
         con.setRequestMethod("GET");
 
         int status = con.getResponseCode();
+
+        // if we get a timeout, just resend the request
+        if (status == 408)
+        {
+            Logger.getGlobal().info("Session details request timed out. Resending it.");
+            getSessionDetails(id, prevPayload);
+        }
+
         BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
         String inputLine;
         StringBuffer content = new StringBuffer();
@@ -334,6 +343,13 @@ public class GameSession {
         con.setRequestMethod("GET");
 
         int status = con.getResponseCode();
+        // if we get a timeout, just resend the request
+        if (status == 408)
+        {
+            Logger.getGlobal().info("GetSessions request timed out. Resending it.");
+            getSessions(prevPayload);
+        }
+
         BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
         String inputLine;
         StringBuffer content = new StringBuffer();
@@ -423,7 +439,6 @@ public class GameSession {
         Set idSet = sessions.keySet();
         ArrayList<String> ids = new ArrayList <String> (idSet);
         return ids;
-
     }
 
     public static JSONObject getSessions() throws IOException
