@@ -84,7 +84,7 @@ public class ActionManager {
                     e.printStackTrace();
                 }
             } else { // Invalid move
-                GameScreen.displayMessage("You cannot place an obstacle here. Please try again.", false);
+                GameScreen.displayMessage("You cannot place an obstacle here. Please try again.");
             }
         }
 
@@ -99,7 +99,7 @@ public class ActionManager {
                     e.printStackTrace();
                 }
             } else { // Invalid move
-                GameScreen.displayMessage("You cannot place a transportation counter here. Please try again.", false);
+                GameScreen.displayMessage("You cannot place a transportation counter here. Please try again.");
             }
         }
         selectedCounter = null;
@@ -216,7 +216,7 @@ public class ActionManager {
                 e.printStackTrace();
             }
         } else { // Move Boot fails
-            GameScreen.displayMessage("You cannot move to the destination town with the selected cards. Please try again.", false);
+            GameScreen.displayMessage("You cannot move to the destination town with the selected cards. Please try again.");
         }
         selectedTown = null;
         assert selectedCards.stream().allMatch(CardUnit::isSelected);
