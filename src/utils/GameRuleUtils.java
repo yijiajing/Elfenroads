@@ -91,4 +91,11 @@ public final class GameRuleUtils {
                 .contains(GameState.instance().getCurrentPhase());
     }
 
+    public static boolean isPlanRoutesPhase() {
+        return List.of(RoundPhaseType.PLAN_ROUTES_ONE,
+                RoundPhaseType.PLAN_ROUTES_TWO, RoundPhaseType.PLAN_ROUTES_THREE,
+                RoundPhaseType.PLAN_ROUTES_FOUR, RoundPhaseType.PLAN_ROUTES_SIX)
+                .contains(GameState.instance().getCurrentPhase());
+    }
+
 }
