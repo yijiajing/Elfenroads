@@ -1,9 +1,6 @@
 package networking;
 
-import commands.MoveBootCommand;
-import commands.PlaceObstacleCommand;
-import commands.PlaceTransportationCounterCommand;
-import commands.ReturnTravelCardsCommand;
+import commands.*;
 import domain.*;
 import enums.RoundPhaseType;
 import panel.ElfBootPanel;
@@ -90,8 +87,13 @@ public class ActionManager {
 
         // Player intends to place a transportation counter
         else if (selectedCounter instanceof TransportationCounter) {
-            if (selectedRoad.setTransportationCounter((TransportationCounter) selectedCounter)) {
-                PlaceTransportationCounterCommand toSendOverNetwork = new PlaceTransportationCounterCommand(selectedRoad, (TransportationCounter) selectedCounter);
+            TransportationCounter counter = (TransportationCounter) selectedCounter;
+            if (selectedRoad.setTransportationCounter(counter)) {
+                // remove this transportation counter from hand
+                gameManager.getThisPlayer().getHand().removeUnit(counter);
+                GameScreen.getInstance().updateAll(); // update transportation area
+                
+                PlaceTransportationCounterCommand toSendOverNetwork = new PlaceTransportationCounterCommand(selectedRoad, counter);
                 try {
                     gameManager.getComs().sendGameCommandToAllPlayers(toSendOverNetwork);
                 } catch (IOException e) {
