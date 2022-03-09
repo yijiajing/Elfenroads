@@ -67,7 +67,7 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
                 try 
                 {
                     track1.play();
-                    session = new GameSession(User.getInstance(), "Elfenroads", "My Save Game Name");
+                    session = new GameSession(User.getInstance(), "elfenlands", "My Save Game Name");
 
                     GameManager.init(Optional.empty(), session.getId());
 

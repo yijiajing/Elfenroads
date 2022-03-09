@@ -137,7 +137,7 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
         sessions.removeAll();
         String getSessionsResponse = null;
 
-        if (prevPayload == "") // when we first get into the window, we will have to make a synchronous api call to show the information
+        if (prevPayload.equals("")) // when we first get into the window, we will have to make a synchronous api call to show the information
         {
             prevPayload = GameSession.getSessionsReturnString();
         }
