@@ -29,6 +29,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 public class NetworkUtils {
@@ -198,7 +199,7 @@ public class NetworkUtils {
                 return address.getHostAddress();
             }
         }
-
+        Logger.getGlobal().info("There was a problem finding a valid local IP address for this computer.");
         throw new Exception ("Could not find an IP that was not a loopback and was a valid IP.");
     }
 
