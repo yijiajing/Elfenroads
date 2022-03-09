@@ -57,8 +57,6 @@ public class GameScreen extends JPanel implements Serializable
 
 	private ArrayList<ObserverPanel> observerPanels = new ArrayList<>();
 
-	private boolean initialized = false;
-
 	private GameMap gameMap;
 
 	private GameScreen (JFrame frame)
@@ -116,10 +114,6 @@ public class GameScreen extends JPanel implements Serializable
 	}
 
 	public void updateAll() {
-		if (!initialized) {
-			draw();
-		}
-
 		addTransportationCountersAndObstacle(); // updates the player's counter area
 		addCards(); // update's the player's cards
 		addFaceUpTransportationCounters(); // updates the face-up transportation counters
@@ -129,7 +123,6 @@ public class GameScreen extends JPanel implements Serializable
 	public void initialization()
 	{
 		Logger.getGlobal().info("Initializing...");
-		initialized = true;
 		initializeMapImage();
 		initializeRoundCardImage(1);
 		initializeTransportationCountersAndObstacle();
@@ -140,6 +133,7 @@ public class GameScreen extends JPanel implements Serializable
 		initializeDeckOfTransportationCounters();
 		initializeLeaderboard();
 		initializeEndTurnButton();
+		updateAll();
 	}
 
 	
@@ -362,11 +356,14 @@ public class GameScreen extends JPanel implements Serializable
 	{
 		ArrayList<TransportationCounter> faceUpCounters = GameState.instance().getFaceUpCounters();
 
+		for (JPanel panel : panelForFaceUpTransportationCounters) {
+			if (panel != null) {
+				panel.removeAll();
+			}
+		}
 		for (int i = 0; i < 5; i++) {
-			Logger.getGlobal().info("Updating face up counter");
 			JPanel panel = panelForFaceUpTransportationCounters[i];
 			//TODO: investigate why panel can be null
-			panel.removeAll();
 			TransportationCounter counter = faceUpCounters.get(i);
 			panel.add(counter.getDisplay());
 			panel.repaint();
@@ -475,6 +472,5 @@ public class GameScreen extends JPanel implements Serializable
 
 	public static void displayMessage(String message) {
 		JOptionPane.showMessageDialog(null, message);
-
 	}
 }
