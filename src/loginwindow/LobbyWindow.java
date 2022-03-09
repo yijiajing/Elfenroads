@@ -225,8 +225,6 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
 
             // initialize join button
             JButton joinButton = new JButton("JOIN");
-            // TODO: get rid of the start button entirely
-            JButton startButton = new JButton("START");
 
             joinButton.addActionListener(new ActionListener() 
             {
@@ -268,15 +266,6 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
                 } */
                 }});
 
-            startButton.addActionListener(new ActionListener() 
-            {
-                @Override
-                public void actionPerformed(ActionEvent e) 
-                {
-                    GameManager.getInstance().initPlayers();
-                    // GameManager.init(Optional.empty(), id);
-                }
-            });
 
 
             // initialize the box
@@ -288,7 +277,6 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
             gameInfo.add(creatorLabel);
             gameInfo.add(nameLabel);
             gameInfo.add(joinButton);
-            gameInfo.add(startButton);
 
             // add the box to the sessions panel
             // sessions.add(gameInfo);
