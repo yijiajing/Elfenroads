@@ -9,6 +9,7 @@ public abstract class CounterUnit extends Drawable {
     private Road placedOn;
     boolean owned;
     boolean isSecret;
+    JLabel miniDisplay; // for when the counter is on the map
 
     CounterUnit(int resizeWidth, int resizeHeight, int imageNumber) {
 
@@ -21,7 +22,9 @@ public abstract class CounterUnit extends Drawable {
         // String filepath = ("./assets/sprites/M0" + imageNumber + ".png");
         Image toResize = icon.getImage();
         Image resized = toResize.getScaledInstance(resizeWidth, resizeHeight,  java.awt.Image.SCALE_SMOOTH);
+        Image resized_mini = toResize.getScaledInstance(resizeWidth/2, resizeHeight/2,  java.awt.Image.SCALE_SMOOTH);
         display = new JLabel(new ImageIcon(resized));
+        miniDisplay = new JLabel(new ImageIcon(resized_mini));
     }
 
     public Road getPlacedOn() {
@@ -46,6 +49,10 @@ public abstract class CounterUnit extends Drawable {
     
     public void setSecret(boolean b) {
     	this.isSecret = b;
+    }
+
+    public JLabel getMiniDisplay() {
+        return this.miniDisplay;
     }
 
 }

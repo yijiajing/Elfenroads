@@ -213,9 +213,14 @@ public class GameState {
                 toRemove = c;
             }
         }
+
         if (toRemove != null) {
+            Logger.getGlobal().info("There are " + faceUpCounters.size() + " face up counters.");
+            Logger.getGlobal().info("Removing face-up counter of type " + toRemove.getType());
             faceUpCounters.remove(toRemove);
+            Logger.getGlobal().info("There are now " + faceUpCounters.size() + " face up counters.");
             addFaceUpCounterFromPile();
+            Logger.getGlobal().info("There are now " + faceUpCounters.size() + " face up counters.");
             GameScreen.getInstance().updateAll();
         } else {
             LOGGER.info("Error: Counter drawn by another player is not present in the face-up counters on this device.");
