@@ -179,6 +179,7 @@ public class HostWaitWindow extends JPanel implements Runnable
                 e.printStackTrace();
             }
 
+            /*
             try 
             {
                 Thread.sleep(3000);
@@ -188,6 +189,8 @@ public class HostWaitWindow extends JPanel implements Runnable
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
+
+             */
         }
 
     }

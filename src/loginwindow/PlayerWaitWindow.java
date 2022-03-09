@@ -140,7 +140,7 @@ public class PlayerWaitWindow extends JPanel implements Runnable
                 e.printStackTrace();
             }
 
-            try 
+            /*try
             {
                 Thread.sleep(3000);
             } 
@@ -149,6 +149,8 @@ public class PlayerWaitWindow extends JPanel implements Runnable
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
+
+             */
         }
 
         GameManager.getInstance().initPlayers();
