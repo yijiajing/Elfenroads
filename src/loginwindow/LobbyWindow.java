@@ -274,10 +274,8 @@ public class LobbyWindow extends JPanel implements ActionListener {
             case "Elfengold Travel Cards": return GameVariant.ELFENGOLD_TRAVEL_CARDS;
             case "Elfengold Random Gold": return GameVariant.ELFENGOLD_RANDOM_GOLD;
             case "Elfengold Witch": return GameVariant.ELFENGOLD_WITCH;
+            default: return null; // if we set up the LS right, this will never happen
         }
-
-        // since we are in charge of the LS variant values, we can ensure that this never returns null
-        return null;
     }
 
 
