@@ -183,6 +183,8 @@ public class ActionManager {
                 e.printStackTrace();
             }
 
+            GameScreen.getInstance().addCards(); // draws updated hand to the screen
+
             // Move Boot
             // gameState.getCurrentPlayer().setCurrentTown(selectedTown);
             // MoveBootCommand.execute() does the above line now. I just left this here for reference
