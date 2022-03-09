@@ -466,6 +466,6 @@ public class GameScreen extends JPanel implements Serializable
 			options[0] = new JButton("OK");
 		}
 
-		JOptionPane.showOptionDialog(null, message, null, JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+		// JOptionPane.showOptionDialog(null, message, null, JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
 	}
 }
