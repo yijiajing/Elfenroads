@@ -352,6 +352,7 @@ public class GameScreen extends JPanel implements Serializable
 	public void addFaceUpTransportationCounters()
 	{
 		ArrayList<TransportationCounter> faceUpCounters = GameState.instance().getFaceUpCounters();
+		System.out.println(faceUpCounters);
 
 		for (int i = 0; i < 5; i++) {
 			JPanel panel = panelForFaceUpTransportationCounters[i];
@@ -364,10 +365,15 @@ public class GameScreen extends JPanel implements Serializable
 	
 	public void addCards()
 	{
+		// clear the previous cards from the screen
+		for (JPanel panel : panelForPlayerCards) {
+			panel.removeAll();
+		}
+
 		List<CardUnit> myCards = GameManager.getInstance().getThisPlayer().getHand().getCards();
 
-		for (int p=0; p<panelForPlayerCards.length; p++)
-		{
+		// draw the cards to the screen
+		for (int p = 0; p < myCards.size(); p++) {
 			JPanel panel = panelForPlayerCards[p];
 			CardUnit card = myCards.get(p);
 			panel.add(card.getDisplay());
@@ -447,26 +453,8 @@ public class GameScreen extends JPanel implements Serializable
 		return gameMap;
 	}
 
-	public static void displayMessage(String message, boolean passOption) {
-		JButton[] options;
+	public static void displayMessage(String message) {
+		JOptionPane.showMessageDialog(null, message);
 
-		if (passOption) { // write a message with "OK" and "PASS" buttons
-			options = new JButton[2];
-			options[0] = new JButton("OK");
-			options[1] = new JButton("PASS");
-			options[1].addMouseListener(new MouseAdapter() {
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					GameManager.getInstance().endTurn();
-				}
-			});
-		}
-
-		else { // write a message with "OK" button
-			options = new JButton[1];
-			options[0] = new JButton("OK");
-		}
-
-		JOptionPane.showOptionDialog(null, message, null, JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
 	}
 }

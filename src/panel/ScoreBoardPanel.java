@@ -24,17 +24,24 @@ public class ScoreBoardPanel extends JPanel implements ObserverPanel{
     public ScoreBoardPanel(GameScreen pScreen, Player pPlayer) {
     	aScreen = pScreen;
     	aPlayer = pPlayer;
+    	
 
     	this.setPreferredSize(new Dimension(aScreen.getWidth() * 290 / 1440, aScreen.getHeight() * 40 / 900));
     	this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
     	
-    	this.setLayout(new FlowLayout());
-    	this.add(new JLabel("Player " + GameState.instance().getPlayers().indexOf(pPlayer)));
-    	this.add(new JLabel(Integer.toString(aPlayer.getScore())+" pts"));
+    	final CardLayout ObjCl = new CardLayout();
+    	this.setLayout(ObjCl);
     	
-    	JPanel countersPanelOfOtherPlayer = new JPanel();
-    	countersPanelOfOtherPlayer.setVisible(false);
-    	countersPanelOfOtherPlayer.setLayout(new FlowLayout());
+    	//card1: the score card
+    	JPanel scoreCard = new JPanel();
+    	scoreCard.setLayout(new FlowLayout());
+    	int playerIndex = GameState.instance().getPlayers().indexOf(pPlayer) + 1;
+    	scoreCard.add(new JLabel("Player " + playerIndex));
+    	scoreCard.add(new JLabel(Integer.toString(aPlayer.getScore())+" pts"));
+    	
+    	//Card2: the card showing counters owned by other players
+    	JPanel countersCard = new JPanel();
+    	countersCard.setLayout(new FlowLayout());
     	List<TransportationCounter> counters = pPlayer.getHand().getCounters();
     	for(TransportationCounter c: counters) {
     		//display a black square if c is secret.
@@ -44,24 +51,54 @@ public class ScoreBoardPanel extends JPanel implements ObserverPanel{
     			display.setBorder(BorderFactory.createLineBorder(Color.BLACK, 10));
     			display.setPreferredSize(new Dimension(aScreen.getWidth() * 10 / 1440, aScreen.getHeight() * 10 / 900));//TODO: adjust size
     			
-    			countersPanelOfOtherPlayer.add(display);
+    			countersCard.add(display);
     		}
     		//else if c is not secret, display it.
     		else {
     			//TODO:adjust the size of counter.
-    			countersPanelOfOtherPlayer.add(c.getDisplay());
+    			countersCard.add(c.getDisplay());
     		}
     	}
     	
-    	//Make the countersPanelOfOtherPlayer visible only when mouse hovering on it.
+    	//Then add the two cards to the scoreBoardPanel
+    	this.add(scoreCard);
+    	this.add(countersCard);
+    	
+//    	this.setLayout(new FlowLayout());
+//    	this.add(new JLabel("Player " + GameState.instance().getPlayers().indexOf(pPlayer)));
+//    	this.add(new JLabel(Integer.toString(aPlayer.getScore())+" pts"));
+//    	
+//    	JPanel countersPanelOfOtherPlayer = new JPanel();
+//    	countersPanelOfOtherPlayer.setBounds();
+//    	countersPanelOfOtherPlayer.setVisible(false);
+//    	countersPanelOfOtherPlayer.setLayout(new FlowLayout());
+//    	List<TransportationCounter> counters = pPlayer.getHand().getCounters();
+//    	for(TransportationCounter c: counters) {
+//    		//display a black square if c is secret.
+//    		if (c.isSecret()){
+//    			JLabel display = new JLabel();
+//    			display.setForeground(Color.BLACK);
+//    			display.setBorder(BorderFactory.createLineBorder(Color.BLACK, 10));
+//    			display.setPreferredSize(new Dimension(aScreen.getWidth() * 10 / 1440, aScreen.getHeight() * 10 / 900));//TODO: adjust size
+//    			
+//    			countersPanelOfOtherPlayer.add(display);
+//    		}
+//    		//else if c is not secret, display it.
+//    		else {
+//    			//TODO:adjust the size of counter.
+//    			countersPanelOfOtherPlayer.add(c.getDisplay());
+//    		}
+//    	}
+    	
+    	//Switch to the counters card when hovering on this panel
     	this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-            	countersPanelOfOtherPlayer.setVisible(true);
+            	ObjCl.last(ScoreBoardPanel.this);
             }
             @Override
             public void mouseExited(MouseEvent e) {
-            	countersPanelOfOtherPlayer.setVisible(false);
+            	ObjCl.first(ScoreBoardPanel.this);
             }
         });
     	
