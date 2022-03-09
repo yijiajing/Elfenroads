@@ -322,13 +322,13 @@ public class GameScreen extends JPanel implements Serializable
 
 	public void initializeMenuButton() {
 		JPanel buttonPanel = new JPanel();
-		buttonPanel.setBounds(width*1000/1440, height*625/900 + 5, width*100/1440, height*65/900);
+		buttonPanel.setBounds(width*1000/1440 + 100, height*625/900, width*100/1440, height*65/900);
 		buttonPanel.setOpaque(false);
 		boardGame_Layers.add(buttonPanel);
 
-		JButton endTurn = new EndTurnButton();
-		endTurn.setBounds(width*1000/1440, height*625/900 + 5, width*100/1440, height*65/900);
-		buttonPanel.add(endTurn);
+		JButton menu = new MenuButton();
+		menu.setBounds(width*1000/1440 + 100, height*625/900, width*100/1440, height*65/900);
+		buttonPanel.add(menu);
 	}
 
 	public void addImages()
