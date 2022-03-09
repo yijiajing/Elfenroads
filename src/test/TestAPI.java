@@ -1,4 +1,4 @@
-package Test;
+//package Test;
 
 import commands.GameCommand;
 import networking.DNSLookup;
@@ -62,7 +62,7 @@ public class TestAPI {
         try {
             User alex = User.init("dontforget", "abc123_ABC123");
             GameSession sesh = new GameSession(alex, variant, "savegame1234");
-            GameSession sesh = new GameSession(alex, "elfenlands", "savegame1234");
+//            GameSession sesh = new GameSession(alex, "elfenlands", "savegame1234");
         }
         catch (Exception e)
         {

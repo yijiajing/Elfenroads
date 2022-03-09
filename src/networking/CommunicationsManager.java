@@ -16,6 +16,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 public class CommunicationsManager {
 
@@ -219,7 +220,7 @@ public class CommunicationsManager {
 
         while (listener.getCommands().size() > 0) {
 
-            Logger.getGlobal().info("Queue looks like: " + listener.getCommands().stream().map(c -> c.getClass().toString()));
+            Logger.getGlobal().info("Queue looks like: " + listener.getCommands().stream().map(c -> c.getClass().toString()).collect(Collectors.toList()));
             GameCommand toExecute;
             Optional<GameCommand> addPlayerCommandOptional = listener.getCommands()
                     .stream().filter(c -> c instanceof AddPlayerCommand).findFirst();
