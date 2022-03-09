@@ -43,7 +43,7 @@ public class GameManager {
      * If the User is starting a new game, then loadedState == null
      * If the User is loading a previous game, then loadedState != null
      */
-    private GameManager(Optional<GameState> loadedState, String pSessionID) {
+    private GameManager(Optional<GameState> loadedState, String pSessionID, GameVariant variant) {
 
         MainFrame.mainPanel.add(GameScreen.init(MainFrame.getInstance()), "gameScreen");
         sessionID = pSessionID;
@@ -51,7 +51,8 @@ public class GameManager {
         // start a new game if there is no state to be loaded
         if (loadedState.isEmpty()) {
             //TODO: figure out the game variant and pass it to the constructor
-            gameState = GameState.init(pSessionID, GameVariant.ELFENLAND_CLASSIC);
+            //gameState = GameState.init(pSessionID, GameVariant.ELFENLAND_CLASSIC);
+            gameState = GameState.init(pSessionID, variant);
             actionManager = ActionManager.init(gameState, this);
 
             loaded = false;
@@ -121,9 +122,9 @@ public class GameManager {
         setUpRound();
     }
 
-    public static GameManager init(Optional<GameState> loadedState, String sessionID) {
+    public static GameManager init(Optional<GameState> loadedState, String sessionID, GameVariant variant) {
         if (INSTANCE == null) {
-            INSTANCE = new GameManager(loadedState, sessionID);
+            INSTANCE = new GameManager(loadedState, sessionID, variant);
         }
         return INSTANCE;
     }
