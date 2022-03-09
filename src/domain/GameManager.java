@@ -43,7 +43,7 @@ public class GameManager {
      * If the User is starting a new game, then loadedState == null
      * If the User is loading a previous game, then loadedState != null
      */
-    private GameManager(Optional<GameState> loadedState, String pSessionID) {
+    private GameManager(Optional<GameState> loadedState, String pSessionID, GameVariant variant) {
 
         MainFrame.mainPanel.add(GameScreen.init(MainFrame.getInstance()), "gameScreen");
         sessionID = pSessionID;
@@ -51,7 +51,8 @@ public class GameManager {
         // start a new game if there is no state to be loaded
         if (loadedState.isEmpty()) {
             //TODO: figure out the game variant and pass it to the constructor
-            gameState = GameState.init(pSessionID, GameVariant.ELFENLAND_CLASSIC);
+            //gameState = GameState.init(pSessionID, GameVariant.ELFENLAND_CLASSIC);
+            gameState = GameState.init(pSessionID, variant);
             actionManager = ActionManager.init(gameState, this);
 
             loaded = false;
@@ -121,9 +122,9 @@ public class GameManager {
         setUpRound();
     }
 
-    public static GameManager init(Optional<GameState> loadedState, String sessionID) {
+    public static GameManager init(Optional<GameState> loadedState, String sessionID, GameVariant variant) {
         if (INSTANCE == null) {
-            INSTANCE = new GameManager(loadedState, sessionID);
+            INSTANCE = new GameManager(loadedState, sessionID, variant);
         }
         return INSTANCE;
     }
@@ -239,7 +240,7 @@ public class GameManager {
 
             // display message to let the user know that they need to select a counter
             GameScreen.displayMessage("Please select a transportation counter to add to your hand. You may choose one of " +
-                    "the face-up counters or a counter from the deck, shown on the right side of the screen.", false);
+                    "the face-up counters or a counter from the deck, shown on the right side of the screen.");
 
             // all logic is implemented in the mouse listeners of the counters
         }
@@ -261,8 +262,8 @@ public class GameManager {
                     It is time to plan your travel routes! Begin by clicking the transportation counter in your hand that you want to use, then click on the road that you want to travel.
                     The chart in the bottom right corner indicates which transportation counters may be used on which road.
                     Alternatively, you may choose to place your Obstacle on a road that already has a counter. But be warned... you can only do this once!
-                    Alternatively, you can pass your turn.
-                    """, true);
+                    Alternatively, you can pass your turn by clicking "End Turn".
+                    """);
 
             // TODO implement all logic in listeners and action manager
         }
@@ -284,7 +285,7 @@ public class GameManager {
                     It is time to travel across the map and collect your town pieces! Begin by clicking the travel card(s) that you want to use, then click on the town that you want to travel to.
                     The number of required travel cards depends on the region and is indicated by the chart in the bottom right corner. 
                     You can repeat this as many times as you want. When you are done travelling, click "End Turn". 
-                    """, false);
+                    """);
 
             // logic implemented in ActionManager
         }
@@ -308,7 +309,7 @@ public class GameManager {
         GameScreen.displayMessage("""
                 The round is over! All of your transportation counters must be returned except for one. 
                 Please select the transportation counter from your hand that you wish to keep.
-                """, false);
+                """);
 
         // once the player clicks a transportation counter it will call returnAllCountersExceptOne()
     }
@@ -445,13 +446,13 @@ public class GameManager {
         }
         assert winners.size() >= 1;
         if (winners.size() == 1) {
-            GameScreen.displayMessage(winners.get(0).getName() + " is the winner!", false);
+            GameScreen.displayMessage(winners.get(0).getName() + " is the winner!");
         } else {
             String winnersNames = "";
             for (Player winner : winners) {
                 winnersNames = winnersNames.concat(" " + winner.getName());
             }
-            GameScreen.displayMessage("There is a tie. " + winnersNames + " are the winners!", false);
+            GameScreen.displayMessage("There is a tie. " + winnersNames + " are the winners!");
         }
     }
 
