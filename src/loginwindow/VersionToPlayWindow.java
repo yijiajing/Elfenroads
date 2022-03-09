@@ -98,7 +98,7 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
                 try 
                 {
                     track1.play();
-                    session = new GameSession(User.getInstance(), "elfenlands", "My Save Game Name");
+                    session = new GameSession(User.getInstance(), "Elfenland(Long)", "My Save Game Name");
 
                     GameManager.init(Optional.empty(), session.getId(), GameVariant.ELFENLAND_LONG);
 
@@ -127,7 +127,7 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
                 try 
                 {
                     track1.play();
-                    session = new GameSession(User.getInstance(), "elfenlands", "My Save Game Name");
+                    session = new GameSession(User.getInstance(), "Destination", "My Save Game Name");
 
                     GameManager.init(Optional.empty(), session.getId(), GameVariant.ELFENLAND_DESTINATION);
 
