@@ -446,7 +446,9 @@ public class GameScreen extends JPanel implements Serializable
 		return gameMap;
 	}
 
+
 	public static void displayMessage(String message) {
 		JOptionPane.showMessageDialog(null, message);
+
 	}
 }
