@@ -205,11 +205,10 @@ public class GameState {
     }
 
     public void removeFaceUpCounter(CounterType type) {
-
         TransportationCounter toRemove = null;
 
         for (TransportationCounter c : faceUpCounters) {
-            if (c.getType().equals(type)) {
+            if (c.getType() == type) {
                 toRemove = c;
             }
         }
