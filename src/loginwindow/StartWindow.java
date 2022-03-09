@@ -41,7 +41,8 @@ public class StartWindow extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 track1.play();
                 remove(background_elvenroads);
-                MainFrame.mainPanel.add(new LoginWindow(), "login");
+                // MainFrame.mainPanel.add(new LoginWindow(), "login");
+                MainFrame.mainPanel.add(new LoginWindowNoNgrok(), "login");
                 MainFrame.cardLayout.show(MainFrame.mainPanel,"login");
             }
             
