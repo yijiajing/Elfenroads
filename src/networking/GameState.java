@@ -1,10 +1,7 @@
 package networking;
 
 import domain.*;
-import enums.Colour;
-import enums.GameVariant;
-import enums.RoundPhaseType;
-import enums.TravelCardType;
+import enums.*;
 import org.json.JSONObject;
 import panel.ElfBootPanel;
 import panel.GameScreen;
@@ -13,6 +10,7 @@ import java.util.*;
 
 
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 public class GameState {
 
@@ -25,7 +23,7 @@ public class GameState {
     2. where each player's boot is
     3. 
      */
-
+    private final Logger LOGGER = Logger.getGlobal();
     private JSONObject serialized;
 
     // Global variable holding the singleton GameState instance
@@ -197,6 +195,7 @@ public class GameState {
      */
     public void addFaceUpCounterFromPile() {
         if (counterPile.getSize() > 0) {
+            LOGGER.info("Adding face-up counter from pile");
             TransportationCounter counter = counterPile.draw();
             faceUpCounters.add(counter);
             counter.setOwned(false);
@@ -205,9 +204,19 @@ public class GameState {
         }
     }
 
+    public void removeFaceUpCounter(CounterType type) {
+        for (TransportationCounter c : faceUpCounters) {
+            if (c.getType().equals(type)) {
+                faceUpCounters.remove(c);
+                addFaceUpCounterFromPile();
+                GameScreen.getInstance().updateAll();
+            }
+        }
+        LOGGER.info("Error: Counter drawn by another player is not present in the face-up counters on this device.");
+    }
+
     public void addPlayer(Player p) {
         players.add(p);
-        
     }
 
     /**
