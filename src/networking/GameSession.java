@@ -277,6 +277,27 @@ public class GameSession {
         return details;
     }
 
+    public static String getSessionsReturnString() throws IOException
+    {
+        URL url = new URL("http://35.182.122.111:4242/api/sessions");
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("GET");
+
+        int status = con.getResponseCode();
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer content = new StringBuffer();
+        while((inputLine = in.readLine()) != null) {
+            content.append(inputLine);
+        }
+        in.close();
+        con.disconnect();
+        // System.out.println("Response status: " + status);
+        // System.out.println(content.toString());
+
+        return content.toString();
+    }
+
     public static ArrayList<String> getPlayersFromSessionDetails(String sessionDetailsResponse)
     {
         JSONObject details = new JSONObject(sessionDetailsResponse);

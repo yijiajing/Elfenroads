@@ -97,28 +97,12 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
 
             }
         });
-        refreshButton.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                try
-                {
-                    initializeGameInfo(sessions);
-                }
 
-                catch (IOException e1)
-                {
-                    e1.printStackTrace();
-                }
-            }
-        });
 
 
         buttons = new JPanel();
         buttons.add(createButton);
         buttons.add(loadButton);
-        buttons.add(refreshButton);
         GridBagLayout layout = new GridBagLayout();
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -155,22 +139,23 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
 
         if (prevPayload == "") // when we first get into the window, we will have to make a synchronous api call to show the information
         {
-
+            prevPayload = GameSession.getSessionsReturnString();
         }
 
-        // get a list of game sessions by ID
-        try{getSessionsResponse = GameSession.getSessions(prevPayload);}
-        catch (IOException e)
-        {
-            // we can assume that the exception is because of long polling timeout, so we'll just resend it
-            getSessionsResponse = GameSession.getSessions(prevPayload);
-        }
+        else // if it is not our first request
+        {// get a list of game sessions by ID
+            try {
+                getSessionsResponse = GameSession.getSessions(prevPayload);
+            } catch (IOException e) {
+                // we can assume that the exception is because of long polling timeout, so we'll just resend it
+                getSessionsResponse = GameSession.getSessions(prevPayload);
+            }
 
-        if (getSessionsResponse == null)
-        {
-            Logger.getGlobal().info("Failed to initialize the game info in the LobbyWindow using long polling.");
+            if (getSessionsResponse == null) {
+                Logger.getGlobal().info("Failed to initialize the game info in the LobbyWindow using long polling.");
+            }
+            prevPayload = getSessionsResponse;
         }
-        prevPayload = getSessionsResponse;
 
         ArrayList<String> gameIDs = GameSession.getSessionIDFromSessions(prevPayload);
 
