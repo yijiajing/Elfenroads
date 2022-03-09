@@ -27,6 +27,7 @@ public class AddPlayerCommand implements GameCommand{
     }
 
     public void execute() {
+        Logger.getGlobal().info("Received AddPlayerCommand with name " + name + " and color " + color + " , executing...");
         GameState gameState = GameState.instance();
         GameManager gameManager = GameManager.getInstance();
 

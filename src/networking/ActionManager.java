@@ -203,7 +203,7 @@ public class ActionManager {
             boot.setSelected(false);
 
             // now, construct a command
-            MoveBootCommand cmd = new MoveBootCommand(startForCommand, destinationForCommand, bootForCommand, gameManager.getThisPlayer().getName());
+            MoveBootCommand cmd = new MoveBootCommand(startForCommand, destinationForCommand, bootForCommand);
 
             // execute locally
             cmd.execute();
