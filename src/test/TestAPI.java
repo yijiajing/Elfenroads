@@ -1,4 +1,4 @@
-package Test;
+//package Test;
 
 import commands.GameCommand;
 import networking.DNSLookup;

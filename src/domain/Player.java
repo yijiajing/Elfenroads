@@ -29,6 +29,7 @@ public class Player implements Comparable<Player> {
     public Player(Colour pColour, String pName)
     {
         this.curTown = GameMap.getInstance().getTownByName("Elvenhold");
+        townsVisited.add(GameMap.getInstance().getTownByName("Elvenhold"));
         this.colour = pColour;
         this.hand = new Hand();
         this.name = pName;

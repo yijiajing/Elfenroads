@@ -54,6 +54,7 @@ public class MoveBootCommand implements GameCommand, Serializable {
         startPanel.updateView();
         destinationPanel.updateView();
         GameScreen.getInstance().notifyObservers();
+        GameScreen.getInstance().updateLeaderboard();
     }
 
     public String getStart() {

@@ -236,6 +236,14 @@ public class GameScreen extends JPanel implements Serializable
 
 	}
 	
+	//delete and re-initialize scoreboards 
+	public void updateLeaderboard() {
+		backgroundPanel_ForLeaderboard.removeAll();
+		this.initializeLeaderboard();
+		backgroundPanel_ForLeaderboard.revalidate();
+		backgroundPanel_ForLeaderboard.repaint();
+	}
+	
 	public void initializeCardPanels()
 	{
 		int xCoordinate = width*2/1440;
