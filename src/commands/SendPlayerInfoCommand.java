@@ -15,7 +15,7 @@ public class SendPlayerInfoCommand implements GameCommand {
 
     public SendPlayerInfoCommand ()
     {
-        try {senderName = NetworkUtils.getLocalIP();}
+        try {senderName = GameManager.getInstance().getThisPlayer().getName();}
         catch (Exception e) {e.printStackTrace();}
     }
 
@@ -30,7 +30,7 @@ public class SendPlayerInfoCommand implements GameCommand {
         AddPlayerCommand cmd = new AddPlayerCommand(playerName, playerColor);
 
         // send the command back to the original requester of the Player info
-        try{GameManager.getInstance().getComs().sendCommandToIndividual(cmd, playerName);}
+        try{GameManager.getInstance().getComs().sendCommandToIndividual(cmd, senderName);}
         catch (Exception e2){e2.printStackTrace();}
 
     }

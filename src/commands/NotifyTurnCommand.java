@@ -24,6 +24,8 @@ public class NotifyTurnCommand implements GameCommand {
         GameManager gameManager = GameManager.getInstance();
         Logger.getGlobal().info("It is now my turn");
         GameState.instance().setCurrentPlayer(gameManager.getThisPlayer());
+        Logger.getGlobal().info("Phase is " + phase);
+
         switch (phase) {
             case DEAL_CARDS:
                 gameManager.distributeTravelCards();
