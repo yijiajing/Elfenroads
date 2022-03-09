@@ -107,8 +107,9 @@ public class ScoreBoardPanel extends JPanel implements ObserverPanel{
 
 	@Override
 	public void updateView() {
+		this.validate();
 		this.repaint();
-		this.revalidate();
+		//this.revalidate();
 		
 	}
 	
