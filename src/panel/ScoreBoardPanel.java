@@ -108,10 +108,10 @@ public class ScoreBoardPanel extends JPanel implements ObserverPanel{
     	
     	aScreen.addObserverPanel(this);
     }
+    
 
 	@Override
 	public void updateView() {
-
 		scoreCard.remove(score);
 		score = new JLabel(Integer.toString(aPlayer.getScore())+" pts");
 		System.out.println(aPlayer.getScore());
@@ -120,8 +120,5 @@ public class ScoreBoardPanel extends JPanel implements ObserverPanel{
 		this.repaint();
 		//this.revalidate();
 		
-	}
-	
-	
-	
+	}	
 }
