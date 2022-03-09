@@ -11,9 +11,9 @@ import java.util.Optional;
 public class DrawCounterCommand implements GameCommand {
 
     private int numDrawn; // if the counter is drawn from the pile (or ==1 if taken from face-up options)
-    private Optional<CounterType> type; // if the counter is taken from the face-up options
+    private CounterType type; // if the counter is taken from the face-up options, otherwise type==null
 
-    public DrawCounterCommand(int numDrawn, Optional<CounterType> type) {
+    public DrawCounterCommand(int numDrawn, CounterType type) {
         this.numDrawn = numDrawn;
         this.type = type;
     }
@@ -23,10 +23,10 @@ public class DrawCounterCommand implements GameCommand {
         GameState gameState = GameState.instance();
 
         // counter was taken from the face-up options
-        if (type.isPresent()) {
+        if (type != null) {
             ArrayList<TransportationCounter> counters = gameState.getFaceUpCounters();
             for (TransportationCounter c : counters) {
-                if (c.getType().equals(type.get())) {
+                if (c.getType().equals(type)) {
                     counters.remove(c);
                     gameState.addFaceUpCounterFromPile();
                     GameScreen.getInstance().updateAll();
