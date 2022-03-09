@@ -53,14 +53,14 @@ public class ScoreBoardPanel extends JPanel implements ObserverPanel{
     			JLabel display = new JLabel();
     			display.setForeground(Color.BLACK);
     			display.setBorder(BorderFactory.createLineBorder(Color.BLACK, 10));
-    			display.setPreferredSize(new Dimension(aScreen.getWidth() * 10 / 1440, aScreen.getHeight() * 10 / 900));//TODO: adjust size
+    			display.setPreferredSize(new Dimension(aScreen.getWidth() * 20 / 1440, aScreen.getHeight() * 20 / 900));//TODO: adjust size
     			
     			countersCard.add(display);
     		}
     		//else if c is not secret, display it.
     		else {
     			//TODO:adjust the size of counter.
-    			countersCard.add(c.getDisplay());
+    			countersCard.add(new JLabel(c.getType().toString()));
     		}
     	}
     	
