@@ -31,7 +31,7 @@ public class DrawCounterCommand implements GameCommand {
         // counters were taken from the pile
         else {
             gameState.getCounterPile().removeFirst(numDrawn);
-            GameScreen.getInstance().updateAll();
         }
+        GameScreen.getInstance().updateAll();
     }
 }
