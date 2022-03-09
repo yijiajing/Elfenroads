@@ -142,4 +142,13 @@ public class TransportationCounter extends CounterUnit implements Comparable<Tra
     public static TransportationCounter getNew(CounterType counterType) {
         return new TransportationCounter(counterType, MainFrame.instance.getWidth()*67/1440, MainFrame.instance.getHeight()*60/900);
     }
+
+    @Override
+    public String toString() {
+        return "TransportationCounter{" +
+                "owned=" + owned +
+                ", isSecret=" + isSecret +
+                ", type=" + type +
+                '}';
+    }
 }

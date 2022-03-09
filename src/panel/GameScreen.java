@@ -352,6 +352,7 @@ public class GameScreen extends JPanel implements Serializable
 	public void addFaceUpTransportationCounters()
 	{
 		ArrayList<TransportationCounter> faceUpCounters = GameState.instance().getFaceUpCounters();
+		System.out.println(faceUpCounters);
 
 		for (int i = 0; i < 5; i++) {
 			JPanel panel = panelForFaceUpTransportationCounters[i];
@@ -466,6 +467,6 @@ public class GameScreen extends JPanel implements Serializable
 			options[0] = new JButton("OK");
 		}
 
-		JOptionPane.showOptionDialog(null, message, null, JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+//		JOptionPane.showOptionDialog(null, message, null, JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
 	}
 }

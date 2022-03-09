@@ -7,6 +7,7 @@ import panel.GameScreen;
 
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 public class DrawCounterCommand implements GameCommand {
 
@@ -20,25 +21,17 @@ public class DrawCounterCommand implements GameCommand {
 
     @Override
     public void execute() {
+        Logger.getGlobal().info("Executing DrawCounterCommand with num: " + numDrawn + ", type: " + type);
         GameState gameState = GameState.instance();
 
         // counter was taken from the face-up options
         if (type != null) {
-            ArrayList<TransportationCounter> counters = gameState.getFaceUpCounters();
-            for (TransportationCounter c : counters) {
-                if (c.getType().equals(type)) {
-                    counters.remove(c);
-                    gameState.addFaceUpCounterFromPile();
-                    GameScreen.getInstance().updateAll();
-                    return;
-                }
-            }
-
-            System.out.println("Error: Counter drawn by another player is not present in the face-up counters on this device.");
+            gameState.removeFaceUpCounter(type);
         }
         // counters were taken from the pile
         else {
             gameState.getCounterPile().removeFirst(numDrawn);
+            GameScreen.getInstance().updateAll();
         }
     }
 }
