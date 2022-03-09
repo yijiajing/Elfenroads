@@ -25,8 +25,9 @@ public class TestAPI {
        // GameService elfenlands = new GameService("elfenlands", "elfenlands", "abc123_ABC123", 2, 6 );
        // GameService longGame = new GameService("longGame", "long game", "abc123_ABC123", 2, 6 );
        // GameService destinationTown = new GameService("destinationTown", "destination town", "abc123_ABC123", 2, 6);
-       createASession("Destination");
-        // deleteAllSessions();
+       // createASession("Destination");
+        User.init("dontforget", "abc123_ABC123");
+        deleteAllSessions();
     }
 
     public static void testCreateUser(String username, String password) throws IOException, Exception {
