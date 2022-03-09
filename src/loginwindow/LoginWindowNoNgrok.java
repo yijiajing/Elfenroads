@@ -134,7 +134,7 @@ public class LoginWindowNoNgrok extends JPanel implements Runnable{
                     }
                     return;
                 }
-
+                track1.play();
             	remove(background_elvenroads);
                 MainFrame.mainPanel.add(new LobbyWindow(), "lobby");
                 MainFrame.cardLayout.show(MainFrame.mainPanel,"lobby");
