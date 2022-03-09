@@ -302,7 +302,9 @@ public class GameManager {
         if (!(isLocalPlayerTurn() && gameState.getCurrentPhase() == RoundPhaseType.RETURN_COUNTERS)) return;
 
         // no need to return the counters if we are at the end of the game
-        if (gameState.getCurrentRound() == gameState.getTotalRounds()) {
+        if (gameState.getCurrentRound() == gameState.getTotalRounds()
+                || thisPlayer.getHand().getCounters().size() == 0) {
+            LOGGER.info("Did not return counters because there is no counter or the end of the game");
             endTurn();
             return;
         }
