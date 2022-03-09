@@ -4,6 +4,7 @@ import domain.*;
 import enums.Colour;
 import networking.GameState;
 import panel.ElfBootPanel;
+import panel.GameScreen;
 
 import java.io.Serializable;
 
@@ -52,6 +53,7 @@ public class MoveBootCommand implements GameCommand, Serializable {
 
         startPanel.updateView();
         destinationPanel.updateView();
+        GameScreen.getInstance().notifyObservers();
     }
 
     public String getStart() {
