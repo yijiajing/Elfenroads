@@ -41,9 +41,8 @@ public class CounterPanel extends JPanel {
     }
 
     public void placeObstacle(Obstacle obstacle) {
-    	JLabel obstacleDisplay = obstacle.getDisplay();
     	gameScreen.addAncestorListener(null);
-    	obstacleDisplay.setBounds(this.x, this.y + gameScreen.getHeight() * 40 / 900, gameScreen.getWidth() * 40 / 1440, gameScreen.getHeight() * 40 / 900);
+    	this.add(obstacle.getDisplay());
     }
 
     public void update() {
