@@ -48,7 +48,7 @@ public class TransportationCounter extends CounterUnit implements Comparable<Tra
                         // tell the other peers to remove the counter
                         try {
                             GameManager.getInstance().getComs().sendGameCommandToAllPlayers(
-                                    new DrawCounterCommand(1, Optional.of(TransportationCounter.this.type)));
+                                    new DrawCounterCommand(1, TransportationCounter.this.type));
                         } catch (IOException err) {
                             System.out.println("Error: there was a problem sending the DrawCounterCommand to the other peers.");
                         }

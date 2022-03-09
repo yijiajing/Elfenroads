@@ -184,6 +184,7 @@ public class GameManager {
      */
     public void distributeTravelCards() {
         if (!(isLocalPlayerTurn() && gameState.getCurrentPhase() == RoundPhaseType.DEAL_CARDS)) return;
+        Logger.getGlobal().info("Local player turn: " + isLocalPlayerTurn());
 
         int numCards = thisPlayer.getHand().getNumTravelCards();
         for (int i = numCards; i < 8; i++) {
@@ -217,7 +218,7 @@ public class GameManager {
 
         // tell the other peers to remove the counter from the pile
         try {
-            coms.sendGameCommandToAllPlayers(new DrawCounterCommand(1, Optional.empty()));
+            coms.sendGameCommandToAllPlayers(new DrawCounterCommand(1, null));
         } catch (IOException e) {
             System.out.println("Error: there was a problem sending the DrawCounterCommand to the other peers.");
         }
