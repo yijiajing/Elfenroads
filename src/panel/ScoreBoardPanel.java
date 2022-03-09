@@ -18,7 +18,9 @@ public class ScoreBoardPanel extends JPanel implements ObserverPanel{
 
     private GameScreen aScreen;
     private Player aPlayer;
-
+    private JLabel score;
+    private JPanel scoreCard;
+    private JPanel countersCard;
 
     
     public ScoreBoardPanel(GameScreen pScreen, Player pPlayer) {
@@ -33,14 +35,16 @@ public class ScoreBoardPanel extends JPanel implements ObserverPanel{
     	this.setLayout(ObjCl);
     	
     	//card1: the score card
-    	JPanel scoreCard = new JPanel();
+    	scoreCard = new JPanel();
     	scoreCard.setLayout(new FlowLayout());
     	int playerIndex = GameState.instance().getPlayers().indexOf(pPlayer) + 1;
     	scoreCard.add(new JLabel("Player " + playerIndex));
-    	scoreCard.add(new JLabel(Integer.toString(aPlayer.getScore())+" pts"));
+    	
+    	score = new JLabel(Integer.toString(aPlayer.getScore())+" pts");
+    	scoreCard.add(score);
     	
     	//Card2: the card showing counters owned by other players
-    	JPanel countersCard = new JPanel();
+    	countersCard = new JPanel();
     	countersCard.setLayout(new FlowLayout());
     	List<TransportationCounter> counters = pPlayer.getHand().getCounters();
     	for(TransportationCounter c: counters) {
@@ -94,11 +98,11 @@ public class ScoreBoardPanel extends JPanel implements ObserverPanel{
     	this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-            	ObjCl.last(ScoreBoardPanel.this);
+            	ObjCl.last(ScoreBoardPanel.this);//the last card is the counters card
             }
             @Override
             public void mouseExited(MouseEvent e) {
-            	ObjCl.first(ScoreBoardPanel.this);
+            	ObjCl.first(ScoreBoardPanel.this);//the first card is the score card
             }
         });
     	
@@ -107,6 +111,9 @@ public class ScoreBoardPanel extends JPanel implements ObserverPanel{
 
 	@Override
 	public void updateView() {
+		scoreCard.remove(score);
+		score = new JLabel(Integer.toString(aPlayer.getScore())+" pts");
+		scoreCard.add(score);
 		this.repaint();
 		this.revalidate();
 		
