@@ -73,6 +73,8 @@ public class ActionManager {
         // Player intends to place an obstacle
         if (selectedCounter instanceof Obstacle) {
             if (selectedRoad.placeObstacle((Obstacle) selectedCounter)) {
+                gameManager.getThisPlayer().getHand().removeUnit(selectedCounter);
+                GameScreen.getInstance().updateAll();
                 PlaceObstacleCommand toSendOverNetwork = new PlaceObstacleCommand(selectedRoad);
                 try {
                     gameManager.getComs().sendGameCommandToAllPlayers(toSendOverNetwork);
@@ -224,15 +226,18 @@ public class ActionManager {
         }
         selectedTown = null;
         assert selectedCards.stream().allMatch(CardUnit::isSelected);
-        selectedCards.forEach(this::clearSelectedCard);
-    }
 
+        selectedCards.forEach(c -> c.setSelected(false));
+        selectedCards.clear();
+        //selectedCards.forEach(this::clearSelectedCard);
+    }
+    /*
     public void clearSelectedCard(TravelCard card) {
         assert selectedCards.contains(card);
         assert card.isSelected();
         selectedCards.remove(card);
         card.setSelected(false);
-    }
+    }*/
 
     /**
      * Clears all selection states.

@@ -355,6 +355,7 @@ public class GameScreen extends JPanel implements Serializable
 
 		for (int i = 0; i < 5; i++) {
 			JPanel panel = panelForFaceUpTransportationCounters[i];
+			panel.removeAll();
 			TransportationCounter counter = faceUpCounters.get(i);
 			panel.add(counter.getDisplay());
 			panel.repaint();
@@ -383,20 +384,23 @@ public class GameScreen extends JPanel implements Serializable
 	
 	public void addTransportationCountersAndObstacle()
 	{
+		// Transportation counters
 		List<TransportationCounter> counters = GameManager.getInstance().getThisPlayer().getHand().getCounters();
 
-		// Transportation counters
+		// remove a counter if it was already there
+		for (JPanel panel : panelForPlayerTransportationCounters) {
+			panel.removeAll();
+		}
+
 		int i = 0;
 
 		for ( TransportationCounter c : counters )
 		{
 			c.setOwned(true);
 			JPanel panel = panelForPlayerTransportationCounters[i];
-			panel.removeAll(); // clear it if something is already there
 			panel.add(c.getDisplay());
 			panel.repaint();
 			panel.revalidate();
-
 			i++;
 		}
 		
@@ -407,6 +411,8 @@ public class GameScreen extends JPanel implements Serializable
 			panelForObstacle.add(o.getDisplay());
 			panelForObstacle.repaint();
 			panelForObstacle.revalidate();
+		} else {
+			panelForObstacle.removeAll();
 		}
 	}
 

@@ -25,11 +25,11 @@ public class Hand {
 	
 	public void removeUnit(Drawable pUnit) {
 		if (pUnit instanceof CardUnit) {
-			cardList.remove((CardUnit)pUnit);
+			cardList.remove(pUnit);
 		} else if (pUnit instanceof Obstacle) {
 			obstacle = Optional.empty();
 		} else {
-			counterList.remove((TransportationCounter) pUnit);
+			counterList.remove(pUnit);
 		}
 	}
 
