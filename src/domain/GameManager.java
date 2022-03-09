@@ -189,13 +189,18 @@ public class GameManager {
      * Fills the Player's hand to have 8 travel cards
      */
     public void distributeTravelCards() {
+
+        LOGGER.info("Distributing travel cards...");
+        LOGGER.info("Local player turn: " + isLocalPlayerTurn());
+
         if (!(isLocalPlayerTurn() && gameState.getCurrentPhase() == RoundPhaseType.DEAL_CARDS)) return;
-        Logger.getGlobal().info("Local player turn: " + isLocalPlayerTurn());
 
         int numCards = thisPlayer.getHand().getNumTravelCards();
         for (int i = numCards; i < 8; i++) {
             thisPlayer.getHand().addUnit(gameState.getTravelCardDeck().draw());
         }
+        LOGGER.info("Added " + (8-numCards) + " travel cards...");
+        Logger.getGlobal().info(GameManager.getInstance().getThisPlayer().getHand().getCards().toString());
 
         int numDrawn = 8 - numCards;
         DrawCardCommand drawCardCommand = new DrawCardCommand(numDrawn);
@@ -269,8 +274,6 @@ public class GameManager {
                     Alternatively, you may choose to place your Obstacle on a road that already has a counter. But be warned... you can only do this once!
                     Alternatively, you can pass your turn by clicking "End Turn".
                     """);
-
-            // TODO implement all logic in listeners and action manager
         }
     }
 
@@ -304,7 +307,9 @@ public class GameManager {
         if (!(isLocalPlayerTurn() && gameState.getCurrentPhase() == RoundPhaseType.RETURN_COUNTERS)) return;
 
         // no need to return the counters if we are at the end of the game
-        if (gameState.getCurrentRound() == gameState.getTotalRounds()) {
+        if (gameState.getCurrentRound() == gameState.getTotalRounds()
+                || thisPlayer.getHand().getCounters().size() == 0) {
+            LOGGER.info("Did not return counters because there is no counter or the end of the game");
             endTurn();
             return;
         }
@@ -327,17 +332,24 @@ public class GameManager {
         List<TransportationCounter> myCounters = thisPlayer.getHand().getCounters();
 
         for ( TransportationCounter c : myCounters ) {
-            if (c.equals(toKeep)) continue;
+            if (c.equals(toKeep)) {
+                continue;
+            }
 
-            thisPlayer.getHand().removeUnit(c); // remove counter from my hand
             GameState.instance().getCounterPile().addDrawable(c); // put counter back in the deck
+
             try {
+                LOGGER.info("Sending ReturnTransportationCounterCommand to all players");
                 coms.sendGameCommandToAllPlayers(new ReturnTransportationCounterCommand(c));
             } catch (IOException e) {
                 System.out.println("There was a problem sending the ReturnTransportationCounterCommand to all players.");
                 e.printStackTrace();
             }
         }
+
+        // clear all counters and then add toKeep back, otherwise we get concurrent modification exception
+        thisPlayer.getHand().getCounters().clear();
+        thisPlayer.getHand().addUnit(toKeep);
 
         endTurn();
     }

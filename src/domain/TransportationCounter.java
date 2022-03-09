@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 public class TransportationCounter extends CounterUnit implements Comparable<TransportationCounter> {
 
@@ -34,7 +35,7 @@ public class TransportationCounter extends CounterUnit implements Comparable<Tra
             public void mouseClicked(MouseEvent e) {
 
                 // DRAW COUNTERS PHASE, counter is face-up and available to be chosen
-                if (!isOwned()) {
+                if (!isOwned() && GameRuleUtils.isDrawCountersPhase()) {
                     if (GameRuleUtils.isDrawCountersPhase()) {
 
                         // adding the counter to my hand
@@ -44,6 +45,9 @@ public class TransportationCounter extends CounterUnit implements Comparable<Tra
                         GameScreen.getInstance().updateAll(); // update GUI
                         TransportationCounter.this.owned = true;
                         TransportationCounter.this.setSecret(false);
+                        Logger.getGlobal().info("Just added " + TransportationCounter.this.getType() +
+                                ", current counters in hand: " +
+                                GameManager.getInstance().getThisPlayer().getHand().getCounters().toString());
 
                         // tell the other peers to remove the counter
                         try {

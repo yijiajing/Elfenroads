@@ -33,5 +33,6 @@ public class DrawCounterCommand implements GameCommand {
             gameState.getCounterPile().removeFirst(numDrawn);
         }
         GameScreen.getInstance().updateAll();
+        GameScreen.getInstance().updateLeaderboard();
     }
 }

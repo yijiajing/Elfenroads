@@ -74,6 +74,8 @@ public class ActionManager {
         if (selectedCounter instanceof Obstacle) {
             if (selectedRoad.placeObstacle((Obstacle) selectedCounter)) {
                 gameManager.getThisPlayer().getHand().removeUnit(selectedCounter);
+                Logger.getGlobal().info("Just removed obstacle, current counters in hand: " +
+                        GameManager.getInstance().getThisPlayer().getHand().getCounters().toString());
                 //GameScreen.getInstance().updateAll();
                 PlaceObstacleCommand toSendOverNetwork = new PlaceObstacleCommand(selectedRoad);
                 
@@ -95,6 +97,9 @@ public class ActionManager {
             if (selectedRoad.setTransportationCounter(counter)) {
                 // remove this transportation counter from hand
                 gameManager.getThisPlayer().getHand().removeUnit(counter);
+                Logger.getGlobal().info("Just removed " + counter.getType() +
+                        ", current counters in hand: " +
+                        GameManager.getInstance().getThisPlayer().getHand().getCounters().toString());
                 //GameScreen.getInstance().updateAll(); // update transportation area
                 
                 PlaceTransportationCounterCommand toSendOverNetwork = new PlaceTransportationCounterCommand(selectedRoad, counter);
@@ -117,13 +122,21 @@ public class ActionManager {
         return selectedCounter;
     }
 
-    public void setSelectedCounter(CounterUnit counter) {
-        if (counter instanceof Obstacle) {
-            LOGGER.info("Obstacle selected");
-        } else if (counter instanceof TransportationCounter) {
-            LOGGER.info("Counter " + ((TransportationCounter) counter).getType() + " selected");
+    public void setSelectedCounter(CounterUnit pCounter) {
+     
+        if (selectedCounter.equals(pCounter)) {
+        	//if clicked twice, deselect the counter
+        	pCounter.setSelected(false);
+        	selectedCounter = null;
+        }else {
+            if (pCounter instanceof Obstacle) {
+                LOGGER.info("Obstacle selected");
+            } else if (pCounter instanceof TransportationCounter) {
+                LOGGER.info("Counter " + ((TransportationCounter) pCounter).getType() + " selected");
+            }  
+        	pCounter.setSelected(true);
+        	selectedCounter = pCounter;
         }
-        selectedCounter = counter;
     }
 
     public List<TravelCard> getSelectedCards() {
