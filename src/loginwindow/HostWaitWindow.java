@@ -11,6 +11,7 @@ import java.awt.event.*;
 import java.awt.*;
 import java.io.IOException;
 import java.awt.BorderLayout;
+import java.util.logging.Logger;
 
 public class HostWaitWindow extends JPanel implements Runnable
 {
@@ -40,7 +41,11 @@ public class HostWaitWindow extends JPanel implements Runnable
 
             t.start();
         }
-        catch (IOException e){e.printStackTrace();}
+        catch (IOException e)
+        {
+            // since the calls in initUI should catch their own timeouts, we should never get here
+            Logger.getGlobal().info("Caught an IOException in HostWaitWindow constructor. This shouldn't have happened.");
+            e.printStackTrace();}
     }
 
     private void initThread()
@@ -66,9 +71,20 @@ public class HostWaitWindow extends JPanel implements Runnable
 
         else
         {
-            String getSessionDetailsResponse = GameSession.getSessionDetails(aId, prevPayload);
-            prevPayload = getSessionDetailsResponse;
-            aPlayers = GameSession.getPlayersFromSessionDetails(prevPayload);
+            try
+            {
+                String getSessionDetailsResponse = GameSession.getSessionDetails(aId, prevPayload);
+                prevPayload = getSessionDetailsResponse;
+                aPlayers = GameSession.getPlayersFromSessionDetails(getSessionDetailsResponse);
+            }
+            catch (IOException e)
+            {
+                // since our API calls are very carefully structured, we can assume that any IOException here is probably called by a timeout on the long poll
+                // so, we can just resend the request
+                String getSessionDetailsResponse = GameSession.getSessionDetails(aId, prevPayload);
+                prevPayload = getSessionDetailsResponse;
+                aPlayers = GameSession.getPlayersFromSessionDetails(getSessionDetailsResponse);
+            }
         }
 
         
@@ -145,7 +161,34 @@ public class HostWaitWindow extends JPanel implements Runnable
                 // create a new table
                 String[] titles = {"PLAYERS", "NAMES"};
 
-                List<String> aPlayers = GameSession.getPlayerNames(aId);
+                // get all the information to update
+                List<String> aPlayers;
+
+                if (prevPayload.equals(""))
+                {
+                    aPlayers = GameSession.getPlayerNames(aId);
+                    // set prevPayload for the next request
+                    prevPayload = GameSession.getSessionDetailsReturnString(aId);
+                }
+
+                else
+                {
+                    try
+                    {
+                        String getSessionDetailsResponse = GameSession.getSessionDetails(aId, prevPayload);
+                        prevPayload = getSessionDetailsResponse;
+                        aPlayers = GameSession.getPlayersFromSessionDetails(getSessionDetailsResponse);
+                    }
+                    catch (IOException e)
+                    {
+                        // since our API calls are very carefully structured, we can assume that any IOException here is probably called by a timeout on the long poll
+                        // so, we can just resend the request
+                        Logger.getGlobal().info("The request timed out. Resending it.");
+                        String getSessionDetailsResponse = GameSession.getSessionDetails(aId, prevPayload);
+                        prevPayload = getSessionDetailsResponse;
+                        aPlayers = GameSession.getPlayersFromSessionDetails(getSessionDetailsResponse);
+                    }
+                }
 
                 String[][] playerNames = new String [aPlayers.size()][2];
                 for (int i = 0; i < playerNames.length; i++)
