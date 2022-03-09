@@ -50,7 +50,6 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
         loadButton = new JButton("LOAD SAVED SESSION");
         gamesButton = new JButton("JOIN");
 
-        refreshButton = new JButton("REFRESH");
 
         // add an action listener
 
@@ -153,6 +152,11 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
         // reset the UI
         sessions.removeAll();
         String getSessionsResponse = null;
+
+        if (prevPayload == "") // when we first get into the window, we will have to make a synchronous api call to show the information
+        {
+
+        }
 
         // get a list of game sessions by ID
         try{getSessionsResponse = GameSession.getSessions(prevPayload);}
