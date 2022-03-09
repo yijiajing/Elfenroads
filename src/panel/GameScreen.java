@@ -419,6 +419,8 @@ public class GameScreen extends JPanel implements Serializable
 		for (JPanel panel : panelForPlayerTransportationCounters) {
 			if (panel != null) {
 				panel.removeAll();
+				panel.repaint();
+				panel.revalidate();
 			}
 		}
 
@@ -439,11 +441,12 @@ public class GameScreen extends JPanel implements Serializable
 
 		if (o != null) {
 			panelForObstacle.add(o.getDisplay());
-			panelForObstacle.repaint();
-			panelForObstacle.revalidate();
 		} else {
 			panelForObstacle.removeAll();
 		}
+
+		panelForObstacle.repaint();
+		panelForObstacle.revalidate();
 	}
 
 	public static void main(String[] args) 

@@ -332,6 +332,7 @@ public class GameManager {
             thisPlayer.getHand().removeUnit(c); // remove counter from my hand
             GameState.instance().getCounterPile().addDrawable(c); // put counter back in the deck
             try {
+                LOGGER.info("Sending ReturnTransportationCounterCommand to all players");
                 coms.sendGameCommandToAllPlayers(new ReturnTransportationCounterCommand(c));
             } catch (IOException e) {
                 System.out.println("There was a problem sending the ReturnTransportationCounterCommand to all players.");
