@@ -1,6 +1,7 @@
 package loginwindow;
 
 import domain.GameManager;
+import enums.GameVariant;
 import org.json.JSONObject;
 import networking.*;
 
@@ -198,7 +199,7 @@ public class LobbyWindow extends JPanel implements ActionListener {
                     // join the game
                     try {
                         GameSession.joinSession(MainFrame.loggedIn, id);
-                        GameManager.init(Optional.empty(), id);
+                        GameManager.init(Optional.empty(), id, interpretVariant(variant));
 
                         // prompt user to choose a boot colour
                         // this calls the ChooseBootWindow once all players have responded
@@ -256,4 +257,29 @@ public class LobbyWindow extends JPanel implements ActionListener {
 
 
     }
+
+    /**
+     * turns a String into a value from the GameVariant enum
+     * @param variant the variant as a String, obtained from the LS
+     * @return
+     */
+    public static GameVariant interpretVariant(String variant)
+    {
+        switch (variant)
+        {
+            case "Classic": return GameVariant.ELFENLAND_CLASSIC;
+            case "Long": return GameVariant.ELFENLAND_LONG;
+            case "Destination": return GameVariant.ELFENLAND_DESTINATION;
+            case "Elfengold Classic": return GameVariant.ELFENGOLD_CLASSIC;
+            case "Elfengold Travel Cards": return GameVariant.ELFENGOLD_TRAVEL_CARDS;
+            case "Elfengold Random Gold": return GameVariant.ELFENGOLD_RANDOM_GOLD;
+            case "Elfengold Witch": return GameVariant.ELFENGOLD_WITCH;
+        }
+
+        // since we are in charge of the LS variant values, we can ensure that this never returns null
+        return null;
+    }
+
+
+
 }
