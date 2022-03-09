@@ -282,7 +282,7 @@ public class GameScreen extends JPanel implements Serializable
 	
 	public void initializeRoundCardImage(int round)
 	{
-		ImageIcon roundImage = new ImageIcon("./assets/sprites/" + round + ".png");
+		ImageIcon roundImage = new ImageIcon("./assets/sprites/R" + round + ".png");
 		Image Round = roundImage.getImage();
 		Image RoundResized = Round.getScaledInstance(width*90/1440, height*130/900,  java.awt.Image.SCALE_SMOOTH);
 		roundImage = new ImageIcon(RoundResized);
