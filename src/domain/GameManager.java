@@ -184,8 +184,10 @@ public class GameManager {
      * Fills the Player's hand to have 8 travel cards
      */
     public void distributeTravelCards() {
+
         LOGGER.info("Distributing travel cards...");
         LOGGER.info("Local player turn: " + isLocalPlayerTurn());
+
         if (!(isLocalPlayerTurn() && gameState.getCurrentPhase() == RoundPhaseType.DEAL_CARDS)) return;
 
         int numCards = thisPlayer.getHand().getNumTravelCards();

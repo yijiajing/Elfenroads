@@ -21,6 +21,7 @@ public class NotifyTurnCommand implements GameCommand {
 
     @Override
     public void execute() {
+
         GameManager gameManager = GameManager.getInstance();
         Logger.getGlobal().info("It is now my turn");
         GameState.instance().setCurrentPlayer(gameManager.getThisPlayer());

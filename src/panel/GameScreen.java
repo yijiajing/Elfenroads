@@ -17,6 +17,7 @@ import javax.swing.border.Border;
 
 import domain.*;
 import enums.RoundPhaseType;
+import enums.TravelCardType;
 import networking.GameState;
 import org.minueto.MinuetoTool;
 import utils.GameRuleUtils;
@@ -356,14 +357,20 @@ public class GameScreen extends JPanel implements Serializable
 	{
 		ArrayList<TransportationCounter> faceUpCounters = GameState.instance().getFaceUpCounters();
 
+		// clear the previous counters from the screen
 		for (JPanel panel : panelForFaceUpTransportationCounters) {
 			if (panel != null) {
 				panel.removeAll();
+        panel.repaint();
+        panel.revalidate();
 			}
 		}
+
 		for (int i = 0; i < 5; i++) {
 			JPanel panel = panelForFaceUpTransportationCounters[i];
+
 			//TODO: investigate why panel can be null
+
 			TransportationCounter counter = faceUpCounters.get(i);
 			panel.add(counter.getDisplay());
 			panel.repaint();
@@ -377,10 +384,21 @@ public class GameScreen extends JPanel implements Serializable
 		for (JPanel panel : panelForPlayerCards) {
 			if (panel != null) {
 				panel.removeAll();
+				panel.repaint();
+				panel.revalidate();
 			}
 		}
 
 		List<CardUnit> myCards = GameManager.getInstance().getThisPlayer().getHand().getCards();
+
+		// TODO REMOVE
+		Logger.getGlobal().info("My cards are: ");
+		for (CardUnit c : myCards) {
+			if (c instanceof TravelCard) {
+				TravelCardType type= ((TravelCard) c).getType();
+				Logger.getGlobal().info(type.toString());
+			}
+		}
 
 		// draw the cards to the screen
 		for (int p = 0; p < myCards.size(); p++) {
