@@ -8,7 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.*;
 
-public class LoadGameWindow extends JPanel implements ActionListener{
+public class LoadGameWindow extends JPanel {
     private JLabel background_elvenroads;
     private Box gameInfo;
     private JPanel gamesPanel;
@@ -75,11 +75,4 @@ public class LoadGameWindow extends JPanel implements ActionListener{
 
         add(background_elvenroads);
     }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        // TODO Auto-generated method stub
-        
-    }
-    
 }

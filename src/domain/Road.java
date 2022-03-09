@@ -39,9 +39,7 @@ public class Road {
             transportationCounter.setPlacedOn(this);
             this.transportationCounter = transportationCounter;
             counterPanel.setTransportationCounter(transportationCounter); // update map
-            GameManager.getInstance().getThisPlayer().getHand().removeUnit(this.transportationCounter);
             this.transportationCounter.setOwned(false);
-            GameScreen.getInstance().addTransportationCountersAndObstacle(); // update counters in hand on UI
             return true;
         } else {
             return false;
@@ -59,8 +57,6 @@ public class Road {
         this.obstacle = obstacle;
         obstacle.setPlacedOn(this);
         counterPanel.placeObstacle(obstacle); // update map
-        GameManager.getInstance().getThisPlayer().getHand().removeUnit(this.obstacle);
-        GameScreen.getInstance().addTransportationCountersAndObstacle(); // update obstacle in hand on UI
         return true;
     }
 

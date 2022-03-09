@@ -114,7 +114,6 @@ public class ScoreBoardPanel extends JPanel implements ObserverPanel{
 	public void updateView() {
 		scoreCard.remove(score);
 		score = new JLabel(Integer.toString(aPlayer.getScore())+" pts");
-		System.out.println(aPlayer.getScore());
 		scoreCard.add(score);
 		this.revalidate();
 		this.repaint();

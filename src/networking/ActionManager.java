@@ -63,6 +63,8 @@ public class ActionManager {
      */
     public void setSelectedRoad(Road road) {
         LOGGER.info("Road on " + road.getRegionType() + " selected");
+        LOGGER.info("Before removing the counter, counters in hand: " +
+                GameManager.getInstance().getThisPlayer().getHand().getCounters().toString());
         selectedRoad = road;
 
         if (!(gameState.getCurrentPhase() == RoundPhaseType.PLAN_ROUTES
@@ -74,9 +76,7 @@ public class ActionManager {
         if (selectedCounter instanceof Obstacle) {
             if (selectedRoad.placeObstacle((Obstacle) selectedCounter)) {
                 gameManager.getThisPlayer().getHand().removeUnit(selectedCounter);
-                Logger.getGlobal().info("Just removed obstacle, current counters in hand: " +
-                        GameManager.getInstance().getThisPlayer().getHand().getCounters().toString());
-                //GameScreen.getInstance().updateAll();
+                Logger.getGlobal().info("Just removed obstacle, obstacle presence: " + gameManager.getThisPlayer().getHand().getObstacle());
                 PlaceObstacleCommand toSendOverNetwork = new PlaceObstacleCommand(selectedRoad);
                 
                 try {
@@ -97,10 +97,10 @@ public class ActionManager {
             if (selectedRoad.setTransportationCounter(counter)) {
                 // remove this transportation counter from hand
                 gameManager.getThisPlayer().getHand().removeUnit(counter);
+
                 Logger.getGlobal().info("Just removed " + counter.getType() +
                         ", current counters in hand: " +
                         GameManager.getInstance().getThisPlayer().getHand().getCounters().toString());
-                //GameScreen.getInstance().updateAll(); // update transportation area
                 
                 PlaceTransportationCounterCommand toSendOverNetwork = new PlaceTransportationCounterCommand(selectedRoad, counter);
                 try {
@@ -124,11 +124,11 @@ public class ActionManager {
 
     public void setSelectedCounter(CounterUnit pCounter) {
      
-        if (selectedCounter.equals(pCounter)) {
+        if (pCounter.equals(selectedCounter)) {
         	//if clicked twice, deselect the counter
         	pCounter.setSelected(false);
         	selectedCounter = null;
-        }else {
+        } else {
             if (pCounter instanceof Obstacle) {
                 LOGGER.info("Obstacle selected");
             } else if (pCounter instanceof TransportationCounter) {
