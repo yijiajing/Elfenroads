@@ -62,10 +62,14 @@ public class Road {
     }
 
     public void clear() {
-        this.transportationCounter.setPlacedOn(null);
-        this.transportationCounter = null;
-        this.obstacle.setPlacedOn(null);
-        this.obstacle = null;
+        if (this.transportationCounter != null) {
+            this.transportationCounter.setPlacedOn(null);
+            this.transportationCounter = null;
+        }
+        if (this.obstacle != null) {
+            this.obstacle.setPlacedOn(null);
+            this.obstacle = null;
+        }
         counterPanel.clear();
     }
 

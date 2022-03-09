@@ -7,6 +7,7 @@ import panel.ElfBootPanel;
 import panel.GameScreen;
 
 import java.io.Serializable;
+import java.util.logging.Logger;
 
 public class MoveBootCommand implements GameCommand, Serializable {
 
@@ -15,14 +16,12 @@ public class MoveBootCommand implements GameCommand, Serializable {
     private final String start;
     private final String destination;
     private final Colour colorBootMoved;
-    private final String senderName;
 
-    public MoveBootCommand (ElfBootPanel pStart, ElfBootPanel pDestination, ElfBoot pMoved, String senderName)
+    public MoveBootCommand (ElfBootPanel pStart, ElfBootPanel pDestination, ElfBoot pMoved)
     {
         colorBootMoved = pMoved.getColour();
         start = pStart.getTown().getName();
         destination = pDestination.getTown().getName();
-        this.senderName = senderName;
     }
 
 
@@ -32,15 +31,16 @@ public class MoveBootCommand implements GameCommand, Serializable {
      */
     public void execute()
     {
+        Logger.getGlobal().info("Executing MoveBootCommand, start: " + start + ", dest: " + destination + ", color: " + colorBootMoved);
         GameState gameState = GameState.instance();
         GameMap map = GameMap.getInstance();
         Town startTown = map.getTown(start);
         Town destinationTown = map.getTown(destination);
         ElfBootPanel startPanel = startTown.getElfBootPanel();
         ElfBootPanel destinationPanel = destinationTown.getElfBootPanel();
+        Player sender = gameState.getPlayerByColour(colorBootMoved);
 
         // update the current town of the player who moved
-        Player sender = gameState.getPlayerByName(senderName);
 //      1.  sender.setCurrentTownAndIncrementScore(destinationTown);
 
         // update current panel of the boot

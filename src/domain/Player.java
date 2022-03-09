@@ -92,8 +92,7 @@ public class Player implements Comparable<Player> {
         return name.compareTo(o.getName());
     }
 
-    public String toString()
-    {
-        return name + colour + curTown.getName();
+    public String toString() {
+        return name + " " + colour + " " + curTown.getName();
     }
 }

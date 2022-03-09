@@ -14,8 +14,14 @@ public class EndTurnButton extends JButton {
 		setText("EndTurn");
 		this.addActionListener(new ActionListener() {
 			@Override
-			 public void actionPerformed(ActionEvent e) {
-		       GameManager.getInstance().endTurn();
+			 public void actionPerformed(ActionEvent e)
+			{
+				if (!GameManager.getInstance().isLocalPlayerTurn())
+				{
+					GameScreen.displayMessage("You cannot end someone else's turn!");
+					return; // do nothing if it's not the local player's turn
+				}
+				else {GameManager.getInstance().endTurn();}
 		    }
 		});
 	}

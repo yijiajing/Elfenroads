@@ -3,6 +3,8 @@ package commands;
 import domain.GameManager;
 import networking.GameState;
 
+import java.util.logging.Logger;
+
 public class DrawCardCommand implements GameCommand {
 
     private final int numCards;
@@ -17,6 +19,7 @@ public class DrawCardCommand implements GameCommand {
      */
     @Override
     public void execute() {
+        Logger.getGlobal().info("Executing DrawCardCommand, removing the first " + numCards + " cards.");
         GameState gameState = GameState.instance();
         gameState.getTravelCardDeck().removeFirst(numCards);
     }
