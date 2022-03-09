@@ -1,4 +1,4 @@
-package test;
+package Test;
 
 import commands.GameCommand;
 import networking.DNSLookup;
@@ -21,9 +21,16 @@ public class TestAPI {
     public static void main (String [] args) throws IOException, Exception
 
     {
+
+        //GameService testGame2 = new GameService("testGame2", "testGame2", "abc123_ABC123",2, 6);
+        //GameService destination = new GameService("Destination", "Destination", "abc123_ABC123",2, 6);
+        //GameService longvar = new GameService("Elfenland(Long)", "Elfenland(Long)", "abc123_ABC123",2, 6);
+        //GameService longvar = new GameService("Elfenland", "Elfenland", "abc123_ABC123",2, 6);
+
        //  User.init()
-        GameService destination = new GameService("Destination", "Destination", "abc123_ABC123", 2, 6);
+        //GameService destination = new GameService("Destination", "Destination", "abc123_ABC123", 2, 6);
         // GameService testGame2 = new GameService("testGame2", "testGame2", "abc123_ABC123",2, 6);
+
         // GameService elfenlands = new GameService("Elfenroads", "Elfenroads", "abc123_ABC123", 2, 6);
         //User.init("dontforget", "abc123_ABC123");
        /* ArrayList<String> sessions = getAllSessionID();
