@@ -9,6 +9,7 @@ public abstract class CounterUnit extends Drawable {
     private Road placedOn;
     boolean owned;
     boolean isSecret;
+    boolean aSelected;
     JLabel miniDisplay; // for when the counter is on the map
 
     CounterUnit(int resizeWidth, int resizeHeight, int imageNumber) {
@@ -53,6 +54,21 @@ public abstract class CounterUnit extends Drawable {
 
     public JLabel getMiniDisplay() {
         return this.miniDisplay;
+    }
+    
+    public boolean isSelected() {
+    	return this.aSelected;
+    }
+    
+    public void setSelected(boolean pSelected) {
+        if (pSelected && !this.aSelected) {
+            // this counter is selected
+            display.setBorder(BorderFactory.createLineBorder(Color.yellow));
+        } else if (!pSelected && this.aSelected) {
+            // this counter is deselected
+            display.setBorder(BorderFactory.createEmptyBorder());
+        }
+    	aSelected = pSelected;
     }
 
 }
