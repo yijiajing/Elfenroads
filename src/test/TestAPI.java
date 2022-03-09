@@ -22,9 +22,10 @@ public class TestAPI {
 
     {
        // GameService elfenroads = new GameService("elfenroads", "elfenroads", "abc123_ABC123", 1, 6);
-       GameService elfenlands = new GameService("elfenlands", "elfenlands", "abc123_ABC123", 2, 6 );
+       // GameService elfenlands = new GameService("elfenlands", "elfenlands", "abc123_ABC123", 2, 6 );
        // GameService longGame = new GameService("longGame", "long game", "abc123_ABC123", 2, 6 );
        // GameService destinationTown = new GameService("destinationTown", "destination town", "abc123_ABC123", 2, 6);
+       createASession("Destination");
     }
 
     public static void testCreateUser(String username, String password) throws IOException, Exception {
@@ -33,11 +34,11 @@ public class TestAPI {
         //createNew.printTokenRelatedFields();
     }
 
-    public static void createASession()
+    public static void createASession(String variant)
     {
         try {
             User alex = User.init("dontforget", "abc123_ABC123");
-            GameSession sesh = new GameSession(alex, "Elfenroads", "savegame1234");
+            GameSession sesh = new GameSession(alex, variant, "savegame1234");
         }
         catch (Exception e)
         {

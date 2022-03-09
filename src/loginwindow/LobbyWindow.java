@@ -10,6 +10,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 public class LobbyWindow extends JPanel implements ActionListener, Runnable {
 
@@ -151,10 +152,22 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
     {
         // reset the UI
         sessions.removeAll();
+        String getSessionsResponse = null;
 
         // get a list of game sessions by ID
-        String getSessionsResponse = GameSession.getSessions(prevPayload);
+        try{getSessionsResponse = GameSession.getSessions(prevPayload);}
+        catch (IOException e)
+        {
+            // we can assume that the exception is because of long polling timeout, so we'll just resend it
+            getSessionsResponse = GameSession.getSessions(prevPayload);
+        }
+
+        if (getSessionsResponse == null)
+        {
+            Logger.getGlobal().info("Failed to initialize the game info in the LobbyWindow using long polling.");
+        }
         prevPayload = getSessionsResponse;
+
         ArrayList<String> gameIDs = GameSession.getSessionIDFromSessions(prevPayload);
 
         int counter = 0;
@@ -312,6 +325,7 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
             catch (IOException e) 
             {
                 // TODO Auto-generated catch block
+                Logger.getGlobal().info("Caught an IOException in the LobbyWindow. The long polling request probably timed out. Sending a new one.");
                 e.printStackTrace();
             }
 
