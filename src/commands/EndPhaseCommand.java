@@ -3,6 +3,8 @@ package commands;
 import domain.GameManager;
 import networking.GameState;
 
+import java.util.logging.Logger;
+
 public class EndPhaseCommand implements GameCommand{
 
 
@@ -15,6 +17,7 @@ public class EndPhaseCommand implements GameCommand{
     @Override
     public void execute()
     {
+        Logger.getGlobal().info("Executing the end phase command.");
         GameManager.getInstance().endPhase();
     }
 }

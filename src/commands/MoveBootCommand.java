@@ -6,6 +6,7 @@ import networking.GameState;
 import panel.ElfBootPanel;
 
 import java.io.Serializable;
+import java.util.logging.Logger;
 
 public class MoveBootCommand implements GameCommand, Serializable {
 
@@ -29,6 +30,7 @@ public class MoveBootCommand implements GameCommand, Serializable {
      */
     public void execute()
     {
+        Logger.getGlobal().info("Executing MoveBootCommand, start: " + start + ", dest: " + destination + ", color: " + colorBootMoved);
         GameState gameState = GameState.instance();
         GameMap map = GameMap.getInstance();
         Town startTown = map.getTown(start);
