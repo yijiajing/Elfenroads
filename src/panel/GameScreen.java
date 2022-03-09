@@ -17,6 +17,7 @@ import javax.swing.border.Border;
 
 import domain.*;
 import enums.RoundPhaseType;
+import enums.TravelCardType;
 import networking.GameState;
 import org.minueto.MinuetoTool;
 import utils.GameRuleUtils;
@@ -56,8 +57,6 @@ public class GameScreen extends JPanel implements Serializable
 	private final JPanel panelForObstacle = new JPanel();
 
 	private ArrayList<ObserverPanel> observerPanels = new ArrayList<>();
-
-	private boolean initialized = false;
 
 	private GameMap gameMap;
 
@@ -116,10 +115,6 @@ public class GameScreen extends JPanel implements Serializable
 	}
 
 	public void updateAll() {
-		if (!initialized) {
-			draw();
-		}
-
 		addTransportationCountersAndObstacle(); // updates the player's counter area
 		addCards(); // update's the player's cards
 		addFaceUpTransportationCounters(); // updates the face-up transportation counters
@@ -129,7 +124,6 @@ public class GameScreen extends JPanel implements Serializable
 	public void initialization()
 	{
 		Logger.getGlobal().info("Initializing...");
-		initialized = true;
 		initializeMapImage();
 		initializeRoundCardImage(1);
 		initializeTransportationCountersAndObstacle();
@@ -140,6 +134,7 @@ public class GameScreen extends JPanel implements Serializable
 		initializeDeckOfTransportationCounters();
 		initializeLeaderboard();
 		initializeEndTurnButton();
+		updateAll();
 	}
 
 	
@@ -362,11 +357,16 @@ public class GameScreen extends JPanel implements Serializable
 	{
 		ArrayList<TransportationCounter> faceUpCounters = GameState.instance().getFaceUpCounters();
 
+		// clear the previous counters from the screen
+		for (JPanel panel : panelForFaceUpTransportationCounters) {
+			if (panel != null) {
+				panel.removeAll();
+			}
+		}
+
 		for (int i = 0; i < 5; i++) {
 			Logger.getGlobal().info("Updating face up counter");
 			JPanel panel = panelForFaceUpTransportationCounters[i];
-			//TODO: investigate why panel can be null
-			panel.removeAll();
 			TransportationCounter counter = faceUpCounters.get(i);
 			panel.add(counter.getDisplay());
 			panel.repaint();
@@ -380,10 +380,21 @@ public class GameScreen extends JPanel implements Serializable
 		for (JPanel panel : panelForPlayerCards) {
 			if (panel != null) {
 				panel.removeAll();
+				panel.repaint();
+				panel.revalidate();
 			}
 		}
 
 		List<CardUnit> myCards = GameManager.getInstance().getThisPlayer().getHand().getCards();
+
+		// TODO REMOVE
+		Logger.getGlobal().info("My cards are: ");
+		for (CardUnit c : myCards) {
+			if (c instanceof TravelCard) {
+				TravelCardType type= ((TravelCard) c).getType();
+				Logger.getGlobal().info(type.toString());
+			}
+		}
 
 		// draw the cards to the screen
 		for (int p = 0; p < myCards.size(); p++) {

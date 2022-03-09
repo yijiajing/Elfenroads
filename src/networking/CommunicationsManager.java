@@ -1,9 +1,6 @@
 package networking;
 
-import commands.GameCommand;
-import commands.GetBootColourCommand;
-import commands.MoveBootCommand;
-import commands.SendBootColourCommand;
+import commands.*;
 import domain.ElfBoot;
 import domain.GameManager;
 import domain.GameMap;
@@ -18,6 +15,7 @@ import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
+import java.util.logging.Logger;
 
 public class CommunicationsManager {
 
@@ -219,9 +217,20 @@ public class CommunicationsManager {
     {
         System.out.println("Received an update from the listener! Getting ready to update the UI...");
 
-        while (listener.getCommands().size() > 0)
-        {
-            GameCommand toExecute = listener.getCommands().poll();
+        while (listener.getCommands().size() > 0) {
+
+            Logger.getGlobal().info("Queue looks like: " + listener.getCommands().stream().map(c -> c.getClass().toString()));
+            GameCommand toExecute;
+            Optional<GameCommand> addPlayerCommandOptional = listener.getCommands()
+                    .stream().filter(c -> c instanceof AddPlayerCommand).findFirst();
+            if (addPlayerCommandOptional.isPresent()) {
+                toExecute = addPlayerCommandOptional.get();
+                listener.getCommands().remove(toExecute);
+            } else {
+                toExecute = listener.getCommands().poll();
+            }
+
+            Logger.getGlobal().info("About to execute: " + toExecute.getClass().toString());
             toExecute.execute();
         }
     }
