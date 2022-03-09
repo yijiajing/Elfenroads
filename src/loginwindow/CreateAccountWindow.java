@@ -193,6 +193,7 @@ public class CreateAccountWindow extends JPanel {
 
                 // TODO: allow the user to pick his role?
                 try {
+                    music.play();
                     User.registerNewUser(username, password, User.Role.PLAYER);
                     MainFrame.loggedIn = User.init(username, password);
                     MainFrame.mainPanel.add(new LobbyWindow(), "lobby");
@@ -208,6 +209,7 @@ public class CreateAccountWindow extends JPanel {
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                music.play();
                 MainFrame.cardLayout.show(MainFrame.mainPanel, "login");
             }
         });

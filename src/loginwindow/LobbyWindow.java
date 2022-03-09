@@ -34,6 +34,8 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
     private static Thread t;
     private static int flag = 0;
 
+    static MP3Player track1 = new MP3Player("./assets/Music/JLEX5AW-ui-medieval-click-heavy-positive-01.mp3");
+
     private void initThread()
     {
         t = new Thread(this);
@@ -73,6 +75,7 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
             public void actionPerformed(ActionEvent e) 
             {
                 //t.stop();
+                track1.play();
                 flag = 1;
                 remove(background_elvenroads);
                 MainFrame.mainPanel.add(new VersionToPlayWindow(), "version");
@@ -83,6 +86,7 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
         loadButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                track1.play();
                 remove(background_elvenroads);
                 MainFrame.mainPanel.add(new LoadGameWindow(), "load");
                 MainFrame.cardLayout.show(MainFrame.mainPanel,"load");
@@ -226,6 +230,7 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
                     try 
                     {
                         //t.stop();
+                        track1.play();
                         flag = 1;
                         GameSession.joinSession(MainFrame.loggedIn, id);
                         GameManager.init(Optional.empty(), id, interpretVariant(variant));

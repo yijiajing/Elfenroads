@@ -4,6 +4,7 @@ import commands.DrawCounterCommand;
 import enums.CounterType;
 import enums.RegionType;
 import enums.RoundPhaseType;
+import loginwindow.MP3Player;
 import loginwindow.MainFrame;
 import networking.ActionManager;
 import networking.GameState;
@@ -22,6 +23,7 @@ public class TransportationCounter extends CounterUnit implements Comparable<Tra
 
     private CounterType type;
 
+    MP3Player track1 = new MP3Player("./assets/Music/0000171.mp3");
     public TransportationCounter(CounterType pType, int resizeWidth, int resizeHeight) {
         super(resizeWidth, resizeHeight, pType.ordinal() + 1); // since the images start from M01, not M00
         this.type = pType;
@@ -39,6 +41,7 @@ public class TransportationCounter extends CounterUnit implements Comparable<Tra
                     if (GameRuleUtils.isDrawCountersPhase()) {
 
                         // adding the counter to my hand
+                        track1.play();
                         GameState.instance().getFaceUpCounters().remove(TransportationCounter.this); // remove the counter from the face-up pile
                         GameManager.getInstance().getThisPlayer().getHand().addUnit(TransportationCounter.this);
                         GameState.instance().addFaceUpCounterFromPile(); // replenish the face-up counters with one from the pile
@@ -63,13 +66,16 @@ public class TransportationCounter extends CounterUnit implements Comparable<Tra
                 // RETURN COUNTERS PHASE
                 else if (GameState.instance().getCurrentPhase().equals(RoundPhaseType.RETURN_COUNTERS)) {
                     GameManager.getInstance().returnAllCountersExceptOne(TransportationCounter.this);
+                    track1.play();
                 }
 
                 // PLAN TRAVEL ROUTES PHASE
                 else if (getPlacedOn() == null) {
                     ActionManager.getInstance().setSelectedCounter(TransportationCounter.this);
+                    track1.play();
                 } else { // If the counter is placed on a road, then the user's intention is to click on the road
                     ActionManager.getInstance().setSelectedRoad(getPlacedOn());
+                    track1.play();
                 }
             }
         });
