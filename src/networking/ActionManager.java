@@ -92,12 +92,9 @@ public class ActionManager {
                 // remove this transportation counter from hand
                 gameManager.getThisPlayer().getHand().removeUnit(counter);
                 GameScreen.getInstance().updateAll(); // update transportation area
-
-                ReturnTransportationCounterCommand returnCommand = new ReturnTransportationCounterCommand(counter);
-                returnCommand.execute(); // return locally
+                
                 PlaceTransportationCounterCommand toSendOverNetwork = new PlaceTransportationCounterCommand(selectedRoad, counter);
                 try {
-                    gameManager.getComs().sendGameCommandToAllPlayers(returnCommand); // return remotely
                     gameManager.getComs().sendGameCommandToAllPlayers(toSendOverNetwork);
                 } catch (IOException e) {
                     LOGGER.info("There was a problem sending the command to place the transportation counter!");
