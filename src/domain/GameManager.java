@@ -110,9 +110,7 @@ public class GameManager {
         gameState.sortPlayers();
         gameState.setToFirstPlayer();
         System.out.print(gameState.getPlayers());
-        for (Player p : gameState.getPlayers()){
-            System.out.println(p.getDestinationTown());
-        }
+        
         if (!loaded) setUpNewGame();
 
         GameScreen.getInstance().draw();
@@ -163,6 +161,10 @@ public class GameManager {
             for (int i = 0; i < gameState.getNumOfPlayers(); i++) {
                 gameState.getPlayers().get(i).setDestinationTown(townCardDeck.getComponents().get(i).getTown());
             }
+        }
+
+        for (Player p : gameState.getPlayers()){
+            System.out.println(p.getDestinationTown());
         }
     }
 
