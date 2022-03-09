@@ -67,8 +67,7 @@ public class ActionManager {
                 GameManager.getInstance().getThisPlayer().getHand().getCounters().toString());
         selectedRoad = road;
 
-        if (!(gameState.getCurrentPhase() == RoundPhaseType.PLAN_ROUTES
-                && gameManager.isLocalPlayerTurn())) {
+        if (!(GameRuleUtils.isPlanRoutesPhase() && gameManager.isLocalPlayerTurn())) {
             return;
         }
 
