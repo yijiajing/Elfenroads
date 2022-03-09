@@ -133,19 +133,20 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
      */
     public static void initializeGameInfo(JPanel sessions) throws IOException
     {
-        // reset the UI
-        sessions.removeAll();
         String getSessionsResponse = null;
 
         if (prevPayload.equals("")) // when we first get into the window, we will have to make a synchronous api call to show the information
         {
-            prevPayload = GameSession.getSessionsReturnString();
+            Logger.getGlobal().info("Sending the first long polling request now...");
+            getSessionsResponse = GameSession.getSessionsReturnString();
+            prevPayload = getSessionsResponse;
         }
 
         else // if it is not our first request
         {// get a list of game sessions by ID
             try {
                 getSessionsResponse = GameSession.getSessions(prevPayload);
+                Logger.getGlobal().info("Sending another long poll request...");
             } catch (IOException e) {
                 // we can assume that the exception is because of long polling timeout, so we'll just resend it
                 getSessionsResponse = GameSession.getSessions(prevPayload);
@@ -157,7 +158,11 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
             prevPayload = getSessionsResponse;
         }
 
-        ArrayList<String> gameIDs = GameSession.getSessionIDFromSessions(prevPayload);
+        // now that we have new game information, reset the ui
+        sessions.removeAll();
+
+        // parse the String response and turn it into a list of String ids
+        ArrayList<String> gameIDs = GameSession.getSessionIDFromSessions(getSessionsResponse);
 
         int counter = 0;
 
@@ -306,15 +311,17 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
                 e.printStackTrace();
             }
 
-            try 
+            /* try
             {
-                Thread.sleep(5000);
+                // Thread.sleep(5000);
             } 
             catch (InterruptedException e) 
             {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
+
+             */
         } 
     }
 }

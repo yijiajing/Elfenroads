@@ -55,17 +55,22 @@ public class HostWaitWindow extends JPanel implements Runnable
         panel.setBounds(1440*600/1440, 900*400/900, 1440*290/1440, 900*274/900);
         panel.setBackground(Color.DARK_GRAY);
 
+        List<String> aPlayers;
+
         if (prevPayload.equals(""))
         {
-            List<String> aPlayers = GameSession.getPlayerNames(aId);
+            aPlayers = GameSession.getPlayerNames(aId);
+            // set prevPayload for the next request
+            prevPayload = GameSession.getSessionDetailsReturnString(aId);
         }
-        // List<String> aPlayers = GameSession.getPlayerNames(aId);
 
+        else
+        {
+            String getSessionDetailsResponse = GameSession.getSessionDetails(aId, prevPayload);
+            prevPayload = getSessionDetailsResponse;
+            aPlayers = GameSession.getPlayersFromSessionDetails(prevPayload);
+        }
 
-
-        String getSessionDetailsResponse = GameSession.getSessionDetails(aId, prevPayload);
-        prevPayload = getSessionDetailsResponse;
-        List <String> aPlayers = GameSession.getPlayersFromSessionDetails(prevPayload);
         
         String[][] playerNames = new String [aPlayers.size()][2];
         for (int i = 0; i < playerNames.length; i++){
