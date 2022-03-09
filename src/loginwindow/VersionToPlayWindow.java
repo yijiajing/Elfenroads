@@ -1,6 +1,7 @@
 package loginwindow;
 
 import domain.GameManager;
+import enums.GameVariant;
 import networking.*;
 import panel.GameScreen;
 
@@ -55,6 +56,8 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
         classicGame1 = new JButton("Classic");
         
         longGame = new JButton("Long Game");
+
+        
         destinationTown = new JButton("Destination Town");
 
         classicGame1.addActionListener(new ActionListener(){
@@ -69,7 +72,7 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
                     track1.play();
                     session = new GameSession(User.getInstance(), "elfenlands", "My Save Game Name");
 
-                    GameManager.init(Optional.empty(), session.getId());
+                    GameManager.init(Optional.empty(), session.getId(), GameVariant.ELFENLAND_CLASSIC);
 
                     // prompt user to choose a boot colour
                     // this calls the ChooseBootWindow once all players have responded
@@ -83,6 +86,65 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
                 }
 
             }
+        });
+
+        longGame.addActionListener(new ActionListener(){
+
+            GameSession session = null;
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                try 
+                {
+                    track1.play();
+                    session = new GameSession(User.getInstance(), "elfenlands", "My Save Game Name");
+
+                    GameManager.init(Optional.empty(), session.getId(), GameVariant.ELFENLAND_LONG);
+
+                    // prompt user to choose a boot colour
+                    // this calls the ChooseBootWindow once all players have responded
+                    GameManager.getInstance().requestAvailableColours();
+
+                } 
+                catch (Exception problem) 
+                {
+                    problem.printStackTrace();
+                    return;
+                }
+                
+            }
+            
+        });
+
+        destinationTown.addActionListener(new ActionListener(){
+
+            GameSession session = null;
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                try 
+                {
+                    track1.play();
+                    session = new GameSession(User.getInstance(), "elfenlands", "My Save Game Name");
+
+                    GameManager.init(Optional.empty(), session.getId(), GameVariant.ELFENLAND_DESTINATION);
+
+                    // prompt user to choose a boot colour
+                    // this calls the ChooseBootWindow once all players have responded
+                    GameManager.getInstance().requestAvailableColours();
+
+                } 
+                catch (Exception problem) 
+                {
+                    problem.printStackTrace();
+                    return;
+                }
+                
+                
+            }
+
         });
 
         

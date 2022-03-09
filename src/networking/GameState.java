@@ -207,6 +207,7 @@ public class GameState {
 
     public void addPlayer(Player p) {
         players.add(p);
+        
     }
 
     /**
