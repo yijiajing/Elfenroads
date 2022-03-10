@@ -24,11 +24,11 @@ public class TravelCardDeck extends Deck <CardUnit> {
             // add 10 or 12 (for raft) cards of each travel card type
             if (type.equals(TravelCardType.RAFT)) {
                 for (int i = 0; i < 12; i++) {
-                    components.add(new TravelCard(type, GameScreen.getInstance().getWidth()*130/1440, GameScreen.getInstance().getHeight()*2/11));
+                    components.add(new TravelCard(type, GameScreen.getInstance().getWidth()*130/1440, GameScreen.getInstance().getHeight()*2/10));
                 }
             } else {
                 for (int i = 0; i < 10; i++) {
-                    components.add(new TravelCard(type, GameScreen.getInstance().getWidth()*130/1440, GameScreen.getInstance().getHeight()*2/11));
+                    components.add(new TravelCard(type, GameScreen.getInstance().getWidth()*130/1440, GameScreen.getInstance().getHeight()*2/10));
                 }
             }
         }
