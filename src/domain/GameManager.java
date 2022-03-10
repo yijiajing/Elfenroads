@@ -250,7 +250,7 @@ public class GameManager {
 
             if (gameState.getGameVariant() == GameVariant.ELFENLAND_DESTINATION) {
                 GameScreen.displayMessage("Your destination Town is: " +
-                        thisPlayer.getDestinationTown() + ". Please collect town pieces and have your travel " +
+                        thisPlayer.getDestinationTown().getName() + ". Please collect town pieces and have your travel " +
                         "route end in a town as close as possible at the end of the game");
             }
 
