@@ -11,6 +11,7 @@ public abstract class CounterUnit extends Drawable {
     boolean isSecret;
     boolean aSelected;
     JLabel miniDisplay; // for when the counter is on the map
+    JLabel superMiniDisplay;// for obstacle on the map
 
     CounterUnit(int resizeWidth, int resizeHeight, int imageNumber) {
 
@@ -24,8 +25,10 @@ public abstract class CounterUnit extends Drawable {
         Image toResize = icon.getImage();
         Image resized = toResize.getScaledInstance(resizeWidth, resizeHeight,  java.awt.Image.SCALE_SMOOTH);
         Image resized_mini = toResize.getScaledInstance(resizeWidth/2, resizeHeight/2,  java.awt.Image.SCALE_SMOOTH);
+        Image resized_supermini = toResize.getScaledInstance(resizeWidth/3, resizeHeight/3,  java.awt.Image.SCALE_SMOOTH);
         display = new JLabel(new ImageIcon(resized));
         miniDisplay = new JLabel(new ImageIcon(resized_mini));
+        superMiniDisplay = new JLabel (new ImageIcon(resized_supermini));
     }
 
     public Road getPlacedOn() {
@@ -54,6 +57,10 @@ public abstract class CounterUnit extends Drawable {
 
     public JLabel getMiniDisplay() {
         return this.miniDisplay;
+    }
+    
+    public JLabel getSuperMiniDisplay() {
+    	return this.superMiniDisplay;
     }
     
     public boolean isSelected() {
