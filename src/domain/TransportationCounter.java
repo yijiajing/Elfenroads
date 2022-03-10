@@ -73,7 +73,7 @@ public class TransportationCounter extends CounterUnit implements Comparable<Tra
                 else if (GameRuleUtils.isPlanRoutesPhase() && getPlacedOn() == null) {
                     ActionManager.getInstance().setSelectedCounter(TransportationCounter.this);
                     track1.play();
-                } else { // If the counter is placed on a road, then the user's intention is to click on the road
+                } else if (getPlacedOn() != null) { // If the counter is placed on a road, then the user's intention is to click on the road
                     ActionManager.getInstance().setSelectedRoad(getPlacedOn());
                     track1.play();
                 }
