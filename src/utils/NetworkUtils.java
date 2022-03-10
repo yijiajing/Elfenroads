@@ -199,8 +199,10 @@ public class NetworkUtils {
                 return address.getHostAddress();
             }
         }
-        Logger.getGlobal().info("There was a problem finding a valid local IP address for this computer.");
-        throw new Exception ("Could not find an IP that was not a loopback and was a valid IP.");
+
+        return getLocalIP();
+        // Logger.getGlobal().info("There was a problem finding a valid local IP address for this computer.");
+        // throw new Exception ("Could not find an IP that was not a loopback and was a valid IP.");
     }
 
     /**

@@ -27,7 +27,7 @@ public abstract class CardUnit extends Drawable {
     public void setSelected(boolean pSelected) {
         if (pSelected && !this.selected) {
             // this card is selected
-            display.setBorder(BorderFactory.createLineBorder(Color.yellow));
+            display.setBorder(BorderFactory.createLineBorder(Color.yellow,5));
 
         } else if (!pSelected && this.selected) {
             // this card is deselected
