@@ -93,9 +93,10 @@ public class GameMap {
     public void clearAllCounters() {
         for (Road road: roadList) {
             TransportationCounter counter = road.getTransportationCounter();
-            GameState.instance().getCounterPile().addDrawable(counter);
-
-            road.clear();
+            if (counter != null) {
+                GameState.instance().getCounterPile().addDrawable(counter);
+                road.clear();
+            }
         }
     }
 
