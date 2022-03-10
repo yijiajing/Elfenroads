@@ -1,8 +1,11 @@
 package panel;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.ServerSocket;
@@ -353,6 +356,38 @@ public class GameScreen extends JPanel implements Serializable
         i3 = new JMenuItem("Chat");
         i4 = new JMenuItem("Elfenland");
         i5 = new JMenuItem("Elfengold");
+
+		i4.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (Desktop.isDesktopSupported()) {
+                    try {
+                        
+                        File myFile = new File("./assets/rules/Elfengold Rules.pdf");
+                        Desktop.getDesktop().open(myFile);
+                    } catch (IOException ex) {
+                        // no application registered for PDFs
+                    }
+                }
+				
+			}});
+
+		i5.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (Desktop.isDesktopSupported()) {
+                    try {
+                        
+                        File myFile = new File("./assets/rules/Elfengold Rules.pdf");
+                        Desktop.getDesktop().open(myFile);
+                    } catch (IOException ex) {
+                        // no application registered for PDFs
+                    }
+                }
+				
+			}});
 
         menu.add(i1);
         menu.add(i2);
