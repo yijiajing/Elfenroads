@@ -21,6 +21,8 @@ import javax.swing.border.Border;
 import domain.*;
 import enums.RoundPhaseType;
 import enums.TravelCardType;
+import loginwindow.LobbyWindow;
+import loginwindow.MainFrame;
 import networking.GameState;
 import org.minueto.MinuetoTool;
 import utils.GameRuleUtils;
@@ -398,7 +400,21 @@ public class GameScreen extends JPanel implements Serializable
 				
                 System.exit(0);
 				
-			}});			
+			}});	
+			
+		i7.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				System.exit(0);
+				//remove(background_elvenroads);
+                //MainFrame.mainPanel.add(new LobbyWindow(), "lobby");
+                //MainFrame.cardLayout.show(MainFrame.mainPanel,"lobby");
+				
+			}
+			
+		});
 
 			
 
