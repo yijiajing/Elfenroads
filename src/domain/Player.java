@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.awt.*;
 
 public class Player implements Comparable<Player> {
 
@@ -62,6 +63,24 @@ public class Player implements Comparable<Player> {
 
     public Colour getColour() {
         return this.colour;
+    }
+
+    public java.awt.Color getColor(){
+        java.awt.Color c = null;
+
+        switch(colour){
+            case BLACK : return Color.BLACK;
+            case BLUE : return Color.BLUE;
+            case RED : return Color.RED;
+            case YELLOW : return Color.YELLOW;
+            case GREEN : return Color.GREEN;
+            case PURPLE : return Color.MAGENTA;
+            default : return Color.WHITE;
+
+        }
+        //RED, YELLOW, BLUE, BLACK, GREEN, PURPLE
+        //return null;
+        
     }
 
     public ElfBoot getBoot() {
