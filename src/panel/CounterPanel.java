@@ -22,11 +22,13 @@ public class CounterPanel extends JPanel {
         this.road = road;
         this.gameScreen = pScreen;
 
+        CounterPanel cp = this;
+
         gameScreen.addElement(this);
 
         this.setBounds(this.x, this.y, gameScreen.getWidth() * 40 / 1440, gameScreen.getHeight() * 70 / 900);
         this.setOpaque(false);
-        this.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+        
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		this.setAlignmentX(CENTER_ALIGNMENT);
         this.addMouseListener(new MouseAdapter() {
@@ -35,6 +37,21 @@ public class CounterPanel extends JPanel {
                 ActionManager.getInstance().setSelectedRoad(CounterPanel.this.road);
                 update();
             }
+
+
+
+
+            
+            @Override
+            public void mouseEntered(MouseEvent e) {
+            	CounterPanel.this.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+            	CounterPanel.this.setBorder(BorderFactory.createEmptyBorder());
+            }
+            
+
         });
     }
 
@@ -46,9 +63,11 @@ public class CounterPanel extends JPanel {
 
     public void placeObstacle(Obstacle obstacle) {
     	gameScreen.addAncestorListener(null);
+
     	this.add(obstacle.getMiniDisplay());
     	this.repaint();
     	this.revalidate();
+
     }
 
     public void update() {

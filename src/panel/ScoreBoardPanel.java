@@ -29,7 +29,7 @@ public class ScoreBoardPanel extends JPanel implements ObserverPanel{
     	
 
     	this.setPreferredSize(new Dimension(aScreen.getWidth() * 290 / 1440, aScreen.getHeight() * 40 / 900));
-    	this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+    	this.setBorder(BorderFactory.createLineBorder(aPlayer.getColor()));
     	
     	final CardLayout ObjCl = new CardLayout();
     	this.setLayout(ObjCl);
@@ -41,6 +41,7 @@ public class ScoreBoardPanel extends JPanel implements ObserverPanel{
     	
     	score = new JLabel(Integer.toString(aPlayer.getScore())+" pts");
     	scoreCard.add(score);
+    	scoreCard.add(new JLabel(aPlayer.getColour().toString()));
     	
     	//Card2: the card showing counters owned by other players
     	countersCard = new JPanel();
