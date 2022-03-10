@@ -24,7 +24,7 @@ public class CounterPanel extends JPanel {
 
         gameScreen.addElement(this);
 
-        this.setBounds(this.x, this.y, gameScreen.getWidth() * 40 / 1440, gameScreen.getHeight() * 40 / 900);
+        this.setBounds(this.x, this.y, gameScreen.getWidth() * 40 / 1440, gameScreen.getHeight() * 70 / 900);
         this.setOpaque(false);
         this.setBorder(BorderFactory.createLineBorder(Color.WHITE));
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
