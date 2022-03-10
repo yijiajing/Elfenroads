@@ -346,7 +346,7 @@ public class GameScreen extends JPanel implements Serializable
 
 	public void intializeMenu(){
 		JMenu menu, submenu;
-    	JMenuItem i1, i2, i3, i4, i5;
+    	JMenuItem i1, i2, i3, i4, i5, i6, i7;
 		JMenuBar mb = new JMenuBar();
         menu = new JMenu("Menu");
         submenu = new JMenu("Rules");
@@ -356,6 +356,8 @@ public class GameScreen extends JPanel implements Serializable
         i3 = new JMenuItem("Chat");
         i4 = new JMenuItem("Elfenland");
         i5 = new JMenuItem("Elfengold");
+		i6 = new JMenuItem("Exit to menu");
+		i7 = new JMenuItem("Exit to desktop");
 
 		i4.addActionListener(new ActionListener(){
 
