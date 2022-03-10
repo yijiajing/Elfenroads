@@ -32,7 +32,7 @@ public class ElfBootPanel extends JPanel implements ObserverPanel {
 
         this.setBounds(this.x, this.y, this.width, this.height);
         this.setOpaque(false);
-        this.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+        //this.setBorder(BorderFactory.createLineBorder(Color.WHITE));
 
         this.addMouseListener(new MouseAdapter() {
             @Override
