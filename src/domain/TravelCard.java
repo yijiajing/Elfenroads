@@ -28,4 +28,12 @@ public class TravelCard extends CardUnit {
     public TravelCardType getType() {
         return type;
     }
+
+
+    @Override
+    public String toString() {
+        return "TravelCard{" +
+                "type=" + type +
+                '}';
+    }
 }

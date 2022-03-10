@@ -160,6 +160,7 @@ public class ActionManager {
             selectedCards.add(card);
             assert !card.isSelected();
             card.setSelected(true);
+            LOGGER.info("Added a card. Cards: " + selectedCards.toString());
         }
     }
 
@@ -215,8 +216,7 @@ public class ActionManager {
             // leaving that here for reference as well.
 
             // TODO: remove this. just for testing
-            if (startForCommand == null || destinationForCommand == null || bootForCommand == null)
-            {
+            if (startForCommand == null || destinationForCommand == null || bootForCommand == null) {
                 System.out.println("Something went wrong! The fields in the command to send were not determined correctly!");
             }
 
@@ -244,15 +244,7 @@ public class ActionManager {
 
         selectedCards.forEach(c -> c.setSelected(false));
         selectedCards.clear();
-        //selectedCards.forEach(this::clearSelectedCard);
     }
-    /*
-    public void clearSelectedCard(TravelCard card) {
-        assert selectedCards.contains(card);
-        assert card.isSelected();
-        selectedCards.remove(card);
-        card.setSelected(false);
-    }*/
 
     /**
      * Clears all selection states.

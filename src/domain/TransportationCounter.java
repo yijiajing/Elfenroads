@@ -37,7 +37,7 @@ public class TransportationCounter extends CounterUnit implements Comparable<Tra
             public void mouseClicked(MouseEvent e) {
 
                 // DRAW COUNTERS PHASE, counter is face-up and available to be chosen
-                if (!isOwned() && GameRuleUtils.isDrawCountersPhase()) {
+                if (!isOwned() && GameRuleUtils.isDrawCountersPhase() && GameManager.getInstance().isLocalPlayerTurn()) {
                     if (GameRuleUtils.isDrawCountersPhase()) {
 
                         // adding the counter to my hand
@@ -64,16 +64,16 @@ public class TransportationCounter extends CounterUnit implements Comparable<Tra
                     }
                 }
                 // RETURN COUNTERS PHASE
-                else if (GameState.instance().getCurrentPhase().equals(RoundPhaseType.RETURN_COUNTERS)) {
+                else if (GameState.instance().getCurrentPhase() == RoundPhaseType.RETURN_COUNTERS) {
                     GameManager.getInstance().returnAllCountersExceptOne(TransportationCounter.this);
                     track1.play();
                 }
 
                 // PLAN TRAVEL ROUTES PHASE
-                else if (getPlacedOn() == null) {
+                else if (GameRuleUtils.isPlanRoutesPhase() && getPlacedOn() == null) {
                     ActionManager.getInstance().setSelectedCounter(TransportationCounter.this);
                     track1.play();
-                } else { // If the counter is placed on a road, then the user's intention is to click on the road
+                } else if (getPlacedOn() != null) { // If the counter is placed on a road, then the user's intention is to click on the road
                     ActionManager.getInstance().setSelectedRoad(getPlacedOn());
                     track1.play();
                 }

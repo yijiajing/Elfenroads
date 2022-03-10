@@ -119,6 +119,7 @@ public class GameScreen extends JPanel implements Serializable
 		addCards(); // update's the player's cards
 		addFaceUpTransportationCounters(); // updates the face-up transportation counters
 		notifyObservers(); // updates elf boots and town pieces
+		updateLeaderboard();
 	}
 
 	public void initialization()
@@ -318,12 +319,12 @@ public class GameScreen extends JPanel implements Serializable
 
 	public void initializeEndTurnButton() {
 		JPanel buttonPanel = new JPanel();
-		buttonPanel.setBounds(width*1000/1440, height*625/900 - 20, width*100/1440, height*65/900);
+		buttonPanel.setBounds(width*1000/1440 - 20, height*625/900, width*100/1440, height*65/900);
 		buttonPanel.setOpaque(false);
 		boardGame_Layers.add(buttonPanel);
 
 		JButton endTurn = new EndTurnButton();
-		endTurn.setBounds(width*1000/1440, height*625/900 - 20, width*100/1440, height*65/900);
+		endTurn.setBounds(width*1000/1440 - 20, height*625/900, width*100/1440, height*65/900);
 		buttonPanel.add(endTurn);
 	}
 
