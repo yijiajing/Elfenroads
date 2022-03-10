@@ -29,7 +29,7 @@ public class ScoreBoardPanel extends JPanel implements ObserverPanel{
     	
 
     	this.setPreferredSize(new Dimension(aScreen.getWidth() * 290 / 1440, aScreen.getHeight() * 40 / 900));
-    	this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+    	this.setBorder(BorderFactory.createLineBorder(aPlayer.getColor()));
     	
     	final CardLayout ObjCl = new CardLayout();
     	this.setLayout(ObjCl);

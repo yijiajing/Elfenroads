@@ -22,6 +22,8 @@ public class CounterPanel extends JPanel {
         this.road = road;
         this.gameScreen = pScreen;
 
+        CounterPanel cp = this;
+
         gameScreen.addElement(this);
 
         this.setBounds(this.x, this.y, gameScreen.getWidth() * 40 / 1440, gameScreen.getHeight() * 70 / 900);
@@ -35,6 +37,10 @@ public class CounterPanel extends JPanel {
                 ActionManager.getInstance().setSelectedRoad(CounterPanel.this.road);
                 update();
             }
+
+
+
+
             
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -45,6 +51,7 @@ public class CounterPanel extends JPanel {
             	CounterPanel.this.setBorder(BorderFactory.createEmptyBorder());
             }
             
+
         });
     }
 
