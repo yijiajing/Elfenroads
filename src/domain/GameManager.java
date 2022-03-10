@@ -248,6 +248,12 @@ public class GameManager {
             updateGameState();
             System.out.println("Current phase: DRAW COUNTERS");
 
+            if (gameState.getGameVariant() == GameVariant.ELFENLAND_DESTINATION) {
+                GameScreen.displayMessage("Your destination Town is: " +
+                        thisPlayer.getDestinationTown() + ". Please collect town pieces and have your travel " +
+                        "route end in a town as close as possible at the end of the game");
+            }
+
             // display message to let the user know that they need to select a counter
             GameScreen.displayMessage("Please select a transportation counter to add to your hand. You may choose one of " +
                     "the face-up counters or a counter from the deck, shown on the right side of the screen.");
@@ -469,15 +475,25 @@ public class GameManager {
                 }
             }
         }
+
+        String destinations = "\n";
+        if (gameState.getGameVariant() == GameVariant.ELFENLAND_DESTINATION) {
+            for (int i = 0; i < gameState.getNumOfPlayers(); i++) {
+                String dest = gameState.getPlayers().get(i).getDestinationTown().getName();
+                String name = gameState.getPlayers().get(i).getName();
+                destinations += name + "'s destination is " + dest + ".\n";
+            }
+        }
+
         assert winners.size() >= 1;
         if (winners.size() == 1) {
-            GameScreen.displayMessage(winners.get(0).getName() + " is the winner!");
+            GameScreen.displayMessage(winners.get(0).getName() + " is the winner!" + destinations);
         } else {
             String winnersNames = "";
             for (Player winner : winners) {
                 winnersNames = winnersNames.concat(" " + winner.getName());
             }
-            GameScreen.displayMessage("There is a tie. " + winnersNames + " are the winners!");
+            GameScreen.displayMessage("There is a tie. " + winnersNames + " are the winners!" + destinations);
         }
     }
 
