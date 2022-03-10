@@ -248,6 +248,12 @@ public class GameManager {
             updateGameState();
             System.out.println("Current phase: DRAW COUNTERS");
 
+            if (gameState.getGameVariant() == GameVariant.ELFENLAND_DESTINATION) {
+                GameScreen.displayMessage("Your destination Town is: " +
+                        thisPlayer.getDestinationTown() + ". Please collect town pieces and have your travel " +
+                        "route end in a town as close as possible at the end of the game");
+            }
+
             // display message to let the user know that they need to select a counter
             GameScreen.displayMessage("Please select a transportation counter to add to your hand. You may choose one of " +
                     "the face-up counters or a counter from the deck, shown on the right side of the screen.");
