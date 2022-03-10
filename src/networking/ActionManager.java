@@ -257,6 +257,10 @@ public class ActionManager {
         selectedCards.clear();
         selectedTown = null;
         obstacleSelected = false;
+
+        for (CounterUnit c : GameManager.getInstance().getThisPlayer().getHand().getCounters()) {
+            c.setSelected(false);
+        }
     }
 
     public GameState getGameState() {

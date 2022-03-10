@@ -245,10 +245,10 @@ public class GameManager {
             updateGameState();
             System.out.println("Current phase: DRAW COUNTERS");
 
-            if (gameState.getGameVariant() == GameVariant.ELFENLAND_DESTINATION) {
+            if (gameState.getGameVariant() == GameVariant.ELFENLAND_DESTINATION && gameState.getCurrentPhase() == RoundPhaseType.DRAW_COUNTER_ONE) {
                 GameScreen.displayMessage("Your destination Town is: " + 
                         thisPlayer.getDestinationTown().getName() + ". Please collect town pieces and have your travel " +
-                        "route end in a town as close as possible at the end of the game");
+                        "route end in a town as close as possible to the destination at the end of the game.");
 
             }
 
