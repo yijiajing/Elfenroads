@@ -35,7 +35,7 @@ public class TownPanel extends JPanel implements ObserverPanel {
 
         this.setBounds(this.x, this.y, this.width, this.height);
         this.setOpaque(false);
-        this.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+        //this.setBorder(BorderFactory.createLineBorder(Color.WHITE));
 
 //        this.addMouseListener(new ElfBootController(gameScreen, this));
         this.addMouseListener(new MouseAdapter() {

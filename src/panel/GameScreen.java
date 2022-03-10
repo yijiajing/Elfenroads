@@ -1,8 +1,11 @@
 package panel;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.ServerSocket;
@@ -59,6 +62,8 @@ public class GameScreen extends JPanel implements Serializable
 	private ArrayList<ObserverPanel> observerPanels = new ArrayList<>();
 
 	private GameMap gameMap;
+
+	private static String prevMessage;
 
 	private GameScreen (JFrame frame)
 	{
@@ -137,6 +142,7 @@ public class GameScreen extends JPanel implements Serializable
 		initializeEndTurnButton();
 
 		initializeMenuButton();
+		intializeMenu();
 
 		updateAll();
 	}
@@ -338,6 +344,62 @@ public class GameScreen extends JPanel implements Serializable
 		buttonPanel.add(menu);
 	}
 
+	public void intializeMenu(){
+		JMenu menu, submenu;
+    	JMenuItem i1, i2, i3, i4, i5;
+		JMenuBar mb = new JMenuBar();
+        menu = new JMenu("Menu");
+        submenu = new JMenu("Rules");
+
+        i1 = new JMenuItem("Save");
+        i2 = new JMenuItem("Load");
+        i3 = new JMenuItem("Chat");
+        i4 = new JMenuItem("Elfenland");
+        i5 = new JMenuItem("Elfengold");
+
+		i4.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (Desktop.isDesktopSupported()) {
+                    try {
+                        
+                        File myFile = new File("./assets/rules/Elfengold Rules.pdf");
+                        Desktop.getDesktop().open(myFile);
+                    } catch (IOException ex) {
+                        // no application registered for PDFs
+                    }
+                }
+				
+			}});
+
+		i5.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (Desktop.isDesktopSupported()) {
+                    try {
+                        
+                        File myFile = new File("./assets/rules/Elfengold Rules.pdf");
+                        Desktop.getDesktop().open(myFile);
+                    } catch (IOException ex) {
+                        // no application registered for PDFs
+                    }
+                }
+				
+			}});
+
+        menu.add(i1);
+        menu.add(i2);
+        menu.add(i3);
+        submenu.add(i4);
+        submenu.add(i5);
+        menu.add(submenu);
+        mb.add(menu);
+        mainframe.setJMenuBar(mb);
+        
+	}
+
 	public void addImages()
 	{
 		backgroundPanel_ForMap.add(mapImage_BottomLayer);
@@ -494,7 +556,14 @@ public class GameScreen extends JPanel implements Serializable
 		return gameMap;
 	}
 
-	public static void displayMessage(String message) {
+	public static void displayMessage(String message)
+	{
+		prevMessage = message;
 		JOptionPane.showMessageDialog(null, message);
+	}
+
+	public static String getPrevMessage()
+	{
+		return prevMessage;
 	}
 }
