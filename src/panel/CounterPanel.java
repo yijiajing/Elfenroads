@@ -43,12 +43,8 @@ public class CounterPanel extends JPanel {
     }
 
     public void placeObstacle(Obstacle obstacle) {
-<<<<<<< HEAD
     	gameScreen.addAncestorListener(null);
-    	this.add(obstacle.getDisplay());
-=======
     	this.add(obstacle.getMiniDisplay());
->>>>>>> 7058563ec15873379d04997822cc0336cf76ac05
     }
 
     public void update() {
