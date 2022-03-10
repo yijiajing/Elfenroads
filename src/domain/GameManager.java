@@ -475,15 +475,25 @@ public class GameManager {
                 }
             }
         }
+
+        String destinations = "\n";
+        if (gameState.getGameVariant() == GameVariant.ELFENLAND_DESTINATION) {
+            for (int i = 0; i < gameState.getNumOfPlayers(); i++) {
+                String dest = gameState.getPlayers().get(i).getDestinationTown().getName();
+                String name = gameState.getPlayers().get(i).getName();
+                destinations += name + "'s destination is " + dest + ".\n";
+            }
+        }
+
         assert winners.size() >= 1;
         if (winners.size() == 1) {
-            GameScreen.displayMessage(winners.get(0).getName() + " is the winner!");
+            GameScreen.displayMessage(winners.get(0).getName() + " is the winner!" + destinations);
         } else {
             String winnersNames = "";
             for (Player winner : winners) {
                 winnersNames = winnersNames.concat(" " + winner.getName());
             }
-            GameScreen.displayMessage("There is a tie. " + winnersNames + " are the winners!");
+            GameScreen.displayMessage("There is a tie. " + winnersNames + " are the winners!" + destinations);
         }
     }
 
