@@ -19,6 +19,7 @@ public class MenuButton extends JButton {
 			 public void actionPerformed(ActionEvent e)
 			{
 				track1.play();
+				GameScreen.displayMessage(GameScreen.getPrevMessage());
 		    }
 		});
 	}

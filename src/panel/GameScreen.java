@@ -60,6 +60,8 @@ public class GameScreen extends JPanel implements Serializable
 
 	private GameMap gameMap;
 
+	private static String prevMessage;
+
 	private GameScreen (JFrame frame)
 	{
 		// layout is necessary for JLayeredPane to be added to the JPanel
@@ -519,7 +521,14 @@ public class GameScreen extends JPanel implements Serializable
 		return gameMap;
 	}
 
-	public static void displayMessage(String message) {
+	public static void displayMessage(String message)
+	{
+		prevMessage = message;
 		JOptionPane.showMessageDialog(null, message);
+	}
+
+	public static String getPrevMessage()
+	{
+		return prevMessage;
 	}
 }
