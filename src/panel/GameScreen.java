@@ -119,6 +119,7 @@ public class GameScreen extends JPanel implements Serializable
 		addCards(); // update's the player's cards
 		addFaceUpTransportationCounters(); // updates the face-up transportation counters
 		notifyObservers(); // updates elf boots and town pieces
+		updateLeaderboard();
 	}
 
 	public void initialization()
