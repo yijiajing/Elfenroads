@@ -6,6 +6,7 @@ public class MenuPanel {
 
     JMenu menu;
     JMenuItem i1,i2,i3,i4;
-    
+    JFrame f = new JFrame("Menu");
+    JMenuBar 
     
 }
