@@ -83,7 +83,7 @@ public class GameManager {
         {
             ArrayList<String> players = GameSession.getPlayerNames(sessionID);
             String localPlayerName = getThisPlayer().getName();
-            // TODO: how to get the boot color of each player?
+
             for (String playerName : players)
             {
                 // if the player name is the local one, do nothing. we already have his information
@@ -116,9 +116,6 @@ public class GameManager {
         GameScreen.getInstance().draw();
         MainFrame.cardLayout.show(MainFrame.mainPanel,"gameScreen");
 
-        // gameState.sortPlayers();
-        // gameState.setToFirstPlayer();
-        // GameScreen.getInstance().draw(); // put here because draw also utilizes the player list
         initializeElfBoots();
         setUpRound();
     }
@@ -249,9 +246,10 @@ public class GameManager {
             System.out.println("Current phase: DRAW COUNTERS");
 
             if (gameState.getGameVariant() == GameVariant.ELFENLAND_DESTINATION) {
-                GameScreen.displayMessage("Your destination Town is: " +
-                        thisPlayer.getDestinationTown() + ". Please collect town pieces and have your travel " +
+                GameScreen.displayMessage("Your destination Town is: " + 
+                        thisPlayer.getDestinationTown().getName() + ". Please collect town pieces and have your travel " +
                         "route end in a town as close as possible at the end of the game");
+
             }
 
             // display message to let the user know that they need to select a counter

@@ -391,6 +391,38 @@ public class GameScreen extends JPanel implements Serializable
 				
 			}});
 
+		i4.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (Desktop.isDesktopSupported()) {
+                    try {
+                        
+                        File myFile = new File("./assets/rules/Elfengold Rules.pdf");
+                        Desktop.getDesktop().open(myFile);
+                    } catch (IOException ex) {
+                        // no application registered for PDFs
+                    }
+                }
+				
+			}});
+
+		i5.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (Desktop.isDesktopSupported()) {
+                    try {
+                        
+                        File myFile = new File("./assets/rules/Elfengold Rules.pdf");
+                        Desktop.getDesktop().open(myFile);
+                    } catch (IOException ex) {
+                        // no application registered for PDFs
+                    }
+                }
+				
+			}});
+
         menu.add(i1);
         menu.add(i2);
         menu.add(i3);

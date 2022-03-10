@@ -41,6 +41,7 @@ public class ScoreBoardPanel extends JPanel implements ObserverPanel{
     	
     	score = new JLabel(Integer.toString(aPlayer.getScore())+" pts");
     	scoreCard.add(score);
+    	scoreCard.add(new JLabel(aPlayer.getColour().toString()));
     	
     	//Card2: the card showing counters owned by other players
     	countersCard = new JPanel();
