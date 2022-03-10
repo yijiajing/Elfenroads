@@ -24,7 +24,7 @@ public class ReturnTravelCardsCommand implements GameCommand {
     @Override
     public void execute() {
         for (TravelCardType t : travelCardTypes) {
-            TravelCard card = new TravelCard(t, GameScreen.getInstance().getWidth()*135/1440, GameScreen.getInstance().getHeight()*2/9);
+            TravelCard card = new TravelCard(t, GameScreen.getInstance().getWidth()*130/1440, GameScreen.getInstance().getHeight()*2/10);
             GameState.instance().getTravelCardDeck().addDrawable(card);
         }
     }
