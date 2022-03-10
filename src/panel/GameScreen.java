@@ -366,7 +366,7 @@ public class GameScreen extends JPanel implements Serializable
 				if (Desktop.isDesktopSupported()) {
                     try {
                         
-                        File myFile = new File("./assets/rules/Elfengold Rules.pdf");
+                        File myFile = new File("./assets/rules/Elfenland Rules.pdf");
                         Desktop.getDesktop().open(myFile);
                     } catch (IOException ex) {
                         // no application registered for PDFs
@@ -390,44 +390,27 @@ public class GameScreen extends JPanel implements Serializable
                 }
 				
 			}});
-
-		i4.addActionListener(new ActionListener(){
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (Desktop.isDesktopSupported()) {
-                    try {
-                        
-                        File myFile = new File("./assets/rules/Elfengold Rules.pdf");
-                        Desktop.getDesktop().open(myFile);
-                    } catch (IOException ex) {
-                        // no application registered for PDFs
-                    }
-                }
-				
-			}});
-
-		i5.addActionListener(new ActionListener(){
+			
+		i6.addActionListener(new ActionListener(){
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (Desktop.isDesktopSupported()) {
-                    try {
-                        
-                        File myFile = new File("./assets/rules/Elfengold Rules.pdf");
-                        Desktop.getDesktop().open(myFile);
-                    } catch (IOException ex) {
-                        // no application registered for PDFs
-                    }
-                }
 				
-			}});
+                System.exit(0);
+				
+			}});			
+
+			
+
+		
 
         menu.add(i1);
         menu.add(i2);
         menu.add(i3);
         submenu.add(i4);
         submenu.add(i5);
+		menu.add(i6);
+		menu.add(i7);
         menu.add(submenu);
         mb.add(menu);
         mainframe.setJMenuBar(mb);
