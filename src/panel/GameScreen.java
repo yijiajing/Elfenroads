@@ -137,6 +137,7 @@ public class GameScreen extends JPanel implements Serializable
 		initializeEndTurnButton();
 
 		initializeMenuButton();
+		intializeMenu();
 
 		updateAll();
 	}
@@ -336,6 +337,30 @@ public class GameScreen extends JPanel implements Serializable
 		JButton menu = new MenuButton();
 		menu.setBounds(width*1000/1440 + 75, height*625/900, width*100/1440, height*65/900);
 		buttonPanel.add(menu);
+	}
+
+	public void intializeMenu(){
+		JMenu menu, submenu;
+    	JMenuItem i1, i2, i3, i4, i5;
+		JMenuBar mb = new JMenuBar();
+        menu = new JMenu("Menu");
+        submenu = new JMenu("Rules");
+
+        i1 = new JMenuItem("Save");
+        i2 = new JMenuItem("Load");
+        i3 = new JMenuItem("Chat");
+        i4 = new JMenuItem("Elfenland");
+        i5 = new JMenuItem("Elfengold");
+
+        menu.add(i1);
+        menu.add(i2);
+        menu.add(i3);
+        submenu.add(i4);
+        submenu.add(i5);
+        menu.add(submenu);
+        mb.add(menu);
+        mainframe.setJMenuBar(mb);
+        
 	}
 
 	public void addImages()
