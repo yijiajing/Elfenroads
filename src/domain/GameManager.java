@@ -245,6 +245,10 @@ public class GameManager {
             updateGameState();
             System.out.println("Current phase: DRAW COUNTERS");
 
+            if (gameState.getGameVariant() == GameVariant.ELFENLAND_LONG) {
+                GameScreen.displayMessage("This is the long variant of Elfenland. You will go through 4 rounds instead of 3.");
+            }
+
             if (gameState.getGameVariant() == GameVariant.ELFENLAND_DESTINATION && gameState.getCurrentPhase() == RoundPhaseType.DRAW_COUNTER_ONE) {
                 GameScreen.displayMessage("Your destination Town is " +
                         thisPlayer.getDestinationTown().getName() + ". Please collect town pieces and have your travel " +
@@ -439,6 +443,7 @@ public class GameManager {
         GameScreen.getInstance().initializeRoundCardImage(gameState.getCurrentRound()); // update round card image
 
         if (gameState.getCurrentRound() > gameState.getTotalRounds()) {
+            LOGGER.info("Total: " + gameState.getTotalRounds() + ", Current: " + gameState.getCurrentRound());
             endGame();
         } else {
             setUpRound(); // start next round
