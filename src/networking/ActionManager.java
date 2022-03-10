@@ -160,6 +160,7 @@ public class ActionManager {
             selectedCards.add(card);
             assert !card.isSelected();
             card.setSelected(true);
+            LOGGER.info("Added a card. Cards: " + selectedCards.toString());
         }
     }
 

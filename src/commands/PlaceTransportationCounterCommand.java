@@ -4,6 +4,8 @@ import domain.*;
 import enums.CounterType;
 import enums.RegionType;
 
+import java.util.logging.Logger;
+
 public class PlaceTransportationCounterCommand implements GameCommand {
 
     private final String start;
@@ -21,6 +23,7 @@ public class PlaceTransportationCounterCommand implements GameCommand {
 
     @Override
     public void execute() {
+        Logger.getGlobal().info("Executing PlaceTransportationCounterCommand");
         GameMap map = GameMap.getInstance();
 
         Town startTown = map.getTown(start);
