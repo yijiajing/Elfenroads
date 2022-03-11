@@ -69,7 +69,7 @@ public class StartWindow extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 track1.play();
-                System.exit(0);;
+                System.exit(0);
                 
             }
             
