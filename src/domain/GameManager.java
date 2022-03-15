@@ -11,8 +11,6 @@ import panel.GameScreen;
 import utils.GameRuleUtils;
 import utils.NetworkUtils;
 
-import javax.naming.OperationNotSupportedException;
-import javax.swing.*;
 import java.io.IOException;
 import java.util.*;
 import java.util.logging.Logger;
@@ -50,8 +48,6 @@ public class GameManager {
 
         // start a new game if there is no state to be loaded
         if (loadedState.isEmpty()) {
-            //TODO: figure out the game variant and pass it to the constructor
-            //gameState = GameState.init(pSessionID, GameVariant.ELFENLAND_CLASSIC);
             gameState = GameState.init(pSessionID, variant);
             actionManager = ActionManager.init(gameState, this);
 
@@ -79,26 +75,27 @@ public class GameManager {
         // add it to launch(). Also check AddPlayerCommand.
 
         // initialize all the players now that the game has been launched and everyone is in
-        try
-        {
+        try {
             ArrayList<String> players = GameSession.getPlayerNames(sessionID);
             String localPlayerName = getThisPlayer().getName();
 
-            for (String playerName : players)
-            {
+            for (String playerName : players) {
                 // if the player name is the local one, do nothing. we already have his information
-                if (!playerName.equals(localPlayerName))
-                {
+                if (!playerName.equals(localPlayerName)) {
                     // otherwise, send a SendPlayerInfoCommand over
                     SendPlayerInfoCommand cmd = new SendPlayerInfoCommand();
-                    try{getComs().sendCommandToIndividual(cmd, playerName);}
-                    catch (Exception ugh) {ugh.printStackTrace();}
+                    try {
+                        getComs().sendCommandToIndividual(cmd, playerName);
+                    } catch (Exception ugh) {
+                        ugh.printStackTrace();
+                    }
                 }
             }
 
             // now we have ordered all the players, so we should sort them
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        catch (Exception e) {e.printStackTrace();}
     }
 
     /**
@@ -110,11 +107,11 @@ public class GameManager {
         gameState.sortPlayers();
         gameState.setToFirstPlayer();
         System.out.print(gameState.getPlayers());
-        
+
         if (!loaded) setUpNewGame();
 
         GameScreen.getInstance().draw();
-        MainFrame.cardLayout.show(MainFrame.mainPanel,"gameScreen");
+        MainFrame.cardLayout.show(MainFrame.mainPanel, "gameScreen");
 
         initializeElfBoots();
         setUpRound();
@@ -145,12 +142,12 @@ public class GameManager {
 
     private void setUpNewGame() {
         // put 5 counters face up, these are shared across peers
-        for (int i=0; i<5; i++) {
+        for (int i = 0; i < 5; i++) {
             this.gameState.addFaceUpCounterFromPile();
         }
 
         // give all players (each peer) an obstacle
-        thisPlayer.getHand().addUnit(new Obstacle(MainFrame.instance.getWidth()*67/1440, MainFrame.instance.getHeight()*60/900));
+        thisPlayer.getHand().addUnit(new Obstacle(MainFrame.instance.getWidth() * 67 / 1440, MainFrame.instance.getHeight() * 60 / 900));
 
         // assign each player a destination town if applicable
         if (gameState.getGameVariant() == GameVariant.ELFENLAND_DESTINATION) {
@@ -160,7 +157,7 @@ public class GameManager {
             }
         }
 
-        for (Player p : gameState.getPlayers()){
+        for (Player p : gameState.getPlayers()) {
             System.out.println(p.getDestinationTown());
         }
     }
@@ -196,8 +193,8 @@ public class GameManager {
         for (int i = numCards; i < 8; i++) {
             thisPlayer.getHand().addUnit(gameState.getTravelCardDeck().draw());
         }
-        LOGGER.info("Added " + (8-numCards) + " travel cards...");
-        Logger.getGlobal().info(GameManager.getInstance().getThisPlayer().getHand().getCards().toString());
+        LOGGER.info("Added " + (8 - numCards) + " travel cards...");
+        LOGGER.info(GameManager.getInstance().getThisPlayer().getHand().getCards().toString());
 
         int numDrawn = 8 - numCards;
         DrawCardCommand drawCardCommand = new DrawCardCommand(numDrawn);
@@ -226,7 +223,7 @@ public class GameManager {
 
         // tell the other peers to remove the counter from the pile
         try {
-            coms.sendGameCommandToAllPlayers(new DrawCounterCommand(1, null));
+            coms.sendGameCommandToAllPlayers(new DrawCounterCommand(counter, false));
         } catch (IOException e) {
             System.out.println("Error: there was a problem sending the DrawCounterCommand to the other peers.");
         }
@@ -278,17 +275,17 @@ public class GameManager {
             // display message
             if (gameState.getCurrentPhase().equals(RoundPhaseType.PLAN_ROUTES_ONE)) {
                 GameScreen.displayMessage("""
-                    It is time to plan your travel routes! Begin by clicking the transportation counter in your hand that you want to use, then click on the road that you want to travel.
-                    The chart in the bottom right corner indicates which transportation counters may be used on which road.
-                    Alternatively, you may choose to place your Obstacle on a road that already has a counter. But be warned... you can only do this once!
-                    When you are done placing one counter, click "End Turn". Alternatively, you can pass your turn by clicking "End Turn".
-                    """);
+                        It is time to plan your travel routes! Begin by clicking the transportation counter in your hand that you want to use, then click on the road that you want to travel.
+                        The chart in the bottom right corner indicates which transportation counters may be used on which road.
+                        Alternatively, you may choose to place your Obstacle on a road that already has a counter. But be warned... you can only do this once!
+                        When you are done placing one counter, click "End Turn". Alternatively, you can pass your turn by clicking "End Turn".
+                        """);
             } else {
                 GameScreen.displayMessage("""
-                    Continue planning your travel routes! 
-                    Place another transportation counter or Obstacle. When you are done placing one counter, click "End Turn".
-                    Alternatively, you can pass your turn by clicking "End Turn".
-                    """);
+                        Continue planning your travel routes! 
+                        Place another transportation counter or Obstacle. When you are done placing one counter, click "End Turn".
+                        Alternatively, you can pass your turn by clicking "End Turn".
+                        """);
             }
         }
     }
@@ -342,12 +339,13 @@ public class GameManager {
 
     /**
      * Part of phase 6, called when a transportation counter from the player's hand is clicked
+     *
      * @param toKeep
      */
     public void returnAllCountersExceptOne(TransportationCounter toKeep) {
         List<TransportationCounter> myCounters = thisPlayer.getHand().getCounters();
 
-        for ( TransportationCounter c : myCounters ) {
+        for (TransportationCounter c : myCounters) {
             if (c.equals(toKeep)) {
                 continue;
             }
@@ -511,13 +509,7 @@ public class GameManager {
     }
 
     private void updateGameState() {
-        // TODO implement get game state from peers
-
         GameScreen.getInstance().updateAll();
-    }
-
-    private void sendGameState() {
-        // TODO implement
     }
 
     public GameState getGameState() {
@@ -559,7 +551,7 @@ public class GameManager {
             if (thisPlayer == null) { // I haven't chosen a boot colour yet
                 int numPlayers = GameSession.getPlayerNames(sessionID).size();
 
-                if (availableColours.size() == 7-numPlayers) { // we have received the boot colours from all players who have joined
+                if (availableColours.size() == 7 - numPlayers) { // we have received the boot colours from all players who have joined
                     showBootWindow();
                 }
             }
@@ -576,7 +568,7 @@ public class GameManager {
     public String getSessionID() {
         return sessionID;
     }
-      
+
     public boolean isLocalPlayerTurn() {
         return thisPlayer.equals(gameState.getCurrentPlayer());
     }
