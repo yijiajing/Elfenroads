@@ -461,7 +461,8 @@ public class GameManager {
                 p.setScore(newScore);
             }
         }
-
+        //update scoreboard
+        GameScreen.getInstance().updateAll();
         for (Player p : players) {
             if (p.getScore() > winners.get(0).getScore()) {
                 winners.clear();
