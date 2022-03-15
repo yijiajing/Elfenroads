@@ -49,7 +49,7 @@ public class TransportationCounterPile extends Deck<TransportationCounter> {
         this.deckImage.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (GameRuleUtils.isDrawCountersPhase()) {
+                if (GameRuleUtils.isDrawCountersPhase() && GameManager.getInstance().isLocalPlayerTurn()) {
                     TransportationCounter drawn = GameState.instance().getCounterPile().draw(); // draw a counter
                     GameManager.getInstance().getThisPlayer().getHand().addUnit(drawn); // add to player's hand
                     drawn.setOwned(true);

@@ -5,6 +5,7 @@ import enums.RoundPhaseType;
 import networking.GameState;
 import panel.GameScreen;
 
+import java.io.Serial;
 import java.util.logging.Logger;
 
 /**
@@ -12,6 +13,9 @@ import java.util.logging.Logger;
  * On execution, it starts the turn of the recipient player within the specified phase.
  */
 public class NotifyTurnCommand implements GameCommand {
+
+    @Serial
+    private static final long serialVersionUID = 6529685098267757690L;
 
     private final RoundPhaseType phase;
 
