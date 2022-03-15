@@ -28,62 +28,62 @@ public class TransportationCounter extends CounterUnit implements Comparable<Tra
         super(resizeWidth, resizeHeight, pType.ordinal() + 1); // since the images start from M01, not M00
         this.type = pType;
 
-        initializeMouseListener();
+        super.initializeMouseListener();
     }
     
-    @Override
-    protected void initializeMouseListener() {
-        this.getDisplay().addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (!GameManager.getInstance().isLocalPlayerTurn()) {
-                    return;
-                }
-
-                // DRAW COUNTERS PHASE, counter is face-up and available to be chosen
-                if (!isOwned() && GameRuleUtils.isDrawCountersPhase()) {
-                    // adding the counter to my hand
-                    track1.play();
-                    GameState.instance().getFaceUpCounters().remove(TransportationCounter.this); // remove the counter from the face-up pile
-                    GameManager.getInstance().getThisPlayer().getHand().addUnit(TransportationCounter.this);
-                    GameState.instance().addFaceUpCounterFromPile(); // replenish the face-up counters with one from the pile
-                    GameScreen.getInstance().updateAll(); // update GUI
-                    TransportationCounter.this.owned = true;
-                    TransportationCounter.this.setSecret(false);
-                    Logger.getGlobal().info("Just added " + TransportationCounter.this.getType() +
-                            ", current counters in hand: " +
-                            GameManager.getInstance().getThisPlayer().getHand().getCounters().toString());
-
-                    // tell the other peers to remove the counter
-                    try {
-                        GameManager.getInstance().getComs().sendGameCommandToAllPlayers(
-                                new DrawCounterCommand(TransportationCounter.this, true));
-                    } catch (IOException err) {
-                        System.out.println("Error: there was a problem sending the DrawCounterCommand to the other peers.");
-                    }
-
-                    GameManager.getInstance().endTurn();
-
-                }
-                // RETURN COUNTERS PHASE
-                else if (GameState.instance().getCurrentPhase() == RoundPhaseType.RETURN_COUNTERS) {
-                    GameManager.getInstance().returnAllCountersExceptOne(TransportationCounter.this);
-                    track1.play();
-                }
-
-                // PLAN TRAVEL ROUTES PHASE
-                else if (GameRuleUtils.isPlanRoutesPhase()) {
-                    if (getPlacedOn() == null) {
-                        ActionManager.getInstance().setSelectedCounter(TransportationCounter.this);
-                    } else {
-                        // If the counter is placed on a road, then the user's intention is to click on the road
-                        ActionManager.getInstance().setSelectedRoad(getPlacedOn());
-                    }
-                    track1.play();
-                }
-            }
-        });
-    }
+//    @Override
+//    protected void initializeMouseListener() {
+//        this.getDisplay().addMouseListener(new MouseAdapter() {
+//            @Override
+//            public void mouseClicked(MouseEvent e) {
+//                if (!GameManager.getInstance().isLocalPlayerTurn()) {
+//                    return;
+//                }
+//
+//                // DRAW COUNTERS PHASE, counter is face-up and available to be chosen
+//                if (!isOwned() && GameRuleUtils.isDrawCountersPhase()) {
+//                    // adding the counter to my hand
+//                    track1.play();
+//                    GameState.instance().getFaceUpCounters().remove(TransportationCounter.this); // remove the counter from the face-up pile
+//                    GameManager.getInstance().getThisPlayer().getHand().addUnit(TransportationCounter.this);
+//                    GameState.instance().addFaceUpCounterFromPile(); // replenish the face-up counters with one from the pile
+//                    GameScreen.getInstance().updateAll(); // update GUI
+//                    TransportationCounter.this.owned = true;
+//                    TransportationCounter.this.setSecret(false);
+//                    Logger.getGlobal().info("Just added " + TransportationCounter.this.getType() +
+//                            ", current counters in hand: " +
+//                            GameManager.getInstance().getThisPlayer().getHand().getCounters().toString());
+//
+//                    // tell the other peers to remove the counter
+//                    try {
+//                        GameManager.getInstance().getComs().sendGameCommandToAllPlayers(
+//                                new DrawCounterCommand(TransportationCounter.this, true));
+//                    } catch (IOException err) {
+//                        System.out.println("Error: there was a problem sending the DrawCounterCommand to the other peers.");
+//                    }
+//
+//                    GameManager.getInstance().endTurn();
+//
+//                }
+//                // RETURN COUNTERS PHASE
+//                else if (GameState.instance().getCurrentPhase() == RoundPhaseType.RETURN_COUNTERS) {
+//                    GameManager.getInstance().returnAllCountersExceptOne(TransportationCounter.this);
+//                    track1.play();
+//                }
+//
+//                // PLAN TRAVEL ROUTES PHASE
+//                else if (GameRuleUtils.isPlanRoutesPhase()) {
+//                    if (getPlacedOn() == null) {
+//                        ActionManager.getInstance().setSelectedCounter(TransportationCounter.this);
+//                    } else {
+//                        // If the counter is placed on a road, then the user's intention is to click on the road
+//                        ActionManager.getInstance().setSelectedRoad(getPlacedOn());
+//                    }
+//                    track1.play();
+//                }
+//            }
+//        });
+//    }
 
     public CounterType getType() {
         return this.type;
