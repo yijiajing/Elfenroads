@@ -228,7 +228,7 @@ public class CommunicationsManager {
      */
     public void updateFromListener()
     {
-        System.out.println("Received an update from the listener! Getting ready to update the UI...");
+        Logger.getGlobal().info("Received an update from the listener. Updating the game.");
 
         while (listener.getCommands().size() > 0)
         {
@@ -237,6 +237,7 @@ public class CommunicationsManager {
             if (listener.getCommands().peek() instanceof GetBootColourCommand || listener.getCommands().peek() instanceof SendBootColourCommand)
             {
                 GameCommand toExecute = listener.getCommands().poll();
+                Logger.getGlobal().info("Executing a command related to the boot colour");
                 toExecute.execute();
             }
 
