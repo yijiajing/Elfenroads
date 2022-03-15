@@ -473,7 +473,11 @@ public class GameScreen extends JPanel implements Serializable
 
 		for (Town town: gameMap.getTownList()) {
 			boardGame_Layers.add(town.getPanel(), 0);
-			boardGame_Layers.add(town.getPanel().getElfBootPanel(), 0);
+			boardGame_Layers.add(town.getElfBootPanel(), 0);
+
+			if (isElfengoldVariant()) {
+				boardGame_Layers.add(town.getTokenPanel(), 0);
+			}
 		}
 	}
 	
