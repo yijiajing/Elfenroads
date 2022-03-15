@@ -1,5 +1,5 @@
 package enums;
 
-public enum CounterType {
+public enum CounterType implements CounterUnitType{
     GIANTPIG, ELFCYCLE, MAGICCLOUD, UNICORN, TROLLWAGON, DRAGON
 }

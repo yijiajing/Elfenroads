@@ -2,6 +2,7 @@ package domain;
 
 import commands.DrawCounterCommand;
 import enums.CounterType;
+import enums.CounterUnitType;
 import enums.RegionType;
 import enums.RoundPhaseType;
 import loginwindow.MP3Player;
@@ -10,6 +11,7 @@ import networking.ActionManager;
 import networking.GameState;
 import panel.GameScreen;
 import utils.GameRuleUtils;
+
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -28,8 +30,9 @@ public class TransportationCounter extends CounterUnit implements Comparable<Tra
 
         initializeMouseListener();
     }
-
-    private void initializeMouseListener() {
+    
+    @Override
+    protected void initializeMouseListener() {
         this.getDisplay().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -152,8 +155,9 @@ public class TransportationCounter extends CounterUnit implements Comparable<Tra
     }
 
 
-    public static TransportationCounter getNew(CounterType counterType) {
-        return new TransportationCounter(counterType, MainFrame.instance.getWidth() * 67 / 1440, MainFrame.instance.getHeight() * 60 / 900);
+    public static TransportationCounter getNew(CounterUnitType pType) {
+        assert pType instanceof CounterType;
+    	return new TransportationCounter((CounterType)pType, MainFrame.instance.getWidth() * 67 / 1440, MainFrame.instance.getHeight() * 60 / 900);
     }
 
     @Override
@@ -164,4 +168,6 @@ public class TransportationCounter extends CounterUnit implements Comparable<Tra
                 ", type=" + type +
                 '}';
     }
+    
+    
 }
