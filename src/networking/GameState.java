@@ -257,5 +257,4 @@ public class GameState {
     {
         Collections.sort(players);
     }
-
 }

@@ -1,6 +1,7 @@
 package utils;
 
 import domain.*;
+import enums.GameVariant;
 import enums.RegionType;
 import enums.RoundPhaseType;
 import enums.TravelCardType;
@@ -106,6 +107,13 @@ public final class GameRuleUtils {
                 RoundPhaseType.PLAN_ROUTES_FOUR, RoundPhaseType.PLAN_ROUTES_FIVE,
                 RoundPhaseType.PLAN_ROUTES_SIX)
                 .contains(GameState.instance().getCurrentPhase());
+    }
+
+    public static boolean isElfengoldVariant() {
+        GameVariant gameVariant = GameState.instance().getGameVariant();
+
+        return ((gameVariant == GameVariant.ELFENGOLD_CLASSIC) || (gameVariant == GameVariant.ELFENGOLD_WITCH) ||
+                (gameVariant == GameVariant.ELFENGOLD_RANDOM_GOLD) || (gameVariant == GameVariant.ELFENGOLD_TRAVEL_CARDS));
     }
 
 }

@@ -15,6 +15,8 @@ import java.io.IOException;
 import java.util.*;
 import java.util.logging.Logger;
 
+import static utils.GameRuleUtils.isElfengoldVariant;
+
 /**
  * A Singleton class that controls the main game loop
  */
@@ -159,6 +161,11 @@ public class GameManager {
 
         for (Player p : gameState.getPlayers()) {
             System.out.println(p.getDestinationTown());
+        }
+
+        // distribute gold value tokens on towns
+        if (isElfengoldVariant()) {
+
         }
     }
 
