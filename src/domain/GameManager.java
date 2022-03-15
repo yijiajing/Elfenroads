@@ -48,8 +48,6 @@ public class GameManager {
 
         // start a new game if there is no state to be loaded
         if (loadedState.isEmpty()) {
-            //TODO: figure out the game variant and pass it to the constructor
-            //gameState = GameState.init(pSessionID, GameVariant.ELFENLAND_CLASSIC);
             gameState = GameState.init(pSessionID, variant);
             actionManager = ActionManager.init(gameState, this);
 
@@ -510,13 +508,7 @@ public class GameManager {
     }
 
     private void updateGameState() {
-        // TODO implement get game state from peers
-
         GameScreen.getInstance().updateAll();
-    }
-
-    private void sendGameState() {
-        // TODO implement
     }
 
     public GameState getGameState() {

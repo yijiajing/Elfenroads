@@ -94,6 +94,7 @@ public class GameMap {
         for (Road road: roadList) {
             TransportationCounter counter = road.getTransportationCounter();
             if (counter != null) {
+                counter.setOwned(false);
                 GameState.instance().getCounterPile().addDrawable(counter);
                 road.clear();
             }

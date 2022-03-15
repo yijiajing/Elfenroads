@@ -136,7 +136,7 @@ public class GameScreen extends JPanel implements Serializable
 		initializeEndTurnButton();
 
 		initializeMenuButton();
-		intializeMenu();
+		initializeMenu();
 
 		updateAll();
 	}
@@ -338,7 +338,7 @@ public class GameScreen extends JPanel implements Serializable
 		buttonPanel.add(menu);
 	}
 
-	public void intializeMenu(){
+	public void initializeMenu(){
 		JMenu menu, submenu;
     	JMenuItem i1, i2, i3, i4, i5, i6, i7;
 		JMenuBar mb = new JMenuBar();
