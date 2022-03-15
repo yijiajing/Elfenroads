@@ -1,12 +1,15 @@
 package domain;
 
 import enums.RegionType;
+import loginwindow.MainFrame;
 import networking.GameState;
 import org.jgrapht.alg.shortestpath.BellmanFordShortestPath;
 import org.jgrapht.graph.Pseudograph;
 import panel.GameScreen;
 
 import java.util.*;
+
+import static utils.GameRuleUtils.isElfengoldVariant;
 
 public class GameMap {
 
@@ -102,27 +105,27 @@ public class GameMap {
     }
 
     private void initializeTowns() {
-        townList.add(new Town("Elvenhold", 810, 310, 115, 70, gameScreen));
-        townList.add(new Town("Wylhien", 250, 40, 74, 37, gameScreen));
-        townList.add(new Town("Jaccaranda", 445, 80, 74, 37, gameScreen));
-        townList.add(new Town("Lisselen", 59, 110, 74, 37, gameScreen));
-        townList.add(new Town("Yttar", 54, 245, 74, 37, gameScreen));
-        townList.add(new Town("Grangor", 79, 385, 74, 37, gameScreen));
-        townList.add(new Town("Mah'Davikia", 90, 505, 74, 37, gameScreen));
-        townList.add(new Town("Jxara", 360, 520, 74, 37, gameScreen));
-        townList.add(new Town("Dag'Amura", 390, 370, 74, 37, gameScreen));
-        townList.add(new Town("Al'Baran", 395, 250, 74, 37, gameScreen));
-        townList.add(new Town("Throtmanni", 640, 150, 74, 37, gameScreen));
-        townList.add(new Town("Feodor", 580, 280, 74, 37, gameScreen));
-        townList.add(new Town("Virst", 670, 520, 74, 37, gameScreen));
-        townList.add(new Town("Strykhaven", 875, 485, 74, 37, gameScreen));
-        townList.add(new Town("Beata", 1010, 430, 74, 37, gameScreen));
-        townList.add(new Town("Tichih", 835, 95, 74, 37, gameScreen));
-        townList.add(new Town("Rivinia", 770, 225, 74, 37, gameScreen));
-        townList.add(new Town("Kihromah", 235, 340, 74, 37, gameScreen));
-        townList.add(new Town("Erg'Eren", 1000, 220, 74, 37, gameScreen));
-        townList.add(new Town("Lapphalya", 580, 410, 74, 37, gameScreen));
-        townList.add(new Town("Parundia", 240, 190, 74, 37, gameScreen));
+        townList.add(new Town("Elvenhold", 810, 310, 115, 70, gameScreen, 0));
+        townList.add(new Town("Wylhien", 250, 40, 74, 37, gameScreen, 3));
+        townList.add(new Town("Jaccaranda", 445, 80, 74, 37, gameScreen, 5));
+        townList.add(new Town("Usselen", 59, 110, 74, 37, gameScreen, 4));
+        townList.add(new Town("Yttar", 54, 245, 74, 37, gameScreen, 4));
+        townList.add(new Town("Grangor", 79, 385, 74, 37, gameScreen, 5));
+        townList.add(new Town("Mah'Davikia", 90, 505, 74, 37, gameScreen, 5));
+        townList.add(new Town("Ixara", 360, 520, 74, 37, gameScreen, 3));
+        townList.add(new Town("Dag'Amura", 390, 370, 74, 37, gameScreen, 4));
+        townList.add(new Town("Al'Baran", 395, 250, 74, 37, gameScreen, 7));
+        townList.add(new Town("Throtmanni", 640, 150, 74, 37, gameScreen, 3));
+        townList.add(new Town("Feodor", 580, 280, 74, 37, gameScreen, 4));
+        townList.add(new Town("Virst", 670, 520, 74, 37, gameScreen, 3));
+        townList.add(new Town("Strykhaven", 875, 485, 74, 37, gameScreen, 4));
+        townList.add(new Town("Beata", 1010, 430, 74, 37, gameScreen, 2));
+        townList.add(new Town("Tichih", 835, 95, 74, 37, gameScreen, 3));
+        townList.add(new Town("Rivinia", 770, 225, 74, 37, gameScreen, 3));
+        townList.add(new Town("Kihromah", 235, 340, 74, 37, gameScreen, 6));
+        townList.add(new Town("Erg'Eren", 1000, 220, 74, 37, gameScreen, 5));
+        townList.add(new Town("Lapphalya", 580, 410, 74, 37, gameScreen, 2));
+        townList.add(new Town("Parundia", 240, 190, 74, 37, gameScreen, 4));
 
         for (Town town: townList) {
             townMap.put(town.getName(), town);
