@@ -3,13 +3,14 @@ package domain;
 import enums.Colour;
 import loginwindow.MainFrame;
 import networking.GameState;
-import panel.ElfBootPanel;
-import panel.GameScreen;
-import panel.TownPanel;
+import panel.*;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import static utils.GameRuleUtils.isElfengoldVariant;
 
 public class Town implements Comparable<Town> {
 
@@ -22,7 +23,11 @@ public class Town implements Comparable<Town> {
     private ArrayList<TownPiece> townPieces;
     private GameScreen gameScreen;
 
-    public Town(String name, int x, int y, int pWidth, int pHeight, GameScreen pScreen) {
+    // only for elfengold variant
+    private GoldValueToken goldValueToken = null;
+    private GoldValueTokenPanel tokenPanel = null;
+
+    public Town(String name, int x, int y, int pWidth, int pHeight, GameScreen pScreen, int tokenValue) {
         this.name = name;
         this.gameScreen = pScreen;
         this.x = MainFrame.getInstance().getWidth() * x / 1440;
@@ -31,6 +36,11 @@ public class Town implements Comparable<Town> {
         this.height = MainFrame.getInstance().getHeight() * pHeight / 900;
         this.townPieces = new ArrayList<>();
         this.panel = new TownPanel(name, this.x, this.y, width, height, pScreen, this);
+
+        if (isElfengoldVariant() && tokenValue > 0) {
+            this.goldValueToken = new GoldValueToken(tokenValue, MainFrame.getInstance().getWidth()/144, MainFrame.getInstance().getHeight()/70);
+            this.tokenPanel = new GoldValueTokenPanel(this, this.goldValueToken, this.x-10, this.y);
+        }
     }
 
     public String getName() {
@@ -87,5 +97,13 @@ public class Town implements Comparable<Town> {
     public ElfBootPanel getElfBootPanel()
     {
         return panel.getElfBootPanel();
+    }
+
+    public GoldValueToken getGoldValueToken() {
+        return this.goldValueToken;
+    }
+
+    public GoldValueTokenPanel getTokenPanel() {
+        return this.tokenPanel;
     }
 }

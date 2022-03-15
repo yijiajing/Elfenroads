@@ -162,11 +162,6 @@ public class GameManager {
         for (Player p : gameState.getPlayers()) {
             System.out.println(p.getDestinationTown());
         }
-
-        // distribute gold value tokens on towns
-        if (isElfengoldVariant()) {
-
-        }
     }
 
     /**

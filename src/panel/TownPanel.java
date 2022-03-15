@@ -1,5 +1,6 @@
 package panel;
 
+import domain.GoldValueToken;
 import domain.Town;
 import domain.TownPiece;
 import loginwindow.MainFrame;
@@ -11,6 +12,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import static utils.GameRuleUtils.isElfengoldVariant;
 
 public class TownPanel extends JPanel implements ObserverPanel {
 
@@ -37,7 +40,6 @@ public class TownPanel extends JPanel implements ObserverPanel {
         this.setOpaque(false);
         //this.setBorder(BorderFactory.createLineBorder(Color.WHITE));
 
-//        this.addMouseListener(new ElfBootController(gameScreen, this));
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
