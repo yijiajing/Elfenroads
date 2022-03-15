@@ -16,6 +16,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 
 import domain.*;
+import enums.GameVariant;
 import networking.GameState;
 import org.minueto.MinuetoTool;
 
@@ -61,7 +62,7 @@ public class GameScreen extends JPanel implements Serializable
 
 	private static String prevMessage;
 
-	private GameScreen (JFrame frame)
+	private GameScreen (JFrame frame, GameVariant variant)
 	{
 		// layout is necessary for JLayeredPane to be added to the JPanel
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
@@ -76,7 +77,7 @@ public class GameScreen extends JPanel implements Serializable
 		boardGame_Layers.setBounds(0,0,width,height);
 
 		// initialize town and road panels
-		gameMap = GameMap.init(this);
+		gameMap = GameMap.init(this, variant);
 	}
 
 	/**
@@ -86,9 +87,9 @@ public class GameScreen extends JPanel implements Serializable
 		return INSTANCE; 
 	}
 
-	public static GameScreen init(JFrame frame) {
+	public static GameScreen init(JFrame frame, GameVariant variant) {
 		if (INSTANCE == null) {
-			INSTANCE = new GameScreen(frame);
+			INSTANCE = new GameScreen(frame, variant);
 		}
 		return INSTANCE;
 	}
@@ -575,7 +576,7 @@ public class GameScreen extends JPanel implements Serializable
 
 	public static void main(String[] args) 
 	{
-		GameScreen game_screen = GameScreen.init(new JFrame());
+		GameScreen game_screen = GameScreen.init(new JFrame(), GameVariant.ELFENGOLD_CLASSIC);
 		
 		game_screen.setSize(MinuetoTool.getDisplayWidth(), MinuetoTool.getDisplayHeight());
 		game_screen.draw();

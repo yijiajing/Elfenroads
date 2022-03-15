@@ -1,6 +1,7 @@
 package Test;
 
 import domain.*;
+import enums.GameVariant;
 import enums.TravelCardType;
 import org.minueto.MinuetoTool;
 import panel.GameScreen;
@@ -16,7 +17,7 @@ public class TestGameRuleUtils {
         JFrame gameScreen = new JFrame("GameScreen");
         gameScreen.setSize(MinuetoTool.getDisplayWidth(), MinuetoTool.getDisplayHeight());
         gameScreen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        gameScreen.add(GameScreen.init(new JFrame()));
+        gameScreen.add(GameScreen.init(new JFrame(), GameVariant.ELFENLAND_CLASSIC));
         gameScreen.setVisible(false);
 
         // test initialization
