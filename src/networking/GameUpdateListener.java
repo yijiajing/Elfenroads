@@ -22,7 +22,7 @@ public class GameUpdateListener implements Runnable
     private ServerSocket listener;
     private GameState mostRecentUpdate; // not using this for now, trying out sending commands instead
     // private GameCommand command;
-    private Queue<GameCommand> commands;
+    private LinkedList<GameCommand> commands;
     private CommunicationsManager managedBy;
 
     public GameUpdateListener(int pPort, CommunicationsManager pManagedBy)
@@ -87,7 +87,7 @@ public class GameUpdateListener implements Runnable
      * this method will be called by a CommunicationsManager after it has been told there is a game update available
      * @return the last command received by this listener
      */
-    public Queue <GameCommand> getCommands()
+    public LinkedList <GameCommand> getCommands()
     {
         return commands;
     }
