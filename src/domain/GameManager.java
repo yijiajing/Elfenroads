@@ -230,7 +230,7 @@ public class GameManager {
 
         // tell the other peers to remove the counter from the pile
         try {
-            coms.sendGameCommandToAllPlayers(new DrawCounterCommand(1, null));
+            coms.sendGameCommandToAllPlayers(new DrawCounterCommand(counter, false));
         } catch (IOException e) {
             System.out.println("Error: there was a problem sending the DrawCounterCommand to the other peers.");
         }
