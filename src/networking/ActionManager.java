@@ -30,7 +30,6 @@ public class ActionManager {
     private CounterUnit selectedCounter;
     private final List<TravelCard> selectedCards = new ArrayList<>();
     private Town selectedTown;
-    boolean obstacleSelected = false;
 
     public static ActionManager init(GameState gameState, GameManager gameManager) {
         if (INSTANCE == null) {
@@ -57,27 +56,28 @@ public class ActionManager {
      * If the player selects a transportation counter before selecting the road, a place transportation counter
      * command is triggered.
      * If the player selects an obstacle before selecting the road, a place obstacle command is triggered.
-     *
+     * <p>
      * Preconditions: the current phase is PLAN ROUTES and the requested player is the current player
+     *
      * @param road the road that the player clicks on
      */
     public void setSelectedRoad(Road road) {
         LOGGER.info("Road on " + road.getRegionType() + " selected");
-        LOGGER.info("Before removing the counter, counters in hand: " +
-                GameManager.getInstance().getThisPlayer().getHand().getCounters().toString());
-        selectedRoad = road;
 
         if (!(GameRuleUtils.isPlanRoutesPhase() && gameManager.isLocalPlayerTurn())) {
             return;
         }
+        LOGGER.info("Before removing the counter, counters in hand: " +
+                GameManager.getInstance().getThisPlayer().getHand().getCounters().toString());
+        selectedRoad = road;
 
         // Player intends to place an obstacle
         if (selectedCounter instanceof Obstacle) {
             if (selectedRoad.placeObstacle((Obstacle) selectedCounter)) {
                 gameManager.getThisPlayer().getHand().removeUnit(selectedCounter);
-                Logger.getGlobal().info("Just removed obstacle, obstacle presence: " + gameManager.getThisPlayer().getHand().getObstacle());
+                LOGGER.info("Just removed obstacle, obstacle presence: " + gameManager.getThisPlayer().getHand().getObstacle());
                 PlaceObstacleCommand toSendOverNetwork = new PlaceObstacleCommand(selectedRoad);
-                
+
                 try {
                     gameManager.getComs().sendGameCommandToAllPlayers(toSendOverNetwork);
                     GameScreen.getInstance().updateAll();
@@ -97,10 +97,10 @@ public class ActionManager {
                 // remove this transportation counter from hand
                 gameManager.getThisPlayer().getHand().removeUnit(counter);
 
-                Logger.getGlobal().info("Just removed " + counter.getType() +
+                LOGGER.info("Just removed " + counter.getType() +
                         ", current counters in hand: " +
                         GameManager.getInstance().getThisPlayer().getHand().getCounters().toString());
-                
+
                 PlaceTransportationCounterCommand toSendOverNetwork = new PlaceTransportationCounterCommand(selectedRoad, counter);
                 try {
                     gameManager.getComs().sendGameCommandToAllPlayers(toSendOverNetwork);
@@ -113,8 +113,7 @@ public class ActionManager {
                 GameScreen.displayMessage("You cannot place a transportation counter here. Please try again.");
             }
         }
-        selectedCounter = null;
-        selectedRoad = null;
+        clearSelection();
     }
 
     public CounterUnit getSelectedCounter() {
@@ -122,19 +121,22 @@ public class ActionManager {
     }
 
     public void setSelectedCounter(CounterUnit pCounter) {
-     
+        if (!GameRuleUtils.isPlanRoutesPhase()) {
+            return;
+        }
+
         if (pCounter.equals(selectedCounter)) {
-        	//if clicked twice, deselect the counter
-        	pCounter.setSelected(false);
-        	selectedCounter = null;
+            //if clicked twice, deselect the counter
+            pCounter.setSelected(false);
+            selectedCounter = null;
         } else {
             if (pCounter instanceof Obstacle) {
                 LOGGER.info("Obstacle selected");
             } else if (pCounter instanceof TransportationCounter) {
                 LOGGER.info("Counter " + ((TransportationCounter) pCounter).getType() + " selected");
-            }  
-        	pCounter.setSelected(true);
-        	selectedCounter = pCounter;
+            }
+            pCounter.setSelected(true);
+            selectedCounter = pCounter;
         }
     }
 
@@ -150,6 +152,9 @@ public class ActionManager {
      */
     public void addSelectedCard(TravelCard card) {
         LOGGER.info("Card " + card.getType() + " selected");
+        if (gameState.getCurrentPhase() != RoundPhaseType.MOVE) {
+            return;
+        }
         if (selectedCards.contains(card)) {
             // if clicked twice, then deselect this card
             selectedCards.remove(card);
@@ -174,18 +179,19 @@ public class ActionManager {
 
     /**
      * If the player selects some cards before selecting the road, a move boot command is triggered.
-     *
+     * <p>
      * Preconditions: the current phase is MOVE, some cards are selected, and the requested player
      * is the current player
+     *
      * @param town the town that the player clicks on
      */
     public void setSelectedTown(Town town) {
         LOGGER.info("Town " + town.getName() + " selected");
         selectedTown = town;
 
-        if (!(gameState.getCurrentPhase() == RoundPhaseType.MOVE
-                && !selectedCards.isEmpty()
-                && gameManager.isLocalPlayerTurn())) {
+        if (gameState.getCurrentPhase() != RoundPhaseType.MOVE
+                || selectedCards.isEmpty()
+                || !gameManager.isLocalPlayerTurn()) {
             return;
         }
 
@@ -203,7 +209,7 @@ public class ActionManager {
                 e.printStackTrace();
             }
 
-            GameScreen.getInstance().addCards(); // draws updated hand to the screen
+            GameScreen.getInstance().updateCards(); // draws updated hand to the screen
 
             // Move Boot
             // gameState.getCurrentPlayer().setCurrentTown(selectedTown);
@@ -239,11 +245,8 @@ public class ActionManager {
         } else { // Move Boot fails
             GameScreen.displayMessage("You cannot move to the destination town with the selected cards. Please try again.");
         }
-        selectedTown = null;
-        assert selectedCards.stream().allMatch(CardUnit::isSelected);
 
-        selectedCards.forEach(c -> c.setSelected(false));
-        selectedCards.clear();
+        clearSelection();
     }
 
     /**
@@ -253,10 +256,10 @@ public class ActionManager {
     public void clearSelection() {
         selectedRoad = null;
         selectedCounter = null;
+        assert selectedCards.stream().allMatch(CardUnit::isSelected);
         selectedCards.forEach(c -> c.setSelected(false));
         selectedCards.clear();
         selectedTown = null;
-        obstacleSelected = false;
 
         for (CounterUnit c : GameManager.getInstance().getThisPlayer().getHand().getCounters()) {
             c.setSelected(false);

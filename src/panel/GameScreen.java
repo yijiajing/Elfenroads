@@ -3,12 +3,9 @@ package panel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
-import java.net.ServerSocket;
 
 import java.util.List;
 
@@ -19,13 +16,8 @@ import javax.swing.*;
 import javax.swing.border.Border;
 
 import domain.*;
-import enums.RoundPhaseType;
-import enums.TravelCardType;
-import loginwindow.LobbyWindow;
-import loginwindow.MainFrame;
 import networking.GameState;
 import org.minueto.MinuetoTool;
-import utils.GameRuleUtils;
 
 /**
  * A Singleton class that represents the main screen in which the board game is played
@@ -122,9 +114,9 @@ public class GameScreen extends JPanel implements Serializable
 	}
 
 	public void updateAll() {
-		addTransportationCountersAndObstacle(); // updates the player's counter area
-		addCards(); // update's the player's cards
-		addFaceUpTransportationCounters(); // updates the face-up transportation counters
+		updateTransportationCountersAndObstacle(); // updates the player's counter area
+		updateCards(); // update's the player's cards
+		updateFaceUpTransportationCounters(); // updates the face-up transportation counters
 		notifyObservers(); // updates elf boots and town pieces
 		updateLeaderboard();
 	}
@@ -472,7 +464,7 @@ public class GameScreen extends JPanel implements Serializable
 		}
 	}
 	
-	public void addFaceUpTransportationCounters()
+	public void updateFaceUpTransportationCounters()
 	{
 		ArrayList<TransportationCounter> faceUpCounters = GameState.instance().getFaceUpCounters();
 
@@ -494,7 +486,7 @@ public class GameScreen extends JPanel implements Serializable
 		}
 	}
 	
-	public void addCards()
+	public void updateCards()
 	{
 		// clear the previous cards from the screen
 		for (JPanel panel : panelForPlayerCards) {
@@ -517,7 +509,7 @@ public class GameScreen extends JPanel implements Serializable
 		}
 	}
 	
-	public void addTransportationCountersAndObstacle()
+	public void updateTransportationCountersAndObstacle()
 	{
 		// remove a counter if it was already there
 		for (JPanel panel : panelForPlayerTransportationCounters) {
