@@ -26,6 +26,7 @@ public class CommunicationsManager {
     // TODO: turn into a singleton
 
     // private ArrayList<Socket> senders; // responsible for sending out information
+    private static CommunicationsManager INSTANCE;
     private GameUpdateListener listener; // listens for GameState updates from other players
 
     private GameManager managedBy; // we can access the GameState through here
@@ -38,7 +39,7 @@ public class CommunicationsManager {
     private static int drawCardCommandsExecuted; // used to help ensure the proper order of command execution
 
 
-    public CommunicationsManager(GameManager pManagedBy, String gameSessionID)
+    private CommunicationsManager(GameManager pManagedBy, String gameSessionID)
     {
         sessionID = gameSessionID;
         managedBy = pManagedBy;
@@ -47,11 +48,22 @@ public class CommunicationsManager {
 
         // first, get all the Player addresses so we can set up the sockets
         recordPlayerAddresses();
-        System.out.println("Done recording player addresses...");
         // next, set up the ServerSocket to listen for game updates
-        System.out.println("Setting up the listener...");
         setUpListener();
-        System.out.println("Done setting up the listener.");
+    }
+
+    public static CommunicationsManager init(GameManager pManagedBy, String gameSessionID)
+    {
+        if (INSTANCE == null)
+        {
+            INSTANCE = new CommunicationsManager(pManagedBy, gameSessionID);
+        }
+        return INSTANCE;
+    }
+
+    public static void reset()
+    {
+        Logger.getGlobal().info("RESETTING THE COMMUNICATIONS MANAGER. ALL CONNECTIONS WITH PLAYERS WILL BE LOST.");
     }
 
 

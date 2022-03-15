@@ -63,7 +63,7 @@ public class GameManager {
             //TODO implement
         }
 
-        coms = new CommunicationsManager(this, sessionID);
+        coms = CommunicationsManager.init(this, sessionID);
     }
 
     /**
