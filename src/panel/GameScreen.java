@@ -353,6 +353,18 @@ public class GameScreen extends JPanel implements Serializable
 		i6 = new JMenuItem("Exit to menu");
 		i7 = new JMenuItem("Exit to desktop");
 
+		i1.addActionListener(new ActionListener(){
+
+			GameState gamestateToSave = GameState.instance();
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				
+			}
+			
+		});
+
 		i4.addActionListener(new ActionListener(){
 
 			@Override
