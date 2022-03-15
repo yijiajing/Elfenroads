@@ -1,5 +1,6 @@
 package domain;
 
+import enums.GameVariant;
 import enums.RegionType;
 import loginwindow.MainFrame;
 import networking.GameState;
@@ -20,9 +21,11 @@ public class GameMap {
     private List<Town> townList = new ArrayList<>();
     private List<Road> roadList = new ArrayList<>();
     private Map<String, Town> townMap = new HashMap<>();
+    private final GameVariant gameVariant;
 
-    private GameMap(GameScreen pGameScreen) {
+    private GameMap(GameScreen pGameScreen, GameVariant gameVariant) {
         this.gameScreen = pGameScreen;
+        this.gameVariant = gameVariant;
         initializeTowns();
         initializeRoads();
     }
@@ -34,11 +37,18 @@ public class GameMap {
     /**
      * Call this once before getting instance
      */
-    public static GameMap init(GameScreen gameScreen) {
+    public static GameMap init(GameScreen gameScreen, GameVariant variant) {
         if (INSTANCE == null) {
-            INSTANCE = new GameMap(gameScreen);
+            INSTANCE = new GameMap(gameScreen, variant);
         }
         return INSTANCE;
+    }
+
+    /**
+     * Just used when game state is not initialized. You should use GameState.instance().getGameVariant whenever you can.
+     */
+    public GameVariant getGameVariant() {
+        return gameVariant;
     }
 
     public Town getTown(String name) {

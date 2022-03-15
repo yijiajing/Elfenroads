@@ -15,8 +15,6 @@ import java.io.IOException;
 import java.util.*;
 import java.util.logging.Logger;
 
-import static utils.GameRuleUtils.isElfengoldVariant;
-
 /**
  * A Singleton class that controls the main game loop
  */
@@ -45,7 +43,7 @@ public class GameManager {
      */
     private GameManager(Optional<GameState> loadedState, String pSessionID, GameVariant variant) {
 
-        MainFrame.mainPanel.add(GameScreen.init(MainFrame.getInstance()), "gameScreen");
+        MainFrame.mainPanel.add(GameScreen.init(MainFrame.getInstance(), variant), "gameScreen");
         sessionID = pSessionID;
 
         // start a new game if there is no state to be loaded
