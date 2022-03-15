@@ -21,7 +21,7 @@ public class TestGameRuleUtils {
         gameScreen.setVisible(false);
 
         // test initialization
-        GameMap gameMap = GameMap.init(GameScreen.getInstance());
+        GameMap gameMap = GameMap.init(GameScreen.getInstance(), GameVariant.ELFENLAND_CLASSIC);
         Town elvenhold = gameMap.getTownByName("Elvenhold");
         Town feodor = gameMap.getTownByName("Feodor");
         Town beata = gameMap.getTownByName("Beata");
