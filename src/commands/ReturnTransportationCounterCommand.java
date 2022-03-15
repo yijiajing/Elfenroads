@@ -1,19 +1,24 @@
 package commands;
 
+import domain.GameManager;
 import domain.TransportationCounter;
-import domain.TravelCard;
 import enums.CounterType;
 import loginwindow.MainFrame;
 import networking.GameState;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 public class ReturnTransportationCounterCommand implements GameCommand {
 
-    private CounterType type;
+    private final CounterType type;
+    private final boolean isSecret;
+    private final String senderName;
 
     public ReturnTransportationCounterCommand(TransportationCounter returnedCounter) {
         this.type = returnedCounter.getType();
+        this.isSecret = returnedCounter.isSecret();
+        this.senderName = GameManager.getInstance().getThisPlayer().getName();
     }
 
     /**
@@ -21,8 +26,15 @@ public class ReturnTransportationCounterCommand implements GameCommand {
      */
     @Override
     public void execute() {
-        Logger.getGlobal().info("Executing ReturnTransportationCounterCommand, return " + type);
-        TransportationCounter counter = new TransportationCounter(type, MainFrame.instance.getWidth()*67/1440, MainFrame.instance.getHeight()*60/900);
+        Logger.getGlobal().info("Executing ReturnTransportationCounterCommand, keep " + type);
+        TransportationCounter counter = new TransportationCounter(type, MainFrame.instance.getWidth() * 67 / 1440, MainFrame.instance.getHeight() * 60 / 900);
         GameState.instance().getCounterPile().addDrawable(counter);
+
+        // update the sending player's hand
+        TransportationCounter newCounter = TransportationCounter.getNew(type);
+        newCounter.setSecret(isSecret);
+        List<TransportationCounter> senderHand = GameState.instance().getPlayerByName(senderName).getHand().getCounters();
+        senderHand.clear();
+        senderHand.add(newCounter);
     }
 }

@@ -15,6 +15,8 @@ import java.io.IOException;
 import java.util.*;
 import java.util.logging.Logger;
 
+import static utils.GameRuleUtils.isElfengoldVariant;
+
 /**
  * A Singleton class that controls the main game loop
  */
@@ -500,7 +502,7 @@ public class GameManager {
 
     public void initializeElfBoots() {
 
-        ElfBootPanel elvenholdBootPanel = GameMap.getInstance().getTown("Elvenhold").getPanel().getElfBootPanel();
+        ElfBootPanel elvenholdBootPanel = GameMap.getInstance().getTown("Elvenhold").getElfBootPanel();
 
         for (Player p : gameState.getPlayers()) {
             gameState.addElfBoot(new ElfBoot(p.getColour(), GameScreen.getInstance().getWidth(), GameScreen.getInstance().getHeight(), elvenholdBootPanel, GameScreen.getInstance()));
