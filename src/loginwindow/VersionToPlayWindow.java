@@ -54,10 +54,7 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
         elfengoldText = new JLabel("Elfengold");
 
         classicGame1 = new JButton("Classic");
-        
         longGame = new JButton("Long Game");
-
-        
         destinationTown = new JButton("Destination Town");
 
         classicGame1.addActionListener(new ActionListener(){
@@ -70,7 +67,7 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
                 try 
                 {
                     track1.play();
-                    session = new GameSession(User.getInstance(), "elfenlands", "My Save Game Name");
+                    session = new GameSession(User.getInstance(), "Elfenland", "My Save Game Name");
 
                     GameManager.init(Optional.empty(), session.getId(), GameVariant.ELFENLAND_CLASSIC);
 
@@ -147,12 +144,38 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
 
         });
 
-        
-
         classicGame2 = new JButton("Classic");
         travelCards = new JButton("Travel Cards");
         rgtDistribution = new JButton("Random Gold Token Distribution");
         elvenWitch = new JButton("The Elven Witch");
+
+        classicGame2.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                GameSession session = null;
+
+                // TODO : add panel for user to input their game name and save game name
+                try
+                {
+                    track1.play();
+                    session = new GameSession(User.getInstance(), "Elfengold", "My Save Game Name");
+
+                    GameManager.init(Optional.empty(), session.getId(), GameVariant.ELFENGOLD_CLASSIC);
+
+                    // prompt user to choose a boot colour
+                    // this calls the ChooseBootWindow once all players have responded
+                    GameManager.getInstance().requestAvailableColours();
+
+                }
+                catch (Exception problem)
+                {
+                    problem.printStackTrace();
+                    return;
+                }
+
+            }
+        });
 
         backButton = new JButton("Back");
         backButton.addActionListener(new ActionListener() {

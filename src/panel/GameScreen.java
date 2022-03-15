@@ -19,6 +19,8 @@ import domain.*;
 import networking.GameState;
 import org.minueto.MinuetoTool;
 
+import static utils.GameRuleUtils.isElfengoldVariant;
+
 /**
  * A Singleton class that represents the main screen in which the board game is played
  */
@@ -444,6 +446,7 @@ public class GameScreen extends JPanel implements Serializable
 		panelForDeckOfTransportationCounters.add(GameState.instance().getCounterPile().getImage());
 
 		drawTownPieces();
+		drawGoldValueTokens();
 
 		notifyObservers();
 	}
@@ -454,6 +457,16 @@ public class GameScreen extends JPanel implements Serializable
 		for (Town t : GameMap.getInstance().getTownList()) {
 			if (!t.getName().equalsIgnoreCase("Elvenhold")) {
 				t.initializeTownPieces();
+			}
+		}
+	}
+
+	private void drawGoldValueTokens() {
+		if (isElfengoldVariant()) {
+
+			// put gold value token on every town
+			for (Town t : GameMap.getInstance().getTownList()) {
+					t.getTokenPanel().drawGoldValueToken();
 			}
 		}
 	}
@@ -472,7 +485,11 @@ public class GameScreen extends JPanel implements Serializable
 
 		for (Town town: gameMap.getTownList()) {
 			boardGame_Layers.add(town.getPanel(), 0);
-			boardGame_Layers.add(town.getPanel().getElfBootPanel(), 0);
+			boardGame_Layers.add(town.getElfBootPanel(), 0);
+
+			if (isElfengoldVariant()) {
+				boardGame_Layers.add(town.getTokenPanel(), 0);
+			}
 		}
 	}
 	

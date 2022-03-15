@@ -40,7 +40,6 @@ public class ElfBootPanel extends JPanel implements ObserverPanel {
                 ActionManager.getInstance().setSelectedTown(ElfBootPanel.this.town);
             }
         });
-//        this.addMouseListener(new ElfBootController(gameScreen, this));
 
         gameScreen.addObserverPanel(this);
     }

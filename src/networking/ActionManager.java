@@ -219,7 +219,7 @@ public class ActionManager {
             ElfBoot boot = gameState.getCurrentPlayer().getBoot();
             ElfBootPanel startForCommand = boot.getCurPanel();
             ElfBoot bootForCommand = boot;
-            ElfBootPanel destinationForCommand = selectedTown.getPanel().getElfBootPanel();
+            ElfBootPanel destinationForCommand = selectedTown.getElfBootPanel();
             // boot.setCurPanel(destinationForCommand);
             // leaving that here for reference as well.
 
