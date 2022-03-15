@@ -2,6 +2,7 @@ package commands;
 
 import domain.GameManager;
 import domain.TransportationCounter;
+import domain.Hand;
 import enums.CounterType;
 import loginwindow.MainFrame;
 import networking.GameState;
@@ -33,8 +34,8 @@ public class ReturnTransportationCounterCommand implements GameCommand {
         // update the sending player's hand
         TransportationCounter newCounter = TransportationCounter.getNew(type);
         newCounter.setSecret(isSecret);
-        List<TransportationCounter> senderHand = GameState.instance().getPlayerByName(senderName).getHand().getCounters();
-        senderHand.clear();
-        senderHand.add(newCounter);
+        Hand senderHand = GameState.instance().getPlayerByName(senderName).getHand();
+        senderHand.clearCounters();
+        senderHand.addUnit(newCounter);
     }
 }
