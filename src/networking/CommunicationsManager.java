@@ -290,7 +290,9 @@ public class CommunicationsManager {
     {
         int numPlayers = GameState.instance().getNumOfPlayers(); // we can use this because of the precondition
         // another option would be to check the number of players in the GameSession instead but here they should be the same number
-        return drawCardCommandsExecuted == numPlayers - 1;
+        int numCommandsToWaitFor = GameState.instance().getPlayers().indexOf(GameManager.getInstance().getThisPlayer());
+        Logger.getGlobal().info("We need to receive " + numCommandsToWaitFor + " DrawCardCommands before we can proceed.");
+        return drawCardCommandsExecuted == numCommandsToWaitFor;
     }
 
     /**
