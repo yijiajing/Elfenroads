@@ -250,7 +250,6 @@ public class GameManager {
                 GameScreen.displayMessage("Your destination Town is " +
                         thisPlayer.getDestinationTown().getName() + ". Please collect town pieces and have your travel " +
                         "route end in a town as close as possible to the destination at the end of the game.");
-
             }
 
             // display message to let the user know that they need to select a counter

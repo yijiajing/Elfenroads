@@ -40,7 +40,12 @@ public class NotifyTurnCommand implements GameCommand {
                 gameManager.distributeHiddenCounter();
                 break;
             case DRAW_COUNTER_ONE: case DRAW_COUNTER_TWO: case DRAW_COUNTER_THREE:
-                gameManager.drawCounters();
+                if (gameManager.getThisPlayer().getHand().getCounters().size() >= 5) {
+                    GameScreen.displayMessage("You already have 5 counters in hand. You cannot draw more.");
+                    gameManager.endTurn();
+                } else {
+                    gameManager.drawCounters();
+                }
                 break;
             case PLAN_ROUTES_ONE: case PLAN_ROUTES_TWO: case PLAN_ROUTES_THREE: case PLAN_ROUTES_FOUR:
                 case PLAN_ROUTES_FIVE: case PLAN_ROUTES_SIX:
