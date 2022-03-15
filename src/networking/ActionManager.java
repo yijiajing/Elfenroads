@@ -75,6 +75,7 @@ public class ActionManager {
         if (selectedCounter instanceof Obstacle) {
             if (selectedRoad.placeObstacle((Obstacle) selectedCounter)) {
                 gameManager.getThisPlayer().getHand().removeUnit(selectedCounter);
+                selectedCounter.setOwned(false);
                 LOGGER.info("Just removed obstacle, obstacle presence: " + gameManager.getThisPlayer().getHand().getObstacle());
                 PlaceObstacleCommand toSendOverNetwork = new PlaceObstacleCommand(selectedRoad);
 
@@ -96,6 +97,7 @@ public class ActionManager {
             if (selectedRoad.setTransportationCounter(counter)) {
                 // remove this transportation counter from hand
                 gameManager.getThisPlayer().getHand().removeUnit(counter);
+                counter.setOwned(false);
 
                 LOGGER.info("Just removed " + counter.getType() +
                         ", current counters in hand: " +

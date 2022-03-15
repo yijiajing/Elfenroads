@@ -197,8 +197,8 @@ public class GameState {
         if (counterPile.getSize() > 0) {
             LOGGER.info("Adding face-up counter from pile");
             TransportationCounter counter = counterPile.draw();
-            faceUpCounters.add(counter);
             counter.setOwned(false);
+            faceUpCounters.add(counter);
         } else {
             // TODO what to do if the counter pile is empty?? reshuffle?
         }

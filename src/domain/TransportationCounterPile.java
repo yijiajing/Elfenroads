@@ -53,6 +53,7 @@ public class TransportationCounterPile extends Deck <TransportationCounter> {
                 if (GameRuleUtils.isDrawCountersPhase()) {
                     TransportationCounter drawn = GameState.instance().getCounterPile().draw(); // draw a counter
                     GameManager.getInstance().getThisPlayer().getHand().addUnit(drawn); // add to player's hand
+                    drawn.setOwned(true);
                     GameScreen.getInstance().updateAll(); // update GUI
 
                     // tell the other peers to remove the counter from the pile
