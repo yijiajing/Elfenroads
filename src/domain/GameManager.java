@@ -250,7 +250,6 @@ public class GameManager {
                 GameScreen.displayMessage("Your destination Town is " +
                         thisPlayer.getDestinationTown().getName() + ". Please collect town pieces and have your travel " +
                         "route end in a town as close as possible to the destination at the end of the game.");
-
             }
 
             // display message to let the user know that they need to select a counter
@@ -432,24 +431,24 @@ public class GameManager {
     public void endRound() {
         gameState.incrementCurrentRound();
         LOGGER.info("...Going to the next round #" + gameState.getCurrentRound());
-
+        LOGGER.info("Total: " + gameState.getTotalRounds() + ", Current: " + gameState.getCurrentRound());
+        if (gameState.getCurrentRound() > gameState.getTotalRounds()) {
+            LOGGER.info("Total: " + gameState.getTotalRounds() + ", Current: " + gameState.getCurrentRound());
+            endGame();
+            return;
+        }
         actionManager.clearSelection();
 
         GameMap.getInstance().clearAllCounters();
         GameState.instance().getCounterPile().shuffle();
 
         GameScreen.getInstance().initializeRoundCardImage(gameState.getCurrentRound()); // update round card image
-
-        if (gameState.getCurrentRound() > gameState.getTotalRounds()) {
-            LOGGER.info("Total: " + gameState.getTotalRounds() + ", Current: " + gameState.getCurrentRound());
-            endGame();
-        } else {
-            setUpRound(); // start next round
-        }
+        setUpRound(); // start next round
     }
 
     private void endGame() {
         LOGGER.info("Game ends in " + gameState.getCurrentRound() + " rounds");
+        gameState.setCurrentPhase(null);
         List<Player> players = gameState.getPlayers();
         List<Player> winners = new ArrayList<>();
         winners.add(players.get(0));

@@ -5,6 +5,7 @@ import enums.RoundPhaseType;
 import networking.GameState;
 import panel.GameScreen;
 
+import java.io.Serial;
 import java.util.logging.Logger;
 
 /**
@@ -12,6 +13,9 @@ import java.util.logging.Logger;
  * On execution, it starts the turn of the recipient player within the specified phase.
  */
 public class NotifyTurnCommand implements GameCommand {
+
+    @Serial
+    private static final long serialVersionUID = 6529685098267757690L;
 
     private final RoundPhaseType phase;
 
@@ -36,7 +40,12 @@ public class NotifyTurnCommand implements GameCommand {
                 gameManager.distributeHiddenCounter();
                 break;
             case DRAW_COUNTER_ONE: case DRAW_COUNTER_TWO: case DRAW_COUNTER_THREE:
-                gameManager.drawCounters();
+                if (gameManager.getThisPlayer().getHand().getCounters().size() >= 5) {
+                    GameScreen.displayMessage("You already have 5 counters in hand. You cannot draw more.");
+                    gameManager.endTurn();
+                } else {
+                    gameManager.drawCounters();
+                }
                 break;
             case PLAN_ROUTES_ONE: case PLAN_ROUTES_TWO: case PLAN_ROUTES_THREE: case PLAN_ROUTES_FOUR:
                 case PLAN_ROUTES_FIVE: case PLAN_ROUTES_SIX:
