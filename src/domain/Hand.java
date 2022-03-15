@@ -44,11 +44,16 @@ public class Hand {
 	public int getNumTravelCards() {
 		return this.cardList.size();
 	}
-
+	
+	public void clearCounters() {
+		this.counterList.clear();
+	}
+	
 	public List<TransportationCounter> getCounters() {
 		return this.counterList;
 	}
-
+	
+	
 	public Obstacle getObstacle() {
 		return obstacle.orElse(null);
 	}
