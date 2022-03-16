@@ -112,17 +112,19 @@ public class PlayerWaitWindow extends JPanel implements Runnable
         message.setLayout(new BorderLayout());
         message.add(wait_message,  BorderLayout.CENTER);
 
-        background_elvenroads.add(message, BorderLayout.CENTER)  ;      
-        background_elvenroads.add(panel, BorderLayout.CENTER);
-        add(background_elvenroads);
-
         // add the "leave" button
-        // Hidden Start game button
         leaveButton = new JButton("LEAVE");
         leaveButton.setBounds(1440*560/1440, 900*700/900, 1440*380/1440, 900*50/900);
         leaveButton.setVisible(true);
 
-        // add ActionListener to start
+
+        background_elvenroads.add(message, BorderLayout.CENTER);
+        background_elvenroads.add(panel, BorderLayout.CENTER);
+        background_elvenroads.add(leaveButton, BorderLayout.CENTER);
+        add(background_elvenroads);
+
+
+        // add ActionListener to leave
         leaveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
