@@ -109,8 +109,16 @@ public final class GameRuleUtils {
                 .contains(GameState.instance().getCurrentPhase());
     }
 
+    public static boolean isElfengoldVariant(GameVariant gameVariant) {
+        return ((gameVariant == GameVariant.ELFENGOLD_CLASSIC) || (gameVariant == GameVariant.ELFENGOLD_WITCH) ||
+                (gameVariant == GameVariant.ELFENGOLD_RANDOM_GOLD) || (gameVariant == GameVariant.ELFENGOLD_TRAVEL_CARDS));
+    }
+
+    /**
+     * Be careful! Only call this method after game state is initialized.
+     */
     public static boolean isElfengoldVariant() {
-        GameVariant gameVariant = GameMap.getInstance().getGameVariant();
+        GameVariant gameVariant = GameState.instance().getGameVariant();
 
         return ((gameVariant == GameVariant.ELFENGOLD_CLASSIC) || (gameVariant == GameVariant.ELFENGOLD_WITCH) ||
                 (gameVariant == GameVariant.ELFENGOLD_RANDOM_GOLD) || (gameVariant == GameVariant.ELFENGOLD_TRAVEL_CARDS));

@@ -1,2 +1,14 @@
-package enums;public class EGRoundPhaseType {
+package enums;
+
+public enum EGRoundPhaseType {
+    DEAL_CARDS,
+    DRAW_CARD_ONE,
+    DRAW_CARD_TWO,
+    DRAW_CARD_THREE,
+    // distribute gold coins and draw tokens and counters are automatically done before this phase
+    CHOOSE_FACE_UP,
+    AUCTION,
+    PLAN_ROUTES,
+    MOVE,
+    RETURN_COUNTERS
 }
