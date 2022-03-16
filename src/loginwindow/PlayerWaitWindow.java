@@ -6,6 +6,8 @@ import networking.*;
 
 import javax.swing.*;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 import java.awt.*;
 import java.io.IOException;
@@ -22,6 +24,8 @@ public class PlayerWaitWindow extends JPanel implements Runnable
     private JPanel message;
     private JPanel panel;
     private JTable table;
+
+    private JButton leaveButton;
 
     private static String prevPayload = "";
 
@@ -111,6 +115,32 @@ public class PlayerWaitWindow extends JPanel implements Runnable
         background_elvenroads.add(message, BorderLayout.CENTER)  ;      
         background_elvenroads.add(panel, BorderLayout.CENTER);
         add(background_elvenroads);
+
+        // add the "leave" button
+        // Hidden Start game button
+        leaveButton = new JButton("LEAVE");
+        leaveButton.setBounds(1440*560/1440, 900*700/900, 1440*380/1440, 900*50/900);
+        leaveButton.setVisible(true);
+
+        // add ActionListener to start
+        leaveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // leave the session
+                try
+                {GameSession.leaveSession(User.getInstance(), aId);}
+
+                catch (Exception e2)
+                {
+                    Logger.getGlobal().info("There was a problem leaving the session.");
+                    e2.printStackTrace();
+                }
+
+                // go back to the lobby
+                MainFrame.cardLayout.show(MainFrame.mainPanel,"lobby");;
+            }
+        });
+
     }
 
     @Override

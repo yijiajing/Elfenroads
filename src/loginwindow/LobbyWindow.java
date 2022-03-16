@@ -190,7 +190,8 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
             String creator = sessionDetails.get("creator").toString();
             String maxSessionPlayers = sessionParameters.get("maxSessionPlayers").toString();
             String minSessionPlayers = sessionParameters.get("minSessionPlayers").toString();
-            String variant = sessionParameters.get("name").toString();
+            String gameName = sessionParameters.get("name").toString();
+            String variant = gameNameToDisplayName(gameName);
             String playersOutOfMax = numPlayers + "/" + minSessionPlayers + "-" + maxSessionPlayers;
 
             String players = "";
@@ -233,7 +234,7 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
                         track1.play();
                         flag = 1;
                         GameSession.joinSession(MainFrame.loggedIn, id);
-                        GameManager.init(Optional.empty(), id, interpretVariant(variant));
+                        GameManager.init(Optional.empty(), id, interpretVariant(gameName));
 
                         // prompt user to choose a boot colour
                         // this calls the ChooseBootWindow once all players have responded
@@ -333,6 +334,26 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
             case "Elfengold_RandomGold": return GameVariant.ELFENGOLD_RANDOM_GOLD;
             case "Elfengold_Witch": return GameVariant.ELFENGOLD_WITCH;
             default: return null; // if we set up the LS right, this will never happen
+        }
+    }
+
+    /**
+     * when we fetch the game information for a session , we get the gameName and not the gameDisplayName. The displayName is prettier, so we'll translate it before showing it on the sessions info box
+     * @param gameName the game name retrieved from the LS
+     * @return
+     */
+    public static String gameNameToDisplayName(String gameName)
+    {
+        switch (gameName)
+        {
+            case "Elfenland_Classic": return "Elfenland (Classic)";
+            case "Elfenland_Long": return "Elfenland (Long)";
+            case "ElfenlandDestination": return "Elfenland (Destination)";
+            case "Elfengold_Classic": return "Elfengold (Classic)";
+            case "Elfengold_TravelCards": return "Elfengold (Travel Cards)";
+            case "Elfengold_RandomGold": return "Elfengold (Random Gold)";
+            case "Elfengold_Witch": return "Elfengold (Witch)";
+            default: return null;
         }
     }
 
