@@ -26,9 +26,9 @@ public class TestAPI {
        // GameService longGame = new GameService("longGame", "long game", "abc123_ABC123", 2, 6 );
        // GameService destinationTown = new GameService("destinationTown", "destination town", "abc123_ABC123", 2, 6);
        // createASession("Destination");
-        User.init("dontforget", "abc123_ABC123");
-        deleteAllSessions();
-
+        // User.init("dontforget", "abc123_ABC123");
+        // User.registerNewAdmin("admin", "abc123_ABC123");
+        reInitializeAPI();
 
         //GameService testGame2 = new GameService("testGame2", "testGame2", "abc123_ABC123",2, 6);
         //GameService destination = new GameService("Destination", "Destination", "abc123_ABC123",2, 6);
@@ -114,12 +114,17 @@ public class TestAPI {
 
         for (String person : groupMembers)
         {
-            User.registerNewUser(person, "abc123_ABC123", User.Role.PLAYER);
+            // User.registerNewUser(person, "abc123_ABC123", User.Role.PLAYER);
         }
 
-        // initialize Elfenroads game service
-        GameService elfenroads = new GameService("Elfenroads", "Elfenroads", "abc123_ABC123", 2, 6);
-
+        // initialize game services
+        GameService destination = new GameService("Destination", "Destination", "abc123_ABC123", 2, 6);
+        User.logout();
+        GameService classic = new GameService("elfenlands", "elfenlands", "abc123_ABC123", 2,6);
+        User.logout();
+        GameService elfLong = new GameService("Elfenland(Long)", "Elfenland(Long)", "abc123_ABC123", 2,6);
+        User.logout();
+        // GameService
     }
 
 

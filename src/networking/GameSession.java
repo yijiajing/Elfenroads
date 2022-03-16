@@ -138,7 +138,7 @@ public class GameSession {
         {
             // if a session has been launched already, it must be deleted by the game service admin
             // TODO: update this to work with all games, not just testGame
-            token = User.getAccessTokenUsingCreds("elfenlands", "abc123_ABC123");
+            token = User.getAccessTokenUsingCreds("elfenland(long)", "abc123_ABC123");
         }
         else
         {
