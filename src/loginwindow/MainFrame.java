@@ -1,5 +1,7 @@
 package loginwindow;
 
+import domain.GameManager;
+import networking.GameSession;
 import networking.PlayerServer;
 import networking.User;
 
@@ -9,6 +11,7 @@ import java.awt.event.*;
 import java.awt.event.WindowListener;
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
+import java.util.logging.Logger;
 
 import javazoom.jl.player.Player;
 
@@ -24,7 +27,7 @@ public class MainFrame extends JFrame
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setSize((int) screenSize.getWidth(), (int) screenSize.getHeight());
         
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
         addWindowListener(new WindowAdapter() 
         {
@@ -45,11 +48,44 @@ public class MainFrame extends JFrame
         add(mainPanel);
         setVisible(true);
 
-        // make the frame full screen-- commented out because it seems really slow
-        // GraphicsEnvironment graphics = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        // GraphicsDevice screen = graphics.getDefaultScreenDevice();
+        this.addWindowListener(new WindowListener() {
+            @Override
+            public void windowOpened(WindowEvent e) {
+                exitGame();
+                System.exit(0);
+            }
 
-        // screen.setFullScreenWindow(this);
+            @Override
+            public void windowClosing(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowIconified(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowDeiconified(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowActivated(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowDeactivated(WindowEvent e) {
+
+            }
+
+        });
 
 
     }
@@ -78,5 +114,24 @@ public class MainFrame extends JFrame
         JLabel background_elfenroads = new JLabel(new ImageIcon(background_image_resized));
 
         return background_elfenroads;
+    }
+
+    /**
+     * will be called when the main window is closed.
+     * will leave any sessions the player is in.
+     */
+    public static void exitGame()
+    {
+        // if the user was logged into the LS and in a session, leave the session
+        try
+        {
+            GameSession.leaveSession(User.getInstance(), GameManager.getInstance().getSessionID());
+        }
+        catch (Exception e) // if the user wasn't logged in and in a session, we don't really have to do anything
+        // TODO: handle the case where the User is the host of the session
+        {
+            Logger.getGlobal().info("User wasn't logged in or wasn't in a session, so nothing needed to be done upon close.");
+        }
+
     }
 }
