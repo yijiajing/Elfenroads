@@ -124,6 +124,7 @@ public class GameSession {
         System.out.println(content.toString());
     }
 
+    // TODO: change to a method only to delete unlaunched sessions from the creator's computer
     /**
      * deletes the session from the LS
      * should work for both launched and unlaunched sessions
@@ -137,8 +138,8 @@ public class GameSession {
         if (isLaunched(sessionID))
         {
             // if a session has been launched already, it must be deleted by the game service admin
-            // TODO: update this to work with all games, not just testGame
-            token = User.getAccessTokenUsingCreds("elfenland(long)", "abc123_ABC123");
+            Logger.getGlobal().info("I see you are calling GameSession.delete(). This method is not well-adapted to be used in the actual game code.");
+            token = User.getAccessTokenUsingCreds("elfenlands", "abc123_ABC123");
         }
         else
         {
