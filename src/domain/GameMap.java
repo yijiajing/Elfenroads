@@ -60,13 +60,13 @@ public class GameMap {
     }
 
     /**
-     * @param srcTown the source town
-     * @param destTown the destination town
+     * @param srcTown    the source town
+     * @param destTown   the destination town
      * @param regionType the region type
      * @return the road uniquely defined by the towns that it connects and the region type
      */
     public Road getRoadBetween(Town srcTown, Town destTown, RegionType regionType) {
-        for (Road r: getRoadsBetween(srcTown, destTown)) {
+        for (Road r : getRoadsBetween(srcTown, destTown)) {
             if (r.getRegionType() == regionType) {
                 return r;
             }
@@ -92,7 +92,7 @@ public class GameMap {
     }
 
     public void clearAllCounters() {
-        for (Road road: roadList) {
+        for (Road road : roadList) {
             TransportationCounter counter = road.getTransportationCounter();
             if (counter != null) {
                 counter.setOwned(false);
@@ -110,7 +110,7 @@ public class GameMap {
         townList.add(new Town(gameVariant, "Yttar", 54, 245, 74, 37, gameScreen, 4));
         townList.add(new Town(gameVariant, "Grangor", 79, 385, 74, 37, gameScreen, 5));
         townList.add(new Town(gameVariant, "Mah'Davikia", 90, 505, 74, 37, gameScreen, 5));
-        townList.add(new Town(gameVariant, "Ixara", 360, 520, 74, 37, gameScreen, 3));
+        townList.add(new Town(gameVariant, "Jxara", 360, 520, 74, 37, gameScreen, 3));
         townList.add(new Town(gameVariant, "Dag'Amura", 390, 370, 74, 37, gameScreen, 4));
         townList.add(new Town(gameVariant, "Al'Baran", 395, 250, 74, 37, gameScreen, 7));
         townList.add(new Town(gameVariant, "Throtmanni", 640, 150, 74, 37, gameScreen, 3));
@@ -125,7 +125,7 @@ public class GameMap {
         townList.add(new Town(gameVariant, "Lapphalya", 580, 410, 74, 37, gameScreen, 2));
         townList.add(new Town(gameVariant, "Parundia", 240, 190, 74, 37, gameScreen, 4));
 
-        for (Town town: townList) {
+        for (Town town : townList) {
             townMap.put(town.getName(), town);
             mapGraph.addVertex(town);
         }
