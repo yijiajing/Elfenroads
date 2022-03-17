@@ -2,15 +2,12 @@ package domain;
 
 import enums.GameVariant;
 import enums.RegionType;
-import loginwindow.MainFrame;
 import networking.GameState;
 import org.jgrapht.alg.shortestpath.BellmanFordShortestPath;
 import org.jgrapht.graph.Pseudograph;
 import panel.GameScreen;
 
 import java.util.*;
-
-import static utils.GameRuleUtils.isElfengoldVariant;
 
 public class GameMap {
 
@@ -21,12 +18,10 @@ public class GameMap {
     private List<Town> townList = new ArrayList<>();
     private List<Road> roadList = new ArrayList<>();
     private Map<String, Town> townMap = new HashMap<>();
-    private final GameVariant gameVariant;
 
     private GameMap(GameScreen pGameScreen, GameVariant gameVariant) {
         this.gameScreen = pGameScreen;
-        this.gameVariant = gameVariant;
-        initializeTowns();
+        initializeTowns(gameVariant);
         initializeRoads();
     }
 
@@ -42,13 +37,6 @@ public class GameMap {
             INSTANCE = new GameMap(gameScreen, variant);
         }
         return INSTANCE;
-    }
-
-    /**
-     * Just used when game state is not initialized. You should use GameState.instance().getGameVariant whenever you can.
-     */
-    public GameVariant getGameVariant() {
-        return gameVariant;
     }
 
     public Town getTown(String name) {
@@ -72,13 +60,13 @@ public class GameMap {
     }
 
     /**
-     * @param srcTown the source town
-     * @param destTown the destination town
+     * @param srcTown    the source town
+     * @param destTown   the destination town
      * @param regionType the region type
      * @return the road uniquely defined by the towns that it connects and the region type
      */
     public Road getRoadBetween(Town srcTown, Town destTown, RegionType regionType) {
-        for (Road r: getRoadsBetween(srcTown, destTown)) {
+        for (Road r : getRoadsBetween(srcTown, destTown)) {
             if (r.getRegionType() == regionType) {
                 return r;
             }
@@ -104,7 +92,7 @@ public class GameMap {
     }
 
     public void clearAllCounters() {
-        for (Road road: roadList) {
+        for (Road road : roadList) {
             TransportationCounter counter = road.getTransportationCounter();
             if (counter != null) {
                 counter.setOwned(false);
@@ -114,30 +102,30 @@ public class GameMap {
         }
     }
 
-    private void initializeTowns() {
-        townList.add(new Town("Elvenhold", 810, 310, 115, 70, gameScreen, 0));
-        townList.add(new Town("Wylhien", 250, 40, 74, 37, gameScreen, 3));
-        townList.add(new Town("Jaccaranda", 445, 80, 74, 37, gameScreen, 5));
-        townList.add(new Town("Usselen", 59, 110, 74, 37, gameScreen, 4));
-        townList.add(new Town("Yttar", 54, 245, 74, 37, gameScreen, 4));
-        townList.add(new Town("Grangor", 79, 385, 74, 37, gameScreen, 5));
-        townList.add(new Town("Mah'Davikia", 90, 505, 74, 37, gameScreen, 5));
-        townList.add(new Town("Ixara", 360, 520, 74, 37, gameScreen, 3));
-        townList.add(new Town("Dag'Amura", 390, 370, 74, 37, gameScreen, 4));
-        townList.add(new Town("Al'Baran", 395, 250, 74, 37, gameScreen, 7));
-        townList.add(new Town("Throtmanni", 640, 150, 74, 37, gameScreen, 3));
-        townList.add(new Town("Feodor", 580, 280, 74, 37, gameScreen, 4));
-        townList.add(new Town("Virst", 670, 520, 74, 37, gameScreen, 3));
-        townList.add(new Town("Strykhaven", 875, 485, 74, 37, gameScreen, 4));
-        townList.add(new Town("Beata", 1010, 430, 74, 37, gameScreen, 2));
-        townList.add(new Town("Tichih", 835, 95, 74, 37, gameScreen, 3));
-        townList.add(new Town("Rivinia", 770, 225, 74, 37, gameScreen, 3));
-        townList.add(new Town("Kihromah", 235, 340, 74, 37, gameScreen, 6));
-        townList.add(new Town("Erg'Eren", 1000, 220, 74, 37, gameScreen, 5));
-        townList.add(new Town("Lapphalya", 580, 410, 74, 37, gameScreen, 2));
-        townList.add(new Town("Parundia", 240, 190, 74, 37, gameScreen, 4));
+    private void initializeTowns(GameVariant gameVariant) {
+        townList.add(new Town(gameVariant, "Elvenhold", 810, 310, 115, 70, gameScreen, 0));
+        townList.add(new Town(gameVariant, "Wylhien", 250, 40, 74, 37, gameScreen, 3));
+        townList.add(new Town(gameVariant, "Jaccaranda", 445, 80, 74, 37, gameScreen, 5));
+        townList.add(new Town(gameVariant, "Usselen", 59, 110, 74, 37, gameScreen, 4));
+        townList.add(new Town(gameVariant, "Yttar", 54, 245, 74, 37, gameScreen, 4));
+        townList.add(new Town(gameVariant, "Grangor", 79, 385, 74, 37, gameScreen, 5));
+        townList.add(new Town(gameVariant, "Mah'Davikia", 90, 505, 74, 37, gameScreen, 5));
+        townList.add(new Town(gameVariant, "Ixara", 360, 520, 74, 37, gameScreen, 3));
+        townList.add(new Town(gameVariant, "Dag'Amura", 390, 370, 74, 37, gameScreen, 4));
+        townList.add(new Town(gameVariant, "Al'Baran", 395, 250, 74, 37, gameScreen, 7));
+        townList.add(new Town(gameVariant, "Throtmanni", 640, 150, 74, 37, gameScreen, 3));
+        townList.add(new Town(gameVariant, "Feodor", 580, 280, 74, 37, gameScreen, 4));
+        townList.add(new Town(gameVariant, "Virst", 670, 520, 74, 37, gameScreen, 3));
+        townList.add(new Town(gameVariant, "Strykhaven", 875, 485, 74, 37, gameScreen, 4));
+        townList.add(new Town(gameVariant, "Beata", 1010, 430, 74, 37, gameScreen, 2));
+        townList.add(new Town(gameVariant, "Tichih", 835, 95, 74, 37, gameScreen, 3));
+        townList.add(new Town(gameVariant, "Rivinia", 770, 225, 74, 37, gameScreen, 3));
+        townList.add(new Town(gameVariant, "Kihromah", 235, 340, 74, 37, gameScreen, 6));
+        townList.add(new Town(gameVariant, "Erg'Eren", 1000, 220, 74, 37, gameScreen, 5));
+        townList.add(new Town(gameVariant, "Lapphalya", 580, 410, 74, 37, gameScreen, 2));
+        townList.add(new Town(gameVariant, "Parundia", 240, 190, 74, 37, gameScreen, 4));
 
-        for (Town town: townList) {
+        for (Town town : townList) {
             townMap.put(town.getName(), town);
             mapGraph.addVertex(town);
         }
@@ -158,12 +146,12 @@ public class GameMap {
         mapGraph.addEdge(townMap.get("Lapphalya"), townMap.get("Rivinia"), createAndSaveRoad(RegionType.WOODS, 710, 300));
         mapGraph.addEdge(townMap.get("Lapphalya"), townMap.get("Feodor"), createAndSaveRoad(RegionType.WOODS, 630, 340));
         mapGraph.addEdge(townMap.get("Lapphalya"), townMap.get("Dag'Amura"), createAndSaveRoad(RegionType.WOODS, 500, 400));
-        mapGraph.addEdge(townMap.get("Lapphalya"), townMap.get("Jxara"), createAndSaveRoad(RegionType.WOODS, 490, 480));
-        mapGraph.addEdge(townMap.get("Virst"), townMap.get("Jxara"), createAndSaveRoad(RegionType.RIVER, 0, 0));
-        mapGraph.addEdge(townMap.get("Virst"), townMap.get("Jxara"), createAndSaveRoad(RegionType.PLAIN, 510, 550));
-        mapGraph.addEdge(townMap.get("Jxara"), townMap.get("Dag'Amura"), createAndSaveRoad(RegionType.WOODS, 390, 440));
-        mapGraph.addEdge(townMap.get("Jxara"), townMap.get("Mah'Davikia"), createAndSaveRoad(RegionType.RIVER, 0, 0));
-        mapGraph.addEdge(townMap.get("Jxara"), townMap.get("Mah'Davikia"), createAndSaveRoad(RegionType.MOUNTAIN, 270, 520));
+        mapGraph.addEdge(townMap.get("Lapphalya"), townMap.get("Ixara"), createAndSaveRoad(RegionType.WOODS, 490, 480));
+        mapGraph.addEdge(townMap.get("Virst"), townMap.get("Ixara"), createAndSaveRoad(RegionType.RIVER, 0, 0));
+        mapGraph.addEdge(townMap.get("Virst"), townMap.get("Ixara"), createAndSaveRoad(RegionType.PLAIN, 510, 550));
+        mapGraph.addEdge(townMap.get("Ixara"), townMap.get("Dag'Amura"), createAndSaveRoad(RegionType.WOODS, 390, 440));
+        mapGraph.addEdge(townMap.get("Ixara"), townMap.get("Mah'Davikia"), createAndSaveRoad(RegionType.RIVER, 0, 0));
+        mapGraph.addEdge(townMap.get("Ixara"), townMap.get("Mah'Davikia"), createAndSaveRoad(RegionType.MOUNTAIN, 270, 520));
         mapGraph.addEdge(townMap.get("Dag'Amura"), townMap.get("Feodor"), createAndSaveRoad(RegionType.DESERT, 500, 330));
         mapGraph.addEdge(townMap.get("Dag'Amura"), townMap.get("Al'Baran"), createAndSaveRoad(RegionType.DESERT, 420, 330));
         mapGraph.addEdge(townMap.get("Dag'Amura"), townMap.get("Kihromah"), createAndSaveRoad(RegionType.WOODS, 350, 350));

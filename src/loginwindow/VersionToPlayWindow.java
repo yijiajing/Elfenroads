@@ -67,7 +67,7 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
                 try 
                 {
                     track1.play();
-                    session = new GameSession(User.getInstance(), "Elfenland", "My Save Game Name");
+                    session = new GameSession(User.getInstance(), "Elfenland_Classic", "My Save Game Name");
 
                     GameManager.init(Optional.empty(), session.getId(), GameVariant.ELFENLAND_CLASSIC);
 
@@ -95,7 +95,7 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
                 try 
                 {
                     track1.play();
-                    session = new GameSession(User.getInstance(), "Elfenland(Long)", "My Save Game Name");
+                    session = new GameSession(User.getInstance(), "Elfenland_Long)", "My Save Game Name");
 
                     GameManager.init(Optional.empty(), session.getId(), GameVariant.ELFENLAND_LONG);
 
@@ -124,7 +124,7 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
                 try 
                 {
                     track1.play();
-                    session = new GameSession(User.getInstance(), "Destination", "My Save Game Name");
+                    session = new GameSession(User.getInstance(), "ElfenlandDestination", "My Save Game Name");
 
                     GameManager.init(Optional.empty(), session.getId(), GameVariant.ELFENLAND_DESTINATION);
 
@@ -159,7 +159,7 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
                 try
                 {
                     track1.play();
-                    session = new GameSession(User.getInstance(), "Elfengold", "My Save Game Name");
+                    session = new GameSession(User.getInstance(), "Elfengold_Classic", "My Save Game Name");
 
                     GameManager.init(Optional.empty(), session.getId(), GameVariant.ELFENGOLD_CLASSIC);
 
@@ -176,6 +176,91 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
 
             }
         });
+
+        travelCards.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                GameSession session = null;
+
+                // TODO : add panel for user to input their game name and save game name
+                try
+                {
+                    track1.play();
+                    session = new GameSession(User.getInstance(), "Elfengold_TravelCards", "My Save Game Name");
+
+                    GameManager.init(Optional.empty(), session.getId(), GameVariant.ELFENGOLD_CLASSIC);
+
+                    // prompt user to choose a boot colour
+                    // this calls the ChooseBootWindow once all players have responded
+                    GameManager.getInstance().requestAvailableColours();
+
+                }
+                catch (Exception problem)
+                {
+                    problem.printStackTrace();
+                    return;
+                }
+
+            }
+        });
+
+        rgtDistribution.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                GameSession session = null;
+
+                // TODO : add panel for user to input their game name and save game name
+                try
+                {
+                    track1.play();
+                    session = new GameSession(User.getInstance(), "Elfengold_RandomGold", "My Save Game Name");
+
+                    GameManager.init(Optional.empty(), session.getId(), GameVariant.ELFENGOLD_CLASSIC);
+
+                    // prompt user to choose a boot colour
+                    // this calls the ChooseBootWindow once all players have responded
+                    GameManager.getInstance().requestAvailableColours();
+
+                }
+                catch (Exception problem)
+                {
+                    problem.printStackTrace();
+                    return;
+                }
+
+            }
+        });
+
+        elvenWitch.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                GameSession session = null;
+
+                // TODO : add panel for user to input their game name and save game name
+                try
+                {
+                    track1.play();
+                    session = new GameSession(User.getInstance(), "Elfengold_Witch", "My Save Game Name");
+
+                    GameManager.init(Optional.empty(), session.getId(), GameVariant.ELFENGOLD_CLASSIC);
+
+                    // prompt user to choose a boot colour
+                    // this calls the ChooseBootWindow once all players have responded
+                    GameManager.getInstance().requestAvailableColours();
+
+                }
+                catch (Exception problem)
+                {
+                    problem.printStackTrace();
+                    return;
+                }
+
+            }
+        });
+
 
         backButton = new JButton("Back");
         backButton.addActionListener(new ActionListener() {

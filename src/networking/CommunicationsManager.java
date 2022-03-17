@@ -23,9 +23,9 @@ public class CommunicationsManager {
     // this class will be responsible for all inbound and outbound communication during the game
     // it will be comprised of 2 sockets per player--one to listen and one to send information
     // designed to be a singleton, initialized upon joining a game
-    // TODO: turn into a singleton
 
     // private ArrayList<Socket> senders; // responsible for sending out information
+    private static CommunicationsManager INSTANCE;
     private GameUpdateListener listener; // listens for GameState updates from other players
 
     private GameManager managedBy; // we can access the GameState through here
@@ -34,23 +34,35 @@ public class CommunicationsManager {
     private HashMap<String, String> namesAndAddresses;
 
     // private GameCommand lastCommandReceived; // this will be used to update the GameState/GameScreen with whatever command we just received
-    private Queue<GameCommand> toExecute;
+    // private Queue<GameCommand> toExecute;
+    private static int drawCardCommandsExecuted; // used to help ensure the proper order of command execution
 
 
-    public CommunicationsManager(GameManager pManagedBy, String gameSessionID)
+    private CommunicationsManager(GameManager pManagedBy, String gameSessionID)
     {
         sessionID = gameSessionID;
         managedBy = pManagedBy;
 
-        toExecute = new LinkedList<GameCommand>();
+        // toExecute = new LinkedList<GameCommand>();
 
         // first, get all the Player addresses so we can set up the sockets
         recordPlayerAddresses();
-        System.out.println("Done recording player addresses...");
         // next, set up the ServerSocket to listen for game updates
-        System.out.println("Setting up the listener...");
         setUpListener();
-        System.out.println("Done setting up the listener.");
+    }
+
+    public static CommunicationsManager init(GameManager pManagedBy, String gameSessionID)
+    {
+        if (INSTANCE == null)
+        {
+            INSTANCE = new CommunicationsManager(pManagedBy, gameSessionID);
+        }
+        return INSTANCE;
+    }
+
+    public static void reset()
+    {
+        Logger.getGlobal().info("RESETTING THE COMMUNICATIONS MANAGER. ALL CONNECTIONS WITH PLAYERS WILL BE LOST.");
     }
 
 
@@ -216,23 +228,114 @@ public class CommunicationsManager {
      */
     public void updateFromListener()
     {
-        System.out.println("Received an update from the listener! Getting ready to update the UI...");
+        Logger.getGlobal().info("Received an update from the listener. Updating the game.");
 
-        while (listener.getCommands().size() > 0) {
-
+        while (listener.getCommands().size() > 0)
+        {
             Logger.getGlobal().info("Queue looks like: " + listener.getCommands().stream().map(c -> c.getClass().toString()).collect(Collectors.toList()));
-            GameCommand toExecute;
-            Optional<GameCommand> addPlayerCommandOptional = listener.getCommands()
-                    .stream().filter(c -> c instanceof AddPlayerCommand).findFirst();
-            if (addPlayerCommandOptional.isPresent()) {
-                toExecute = addPlayerCommandOptional.get();
-                listener.getCommands().remove(toExecute);
-            } else {
-                toExecute = listener.getCommands().poll();
+            // we always want to execute boot choice-related commands first
+            if (listener.getCommands().peek() instanceof GetBootColourCommand || listener.getCommands().peek() instanceof SendBootColourCommand)
+            {
+                GameCommand toExecute = listener.getCommands().poll();
+                Logger.getGlobal().info("Executing a command related to the boot colour");
+                toExecute.execute();
             }
 
-            Logger.getGlobal().info("About to execute: " + toExecute.getClass().toString());
-            toExecute.execute();
+            // if there are still addPlayerCommands on the queue, we need to execute those first
+            else if (!playerSetupFinished())
+            {
+                Logger.getGlobal().info("Player initialization is not finished yet. Looking for another AddPlayerCommand");
+                getAndExecuteFirstAddPlayerCommand();
+                // get the next AddPlayerCommand from the queue
+            }
+            else if (!drawCardsFinished()) // if we are done adding players but not drawing cards, we need to make sure to execute all of the drawCardCommands first
+            {
+                getAndExecuteFirstDrawCardCommand();
+                Logger.getGlobal().info(drawCardCommandsExecuted + " DrawCardCommands have been executed.");
+            }
+
+            else // if we are done initializing the players and drawing cards, we can just execute whatever command is next in the queue
+            {
+                GameCommand toExecute = listener.getCommands().poll();
+                toExecute.execute();
+            }
         }
     }
+
+    /**
+     * used to determine if we have initialized all the players
+     * will be called in updateFromListener to make sure that we don't execute any other commands before we have initialized all the players
+     *
+     * @return
+     */
+    private boolean playerSetupFinished()
+    {
+        int numPlayersShouldBe = 9999999;
+        try {numPlayersShouldBe = GameSession.getPlayerNames(sessionID).size();}
+        catch (IOException e) {
+            Logger.getGlobal().info("There was a problem getting all of the player names in the session with ID " + sessionID);}
+
+        int numPlayersInitialized = GameState.instance().getNumOfPlayers();
+
+        return numPlayersShouldBe == numPlayersInitialized;
+    }
+
+    /**
+     * similarly to playerSetupFinished, this will be called when we deal with the command queue
+     * basically, we want to make sure we deal with any drawCardCommands after players are initialized and before any other commands happen
+     * @pre we have initialized all of the Players properly
+     * @return
+     */
+    private boolean drawCardsFinished()
+    {
+        int numPlayers = GameState.instance().getNumOfPlayers(); // we can use this because of the precondition
+        // another option would be to check the number of players in the GameSession instead but here they should be the same number
+        int numCommandsToWaitFor = GameState.instance().getPlayers().indexOf(GameManager.getInstance().getThisPlayer());
+        Logger.getGlobal().info("We need to receive " + numCommandsToWaitFor + " DrawCardCommands before we can proceed.");
+        return drawCardCommandsExecuted == numCommandsToWaitFor;
+    }
+
+    /**
+     * retrieve and remove the next AddPlayerCommand in the queue
+     * @return
+     */
+    private void getAndExecuteFirstAddPlayerCommand()
+    {
+        for (int i  = 0; i < listener.getCommands().size(); i++)
+        {
+            // if it's an AddPlayerCommand, remove and return it
+            GameCommand cmd = listener.getCommands().get(i);
+            if (cmd instanceof AddPlayerCommand)
+            {
+                listener.getCommands().remove(i);
+                cmd.execute();
+                return;
+            }
+        }
+
+        Logger.getGlobal().info("Some unexpected behavior happened. The system was looking for an AddPlayerCommand in the queue but there wasn't one.");
+    }
+
+    /**
+     * retrieve and remove the next DrawCardCommand in the queue
+     * @return
+     */
+    private void getAndExecuteFirstDrawCardCommand()
+    {
+        for (int i  = 0; i < listener.getCommands().size(); i++)
+        {
+            // if it's an AddPlayerCommand, remove and return it
+            GameCommand cmd = listener.getCommands().get(i);
+            if (cmd instanceof DrawCardCommand)
+            {
+                listener.getCommands().remove(i);
+                cmd.execute();
+                drawCardCommandsExecuted++;
+                return;
+            }
+        }
+
+        Logger.getGlobal().info("Some unexpected behavior happened. The system was looking for a DrawCardCommand in the queue but there wasn't one.");
+    }
+
 }
