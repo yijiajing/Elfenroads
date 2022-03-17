@@ -1,5 +1,7 @@
 package loginwindow;
 
+import com.apple.eawt.ApplicationEvent;
+import com.apple.eawt.ApplicationListener;
 import domain.GameManager;
 import networking.GameSession;
 import networking.PlayerServer;
@@ -15,7 +17,7 @@ import java.util.logging.Logger;
 
 import javazoom.jl.player.Player;
 
-public class MainFrame extends JFrame
+public class MainFrame extends JFrame implements ApplicationListener
 {
     public static CardLayout cardLayout;
     public static JPanel mainPanel;
@@ -34,6 +36,7 @@ public class MainFrame extends JFrame
             @Override
             public void windowClosing(WindowEvent event) 
             {
+                exitGame();
                 PlayerServer.stopNgrok();;
                 dispose();
                 System.exit(0);
@@ -48,47 +51,7 @@ public class MainFrame extends JFrame
         add(mainPanel);
         setVisible(true);
 
-        this.addWindowListener(new WindowListener() {
-            @Override
-            public void windowOpened(WindowEvent e) {
-                exitGame();
-                System.exit(0);
-            }
-
-            @Override
-            public void windowClosing(WindowEvent e) {
-
-            }
-
-            @Override
-            public void windowClosed(WindowEvent e) {
-
-            }
-
-            @Override
-            public void windowIconified(WindowEvent e) {
-
-            }
-
-            @Override
-            public void windowDeiconified(WindowEvent e) {
-
-            }
-
-            @Override
-            public void windowActivated(WindowEvent e) {
-
-            }
-
-            @Override
-            public void windowDeactivated(WindowEvent e) {
-
-            }
-
-        });
-
-
-    }
+       }
 
     // Everything starts here
     public static void main(String[] args)
@@ -132,6 +95,50 @@ public class MainFrame extends JFrame
         {
             Logger.getGlobal().info("User wasn't logged in or wasn't in a session, so nothing needed to be done upon close.");
         }
+
+    }
+
+    @Override
+    /**
+     * the code to make sure that pressing command-q on a Mac (quitting the application) has the same effect as just closing the window would
+     * will do exactly the same thing as the windowClosing action listener
+     */
+    public void handleQuit(ApplicationEvent applicationEvent) {
+        exitGame();
+        PlayerServer.stopNgrok();;
+        dispose();
+        System.exit(0);
+    }
+
+    // we're not going to implement any of these. We just need to put them there so that the compiler doesn't complain.
+
+    @Override
+    public void handleAbout(ApplicationEvent applicationEvent) {
+
+    }
+
+    @Override
+    public void handleOpenApplication(ApplicationEvent applicationEvent) {
+
+    }
+
+    @Override
+    public void handleOpenFile(ApplicationEvent applicationEvent) {
+
+    }
+
+    @Override
+    public void handlePreferences(ApplicationEvent applicationEvent) {
+
+    }
+
+    @Override
+    public void handlePrintFile(ApplicationEvent applicationEvent) {
+
+    }
+
+    @Override
+    public void handleReOpenApplication(ApplicationEvent applicationEvent) {
 
     }
 }
