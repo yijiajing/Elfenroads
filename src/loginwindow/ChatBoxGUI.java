@@ -1,4 +1,13 @@
 package loginwindow;
+
+import commands.ChatMessageCommand;
+import domain.GameManager;
+import networking.CommunicationsManager;
+
+import javax.swing.*;
+import java.io.IOException;
+import java.util.logging.Logger;
+
 /**
  *
  * @author philb
@@ -113,9 +122,17 @@ public class ChatBoxGUI extends javax.swing.JFrame {
     }// </editor-fold>                        
 
     private void sendButtonActionPerformed(java.awt.event.ActionEvent evt) {                                           
-        String presentxt = jTextArea1.getText();
+        /*String presentxt = jTextArea1.getText();
         String input = inputTextArea.getText();
         jTextArea1.setText(presentxt + input + "\n");
+         we don't need that code anymore, but I kept it just in case I messed something up*/
+        ChatMessageCommand msg = new ChatMessageCommand(inputTextArea.getText(), GameManager.getInstance().getThisPlayer().getName());
+        msg.execute();
+        try {GameManager.getInstance().getComs().sendGameCommandToAllPlayers(msg);}
+        catch (IOException e)
+        {
+            Logger.getGlobal().info("There was a problem sending the chat message.");
+        }
     }
 
     public void displayMessage(String message)
@@ -144,9 +161,16 @@ public class ChatBoxGUI extends javax.swing.JFrame {
         INSTANCE.setVisible(false);
     }
 
+    public static void clearInputArea()
+    {
+        INSTANCE.getInputTextArea().setText("");
+    }
 
+    public JTextArea getInputTextArea() {
+        return inputTextArea;
+    }
 
-    public ChatBoxGUI getInstance() {return INSTANCE;}
+    public static ChatBoxGUI getInstance() {return INSTANCE;}
 
     /**
      * @param args the command line arguments

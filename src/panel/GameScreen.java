@@ -144,6 +144,7 @@ public class GameScreen extends JPanel implements Serializable
 
 		initializeMenuButton();
 		initializeMenu();
+		initializeChat();
 
 		updateAll();
 	}
@@ -379,8 +380,7 @@ public class GameScreen extends JPanel implements Serializable
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				chat = ChatBoxGUI.init();
-				
+				chat.setVisible(true);
 			}
 
 			
@@ -599,6 +599,11 @@ public class GameScreen extends JPanel implements Serializable
 		game_screen.setSize(MinuetoTool.getDisplayWidth(), MinuetoTool.getDisplayHeight());
 		game_screen.draw();
 		game_screen.setVisible(true);
+	}
+
+	public void initializeChat()
+	{
+		chat = ChatBoxGUI.init();
 	}
 
 	public void addElement(JPanel panel) {
