@@ -19,8 +19,6 @@ public class NotifyTurnCommand implements GameCommand {
 
     private final RoundPhaseType phase;
 
-    private static final long serialVersionUID = 6529685098267757690L;
-
     public NotifyTurnCommand(RoundPhaseType phase) {
         this.phase = phase;
     }
