@@ -17,6 +17,7 @@ import javax.swing.border.Border;
 
 import domain.*;
 import enums.GameVariant;
+import loginwindow.ChatBoxGUI;
 import networking.GameState;
 
 import org.json.JSONObject;
@@ -63,6 +64,7 @@ public class GameScreen extends JPanel implements Serializable
 	private GameMap gameMap;
 
 	private static String prevMessage;
+	private static ChatBoxGUI chat;
 
 	private GameScreen (JFrame frame, GameVariant variant)
 	{
@@ -377,7 +379,7 @@ public class GameScreen extends JPanel implements Serializable
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new loginwindow.ChatBoxGUI().setVisible(true);
+				chat = ChatBoxGUI.init();
 				
 			}
 

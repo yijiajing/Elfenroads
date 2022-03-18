@@ -13,7 +13,9 @@ public class ChatBoxGUI extends javax.swing.JFrame {
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JButton sendButton;
 
-    public ChatBoxGUI() {
+    private static ChatBoxGUI INSTANCE;
+
+    private ChatBoxGUI() {
         initComponents();
     }
 
@@ -122,6 +124,29 @@ public class ChatBoxGUI extends javax.swing.JFrame {
         String input = inputTextArea.getText();
         jTextArea1.setText(presenttxt + message + "\n");
     }
+
+    public static ChatBoxGUI init()
+    {
+        if (INSTANCE == null)
+        {
+            INSTANCE = new ChatBoxGUI();
+        }
+        return INSTANCE;
+    }
+
+    public static void showChat()
+    {
+        INSTANCE.setVisible(true);
+    }
+
+    public static void hideChat()
+    {
+        INSTANCE.setVisible(false);
+    }
+
+
+
+    public ChatBoxGUI getInstance() {return INSTANCE;}
 
     /**
      * @param args the command line arguments
