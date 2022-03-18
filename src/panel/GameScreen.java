@@ -18,6 +18,8 @@ import javax.swing.border.Border;
 import domain.*;
 import enums.GameVariant;
 import networking.GameState;
+
+import org.json.JSONObject;
 import org.minueto.MinuetoTool;
 
 import static utils.GameRuleUtils.isElfengoldVariant;
@@ -358,11 +360,14 @@ public class GameScreen extends JPanel implements Serializable
 
 		i1.addActionListener(new ActionListener(){
 
-			GameState gamestateToSave = GameState.instance();
+			
+
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
+				GameState gamestateToSave = GameState.instance();
+				JSONObject serialized = gamestateToSave.serialize();
 				
 			}
 			
