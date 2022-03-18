@@ -1,4 +1,15 @@
 package loginwindow;
+
+import commands.ChatMessageCommand;
+import domain.GameManager;
+import networking.CommunicationsManager;
+
+import javax.swing.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.io.IOException;
+import java.util.logging.Logger;
+
 /**
  *
  * @author philb
@@ -13,7 +24,9 @@ public class ChatBoxGUI extends javax.swing.JFrame {
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JButton sendButton;
 
-    public ChatBoxGUI() {
+    private static ChatBoxGUI INSTANCE;
+
+    private ChatBoxGUI() {
         initComponents();
     }
 
@@ -64,6 +77,29 @@ public class ChatBoxGUI extends javax.swing.JFrame {
         inputTextArea.setRows(5);
         jScrollPane1.setViewportView(inputTextArea);
 
+        // make it so we can send a message by pressing enter
+        inputTextArea.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER)
+                {
+                    e.consume();
+                    sendMessage();
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+
+            }
+        });
+
+
         sendButton.setText("Send");
         sendButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -110,11 +146,57 @@ public class ChatBoxGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>                        
 
-    private void sendButtonActionPerformed(java.awt.event.ActionEvent evt) {                                           
-        String presentxt = jTextArea1.getText();
+    private void sendButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        sendMessage();
+    }
+
+    private void sendMessage()
+    {
+        ChatMessageCommand msg = new ChatMessageCommand(inputTextArea.getText(), GameManager.getInstance().getThisPlayer().getName());
+        msg.execute();
+        try {GameManager.getInstance().getComs().sendGameCommandToAllPlayers(msg);}
+        catch (IOException e)
+        {
+            Logger.getGlobal().info("There was a problem sending the chat message.");
+        }
+    }
+
+    public void displayMessage(String message)
+    {
+        String presenttxt = jTextArea1.getText();
         String input = inputTextArea.getText();
-        jTextArea1.setText(presentxt + input + "\n");
-    }                                          
+        jTextArea1.setText(presenttxt + message + "\n");
+    }
+
+    public static ChatBoxGUI init()
+    {
+        if (INSTANCE == null)
+        {
+            INSTANCE = new ChatBoxGUI();
+        }
+        return INSTANCE;
+    }
+
+    public static void showChat()
+    {
+        INSTANCE.setVisible(true);
+    }
+
+    public static void hideChat()
+    {
+        INSTANCE.setVisible(false);
+    }
+
+    public static void clearInputArea()
+    {
+        INSTANCE.getInputTextArea().setText("");
+    }
+
+    public JTextArea getInputTextArea() {
+        return inputTextArea;
+    }
+
+    public static ChatBoxGUI getInstance() {return INSTANCE;}
 
     /**
      * @param args the command line arguments
