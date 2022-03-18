@@ -373,6 +373,17 @@ public class GameScreen extends JPanel implements Serializable
 			
 		});
 
+		i3.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new loginwindow.ChatBoxGUI().setVisible(true);
+				
+			}
+
+			
+		});
+
 		i4.addActionListener(new ActionListener(){
 
 			@Override
