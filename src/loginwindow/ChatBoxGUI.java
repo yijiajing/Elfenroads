@@ -47,7 +47,7 @@ public class ChatBoxGUI extends javax.swing.JFrame {
         inputTextArea = new javax.swing.JTextArea();
         sendButton = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        ///setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jTextArea1.setEditable(false);
         jTextArea1.setColumns(20);
