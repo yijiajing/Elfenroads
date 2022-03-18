@@ -5,6 +5,8 @@ import domain.GameManager;
 import networking.CommunicationsManager;
 
 import javax.swing.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.util.logging.Logger;
 
@@ -75,6 +77,29 @@ public class ChatBoxGUI extends javax.swing.JFrame {
         inputTextArea.setRows(5);
         jScrollPane1.setViewportView(inputTextArea);
 
+        // make it so we can send a message by pressing enter
+        inputTextArea.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER)
+                {
+                    e.consume();
+                    sendMessage();
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+
+            }
+        });
+
+
         sendButton.setText("Send");
         sendButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -121,11 +146,12 @@ public class ChatBoxGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>                        
 
-    private void sendButtonActionPerformed(java.awt.event.ActionEvent evt) {                                           
-        /*String presentxt = jTextArea1.getText();
-        String input = inputTextArea.getText();
-        jTextArea1.setText(presentxt + input + "\n");
-         we don't need that code anymore, but I kept it just in case I messed something up*/
+    private void sendButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        sendMessage();
+    }
+
+    private void sendMessage()
+    {
         ChatMessageCommand msg = new ChatMessageCommand(inputTextArea.getText(), GameManager.getInstance().getThisPlayer().getName());
         msg.execute();
         try {GameManager.getInstance().getComs().sendGameCommandToAllPlayers(msg);}
