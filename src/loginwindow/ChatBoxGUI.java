@@ -114,7 +114,14 @@ public class ChatBoxGUI extends javax.swing.JFrame {
         String presentxt = jTextArea1.getText();
         String input = inputTextArea.getText();
         jTextArea1.setText(presentxt + input + "\n");
-    }                                          
+    }
+
+    public void displayMessage(String message)
+    {
+        String presenttxt = jTextArea1.getText();
+        String input = inputTextArea.getText();
+        jTextArea1.setText(presenttxt + message + "\n");
+    }
 
     /**
      * @param args the command line arguments

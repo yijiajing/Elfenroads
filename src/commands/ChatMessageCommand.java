@@ -1,5 +1,7 @@
 package commands;
 
+import loginwindow.ChatBoxGUI;
+
 // will help us implement the chat feature
 public class ChatMessageCommand implements GameCommand {
 
@@ -15,10 +17,8 @@ public class ChatMessageCommand implements GameCommand {
     @Override
     public void execute()
     {
-        // TODO: set up a GUI element to hold the chat
-        // below is sample code for what it will look like once we pick one
-        // GUITextPaneOrSomething.add(senderName + ": " + message + "\n");
-        // GUITextPaneOrSomething.refresh();
+        String msgPlusName = senderName + ": " + message; // the GUI chatbox will automatically add a newline
+
     }
 
 
