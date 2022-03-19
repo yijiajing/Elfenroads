@@ -152,7 +152,7 @@ public class ChatBoxGUI extends javax.swing.JFrame {
 
     private void sendMessage()
     {
-        ChatMessageCommand msg = new ChatMessageCommand(inputTextArea.getText(), GameManager.getInstance().getThisPlayer().getName());
+        ChatMessageCommand msg = new ChatMessageCommand(inputTextArea.getText(), GameManager.getInstance().getThisPlayer());
         msg.execute();
         try {GameManager.getInstance().getComs().sendGameCommandToAllPlayers(msg);}
         catch (IOException e)
