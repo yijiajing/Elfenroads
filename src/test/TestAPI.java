@@ -22,8 +22,13 @@ public class TestAPI {
     public static void main (String [] args) throws IOException, Exception
 
     {
-
-        deleteAllSessions();
+        // deleteAllSessions();
+        // Thread.sleep(5000);
+        String id = createGameWithOtherUserReturnID();
+        Thread.sleep(5000);
+        joinGameWithNick(id);
+        Thread.sleep(5000);
+        leaveGameWithNick(id);
 
         /**
         initializeGameServiceWithStandardSettings("Elfenland_Classic", "Elfenland (Classic)" );
@@ -119,6 +124,36 @@ public class TestAPI {
         } catch (Exception e) {
             Logger.getGlobal().info("There was a problem creating a GameService for " + name);
         }
+    }
+
+    public static String getNickAccessToken() throws Exception
+    {
+        return User.getAccessTokenUsingCreds("nick", "abc123_ABC123");
+    }
+
+    public static String createGameWithOtherUserReturnID() throws Exception
+    {
+        User.logout();
+        User.init("dontforget", "abc123_ABC123");
+        User other = User.getInstance();
+        GameSession sesh = new GameSession(User.getInstance(), "Elfenland_Classic", "My Save Game Name");
+        return sesh.getId();
+    }
+
+    public static void joinGameWithNick(String id) throws Exception
+    {
+        User.logout();
+        User.init("nick", "abc123_ABC123");
+        User nick = User.getInstance();
+        GameSession.joinSession(nick, id);
+    }
+
+    public static void leaveGameWithNick(String id) throws Exception
+    {
+        User.logout();
+        User.init("nick", "abc123_ABC123");
+        User nick = User.getInstance();
+        GameSession.leaveSession(nick, id);
     }
 
 
