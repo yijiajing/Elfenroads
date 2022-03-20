@@ -139,6 +139,7 @@ public class PlayerWaitWindow extends JPanel implements Runnable
                 }
 
                 // go back to the lobby
+                MainFrame.mainPanel.add(new LobbyWindow(), "lobby");
                 MainFrame.cardLayout.show(MainFrame.mainPanel,"lobby");;
             }
         });
