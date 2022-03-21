@@ -556,8 +556,12 @@ public class GameSession {
      * @pre the session has not been launched yet
      * remove the player from a session
      */
-    public static void leaveSession(User leaver, String sessionID) throws IOException
+    public static void leaveSession(User leaver, String sessionID) throws Exception
     {
+        if (!leaver.getRole().equals(User.Role.PLAYER))
+        {
+            throw new Exception("Only players can leave games.");
+        }
         String token = leaver.getAccessToken();
 
         URL url = new URL("http://35.182.122.111:4242/api/sessions/" + sessionID + "/players/" + leaver.getUsername() + "&access_token=" + token);

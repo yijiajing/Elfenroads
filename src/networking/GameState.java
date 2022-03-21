@@ -6,13 +6,14 @@ import org.json.JSONObject;
 import panel.ElfBootPanel;
 import panel.GameScreen;
 
+import java.io.Serializable;
 import java.util.*;
 
 
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
-public class GameState {
+public class GameState implements Serializable{
 
     // this class will contain all of the information we need to send regarding game state
     // created this class so that I can easily serialize and send important info to each computer
@@ -64,6 +65,11 @@ public class GameState {
 
     // TODO: implement this second constructor
     // public networking.GameState (JSONObject gameStateJSON)
+
+    public GameState(JSONObject gamestateJSON){
+        
+
+    }
 
     public JSONObject serialize()
     {
