@@ -17,7 +17,10 @@ import javax.swing.border.Border;
 
 import domain.*;
 import enums.GameVariant;
+import loginwindow.ChatBoxGUI;
 import networking.GameState;
+
+import org.json.JSONObject;
 import org.minueto.MinuetoTool;
 
 import static utils.GameRuleUtils.isElfengoldVariant;
@@ -61,6 +64,7 @@ public class GameScreen extends JPanel implements Serializable
 	private GameMap gameMap;
 
 	private static String prevMessage;
+	private static ChatBoxGUI chat;
 
 	private GameScreen (JFrame frame, GameVariant variant)
 	{
@@ -140,6 +144,7 @@ public class GameScreen extends JPanel implements Serializable
 
 		initializeMenuButton();
 		initializeMenu();
+		initializeChat();
 
 		updateAll();
 	}
@@ -358,13 +363,26 @@ public class GameScreen extends JPanel implements Serializable
 
 		i1.addActionListener(new ActionListener(){
 
-			GameState gamestateToSave = GameState.instance();
+			
+
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
+				GameState gamestateToSave = GameState.instance();
+				JSONObject serialized = gamestateToSave.serialize();
 				
 			}
+			
+		});
+
+		i3.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				chat.setVisible(true);
+			}
+
 			
 		});
 
@@ -581,6 +599,11 @@ public class GameScreen extends JPanel implements Serializable
 		game_screen.setSize(MinuetoTool.getDisplayWidth(), MinuetoTool.getDisplayHeight());
 		game_screen.draw();
 		game_screen.setVisible(true);
+	}
+
+	public void initializeChat()
+	{
+		chat = ChatBoxGUI.init();
 	}
 
 	public void addElement(JPanel panel) {

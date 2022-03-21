@@ -63,7 +63,7 @@ public class GameManager {
             //TODO implement
         }
 
-        coms = new CommunicationsManager(this, sessionID);
+        coms = CommunicationsManager.init(this, sessionID);
     }
 
     /**
@@ -79,17 +79,12 @@ public class GameManager {
             ArrayList<String> players = GameSession.getPlayerNames(sessionID);
             String localPlayerName = getThisPlayer().getName();
 
-            for (String playerName : players) {
-                // if the player name is the local one, do nothing. we already have his information
-                if (!playerName.equals(localPlayerName)) {
-                    // otherwise, send a SendPlayerInfoCommand over
-                    SendPlayerInfoCommand cmd = new SendPlayerInfoCommand();
-                    try {
-                        getComs().sendCommandToIndividual(cmd, playerName);
-                    } catch (Exception ugh) {
-                        ugh.printStackTrace();
-                    }
-                }
+
+            AddPlayerCommand cmd = new AddPlayerCommand(localPlayerName, thisPlayer.getColour());
+            try {
+                getComs().sendGameCommandToAllPlayers(cmd);
+            } catch (Exception ugh) {
+                ugh.printStackTrace();
             }
 
             // now we have ordered all the players, so we should sort them

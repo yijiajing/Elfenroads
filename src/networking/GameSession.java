@@ -124,6 +124,7 @@ public class GameSession {
         System.out.println(content.toString());
     }
 
+    // TODO: change to a method only to delete unlaunched sessions from the creator's computer
     /**
      * deletes the session from the LS
      * should work for both launched and unlaunched sessions
@@ -137,7 +138,7 @@ public class GameSession {
         if (isLaunched(sessionID))
         {
             // if a session has been launched already, it must be deleted by the game service admin
-            // TODO: update this to work with all games, not just testGame
+            Logger.getGlobal().info("I see you are calling GameSession.delete(). This method is not well-adapted to be used in the actual game code.");
             token = User.getAccessTokenUsingCreds("elfenlands", "abc123_ABC123");
         }
         else
@@ -555,8 +556,12 @@ public class GameSession {
      * @pre the session has not been launched yet
      * remove the player from a session
      */
-    public static void leaveSession(User leaver, String sessionID) throws IOException
+    public static void leaveSession(User leaver, String sessionID) throws Exception
     {
+        if (!leaver.getRole().equals(User.Role.PLAYER))
+        {
+            throw new Exception("Only players can leave games.");
+        }
         String token = leaver.getAccessToken();
 
         URL url = new URL("http://35.182.122.111:4242/api/sessions/" + sessionID + "/players/" + leaver.getUsername() + "&access_token=" + token);

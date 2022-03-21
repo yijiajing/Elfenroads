@@ -3,6 +3,7 @@ package domain;
 import enums.MagicSpellType;
 import commands.DrawCounterCommand;
 import enums.CounterType;
+import enums.CounterUnitType;
 import enums.RegionType;
 import enums.RoundPhaseType;
 import loginwindow.MP3Player;
@@ -20,16 +21,16 @@ import java.util.logging.Logger;
 
 public class MagicSpell extends CounterUnit{
 	
-	private MagicSpellType aType;
-	private MP3Player track1 = new MP3Player("./assets/Music/0000171.mp3");
 	
 	public MagicSpell(MagicSpellType pType, int resizeWidth, int resizeHeight) {
-		super(resizeWidth, resizeHeight, pType.ordinal() + 10);//Magic spell pictures are renamed as M10 and M11
-		aType = pType;
-		
+		super(resizeWidth, resizeHeight, pType.toString());//Magic spell pictures are renamed as M0+MagicSpellType.
+		super.setType(pType);
 		super.initializeMouseListener();
 	}
 
-
+    public static MagicSpell getNew(CounterUnitType pType) {
+        assert pType instanceof MagicSpellType;
+    	return new MagicSpell((MagicSpellType)pType, MainFrame.instance.getWidth() * 67 / 1440, MainFrame.instance.getHeight() * 60 / 900);
+    }
 	
 }

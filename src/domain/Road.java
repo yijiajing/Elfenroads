@@ -45,6 +45,12 @@ public class Road {
             return false;
         }
     }
+    
+	public void setMagicSpell(MagicSpell counter) {
+		// TODO 
+		
+	}
+    
 
     public TransportationCounter getTransportationCounter() {
         return transportationCounter;
@@ -82,4 +88,6 @@ public class Road {
         return obstacle != null;
 
     }
+
+
 }

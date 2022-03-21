@@ -140,7 +140,7 @@ public class CreateAccountWindow extends JPanel {
 
                 // TODO: allow the user to pick his role?
                 try {
-                    User.registerNewUser(username, password, User.Role.PLAYER);
+                    User.registerNewPlayer(username, password);
                     MainFrame.loggedIn = User.init(username, password);
                     MainFrame.mainPanel.add(new LobbyWindow(), "lobby");
                     MainFrame.cardLayout.show(MainFrame.mainPanel,"lobby");
@@ -194,7 +194,7 @@ public class CreateAccountWindow extends JPanel {
                 // TODO: allow the user to pick his role?
                 try {
                     music.play();
-                    User.registerNewUser(username, password, User.Role.PLAYER);
+                    User.registerNewPlayer(username, password);
                     MainFrame.loggedIn = User.init(username, password);
                     MainFrame.mainPanel.add(new LobbyWindow(), "lobby");
                     MainFrame.cardLayout.show(MainFrame.mainPanel,"lobby");

@@ -101,7 +101,7 @@ public class User {
     }
 
     // TODO: removed hardcoded color and allow the user to decide?
-    public static void registerNewUser(String newUsername, String newPassword, Role newRole) throws Exception
+    public static void registerNewPlayer(String newUsername, String newPassword) throws Exception
     {
 
         // check to make sure that password is acceptable by LS
@@ -143,6 +143,48 @@ public class User {
         System.out.println("Response status: " + status);
         System.out.println(content.toString());
 
+    }
+
+    public static void registerNewAdmin(String newUsername, String newPassword) throws Exception
+    {
+        // check to make sure that password is acceptable by LS
+        // throw an exception with method if it is not
+        if (!NetworkUtils.isValidPassword(newPassword)) // calls the method we took from Max's code
+        {
+            throw new Exception("This password does not fit the LS criteria. Please try a different password.");
+        }
+
+        String adminToken = getAccessTokenUsingCreds(adminUsername, adminPassword);
+
+        URL url = new URL("http://35.182.122.111:4242/api/users/" + newUsername + "?access_token=" + adminToken);
+
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("PUT");
+        con.setRequestProperty("Content-Type", "application/json");
+
+        /* Payload support */
+        con.setDoOutput(true);
+        DataOutputStream out = new DataOutputStream(con.getOutputStream());
+        out.writeBytes("{\n");
+        out.writeBytes("    \"name\": \"" + newUsername + "\",\n");
+        out.writeBytes("    \"password\": \"" + newPassword + "\",\n");
+        out.writeBytes("    \"preferredColour\": \"01FFFF\",\n");
+        out.writeBytes("    \"role\": \"ROLE_ADMIN\"\n");
+        out.writeBytes("}");
+        out.flush();
+        out.close();
+
+        int status = con.getResponseCode();
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer content = new StringBuffer();
+        while((inputLine = in.readLine()) != null) {
+            content.append(inputLine);
+        }
+        in.close();
+        con.disconnect();
+        System.out.println("Response status: " + status);
+        System.out.println(content.toString());
     }
 
 

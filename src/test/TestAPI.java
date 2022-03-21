@@ -1,4 +1,4 @@
-//package Test;
+package test;
 
 import commands.GameCommand;
 import networking.DNSLookup;
@@ -13,6 +13,7 @@ import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 import static networking.GameSession.*;
 
@@ -21,34 +22,19 @@ public class TestAPI {
     public static void main (String [] args) throws IOException, Exception
 
     {
-       // GameService elfenroads = new GameService("elfenroads", "elfenroads", "abc123_ABC123", 1, 6);
-       // GameService elfenlands = new GameService("elfenlands", "elfenlands", "abc123_ABC123", 2, 6 );
-       // GameService longGame = new GameService("longGame", "long game", "abc123_ABC123", 2, 6 );
-       // GameService destinationTown = new GameService("destinationTown", "destination town", "abc123_ABC123", 2, 6);
-       // createASession("Destination");
-        User.init("dontforget", "abc123_ABC123");
+
         deleteAllSessions();
 
+        /**
+        initializeGameServiceWithStandardSettings("Elfenland_Classic", "Elfenland (Classic)" );
+        initializeGameServiceWithStandardSettings("Elfenland_Long", "Elfenland (Long)");
+        initializeGameServiceWithStandardSettings("ElfenlandDestination", "Elfenland (Destination)");
+        initializeGameServiceWithStandardSettings("Elfengold_Classic", "Elfengold (Classic)");
+        initializeGameServiceWithStandardSettings("Elfengold_TravelCards", "Elfengold (Travel Cards)");
+        initializeGameServiceWithStandardSettings("Elfengold_RandomGold", "Elfengold (Random Gold)");
+        initializeGameServiceWithStandardSettings("Elfengold_Witch", "Elfengold (Witch)");
+         **/
 
-        //GameService testGame2 = new GameService("testGame2", "testGame2", "abc123_ABC123",2, 6);
-        //GameService destination = new GameService("Destination", "Destination", "abc123_ABC123",2, 6);
-        //GameService longvar = new GameService("Elfenland(Long)", "Elfenland(Long)", "abc123_ABC123",2, 6);
-        //GameService longvar = new GameService("Elfenland", "Elfenland", "abc123_ABC123",2, 6);
-
-       //  User.init()
-        //GameService destination = new GameService("Destination", "Destination", "abc123_ABC123", 2, 6);
-        // GameService testGame2 = new GameService("testGame2", "testGame2", "abc123_ABC123",2, 6);
-
-        // GameService elfenlands = new GameService("Elfenroads", "Elfenroads", "abc123_ABC123", 2, 6);
-        //User.init("dontforget", "abc123_ABC123");
-       /* ArrayList<String> sessions = getAllSessionID();
-
-        for (String id : sessions)
-        {
-            System.out.println(getPlayersWithLocations(id));
-        }
-
-        */
     }
 
     public static void testCreateUser(String username, String password) throws IOException, Exception {
@@ -81,9 +67,6 @@ public class TestAPI {
 
     }
 
-    public static void createGameServices() throws IOException
-    {}
-
     public static void testLongPolling() throws IOException
     {
         String gameID = getFirstSessionID();
@@ -114,14 +97,29 @@ public class TestAPI {
 
         for (String person : groupMembers)
         {
-            User.registerNewUser(person, "abc123_ABC123", User.Role.PLAYER);
+            // User.registerNewUser(person, "abc123_ABC123", User.Role.PLAYER);
         }
 
-        // initialize Elfenroads game service
-        GameService elfenroads = new GameService("Elfenroads", "Elfenroads", "abc123_ABC123", 2, 6);
+        // initialize game services
+        GameService destination = new GameService("Destination", "Destination", "abc123_ABC123", 2, 6);
+        User.logout();
+        GameService classic = new GameService("elfenlands", "elfenlands", "abc123_ABC123", 2,6);
+        User.logout();
+        GameService elfLong = new GameService("Elfenland(Long)", "Elfenland(Long)", "abc123_ABC123", 2,6);
+        User.logout();
 
+        // GameService
     }
 
+    // will initialize all the game services we need
+    public static void initializeGameServiceWithStandardSettings (String name, String displayName) {
+        User.logout();
+        try {
+            GameService created = new GameService(name, displayName, "abc123_ABC123", 2, 6);
+        } catch (Exception e) {
+            Logger.getGlobal().info("There was a problem creating a GameService for " + name);
+        }
+    }
 
 
 
