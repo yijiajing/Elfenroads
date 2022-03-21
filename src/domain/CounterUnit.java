@@ -29,10 +29,10 @@ public abstract class CounterUnit extends Drawable{
     JLabel miniDisplay; // for when the counter is on the map
     JLabel superMiniDisplay;// for obstacle on the map
     private CounterUnitType aType;
-    private MP3Player track1 = new MP3Player("./assets/Music/0000171.mp3");
+    protected MP3Player track1 = new MP3Player("./assets/Music/0000171.mp3");
     
     
-    CounterUnit(int resizeWidth, int resizeHeight, int imageNumber) {
+    CounterUnit(int resizeWidth, int resizeHeight, String imageNumber) {
 
         // find the picture of the card based on what type it is
         // since the images are named similarly and ordered the same way as they are in the enum declaration,
@@ -153,7 +153,11 @@ public abstract class CounterUnit extends Drawable{
     	return aType;
     }
     
-    //This method should be hidden by all subclasses.
+    protected void setType(CounterUnitType pType) {
+    	aType = pType;
+    }
+    
+    //getNew should be hidden by all subclasses.
     public static CounterUnit getNew(CounterUnitType pType) {
     	return null;
     }

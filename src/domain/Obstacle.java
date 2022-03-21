@@ -6,10 +6,14 @@ import networking.ActionManager;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import enums.CounterType;
+import enums.ObstacleType;
+
 public class Obstacle extends CounterUnit {
 
     public Obstacle(int resizeWidth, int resizeHeight) {
-        super(resizeWidth, resizeHeight, 9);
+        super(resizeWidth, resizeHeight, Integer.toString(9));
+        super.setType(ObstacleType.OBSTACLE);
         this.getDisplay().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -26,4 +30,5 @@ public class Obstacle extends CounterUnit {
     public static Obstacle getNew() {
         return new Obstacle(MainFrame.instance.getWidth()*67/1440, MainFrame.instance.getHeight()*60/900);
     }
+    
 }

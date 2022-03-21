@@ -22,12 +22,11 @@ import java.util.logging.Logger;
 public class TransportationCounter extends CounterUnit implements Comparable<TransportationCounter> {
 
     private CounterType type;
-    private MP3Player track1 = new MP3Player("./assets/Music/0000171.mp3");
-
+    
     public TransportationCounter(CounterType pType, int resizeWidth, int resizeHeight) {
-        super(resizeWidth, resizeHeight, pType.ordinal() + 1); // since the images start from M01, not M00
+        super(resizeWidth, resizeHeight, Integer.toString(pType.ordinal() + 1)); // since the images start from M01, not M00
         this.type = pType;
-
+        super.setType(pType);
         super.initializeMouseListener();
     }
     
@@ -84,7 +83,7 @@ public class TransportationCounter extends CounterUnit implements Comparable<Tra
 //            }
 //        });
 //    }
-
+    @Override
     public CounterType getType() {
         return this.type;
     }
@@ -135,6 +134,12 @@ public class TransportationCounter extends CounterUnit implements Comparable<Tra
         }
         return -1; // not applicable
     }
+    
+    public static TransportationCounter getNew(CounterUnitType pType) {
+        assert pType instanceof CounterType;
+    	return new TransportationCounter((CounterType)pType, MainFrame.instance.getWidth() * 67 / 1440, MainFrame.instance.getHeight() * 60 / 900);
+    }
+    
 
     @Override
     public boolean equals(Object o) {
@@ -155,10 +160,6 @@ public class TransportationCounter extends CounterUnit implements Comparable<Tra
     }
 
 
-    public static TransportationCounter getNew(CounterUnitType pType) {
-        assert pType instanceof CounterType;
-    	return new TransportationCounter((CounterType)pType, MainFrame.instance.getWidth() * 67 / 1440, MainFrame.instance.getHeight() * 60 / 900);
-    }
 
     @Override
     public String toString() {

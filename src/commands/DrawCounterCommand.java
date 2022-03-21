@@ -1,7 +1,6 @@
 package commands;
 
 import domain.GameManager;
-import domain.TransportationCounter;
 import enums.CounterUnitType;
 import networking.GameState;
 import panel.GameScreen;
