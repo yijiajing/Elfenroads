@@ -8,6 +8,7 @@ import java.io.IOException;
 import commands.PassTurnCommand;
 import gamemanager.GameManager;
 import enums.RoundPhaseType;
+import gamescreen.GameScreen;
 import loginwindow.MP3Player;
 import networking.GameState;
 import utils.GameRuleUtils;

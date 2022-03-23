@@ -4,7 +4,7 @@ import gamemanager.GameManager;
 import domain.TransportationCounter;
 import enums.CounterType;
 import networking.GameState;
-import panel.GameScreen;
+import gamescreen.GameScreen;
 
 import java.util.logging.Logger;
 

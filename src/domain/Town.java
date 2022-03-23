@@ -2,11 +2,11 @@ package domain;
 
 import enums.Colour;
 import enums.GameVariant;
+import gamescreen.GameScreen;
 import loginwindow.MainFrame;
 import networking.GameState;
 import panel.*;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;

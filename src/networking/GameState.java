@@ -3,8 +3,7 @@ package networking;
 import domain.*;
 import enums.*;
 import org.json.JSONObject;
-import panel.ElfBootPanel;
-import panel.GameScreen;
+import gamescreen.GameScreen;
 
 import java.io.Serializable;
 import java.util.*;

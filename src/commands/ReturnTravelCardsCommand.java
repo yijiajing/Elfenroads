@@ -3,7 +3,7 @@ package commands;
 import domain.TravelCard;
 import enums.TravelCardType;
 import networking.GameState;
-import panel.GameScreen;
+import gamescreen.GameScreen;
 
 import java.util.ArrayList;
 import java.util.List;

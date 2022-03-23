@@ -2,15 +2,12 @@ package gamemanager;
 
 import commands.*;
 import domain.*;
-import enums.Colour;
 import enums.GameVariant;
 import enums.RoundPhaseType;
 import loginwindow.*;
 import networking.*;
-import panel.ElfBootPanel;
-import panel.GameScreen;
+import gamescreen.GameScreen;
 import utils.GameRuleUtils;
-import utils.NetworkUtils;
 
 import java.io.IOException;
 import java.util.*;
@@ -31,20 +28,6 @@ public class ELGameManager extends GameManager {
     ELGameManager(Optional<GameState> loadedState, String pSessionID, GameVariant variant) {
         super(loadedState, pSessionID, variant);
     }
-
-//    public static ELGameManager init(Optional<GameState> loadedState, String sessionID, GameVariant variant) {
-//        if (INSTANCE == null) {
-//            INSTANCE = new ELGameManager(loadedState, sessionID, variant);
-//        }
-//        return INSTANCE;
-//    }
-//
-//    /**
-//     * @return the Singleton instance of the GameManager
-//     */
-//    public static ELGameManager getInstance() {
-//        return INSTANCE;
-//    }
 
     @Override
     protected void setUpNewGame() {

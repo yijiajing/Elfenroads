@@ -9,7 +9,7 @@ import loginwindow.MP3Player;
 import loginwindow.MainFrame;
 import networking.ActionManager;
 import networking.GameState;
-import panel.GameScreen;
+import gamescreen.GameScreen;
 import utils.GameRuleUtils;
 
 import java.awt.event.MouseAdapter;

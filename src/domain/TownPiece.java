@@ -2,7 +2,6 @@ package domain;
 
 import enums.Colour;
 import loginwindow.MainFrame;
-import panel.GameScreen;
 
 import javax.swing.*;
 import java.awt.*;

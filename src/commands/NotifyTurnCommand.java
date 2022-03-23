@@ -4,7 +4,7 @@ import gamemanager.ELGameManager;
 import gamemanager.GameManager;
 import enums.RoundPhaseType;
 import networking.GameState;
-import panel.GameScreen;
+import gamescreen.GameScreen;
 
 import java.io.Serial;
 import java.util.logging.Logger;

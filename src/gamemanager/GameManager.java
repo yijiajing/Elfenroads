@@ -12,7 +12,7 @@ import loginwindow.ChooseBootWindow;
 import loginwindow.MainFrame;
 import networking.*;
 import panel.ElfBootPanel;
-import panel.GameScreen;
+import gamescreen.GameScreen;
 import utils.GameRuleUtils;
 import utils.NetworkUtils;
 

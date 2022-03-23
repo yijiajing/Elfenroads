@@ -3,10 +3,10 @@ package panel;
 import domain.ElfBoot;
 import domain.Town;
 import domain.TownPiece;
+import gamescreen.GameScreen;
 import networking.ActionManager;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;

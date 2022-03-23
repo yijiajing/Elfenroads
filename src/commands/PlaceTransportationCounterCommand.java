@@ -5,7 +5,7 @@ import enums.CounterType;
 import enums.RegionType;
 import gamemanager.GameManager;
 import networking.GameState;
-import panel.GameScreen;
+import gamescreen.GameScreen;
 
 import java.util.List;
 import java.util.logging.Logger;

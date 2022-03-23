@@ -1,16 +1,13 @@
 package panel;
 
-import domain.GoldValueToken;
 import domain.Town;
 import domain.TownPiece;
-import loginwindow.MainFrame;
+import gamescreen.GameScreen;
 import networking.ActionManager;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import static utils.GameRuleUtils.isElfengoldVariant;

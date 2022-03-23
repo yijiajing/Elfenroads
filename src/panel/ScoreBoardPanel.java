@@ -1,10 +1,8 @@
 package panel;
 
 import domain.Player;
-import domain.CounterUnit;
 import domain.TransportationCounter;
-import networking.ActionManager;
-import networking.GameState;
+import gamescreen.GameScreen;
 
 import javax.swing.*;
 import java.awt.*;
