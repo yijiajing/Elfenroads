@@ -4,20 +4,27 @@ import java.util.logging.Logger;
 
 import domain.GameManager;
 import domain.CounterUnit;
+import domain.Hand;
 import enums.CounterUnitType;
 import loginwindow.MainFrame;
 import networking.GameState;
+
+
+
 
 public class ReturnCounterUnitCommand implements GameCommand{
 	
     private final CounterUnitType type;
     private final boolean isSecret;
     private final String senderName;
+    
+    CounterUnit pCounter;
 
     public ReturnCounterUnitCommand(CounterUnit returnedCounter) {
         this.type = returnedCounter.getType();
         this.isSecret = returnedCounter.isSecret();
         this.senderName = GameManager.getInstance().getThisPlayer().getName();
+        pCounter = returnedCounter;
     }
 
     /**
@@ -25,8 +32,8 @@ public class ReturnCounterUnitCommand implements GameCommand{
      */
     @Override
     public void execute() {
-        Logger.getGlobal().info("Executing ReturnTransportationCounterCommand, keep " + type);
-        CounterUnit counter = new CounterUnit(type, MainFrame.instance.getWidth() * 67 / 1440, MainFrame.instance.getHeight() * 60 / 900);
+        Logger.getGlobal().info("Executing ReturnCounterCommand, keep " + type);
+        CounterUnit counter = pCounter.getNew(type);
         GameState.instance().getCounterPile().addDrawable(counter);
 
         // update the sending player's hand
