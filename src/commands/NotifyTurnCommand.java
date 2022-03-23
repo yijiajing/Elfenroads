@@ -47,8 +47,7 @@ public class NotifyTurnCommand implements GameCommand {
                     gameManager.drawCounters();
                 }
                 break;
-            case PLAN_ROUTES_ONE: case PLAN_ROUTES_TWO: case PLAN_ROUTES_THREE: case PLAN_ROUTES_FOUR:
-                case PLAN_ROUTES_FIVE: case PLAN_ROUTES_SIX:
+            case PLAN_ROUTES:
                 gameManager.planTravelRoutes();
                 break;
             case MOVE:
