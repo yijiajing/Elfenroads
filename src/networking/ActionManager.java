@@ -64,7 +64,7 @@ public class ActionManager {
     public void setSelectedRoad(Road road) {
         LOGGER.info("Road on " + road.getRegionType() + " selected");
 
-        if (!(GameRuleUtils.isPlanRoutesPhase() && gameManager.isLocalPlayerTurn())) {
+        if (!(gameState.getCurrentPhase() == RoundPhaseType.PLAN_ROUTES && gameManager.isLocalPlayerTurn())) {
             return;
         }
         LOGGER.info("Before removing the counter, counters in hand: " +
@@ -86,6 +86,7 @@ public class ActionManager {
                     LOGGER.info("There was a problem sending the command to place the obstacle!");
                     e.printStackTrace();
                 }
+                gameManager.endTurn();
             } else { // Invalid move
                 GameScreen.displayMessage("You cannot place an obstacle here. Please try again.");
             }
@@ -111,6 +112,7 @@ public class ActionManager {
                     LOGGER.info("There was a problem sending the command to place the transportation counter!");
                     e.printStackTrace();
                 }
+                gameManager.endTurn();
             } else { // Invalid move
                 GameScreen.displayMessage("You cannot place a transportation counter here. Please try again.");
             }
@@ -123,7 +125,7 @@ public class ActionManager {
     }
 
     public void setSelectedCounter(CounterUnit pCounter) {
-        if (!GameRuleUtils.isPlanRoutesPhase()) {
+        if (gameState.getCurrentPhase() != RoundPhaseType.PLAN_ROUTES) {
             return;
         }
 

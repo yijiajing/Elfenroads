@@ -260,14 +260,14 @@ public class GameManager {
      */
     public void planTravelRoutes() {
         if (gameState.getCurrentRound() <= gameState.getTotalRounds()
-                && GameRuleUtils.isPlanRoutesPhase()
+                && gameState.getCurrentPhase() == RoundPhaseType.PLAN_ROUTES
                 && isLocalPlayerTurn()) {
 
             updateGameState();
             System.out.println("Current phase: PLAN TRAVEL ROUTES");
 
             // display message
-            if (gameState.getCurrentPhase().equals(RoundPhaseType.PLAN_ROUTES_ONE)) {
+            if (gameState.getCurrentPhase().equals(RoundPhaseType.PLAN_ROUTES)) {
                 GameScreen.displayMessage("""
                         It is time to plan your travel routes! Begin by clicking the transportation counter in your hand that you want to use, then click on the road that you want to travel.
                         The chart in the bottom right corner indicates which transportation counters may be used on which road.
@@ -408,6 +408,16 @@ public class GameManager {
         if (nextOrdinal == RoundPhaseType.values().length) {
             // all phases are done, go to the next round
             endRound();
+        } else if (gameState.getCurrentPhase() == RoundPhaseType.PLAN_ROUTES
+                && gameState.getPassedPlayerCount() < gameState.getNumOfPlayers()) {
+            LOGGER.info("Pass turn ct: " + gameState.getPassedPlayerCount() + ", staying at the PLAN ROUTES phase");
+            // continue with plan routes phase if not all players have passed their turn
+            gameState.setToFirstPlayer();
+            // the first player will take action
+            if (isLocalPlayerTurn()) {
+                NotifyTurnCommand notifyTurnCommand = new NotifyTurnCommand(RoundPhaseType.PLAN_ROUTES);
+                notifyTurnCommand.execute(); // notify themself to take action
+            }
         } else { // go to the next phase within the same round
             gameState.setCurrentPhase(RoundPhaseType.values()[nextOrdinal]);
             LOGGER.info("...Going to the next phase : " + gameState.getCurrentPhase());
@@ -418,6 +428,7 @@ public class GameManager {
                 notifyTurnCommand.execute(); // notify themself to take action
             }
         }
+        gameState.clearPassedPlayerCount();
     }
 
     /**

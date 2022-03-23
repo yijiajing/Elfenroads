@@ -39,6 +39,7 @@ public class GameState implements Serializable{
     private int currentRound;
     private RoundPhaseType currentPhase;
     private Player currentPlayer;
+    private int passedPlayerCount;
 
     private TravelCardDeck travelCardDeck;
     private TransportationCounterPile counterPile;
@@ -50,6 +51,7 @@ public class GameState implements Serializable{
     {
         this.elfBoots = new ArrayList<>();
         this.currentRound = 1;
+        this.passedPlayerCount = 0;
         if (gameVariant == GameVariant.ELFENLAND_LONG) {
             this.totalRounds = 4;
         } else {
@@ -170,6 +172,18 @@ public class GameState implements Serializable{
 
     public void setToFirstPlayer() {
         currentPlayer = players.get(0);
+    }
+
+    public int getPassedPlayerCount() {
+        return passedPlayerCount;
+    }
+
+    public void incrementPassedPlayerCount() {
+        passedPlayerCount++;
+    }
+
+    public void clearPassedPlayerCount() {
+        passedPlayerCount = 0;
     }
 
     public void addElfBoot(ElfBoot boot) {

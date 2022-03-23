@@ -26,6 +26,7 @@ public class TransportationCounter extends CounterUnit implements Comparable<Tra
     public TransportationCounter(CounterType pType, int resizeWidth, int resizeHeight) {
         super(resizeWidth, resizeHeight, Integer.toString(pType.ordinal() + 1)); // since the images start from M01, not M00
         this.type = pType;
+
         super.setType(pType);
         super.initializeMouseListener();
     }
