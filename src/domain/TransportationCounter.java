@@ -21,12 +21,12 @@ import java.util.logging.Logger;
 
 public class TransportationCounter extends CounterUnit implements Comparable<TransportationCounter> {
 
-    private CounterType type;
+    private CounterType aType;
     
     public TransportationCounter(CounterType pType, int resizeWidth, int resizeHeight) {
-        super(resizeWidth, resizeHeight, Integer.toString(pType.ordinal() + 1)); // since the images start from M01, not M00
-        this.type = pType;
-        super.setType(pType);
+        super(pType, resizeWidth, resizeHeight, Integer.toString(pType.ordinal() + 1)); // since the images start from M01, not M00
+        this.aType = pType;
+
         super.initializeMouseListener();
     }
     
@@ -85,12 +85,12 @@ public class TransportationCounter extends CounterUnit implements Comparable<Tra
 //    }
     @Override
     public CounterType getType() {
-        return this.type;
+        return this.aType;
     }
 
     public int getRequiredNumOfUnitsOn(Road r) {
         RegionType region = r.getRegionType();
-        switch (type) {
+        switch (aType) {
             case GIANTPIG:
                 if (region == RegionType.PLAIN || region == RegionType.WOODS) {
                     return 1;
@@ -156,7 +156,7 @@ public class TransportationCounter extends CounterUnit implements Comparable<Tra
 
     @Override
     public int compareTo(TransportationCounter o) {
-        return type.compareTo(o.type);
+        return aType.compareTo(o.aType);
     }
 
 
@@ -166,7 +166,7 @@ public class TransportationCounter extends CounterUnit implements Comparable<Tra
         return "TransportationCounter{" +
                 "owned=" + owned +
                 ", isSecret=" + isSecret +
-                ", type=" + type +
+                ", type=" + aType +
                 '}';
     }
     

@@ -39,10 +39,11 @@ public class GameState implements Serializable{
     private int currentRound;
     private RoundPhaseType currentPhase;
     private Player currentPlayer;
+    private int passedPlayerCount;
 
     private TravelCardDeck travelCardDeck;
-    private TransportationCounterPile counterPile;
-    private ArrayList<TransportationCounter> faceUpCounters = new ArrayList<>();
+    private CounterUnitPile counterPile;
+    private ArrayList<CounterUnit> faceUpCounters = new ArrayList<>();
 
     private ArrayList<ElfBoot> elfBoots;
 
@@ -50,6 +51,7 @@ public class GameState implements Serializable{
     {
         this.elfBoots = new ArrayList<>();
         this.currentRound = 1;
+        this.passedPlayerCount = 0;
         if (gameVariant == GameVariant.ELFENLAND_LONG) {
             this.totalRounds = 4;
         } else {
@@ -60,7 +62,7 @@ public class GameState implements Serializable{
         // String sessionID = GameManager.getInstance().getSessionID();
         // that is why we are passing the sessionID to the GameState constructor instead (there is no reason for it to really be a field)
         this.travelCardDeck = new TravelCardDeck(sessionID);
-        this.counterPile = new TransportationCounterPile(sessionID);
+        this.counterPile = new CounterUnitPile(sessionID);
     }
 
     // TODO: implement this second constructor
@@ -172,6 +174,18 @@ public class GameState implements Serializable{
         currentPlayer = players.get(0);
     }
 
+    public int getPassedPlayerCount() {
+        return passedPlayerCount;
+    }
+
+    public void incrementPassedPlayerCount() {
+        passedPlayerCount++;
+    }
+
+    public void clearPassedPlayerCount() {
+        passedPlayerCount = 0;
+    }
+
     public void addElfBoot(ElfBoot boot) {
         this.elfBoots.add(boot);
     }
@@ -180,13 +194,15 @@ public class GameState implements Serializable{
         return travelCardDeck;
     }
 
-    public ArrayList<TransportationCounter> getFaceUpCounters() {
+    public ArrayList<CounterUnit> getFaceUpCounters() {
         return this.faceUpCounters;
     }
-
-    public TransportationCounterPile getCounterPile() {
+    
+    //this method returns a pile for Elfenland
+    public CounterUnitPile getCounterPile() {
         return this.counterPile;
     }
+    
 
     public GameVariant getGameVariant() {
         return gameVariant;
@@ -202,7 +218,7 @@ public class GameState implements Serializable{
     public void addFaceUpCounterFromPile() {
         if (counterPile.getSize() > 0) {
             LOGGER.info("Adding face-up counter from pile");
-            TransportationCounter counter = counterPile.draw();
+            CounterUnit counter = counterPile.draw();
             counter.setOwned(false);
             faceUpCounters.add(counter);
         } else {

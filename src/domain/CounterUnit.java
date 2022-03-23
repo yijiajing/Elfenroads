@@ -32,12 +32,12 @@ public abstract class CounterUnit extends Drawable{
     protected MP3Player track1 = new MP3Player("./assets/Music/0000171.mp3");
     
     
-    CounterUnit(int resizeWidth, int resizeHeight, String imageNumber) {
-
+    CounterUnit(CounterUnitType pType, int resizeWidth, int resizeHeight, String imageNumber) {
         // find the picture of the card based on what type it is
         // since the images are named similarly and ordered the same way as they are in the enum declaration,
         // we can get the filepath just by using the type
-        super("./assets/sprites/M0" + imageNumber + ".png");
+    	super("./assets/sprites/M0" + imageNumber + ".png");
+        aType = pType;
         owned = false; // default value
         isSecret = false;
         // String filepath = ("./assets/sprites/M0" + imageNumber + ".png");
@@ -137,7 +137,7 @@ public abstract class CounterUnit extends Drawable{
                 }
 
                 // PLAN TRAVEL ROUTES PHASE
-                else if (GameRuleUtils.isPlanRoutesPhase()) {
+                else if (GameState.instance().getCurrentPhase() == RoundPhaseType.PLAN_ROUTES) {
                     if (getPlacedOn() == null) {
                         ActionManager.getInstance().setSelectedCounter(CounterUnit.this);
                     } else {
