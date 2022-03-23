@@ -64,7 +64,7 @@ public class ActionManager {
     public void setSelectedRoad(Road road) {
         LOGGER.info("Road on " + road.getRegionType() + " selected");
 
-        if (!(GameRuleUtils.isPlanRoutesPhase() && gameManager.isLocalPlayerTurn())) {
+        if (!(gameState.getCurrentPhase() == RoundPhaseType.PLAN_ROUTES && gameManager.isLocalPlayerTurn())) {
             return;
         }
         LOGGER.info("Before removing the counter, counters in hand: " +
@@ -123,7 +123,7 @@ public class ActionManager {
     }
 
     public void setSelectedCounter(CounterUnit pCounter) {
-        if (!GameRuleUtils.isPlanRoutesPhase()) {
+        if (gameState.getCurrentPhase() != RoundPhaseType.PLAN_ROUTES) {
             return;
         }
 

@@ -69,7 +69,7 @@ public class TransportationCounter extends CounterUnit implements Comparable<Tra
                 }
 
                 // PLAN TRAVEL ROUTES PHASE
-                else if (GameRuleUtils.isPlanRoutesPhase()) {
+                else if (GameState.instance().getCurrentPhase() == RoundPhaseType.PLAN_ROUTES) {
                     if (getPlacedOn() == null) {
                         ActionManager.getInstance().setSelectedCounter(TransportationCounter.this);
                     } else {
