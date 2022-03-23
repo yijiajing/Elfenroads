@@ -44,7 +44,7 @@ public class PlaceCounterUnitCommand implements GameCommand {
 	        }else if (counter instanceof MagicSpell) {
 	        	road.setMagicSpell((MagicSpell)counter);
 	        }else if (counter instanceof Obstacle) {
-	            Obstacle obstacle = Obstacle.getNew();
+	            Obstacle obstacle = (Obstacle)Obstacle.getNew();
 	            road.placeObstacle(obstacle);
 	        }
 	        
