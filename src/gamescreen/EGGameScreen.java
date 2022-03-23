@@ -257,7 +257,9 @@ public class EGGameScreen extends GameScreen {
 
             // put gold value token on every town
             for (Town t : GameMap.getInstance().getTownList()) {
-                t.getTokenPanel().drawGoldValueToken();
+                if (t.getTokenPanel() != null) {
+                    t.getTokenPanel().drawGoldValueToken();
+                }
             }
         }
     }
