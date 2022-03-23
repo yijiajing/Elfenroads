@@ -253,13 +253,11 @@ public class EGGameScreen extends GameScreen {
     }
 
     private void drawGoldValueTokens() {
-        if (isElfengoldVariant()) {
-
-            // put gold value token on every town
-            for (Town t : GameMap.getInstance().getTownList()) {
-                if (t.getTokenPanel() != null) {
-                    t.getTokenPanel().drawGoldValueToken();
-                }
+        // put gold value token on every town
+        for (Town t : GameMap.getInstance().getTownList()) {
+            System.out.println(t.getName());
+            if (t.getTokenPanel() != null && !t.getName().equals("Elvenhold")) {
+                t.getTokenPanel().drawGoldValueToken();
             }
         }
     }
