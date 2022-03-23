@@ -28,10 +28,10 @@ public abstract class GameManager {
     private static GameManager INSTANCE; // Singleton instance
     private final static Logger LOGGER = Logger.getLogger("Game Manager");
 
-    private GameState gameState;
-    private ActionManager actionManager;
-    private Player thisPlayer = null; // represents the Player who is using this GUI, set by ChooseBootWindow
-    private boolean loaded;
+    protected GameState gameState;
+    protected ActionManager actionManager;
+    protected Player thisPlayer = null; // represents the Player who is using this GUI, set by ChooseBootWindow
+    protected boolean loaded;
 
     // stuff for managing networking operations
     protected String sessionID;
@@ -93,7 +93,6 @@ public abstract class GameManager {
             ArrayList<String> players = GameSession.getPlayerNames(sessionID);
             String localPlayerName = getThisPlayer().getName();
 
-
             AddPlayerCommand cmd = new AddPlayerCommand(localPlayerName, thisPlayer.getColour());
             try {
                 getComs().sendGameCommandToAllPlayers(cmd);
@@ -124,6 +123,15 @@ public abstract class GameManager {
 
         initializeElfBoots();
         setUpRound();
+    }
+
+    /**
+     * Called by ChooseBootWindow after the user chooses a boot colour
+     * Sets the Player of "this" GUI
+     */
+    public void setThisPlayer(Player p) {
+        thisPlayer = p;
+        gameState.addPlayer(p);
     }
 
     protected abstract void setUpNewGame();

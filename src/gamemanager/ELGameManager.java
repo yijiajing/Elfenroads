@@ -21,12 +21,7 @@ import java.util.logging.Logger;
  */
 public class ELGameManager extends GameManager {
 
-    private static ELGameManager INSTANCE; // Singleton instance
     private final static Logger LOGGER = Logger.getLogger("Game Manager");
-
-    private GameState gameState;
-    private ActionManager actionManager;
-    private Player thisPlayer = null; // represents the Player who is using this GUI, set by ChooseBootWindow
 
     /**
      * Constructor is called when "join" is clicked
@@ -50,15 +45,6 @@ public class ELGameManager extends GameManager {
 //    public static ELGameManager getInstance() {
 //        return INSTANCE;
 //    }
-
-    /**
-     * Called by ChooseBootWindow after the user chooses a boot colour
-     * Sets the Player of "this" GUI
-     */
-    public void setThisPlayer(Player p) {
-        thisPlayer = p;
-        gameState.addPlayer(p);
-    }
 
     @Override
     protected void setUpNewGame() {
