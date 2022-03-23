@@ -10,13 +10,17 @@ import javax.swing.JLabel;
 
 import commands.DrawCounterCommand;
 import enums.CounterType;
+import enums.GoldPieceType;
+import enums.MagicSpellType;
+import enums.ObstacleType;
 import loginwindow.MainFrame;
 import networking.GameState;
 import panel.GameScreen;
 import utils.GameRuleUtils;
 
+//Only for Elfengold
 //This class is similar to the TransportationCounterPile class, except for that it supports all counterUnits. 
-//TODO: Will merge TransportationCounterPile into this after later.
+//TODO: Probably merge TransportationCounterPile into this after later.
 
 public class CounterUnitPile extends Deck<CounterUnit> {
 
@@ -31,6 +35,9 @@ public class CounterUnitPile extends Deck<CounterUnit> {
                 components.add(new TransportationCounter(type, MainFrame.instance.getWidth() * 67 / 1440, MainFrame.instance.getHeight() * 60 / 900));
             }
         }
+        
+        
+        
 
         // initialize the deck image
         ImageIcon imageIcon = new ImageIcon("./assets/sprites/M08.png");
@@ -42,7 +49,35 @@ public class CounterUnitPile extends Deck<CounterUnit> {
 
         shuffle();
     }
+    
+    private void addCountersToDeck() {
+    	int width = MainFrame.instance.getWidth() * 67 / 1440;
+    	int height = MainFrame.instance.getHeight() * 60 / 900;
+    	for(int i = 0; i < 9; i++) {
+    		if (i < 2) {
+    			components.add(new GoldPiece(GoldPieceType.GOLDPIECE, width, height));
+    			components.add(new EGObstacle(ObstacleType.OBSTACLE, width, height));
+    			components.add(new EGObstacle(ObstacleType.SEAMONSTER, width, height));
+    			components.add(new MagicSpell(MagicSpellType.DOUBLE, width, height));
+    			components.add(new MagicSpell(MagicSpellType.EXCHANGE, width, height));
+    		}
+    		if (i < 4) {
+        		components.add(new TransportationCounter(CounterType.DRAGON, width, height));
+        		components.add(new TransportationCounter(CounterType.MAGICCLOUD, width, height));
+    		}
+    		if(i < 5) {
+    			components.add(new TransportationCounter(CounterType.UNICORN, width,height));
+    		}
+    		if(i < 8) {
+    			components.add(new TransportationCounter(CounterType.ELFCYCLE, width,height));
+    			components.add(new TransportationCounter(CounterType.TROLLWAGON, width,height));
+    		}
+    		components.add(new TransportationCounter(CounterType.GIANTPIG, width,height));
+    		
 
+    	}
+    }
+    
     public JLabel getImage() {
         return this.deckImage;
     }

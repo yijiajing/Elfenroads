@@ -9,6 +9,10 @@ import panel.GameScreen;
 import java.util.List;
 import java.util.logging.Logger;
 
+/**
+ * This command supports all types of counters. 
+ *
+ */
 public class PlaceCounterUnitCommand implements GameCommand {
 	 	private final String start;
 	    private final String destination;
@@ -44,8 +48,10 @@ public class PlaceCounterUnitCommand implements GameCommand {
 	        }else if (counter instanceof MagicSpell) {
 	        	road.setMagicSpell((MagicSpell)counter);
 	        }else if (counter instanceof Obstacle) {
-	            Obstacle obstacle = (Obstacle)Obstacle.getNew();
+	            Obstacle obstacle = (Obstacle)Obstacle.getNew();//For Elfengold, should call EGObstacle.getNew(type)
 	            road.placeObstacle(obstacle);
+	        }else if (counter instanceof GoldPiece) {
+	        	road.placeGoldPiece((GoldPiece)counter);
 	        }
 	        
 	        

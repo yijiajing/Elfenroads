@@ -10,8 +10,10 @@ import loginwindow.MainFrame;
 import networking.GameState;
 
 
-
-
+/**
+ * This command supports all types of counters.
+ *
+ */
 public class ReturnCounterUnitCommand implements GameCommand{
 	
     private final CounterUnitType type;
