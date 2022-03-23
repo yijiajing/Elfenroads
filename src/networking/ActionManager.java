@@ -86,6 +86,7 @@ public class ActionManager {
                     LOGGER.info("There was a problem sending the command to place the obstacle!");
                     e.printStackTrace();
                 }
+                gameManager.endTurn();
             } else { // Invalid move
                 GameScreen.displayMessage("You cannot place an obstacle here. Please try again.");
             }
@@ -111,6 +112,7 @@ public class ActionManager {
                     LOGGER.info("There was a problem sending the command to place the transportation counter!");
                     e.printStackTrace();
                 }
+                gameManager.endTurn();
             } else { // Invalid move
                 GameScreen.displayMessage("You cannot place a transportation counter here. Please try again.");
             }

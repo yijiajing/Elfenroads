@@ -39,13 +39,12 @@ public class EndTurnButton extends JButton {
                     try {
                         GameManager.getInstance().getComs().sendGameCommandToAllPlayers(command);
                     } catch (IOException e) {
-                        System.out.println("There was a problem sending the endPhaseCommand to all players.");
+                        System.out.println("There was a problem sending the PassTurnCommand to all players.");
                         e.printStackTrace();
                     }
                     GameManager.getInstance().endTurn();
                     track1.play();
-                }
-                else {
+                } else {
                     GameManager.getInstance().endTurn();
                     track1.play();
                 }
