@@ -1,11 +1,6 @@
 package gamescreen;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
-import java.io.Serializable;
 
 import java.util.List;
 
@@ -18,17 +13,7 @@ import javax.swing.border.Border;
 import domain.*;
 import enums.GameVariant;
 import gamemanager.GameManager;
-import loginwindow.ChatBoxGUI;
 import networking.GameState;
-
-import org.json.JSONObject;
-import org.minueto.MinuetoTool;
-import panel.EndTurnButton;
-import panel.MenuButton;
-import panel.ObserverPanel;
-import panel.ScoreBoardPanel;
-
-import static utils.GameRuleUtils.isElfengoldVariant;
 
 /**
  * A Singleton class that represents the main screen in which the board game is played
