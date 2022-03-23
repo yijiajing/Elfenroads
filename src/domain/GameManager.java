@@ -336,7 +336,7 @@ public class GameManager {
      *
      * @param toKeep
      */
-    public void returnAllCountersExceptOne(TransportationCounter toKeep) {
+    public void returnAllCountersExceptOne(CounterUnit toKeep) {
         List<TransportationCounter> myCounters = thisPlayer.getHand().getCounters();
 
         for (TransportationCounter c : myCounters) {

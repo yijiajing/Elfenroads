@@ -1,21 +1,21 @@
 package commands;
 
 import domain.GameManager;
-import domain.TransportationCounter;
-import enums.CounterType;
+import enums.CounterUnitType;
 import networking.GameState;
 import panel.GameScreen;
+import domain.CounterUnit;
 
 import java.util.logging.Logger;
 
 public class DrawCounterCommand implements GameCommand {
 
-    private final CounterType type; // if the counter is taken from the face-up options, otherwise type==null
+    private final CounterUnitType type; // if the counter is taken from the face-up options, otherwise type==null
     private final boolean isSecret;
     private final boolean isFaceUp;
     private final String senderName;
 
-    public DrawCounterCommand(TransportationCounter counter, boolean isFaceUp) {
+    public DrawCounterCommand(CounterUnit counter, boolean isFaceUp) {
         this.type = counter.getType();
         this.isSecret = counter.isSecret();
         this.isFaceUp = isFaceUp;
@@ -37,9 +37,9 @@ public class DrawCounterCommand implements GameCommand {
         }
 
         // Add to the sender player's hand
-        TransportationCounter newCounter = TransportationCounter.getNew(type);
+        CounterUnit newCounter = CounterUnit.getNew(type);
         newCounter.setSecret(isSecret);
-        GameState.instance().getPlayerByName(senderName).getHand().getCounters().add(newCounter);
+        GameState.instance().getPlayerByName(senderName).getHand().addUnit(newCounter);
 
         GameScreen.getInstance().updateAll();
     }

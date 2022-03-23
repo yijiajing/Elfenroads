@@ -224,10 +224,10 @@ public class GameState implements Serializable{
         }
     }
 
-    public void removeFaceUpCounter(CounterType type) {
-        TransportationCounter toRemove = null;
+    public void removeFaceUpCounter(CounterUnitType type) {
+        CounterUnit toRemove = null;
 
-        for (TransportationCounter c : faceUpCounters) {
+        for (CounterUnit c : faceUpCounters) {
             if (c.getType() == type) {
                 toRemove = c;
             }
