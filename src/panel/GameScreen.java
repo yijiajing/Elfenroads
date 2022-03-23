@@ -514,7 +514,7 @@ public class GameScreen extends JPanel implements Serializable
 	
 	public void updateFaceUpTransportationCounters()
 	{
-		ArrayList<TransportationCounter> faceUpCounters = GameState.instance().getFaceUpCounters();
+		ArrayList<CounterUnit> faceUpCounters = GameState.instance().getFaceUpCounters();
 
 		// clear the previous counters from the screen
 		for (JPanel panel : panelForFaceUpTransportationCounters) {
@@ -527,7 +527,7 @@ public class GameScreen extends JPanel implements Serializable
 
 		for (int i = 0; i < 5; i++) {
 			JPanel panel = panelForFaceUpTransportationCounters[i];
-			TransportationCounter counter = faceUpCounters.get(i);
+			CounterUnit counter = faceUpCounters.get(i);
 			panel.add(counter.getDisplay());
 			panel.repaint();
 			panel.revalidate();
