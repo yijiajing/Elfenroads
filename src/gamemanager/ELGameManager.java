@@ -1,6 +1,7 @@
-package domain;
+package gamemanager;
 
 import commands.*;
+import domain.*;
 import enums.Colour;
 import enums.GameVariant;
 import enums.RoundPhaseType;
@@ -18,9 +19,9 @@ import java.util.logging.Logger;
 /**
  * A Singleton class that controls the main game loop
  */
-public class GameManager {
+public class ELGameManager extends GameManager {
 
-    private static GameManager INSTANCE; // Singleton instance
+    private static ELGameManager INSTANCE; // Singleton instance
     private final static Logger LOGGER = Logger.getLogger("Game Manager");
 
     private GameState gameState;
@@ -41,29 +42,8 @@ public class GameManager {
      * If the User is starting a new game, then loadedState == null
      * If the User is loading a previous game, then loadedState != null
      */
-    private GameManager(Optional<GameState> loadedState, String pSessionID, GameVariant variant) {
-
-        MainFrame.mainPanel.add(GameScreen.init(MainFrame.getInstance(), variant), "gameScreen");
-        sessionID = pSessionID;
-
-        // start a new game if there is no state to be loaded
-        if (loadedState.isEmpty()) {
-            gameState = GameState.init(pSessionID, variant);
-            actionManager = ActionManager.init(gameState, this);
-
-            loaded = false;
-
-            availableColours.addAll(Arrays.asList(Colour.values())); // all colours are available
-        }
-
-        // load state
-        else {
-            gameState = loadedState.get();
-            loaded = true;
-            //TODO implement
-        }
-
-        coms = CommunicationsManager.init(this, sessionID);
+    ELGameManager(Optional<GameState> loadedState, String pSessionID, GameVariant variant) {
+        super(loadedState, pSessionID, variant);
     }
 
     /**
@@ -93,28 +73,9 @@ public class GameManager {
         }
     }
 
-    /**
-     * Called when we have all the players in the list. Any initialization that utilizes the player list
-     * should be put here.
-     */
-    public void launch() {
-        LOGGER.info("We have all players' info ready, setting up the rounds");
-        gameState.sortPlayers();
-        gameState.setToFirstPlayer();
-        System.out.print(gameState.getPlayers());
-
-        if (!loaded) setUpNewGame();
-
-        GameScreen.getInstance().draw();
-        MainFrame.cardLayout.show(MainFrame.mainPanel, "gameScreen");
-
-        initializeElfBoots();
-        setUpRound();
-    }
-
-    public static GameManager init(Optional<GameState> loadedState, String sessionID, GameVariant variant) {
+    public static ELGameManager init(Optional<GameState> loadedState, String sessionID, GameVariant variant) {
         if (INSTANCE == null) {
-            INSTANCE = new GameManager(loadedState, sessionID, variant);
+            INSTANCE = new ELGameManager(loadedState, sessionID, variant);
         }
         return INSTANCE;
     }
@@ -122,7 +83,7 @@ public class GameManager {
     /**
      * @return the Singleton instance of the GameManager
      */
-    public static GameManager getInstance() {
+    public static ELGameManager getInstance() {
         return INSTANCE;
     }
 
@@ -135,7 +96,7 @@ public class GameManager {
         gameState.addPlayer(p);
     }
 
-    private void setUpNewGame() {
+    protected void setUpNewGame() {
         // put 5 counters face up, these are shared across peers
         for (int i = 0; i < 5; i++) {
             this.gameState.addFaceUpCounterFromPile();
@@ -189,7 +150,7 @@ public class GameManager {
             thisPlayer.getHand().addUnit(gameState.getTravelCardDeck().draw());
         }
         LOGGER.info("Added " + (8 - numCards) + " travel cards...");
-        LOGGER.info(GameManager.getInstance().getThisPlayer().getHand().getCards().toString());
+        LOGGER.info(getThisPlayer().getHand().getCards().toString());
 
         int numDrawn = 8 - numCards;
         DrawCardCommand drawCardCommand = new DrawCardCommand(numDrawn);
@@ -333,10 +294,12 @@ public class GameManager {
 
     /**
      * Part of phase 6, called when a transportation counter from the player's hand is clicked
+     * Return all counters except one
      *
      * @param toKeep
      */
-    public void returnAllCountersExceptOne(TransportationCounter toKeep) {
+    @Override
+    public void returnCounter(TransportationCounter toKeep) {
         List<TransportationCounter> myCounters = thisPlayer.getHand().getCounters();
 
         for (TransportationCounter c : myCounters) {
@@ -367,6 +330,7 @@ public class GameManager {
      * If we are still in the same phase, we notify the next peer in list to take action.
      */
     // totalRounds Round <--in-- numOfRoundPhaseType Phases <--in-- numOfPlayer Turns
+    @Override
     public void endTurn() {
         GameScreen.getInstance().updateAll(); // update the GUI
         actionManager.clearSelection();
@@ -402,6 +366,7 @@ public class GameManager {
      * and others call it through command execution (endPhaseCommand in endTurn).
      * If we are still in the same round, the first player will take action in the new phase.
      */
+    @Override
     public void endPhase() {
         actionManager.clearSelection();
         int nextOrdinal = gameState.getCurrentPhase().ordinal() + 1;
@@ -434,6 +399,7 @@ public class GameManager {
     /**
      * Trigger for every peers when endPhase is called
      */
+    @Override
     public void endRound() {
         gameState.incrementCurrentRound();
         LOGGER.info("...Going to the next round #" + gameState.getCurrentRound());
@@ -452,7 +418,8 @@ public class GameManager {
         setUpRound(); // start next round
     }
 
-    private void endGame() {
+    @Override
+    public void endGame() {
         LOGGER.info("Game ends in " + gameState.getCurrentRound() + " rounds");
         gameState.setCurrentPhase(null);
         List<Player> players = gameState.getPlayers();
@@ -504,83 +471,4 @@ public class GameManager {
         }
     }
 
-    public void initializeElfBoots() {
-
-        ElfBootPanel elvenholdBootPanel = GameMap.getInstance().getTown("Elvenhold").getElfBootPanel();
-
-        for (Player p : gameState.getPlayers()) {
-            gameState.addElfBoot(new ElfBoot(p.getColour(), GameScreen.getInstance().getWidth(), GameScreen.getInstance().getHeight(), elvenholdBootPanel, GameScreen.getInstance()));
-        }
-    }
-
-    private void updateGameState() {
-        GameScreen.getInstance().updateAll();
-    }
-
-    public GameState getGameState() {
-        return this.gameState;
-    }
-
-    public void requestAvailableColours() {
-        try {
-            if (GameSession.isCreator(User.getInstance(), sessionID)) { // I am the creator of the session
-                showBootWindow(); // all colours are available, don't need to send any commands
-            } else {
-                // ask the existing players for their colours
-                String localAddress = NetworkUtils.getLocalIPAddPort();
-                coms.sendGameCommandToAllPlayers(new GetBootColourCommand(localAddress));
-            }
-        } catch (IOException e) {
-            System.out.println("There was a problem sending the command to get players' boot colours!");
-            e.printStackTrace();
-        } catch (Exception e) {
-            System.out.println("There was a problem getting the local IP.");
-            e.printStackTrace();
-        }
-    }
-
-    public Player getThisPlayer() {
-        return thisPlayer;
-    }
-
-    public CommunicationsManager getComs() {
-        return coms;
-    }
-
-
-    public void removeAvailableColour(Colour c, String playerIP) {
-        availableColours.remove(c);
-        addPairToBootColours(c, playerIP);
-
-        try {
-            if (thisPlayer == null) { // I haven't chosen a boot colour yet
-                int numPlayers = GameSession.getPlayerNames(sessionID).size();
-
-                if (availableColours.size() == 7 - numPlayers) { // we have received the boot colours from all players who have joined
-                    showBootWindow();
-                }
-            }
-        } catch (IOException e) {
-            System.out.println("There was a problem getting the players' names in the session.");
-            e.printStackTrace();
-        }
-    }
-
-    public void addPairToBootColours(Colour c, String playerIP) {
-        bootColours.put(c, playerIP);
-    }
-
-    public String getSessionID() {
-        return sessionID;
-    }
-
-    public boolean isLocalPlayerTurn() {
-        return thisPlayer.equals(gameState.getCurrentPlayer());
-    }
-
-    public void showBootWindow() {
-        ChooseBootWindow window = new ChooseBootWindow(sessionID, availableColours);
-        MainFrame.mainPanel.add(window, "choose-boot");
-        MainFrame.cardLayout.show(MainFrame.mainPanel, "choose-boot");
-    }
 }

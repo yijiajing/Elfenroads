@@ -1,12 +1,10 @@
 package loginwindow;
 
 import commands.SendBootColourCommand;
-import domain.GameManager;
+import gamemanager.GameManager;
 import domain.Player;
 import enums.Colour;
-import networking.CommunicationsManager;
 import networking.GameSession;
-import networking.GameState;
 import networking.User;
 import utils.NetworkUtils;
 
@@ -14,7 +12,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.IOException;
 import java.util.ArrayList;
 
 

@@ -5,6 +5,7 @@ import enums.GameVariant;
 import enums.RegionType;
 import enums.RoundPhaseType;
 import enums.TravelCardType;
+import gamemanager.GameManager;
 import networking.GameState;
 
 import java.util.List;

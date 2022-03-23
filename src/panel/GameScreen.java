@@ -17,6 +17,7 @@ import javax.swing.border.Border;
 
 import domain.*;
 import enums.GameVariant;
+import gamemanager.GameManager;
 import loginwindow.ChatBoxGUI;
 import networking.GameState;
 

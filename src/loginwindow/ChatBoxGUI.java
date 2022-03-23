@@ -1,8 +1,7 @@
 package loginwindow;
 
 import commands.ChatMessageCommand;
-import domain.GameManager;
-import networking.CommunicationsManager;
+import gamemanager.GameManager;
 
 import javax.swing.*;
 import java.awt.event.KeyEvent;

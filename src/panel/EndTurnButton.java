@@ -1,19 +1,14 @@
 package panel;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.io.IOException;
 
 import commands.PassTurnCommand;
-import domain.GameManager;
+import gamemanager.GameManager;
 import enums.RoundPhaseType;
 import loginwindow.MP3Player;
-import networking.ActionManager;
-import networking.CommunicationsManager;
 import networking.GameState;
 import utils.GameRuleUtils;
 

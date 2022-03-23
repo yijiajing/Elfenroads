@@ -3,6 +3,7 @@ package commands;
 import domain.*;
 import enums.CounterType;
 import enums.RegionType;
+import gamemanager.GameManager;
 import networking.GameState;
 import panel.GameScreen;
 

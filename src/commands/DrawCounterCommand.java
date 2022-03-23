@@ -1,6 +1,6 @@
 package commands;
 
-import domain.GameManager;
+import gamemanager.GameManager;
 import domain.TransportationCounter;
 import enums.CounterType;
 import networking.GameState;

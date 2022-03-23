@@ -1,13 +1,12 @@
 package commands;
 
-import domain.GameManager;
+import gamemanager.GameManager;
 import domain.TransportationCounter;
 import domain.Hand;
 import enums.CounterType;
 import loginwindow.MainFrame;
 import networking.GameState;
 
-import java.util.List;
 import java.util.logging.Logger;
 
 public class ReturnTransportationCounterCommand implements GameCommand {

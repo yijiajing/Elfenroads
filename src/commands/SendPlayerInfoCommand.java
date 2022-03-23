@@ -1,10 +1,8 @@
 package commands;
 
-import domain.GameManager;
+import gamemanager.GameManager;
 import domain.Player;
 import enums.Colour;
-import networking.CommunicationsManager;
-import utils.NetworkUtils;
 
 public class SendPlayerInfoCommand implements GameCommand {
 

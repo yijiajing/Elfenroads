@@ -1,6 +1,6 @@
 package loginwindow;
 
-import domain.GameManager;
+import gamemanager.GameManager;
 
 import networking.*;
 

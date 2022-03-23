@@ -1,6 +1,6 @@
 package commands;
 
-import domain.GameManager;
+import gamemanager.GameManager;
 import enums.Colour;
 
 /**

@@ -1,9 +1,5 @@
 package commands;
 
-import domain.GameManager;
-import networking.ActionManager;
-import panel.GameScreen;
-
 import java.io.Serializable;
 
 public interface GameCommand extends Serializable {

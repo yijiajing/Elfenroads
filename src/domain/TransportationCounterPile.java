@@ -2,6 +2,7 @@ package domain;
 
 import commands.DrawCounterCommand;
 import enums.CounterType;
+import gamemanager.GameManager;
 import loginwindow.MainFrame;
 import networking.GameState;
 import panel.GameScreen;

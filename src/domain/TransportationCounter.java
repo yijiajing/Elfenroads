@@ -4,6 +4,7 @@ import commands.DrawCounterCommand;
 import enums.CounterType;
 import enums.RegionType;
 import enums.RoundPhaseType;
+import gamemanager.GameManager;
 import loginwindow.MP3Player;
 import loginwindow.MainFrame;
 import networking.ActionManager;
@@ -64,7 +65,7 @@ public class TransportationCounter extends CounterUnit implements Comparable<Tra
                 }
                 // RETURN COUNTERS PHASE
                 else if (GameState.instance().getCurrentPhase() == RoundPhaseType.RETURN_COUNTERS) {
-                    GameManager.getInstance().returnAllCountersExceptOne(TransportationCounter.this);
+                    GameManager.getInstance().returnCounter(TransportationCounter.this);
                     track1.play();
                 }
 
