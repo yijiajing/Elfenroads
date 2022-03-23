@@ -15,6 +15,16 @@ public class EGGameManager extends GameManager {
     }
 
     @Override
+    protected void setUpNewGame() {
+
+    }
+
+    @Override
+    public void setUpRound() {
+
+    }
+
+    @Override
     public void returnCounter(TransportationCounter toKeep) {
 
     }

@@ -1,5 +1,6 @@
 package gamemanager;
 
+import commands.AddPlayerCommand;
 import commands.GetBootColourCommand;
 import domain.ElfBoot;
 import domain.GameMap;
@@ -24,7 +25,7 @@ import java.util.logging.Logger;
 
 public abstract class GameManager {
 
-    private static ELGameManager INSTANCE; // Singleton instance
+    private static GameManager INSTANCE; // Singleton instance
     private final static Logger LOGGER = Logger.getLogger("Game Manager");
 
     private GameState gameState;
@@ -33,12 +34,12 @@ public abstract class GameManager {
     private boolean loaded;
 
     // stuff for managing networking operations
-    private String sessionID;
-    private CommunicationsManager coms;
+    protected String sessionID;
+    protected CommunicationsManager coms;
 
     // manages choosing a boot colour
-    private ArrayList<Colour> availableColours = new ArrayList<>();
-    private HashMap<Colour, String> bootColours = new HashMap<>(); // <boot colour, player IP> TODO change to Player
+    protected ArrayList<Colour> availableColours = new ArrayList<>();
+    protected HashMap<Colour, String> bootColours = new HashMap<>(); // <boot colour, player IP> TODO change to Player
 
     GameManager(Optional<GameState> loadedState, String pSessionID, GameVariant variant) {
         MainFrame.mainPanel.add(GameScreen.init(MainFrame.getInstance(), variant), "gameScreen");
@@ -77,6 +78,33 @@ public abstract class GameManager {
 
     public static GameManager getInstance() {
         return INSTANCE;
+    }
+
+    /**
+     * Called when "start" is clicked
+     */
+    public void initPlayers() {
+        // Make sure not to do any player list iteration before this block of code, as players are not
+        // fully initialized. If you want to do anything right after players are fully initialized,
+        // add it to launch(). Also check AddPlayerCommand.
+
+        // initialize all the players now that the game has been launched and everyone is in
+        try {
+            ArrayList<String> players = GameSession.getPlayerNames(sessionID);
+            String localPlayerName = getThisPlayer().getName();
+
+
+            AddPlayerCommand cmd = new AddPlayerCommand(localPlayerName, thisPlayer.getColour());
+            try {
+                getComs().sendGameCommandToAllPlayers(cmd);
+            } catch (Exception ugh) {
+                ugh.printStackTrace();
+            }
+
+            // now we have ordered all the players, so we should sort them
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**

@@ -27,15 +27,6 @@ public class ELGameManager extends GameManager {
     private GameState gameState;
     private ActionManager actionManager;
     private Player thisPlayer = null; // represents the Player who is using this GUI, set by ChooseBootWindow
-    private boolean loaded;
-
-    // stuff for managing networking operations
-    private String sessionID;
-    private CommunicationsManager coms;
-
-    // manages choosing a boot colour
-    private ArrayList<Colour> availableColours = new ArrayList<>();
-    private HashMap<Colour, String> bootColours = new HashMap<>(); // <boot colour, player IP> TODO change to Player
 
     /**
      * Constructor is called when "join" is clicked
@@ -46,46 +37,19 @@ public class ELGameManager extends GameManager {
         super(loadedState, pSessionID, variant);
     }
 
-    /**
-     * Called when "start" is clicked
-     */
-    public void initPlayers() {
-        // Make sure not to do any player list iteration before this block of code, as players are not
-        // fully initialized. If you want to do anything right after players are fully initialized,
-        // add it to launch(). Also check AddPlayerCommand.
-
-        // initialize all the players now that the game has been launched and everyone is in
-        try {
-            ArrayList<String> players = GameSession.getPlayerNames(sessionID);
-            String localPlayerName = getThisPlayer().getName();
-
-
-            AddPlayerCommand cmd = new AddPlayerCommand(localPlayerName, thisPlayer.getColour());
-            try {
-                getComs().sendGameCommandToAllPlayers(cmd);
-            } catch (Exception ugh) {
-                ugh.printStackTrace();
-            }
-
-            // now we have ordered all the players, so we should sort them
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static ELGameManager init(Optional<GameState> loadedState, String sessionID, GameVariant variant) {
-        if (INSTANCE == null) {
-            INSTANCE = new ELGameManager(loadedState, sessionID, variant);
-        }
-        return INSTANCE;
-    }
-
-    /**
-     * @return the Singleton instance of the GameManager
-     */
-    public static ELGameManager getInstance() {
-        return INSTANCE;
-    }
+//    public static ELGameManager init(Optional<GameState> loadedState, String sessionID, GameVariant variant) {
+//        if (INSTANCE == null) {
+//            INSTANCE = new ELGameManager(loadedState, sessionID, variant);
+//        }
+//        return INSTANCE;
+//    }
+//
+//    /**
+//     * @return the Singleton instance of the GameManager
+//     */
+//    public static ELGameManager getInstance() {
+//        return INSTANCE;
+//    }
 
     /**
      * Called by ChooseBootWindow after the user chooses a boot colour
@@ -96,6 +60,7 @@ public class ELGameManager extends GameManager {
         gameState.addPlayer(p);
     }
 
+    @Override
     protected void setUpNewGame() {
         // put 5 counters face up, these are shared across peers
         for (int i = 0; i < 5; i++) {
@@ -121,6 +86,7 @@ public class ELGameManager extends GameManager {
     /**
      * PHASE 1
      */
+    @Override
     public void setUpRound() {
         gameState.setCurrentPhase(RoundPhaseType.DEAL_CARDS);
         gameState.setToFirstPlayer();
