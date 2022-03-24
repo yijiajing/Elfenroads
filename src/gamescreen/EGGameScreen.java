@@ -16,15 +16,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import static utils.GameRuleUtils.isElfengoldVariant;
-
+//TODO: modify everything for Elfengold.
+// There is no face up transportation counter or a unique place for obstacle, for example.
 public class EGGameScreen extends GameScreen {
 
     EGGameScreen(JFrame frame, GameVariant variant) {
         super(frame, variant);
     }
 
-    //TODO: modify this for Elfengold
     @Override
     public void updateAll() {
         updateTransportationCountersAndObstacle(); // updates the player's counter area
@@ -255,7 +254,7 @@ public class EGGameScreen extends GameScreen {
     private void drawGoldValueTokens() {
         // put gold value token on every town
         for (Town t : GameMap.getInstance().getTownList()) {
-            System.out.println(t.getName());
+//            System.out.println(t.getName());
             if (t.getTokenPanel() != null && !t.getName().equals("Elvenhold")) {
                 t.getTokenPanel().drawGoldValueToken();
             }
