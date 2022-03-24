@@ -139,7 +139,21 @@ public class PlayerWaitWindow extends JPanel implements Runnable
                 }
 
                 // go back to the lobby
-                MainFrame.cardLayout.show(MainFrame.mainPanel,"lobby");;
+                // first, we need to destroy the old LobbyWindow. then we will add a new one.
+                if (MainFrame.getLobby() != null)
+                {
+                    // don't try to delete a null object
+                    // this field is pretty much guaranteed to be not null, but we might as well check for safety
+                    LobbyWindow toDelete = MainFrame.getLobby();
+                    MainFrame.mainPanel.remove(toDelete);
+                }
+                // initialize and show a new LobbyWindow
+                LobbyWindow reinitialized = new LobbyWindow();
+                MainFrame.setLobbyWindow(reinitialized);
+                MainFrame.mainPanel.add(reinitialized, "lobby");
+                MainFrame.cardLayout.show(MainFrame.mainPanel, "lobby");
+
+
             }
         });
 
