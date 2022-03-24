@@ -32,7 +32,7 @@ public class ReturnTransportationCounterCommand implements GameCommand {
         GameState.instance().getCounterPile().addDrawable(counter);
 
         // update the sending player's hand
-        TransportationCounter newCounter = TransportationCounter.getNew(type);
+        TransportationCounter newCounter = (TransportationCounter)TransportationCounter.getNew(type);
         newCounter.setSecret(isSecret);
         Hand senderHand = GameState.instance().getPlayerByName(senderName).getHand();
         senderHand.clearCounters();

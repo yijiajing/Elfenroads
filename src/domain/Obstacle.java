@@ -12,8 +12,7 @@ import enums.ObstacleType;
 public class Obstacle extends CounterUnit {
 
     public Obstacle(int resizeWidth, int resizeHeight) {
-        super(resizeWidth, resizeHeight, Integer.toString(9));
-        super.setType(ObstacleType.OBSTACLE);
+        super(ObstacleType.OBSTACLE, resizeWidth, resizeHeight, Integer.toString(9));
         this.getDisplay().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -27,7 +26,7 @@ public class Obstacle extends CounterUnit {
         });
     }
 
-    public static Obstacle getNew() {
+    public static CounterUnit getNew() {
         return new Obstacle(MainFrame.instance.getWidth()*67/1440, MainFrame.instance.getHeight()*60/900);
     }
     

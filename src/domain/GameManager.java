@@ -211,7 +211,7 @@ public class GameManager {
         if (!(isLocalPlayerTurn() && gameState.getCurrentPhase() == RoundPhaseType.DEAL_HIDDEN_COUNTER)) return;
 
         // add the counter to our hand
-        TransportationCounter counter = gameState.getCounterPile().draw();
+        CounterUnit counter = gameState.getCounterPile().draw();
         counter.setOwned(true);
         counter.setSecret(true);
         thisPlayer.getHand().addUnit(counter);
