@@ -2,6 +2,7 @@ package gamemanager;
 
 import commands.DrawCardCommand;
 import domain.*;
+import enums.EGRoundPhaseType;
 import enums.GameVariant;
 import enums.RoundPhaseType;
 import gamescreen.GameScreen;
@@ -37,7 +38,7 @@ public class EGGameManager extends GameManager {
 
     @Override
     public void setUpRound() {
-        gameState.setCurrentPhase(RoundPhaseType.DEAL_CARDS);
+        gameState.setCurrentPhase(EGRoundPhaseType.DEAL_CARDS);
         gameState.setToFirstPlayer();
         gameState.getTravelCardDeck().shuffle(); // only shuffle once at the beginning of each round
 
@@ -53,7 +54,7 @@ public class EGGameManager extends GameManager {
         LOGGER.info("Distributing travel cards...");
         LOGGER.info("Local player turn: " + isLocalPlayerTurn());
 
-        if (!(isLocalPlayerTurn() && gameState.getCurrentPhase() == RoundPhaseType.DEAL_CARDS)) return;
+        if (!(isLocalPlayerTurn() && gameState.getCurrentPhase() == EGRoundPhaseType.DEAL_CARDS)) return;
 
         int numCards = thisPlayer.getHand().getNumTravelCards();
         for (int i = numCards; i < 8; i++) {

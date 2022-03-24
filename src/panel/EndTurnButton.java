@@ -6,6 +6,8 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 
 import commands.PassTurnCommand;
+import enums.EGRoundPhaseType;
+import enums.ELRoundPhaseType;
 import gamemanager.GameManager;
 import enums.RoundPhaseType;
 import gamescreen.GameScreen;
@@ -25,11 +27,13 @@ public class EndTurnButton extends JButton {
                     GameScreen.displayMessage("You cannot end someone else's turn!");
                 } else if (GameRuleUtils.isDrawCountersPhase()) {
                     GameScreen.displayMessage("You must click on a counter to draw.");
-                } else if (GameState.instance().getCurrentPhase() == RoundPhaseType.RETURN_COUNTERS) {
+                } else if (GameState.instance().getCurrentPhase() == ELRoundPhaseType.RETURN_COUNTERS ||
+                        GameState.instance().getCurrentPhase() == EGRoundPhaseType.RETURN_COUNTERS) {
                     GameScreen.displayMessage("You must click on a transportation counter to return.");
                 } else if (GameState.instance().getCurrentPhase() == null) {
                     GameScreen.displayMessage("The game has ended. Please exit the game.");
-                } else if (GameState.instance().getCurrentPhase() == RoundPhaseType.PLAN_ROUTES) {
+                } else if (GameState.instance().getCurrentPhase() == ELRoundPhaseType.PLAN_ROUTES ||
+                        GameState.instance().getCurrentPhase() == EGRoundPhaseType.PLAN_ROUTES) {
                     PassTurnCommand command = new PassTurnCommand();
                     command.execute();
                     try {

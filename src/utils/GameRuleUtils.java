@@ -1,10 +1,7 @@
 package utils;
 
 import domain.*;
-import enums.GameVariant;
-import enums.RegionType;
-import enums.RoundPhaseType;
-import enums.TravelCardType;
+import enums.*;
 import gamemanager.GameManager;
 import networking.GameState;
 
@@ -31,7 +28,8 @@ public final class GameRuleUtils {
     public static boolean validateMove(GameMap gameMap, Town srcTown, Town destTown, List<TravelCard> cards) {
         if (cards == null || cards.isEmpty()) {
             return false;
-        } else if (!(GameState.instance().getCurrentPhase() == RoundPhaseType.MOVE
+        } else if (!((GameState.instance().getCurrentPhase() == EGRoundPhaseType.MOVE ||
+                GameState.instance().getCurrentPhase() == ELRoundPhaseType.MOVE)
                 && !cards.isEmpty()
                 && GameManager.getInstance().isLocalPlayerTurn())) {
             return false;
@@ -97,8 +95,8 @@ public final class GameRuleUtils {
     }
 
     public static boolean isDrawCountersPhase() {
-        return List.of(RoundPhaseType.DRAW_COUNTER_ONE,
-                RoundPhaseType.DRAW_COUNTER_TWO, RoundPhaseType.DRAW_COUNTER_THREE)
+        return List.of(ELRoundPhaseType.DRAW_COUNTER_ONE,
+                ELRoundPhaseType.DRAW_COUNTER_TWO, ELRoundPhaseType.DRAW_COUNTER_THREE)
                 .contains(GameState.instance().getCurrentPhase());
     }
 
