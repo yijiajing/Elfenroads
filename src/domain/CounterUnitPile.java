@@ -38,7 +38,7 @@ public class CounterUnitPile extends Deck<CounterUnit> {
         }
         
         
-        
+        addCountersToDeck();
 
         // initialize the deck image
         ImageIcon imageIcon = new ImageIcon("./assets/sprites/M08.png");
