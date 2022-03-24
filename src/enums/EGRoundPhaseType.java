@@ -1,7 +1,6 @@
 package enums;
 
 public enum EGRoundPhaseType {
-    DEAL_CARDS,
     DRAW_CARD_ONE,
     DRAW_CARD_TWO,
     DRAW_CARD_THREE,

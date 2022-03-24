@@ -2,6 +2,7 @@ package gamemanager;
 
 import commands.DrawCardCommand;
 import domain.*;
+import enums.EGRoundPhaseType;
 import enums.GameVariant;
 import enums.RoundPhaseType;
 import gamescreen.GameScreen;
@@ -27,52 +28,70 @@ public class EGGameManager extends GameManager {
     protected void setUpNewGame() {
         // put 5 counters face up, these are shared across peers
         for (int i = 0; i < 5; i++) {
+            //TODO: delete this
             this.gameState.addFaceUpCounterFromPile();
         }
 
-        // give all players (each peer) an obstacle
-        thisPlayer.getHand().addUnit(new Obstacle(MainFrame.instance.getWidth() * 67 / 1440, MainFrame.instance.getHeight() * 60 / 900));
+        //TODO: put 3 cards face up, similar to above.
 
+        // initial preparation: deal five cards to each player
+        for (Player p: gameState.getPlayers()) {
+            for (int i = 0; i < 5; i++) {
+                p.getHand().addUnit(gameState.getTravelCardDeck().draw());
+            }
+        }
     }
 
     @Override
     public void setUpRound() {
-        gameState.setCurrentPhase(RoundPhaseType.DEAL_CARDS);
         gameState.setToFirstPlayer();
         gameState.getTravelCardDeck().shuffle(); // only shuffle once at the beginning of each round
-
-        // Triggered only on one instance (the first player)
-        if (isLocalPlayerTurn()) {
-            distributeTravelCards(); // distribute cards to each player (PHASE 1)
-            GameScreen.getInstance().updateAll();
+        if (gameState.getCurrentRound() == 1) {
+            // Draw Card phase is ignored in the first round
+            gameState.setCurrentEGPhase(EGRoundPhaseType.CHOOSE_FACE_UP);
+            // Triggered only on one instance (the first player)
+            if (isLocalPlayerTurn()) {
+                chooseFaceUpCounter(); // distribute cards to each player (PHASE 1)
+                GameScreen.getInstance().updateAll();
+            }
+        } else {
+            gameState.setCurrentEGPhase(EGRoundPhaseType.DRAW_CARD_ONE);
+            // Triggered only on one instance (the first player)
+            if (isLocalPlayerTurn()) {
+                drawTravelCard(); // distribute cards to each player (PHASE 1)
+                GameScreen.getInstance().updateAll();
+            }
         }
+
     }
 
-    public void distributeTravelCards() {
+    public void drawTravelCard() {
 
-        LOGGER.info("Distributing travel cards...");
-        LOGGER.info("Local player turn: " + isLocalPlayerTurn());
 
-        if (!(isLocalPlayerTurn() && gameState.getCurrentPhase() == RoundPhaseType.DEAL_CARDS)) return;
-
-        int numCards = thisPlayer.getHand().getNumTravelCards();
-        for (int i = numCards; i < 8; i++) {
-            thisPlayer.getHand().addUnit(gameState.getTravelCardDeck().draw());
-        }
-        LOGGER.info("Added " + (8 - numCards) + " travel cards...");
-        LOGGER.info(getThisPlayer().getHand().getCards().toString());
-
-        int numDrawn = 8 - numCards;
-        DrawCardCommand drawCardCommand = new DrawCardCommand(numDrawn);
-        try {
-            coms.sendGameCommandToAllPlayers(drawCardCommand);
-        } catch (IOException e) {
-            LOGGER.info("There was a problem sending the command to draw cards!");
-            e.printStackTrace();
-        }
-        endTurn();
     }
 
+    public void chooseFaceUpCounter() {
+        if (gameState.getCurrentEGPhase() != EGRoundPhaseType.CHOOSE_FACE_UP) {
+            return;
+        }
+
+        // distribute gold coins (beginning with the second round)
+        if (gameState.getCurrentRound() > 1) {
+            for (Player p: gameState.getPlayers()) {
+                p.addGoldCoins(2);
+            }
+        }
+        // distribute two items from the face-down counter pile
+        CounterUnit counter1 = gameState.getCounterPile().draw();
+        CounterUnit counter2 = gameState.getCounterPile().draw();
+
+        // let the player choose which counter to place face-up (hence the other one is face-down)
+        GameScreen.displayMessage("""
+                It is time to decide which counter you would like to reveal to other players. Click on 
+                the counter you wish to place face-up and the other counter will be placed face-down.
+                """);
+        //TODO: show ChooseCounterWindow
+    }
 
     @Override
     public void returnCounter(CounterUnit toKeep) {
