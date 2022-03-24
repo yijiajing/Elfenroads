@@ -3,8 +3,9 @@ package networking;
 import commands.*;
 import domain.*;
 import enums.RoundPhaseType;
+import gamemanager.GameManager;
 import panel.ElfBootPanel;
-import panel.GameScreen;
+import gamescreen.GameScreen;
 import utils.GameRuleUtils;
 
 import java.io.IOException;

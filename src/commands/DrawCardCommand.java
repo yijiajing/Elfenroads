@@ -1,6 +1,5 @@
 package commands;
 
-import domain.GameManager;
 import networking.GameState;
 
 import java.util.logging.Logger;

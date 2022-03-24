@@ -1,7 +1,7 @@
 package panel;
 
 import domain.*;
-import enums.CounterType;
+import gamescreen.GameScreen;
 import networking.ActionManager;
 
 import javax.swing.*;

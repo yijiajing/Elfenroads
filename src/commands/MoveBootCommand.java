@@ -4,7 +4,7 @@ import domain.*;
 import enums.Colour;
 import networking.GameState;
 import panel.ElfBootPanel;
-import panel.GameScreen;
+import gamescreen.GameScreen;
 
 import java.io.Serializable;
 import java.util.logging.Logger;

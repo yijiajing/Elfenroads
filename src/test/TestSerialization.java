@@ -1,9 +1,5 @@
 package test;
 
-import loginwindow.MainFrame;
-import networking.GameState;
-import panel.GameScreen;
-
 public class TestSerialization {
 
     public static void main (String [] args)

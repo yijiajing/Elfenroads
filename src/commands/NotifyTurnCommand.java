@@ -1,9 +1,10 @@
 package commands;
 
-import domain.GameManager;
+import gamemanager.ELGameManager;
+import gamemanager.GameManager;
 import enums.RoundPhaseType;
 import networking.GameState;
-import panel.GameScreen;
+import gamescreen.GameScreen;
 
 import java.io.Serial;
 import java.util.logging.Logger;
@@ -26,7 +27,7 @@ public class NotifyTurnCommand implements GameCommand {
     @Override
     public void execute() {
 
-        GameManager gameManager = GameManager.getInstance();
+        ELGameManager gameManager = (ELGameManager) GameManager.getInstance();
         Logger.getGlobal().info("It is now my turn");
         GameState.instance().setCurrentPlayer(gameManager.getThisPlayer());
         Logger.getGlobal().info("Phase is " + phase);

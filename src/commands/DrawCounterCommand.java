@@ -1,9 +1,9 @@
 package commands;
 
-import domain.GameManager;
-import enums.CounterUnitType;
+import gamemanager.GameManager;
 import networking.GameState;
-import panel.GameScreen;
+import gamescreen.GameScreen;
+import enums.CounterUnitType;
 import domain.CounterUnit;
 
 import java.util.logging.Logger;

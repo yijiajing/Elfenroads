@@ -2,10 +2,10 @@ package domain;
 
 import enums.GameVariant;
 import enums.RegionType;
+import gamescreen.GameScreen;
 import networking.GameState;
 import org.jgrapht.alg.shortestpath.BellmanFordShortestPath;
 import org.jgrapht.graph.Pseudograph;
-import panel.GameScreen;
 
 import java.util.*;
 

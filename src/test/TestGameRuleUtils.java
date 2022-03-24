@@ -4,7 +4,7 @@ import domain.*;
 import enums.GameVariant;
 import enums.TravelCardType;
 import org.minueto.MinuetoTool;
-import panel.GameScreen;
+import gamescreen.GameScreen;
 import utils.GameRuleUtils;
 
 import javax.swing.*;

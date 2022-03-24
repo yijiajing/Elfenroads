@@ -1,21 +1,8 @@
 package utils;
 
-import domain.GameManager;
-import loginwindow.ChooseBootWindow;
-import loginwindow.LoginWindow;
-import loginwindow.MainFrame;
-import loginwindow.PlayerWaitWindow;
-import networking.GameSession;
-import networking.GameState;
-import networking.User;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import panel.GameScreen;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -24,12 +11,8 @@ import java.net.HttpURLConnection;
 import java.net.InetAddress;
 import java.net.URL;
 import java.net.UnknownHostException;
-import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.Optional;
-import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 public class NetworkUtils {

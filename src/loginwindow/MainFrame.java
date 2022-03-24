@@ -1,6 +1,6 @@
 package loginwindow;
 
-import domain.GameManager;
+import gamemanager.GameManager;
 import networking.GameSession;
 import networking.PlayerServer;
 import networking.User;
@@ -8,12 +8,7 @@ import networking.User;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.event.WindowListener;
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
 import java.util.logging.Logger;
-
-import javazoom.jl.player.Player;
 
 public class MainFrame extends JFrame
 {

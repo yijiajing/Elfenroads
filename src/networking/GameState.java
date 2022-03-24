@@ -3,8 +3,7 @@ package networking;
 import domain.*;
 import enums.*;
 import org.json.JSONObject;
-import panel.ElfBootPanel;
-import panel.GameScreen;
+import gamescreen.GameScreen;
 
 import java.io.Serializable;
 import java.util.*;
@@ -43,7 +42,7 @@ public class GameState implements Serializable{
 
     private TravelCardDeck travelCardDeck;
     private CounterUnitPile counterPile;
-    private ArrayList<CounterUnit> faceUpCounters = new ArrayList<>();
+    private ArrayList<TransportationCounter> faceUpCounters = new ArrayList<>();
 
     private ArrayList<ElfBoot> elfBoots;
 
@@ -194,7 +193,7 @@ public class GameState implements Serializable{
         return travelCardDeck;
     }
 
-    public ArrayList<CounterUnit> getFaceUpCounters() {
+    public ArrayList<TransportationCounter> getFaceUpCounters() {
         return this.faceUpCounters;
     }
     
@@ -219,8 +218,9 @@ public class GameState implements Serializable{
         if (counterPile.getSize() > 0) {
             LOGGER.info("Adding face-up counter from pile");
             CounterUnit counter = counterPile.draw();
+            assert counter instanceof TransportationCounter; // only used for Elfenland
             counter.setOwned(false);
-            faceUpCounters.add(counter);
+            faceUpCounters.add((TransportationCounter)counter);
         } else {
             // TODO what to do if the counter pile is empty?? reshuffle?
         }

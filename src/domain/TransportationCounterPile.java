@@ -2,9 +2,10 @@ package domain;
 
 import commands.DrawCounterCommand;
 import enums.CounterType;
+import gamemanager.GameManager;
 import loginwindow.MainFrame;
 import networking.GameState;
-import panel.GameScreen;
+import gamescreen.GameScreen;
 import utils.GameRuleUtils;
 
 import javax.swing.*;
@@ -33,7 +34,7 @@ public class TransportationCounterPile extends Deck<TransportationCounter> {
         // initialize the deck image
         ImageIcon imageIcon = new ImageIcon("./assets/sprites/M08.png");
         Image image = imageIcon.getImage();
-        Image imageResized = image.getScaledInstance(GameScreen.width * 67 / 1440, GameScreen.height * 60 / 900, java.awt.Image.SCALE_SMOOTH);
+        Image imageResized = image.getScaledInstance(GameScreen.getInstance().getWidth() * 67 / 1440, GameScreen.getInstance().getHeight() * 60 / 900, java.awt.Image.SCALE_SMOOTH);
         this.deckImage = new JLabel(new ImageIcon(imageResized));
 
         initializeMouseListener();

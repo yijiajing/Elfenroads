@@ -3,7 +3,7 @@ package domain;
 import enums.Colour;
 import networking.GameState;
 import panel.ElfBootPanel;
-import panel.GameScreen;
+import gamescreen.GameScreen;
 
 import javax.swing.*;
 import java.awt.*;

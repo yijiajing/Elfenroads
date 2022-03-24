@@ -2,11 +2,11 @@ package domain;
 
 import enums.Colour;
 import enums.GameVariant;
+import gamescreen.GameScreen;
 import loginwindow.MainFrame;
 import networking.GameState;
 import panel.*;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -75,7 +75,6 @@ public class Town implements Comparable<Town> {
             }
         }
     }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

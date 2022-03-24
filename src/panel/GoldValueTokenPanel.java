@@ -22,10 +22,8 @@ public class GoldValueTokenPanel extends JPanel {
     }
 
     public void drawGoldValueToken() {
-        if (isElfengoldVariant()) {
-            add(token.getImage());
-            repaint();
-            revalidate();
-        }
+        add(token.getImage());
+        repaint();
+        revalidate();
     }
 }

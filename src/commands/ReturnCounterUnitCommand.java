@@ -2,7 +2,7 @@ package commands;
 
 import java.util.logging.Logger;
 
-import domain.GameManager;
+import gamemanager.GameManager;
 import domain.CounterUnit;
 import domain.Hand;
 import enums.CounterUnitType;

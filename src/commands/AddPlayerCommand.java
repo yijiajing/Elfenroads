@@ -1,17 +1,12 @@
 package commands;
 
-import domain.ElfBoot;
-import domain.GameManager;
-import domain.GameMap;
+import gamemanager.GameManager;
 import domain.Player;
 import enums.Colour;
 import networking.GameSession;
 import networking.GameState;
-import panel.ElfBootPanel;
-import panel.GameScreen;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.logging.Logger;
 
 public class AddPlayerCommand implements GameCommand{

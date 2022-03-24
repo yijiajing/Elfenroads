@@ -4,11 +4,12 @@ import javax.swing.*;
 
 import commands.DrawCounterCommand;
 import enums.RoundPhaseType;
+import gamemanager.GameManager;
 import loginwindow.MP3Player;
 import loginwindow.MainFrame;
 import networking.ActionManager;
 import networking.GameState;
-import panel.GameScreen;
+import gamescreen.GameScreen;
 import utils.GameRuleUtils;
 import enums.CounterType;
 import enums.CounterUnitType;
@@ -132,7 +133,7 @@ public abstract class CounterUnit extends Drawable{
                 }
                 // RETURN COUNTERS PHASE
                 else if (GameState.instance().getCurrentPhase() == RoundPhaseType.RETURN_COUNTERS) {
-                    GameManager.getInstance().returnAllCountersExceptOne(CounterUnit.this);
+                    GameManager.getInstance().returnCounter(CounterUnit.this);
                     track1.play();
                 }
 

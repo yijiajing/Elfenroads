@@ -1,12 +1,7 @@
 package domain;
 
 import enums.TravelCardType;
-import panel.GameScreen;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Random;
-import java.util.Stack;
+import gamescreen.GameScreen;
 
 public class TravelCardDeck extends Deck <CardUnit> {
 
