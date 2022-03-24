@@ -1,6 +1,6 @@
 package enums;
 
-public enum EGRoundPhaseType {
+public enum EGRoundPhaseType implements RoundPhaseType {
     DEAL_CARDS,
     DRAW_CARD_ONE,
     DRAW_CARD_TWO,
@@ -10,5 +10,5 @@ public enum EGRoundPhaseType {
     AUCTION,
     PLAN_ROUTES,
     MOVE,
-    RETURN_COUNTERS
+    RETURN_COUNTERS;
 }

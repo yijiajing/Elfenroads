@@ -2,6 +2,8 @@ package networking;
 
 import commands.*;
 import domain.*;
+import enums.EGRoundPhaseType;
+import enums.ELRoundPhaseType;
 import enums.RoundPhaseType;
 import gamemanager.GameManager;
 import panel.ElfBootPanel;
@@ -65,7 +67,8 @@ public class ActionManager {
     public void setSelectedRoad(Road road) {
         LOGGER.info("Road on " + road.getRegionType() + " selected");
 
-        if (!(gameState.getCurrentPhase() == RoundPhaseType.PLAN_ROUTES && gameManager.isLocalPlayerTurn())) {
+        if (!((gameState.getCurrentPhase() == EGRoundPhaseType.PLAN_ROUTES || gameState.getCurrentPhase() == ELRoundPhaseType.PLAN_ROUTES)
+                && gameManager.isLocalPlayerTurn())) {
             return;
         }
         LOGGER.info("Before removing the counter, counters in hand: " +
@@ -126,7 +129,7 @@ public class ActionManager {
     }
 
     public void setSelectedCounter(CounterUnit pCounter) {
-        if (gameState.getCurrentPhase() != RoundPhaseType.PLAN_ROUTES) {
+        if (!(gameState.getCurrentPhase() == ELRoundPhaseType.PLAN_ROUTES || gameState.getCurrentPhase() == EGRoundPhaseType.PLAN_ROUTES)) {
             return;
         }
 
@@ -157,7 +160,7 @@ public class ActionManager {
      */
     public void addSelectedCard(TravelCard card) {
         LOGGER.info("Card " + card.getType() + " selected");
-        if (gameState.getCurrentPhase() != RoundPhaseType.MOVE) {
+        if (!(gameState.getCurrentPhase() == EGRoundPhaseType.MOVE || gameState.getCurrentPhase() == ELRoundPhaseType.MOVE)) {
             return;
         }
         if (selectedCards.contains(card)) {
@@ -194,7 +197,7 @@ public class ActionManager {
         LOGGER.info("Town " + town.getName() + " selected");
         selectedTown = town;
 
-        if (gameState.getCurrentPhase() != RoundPhaseType.MOVE
+        if ((!(gameState.getCurrentPhase() == EGRoundPhaseType.MOVE || gameState.getCurrentPhase() == ELRoundPhaseType.MOVE))
                 || selectedCards.isEmpty()
                 || !gameManager.isLocalPlayerTurn()) {
             return;

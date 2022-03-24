@@ -29,6 +29,7 @@ public abstract class GameManager {
     protected ActionManager actionManager;
     protected Player thisPlayer = null; // represents the Player who is using this GUI, set by ChooseBootWindow
     protected boolean loaded;
+    protected GameVariant variant;
 
     // stuff for managing networking operations
     protected String sessionID;
@@ -41,6 +42,7 @@ public abstract class GameManager {
     GameManager(Optional<GameState> loadedState, String pSessionID, GameVariant variant) {
         MainFrame.mainPanel.add(GameScreen.init(MainFrame.getInstance(), variant), "gameScreen");
         sessionID = pSessionID;
+        this.variant = variant;
 
         // start a new game if there is no state to be loaded
         if (loadedState.isEmpty()) {
@@ -223,6 +225,10 @@ public abstract class GameManager {
         ChooseBootWindow window = new ChooseBootWindow(sessionID, availableColours);
         MainFrame.mainPanel.add(window, "choose-boot");
         MainFrame.cardLayout.show(MainFrame.mainPanel, "choose-boot");
+    }
+
+    public GameVariant getVariant() {
+        return this.variant;
     }
 
 }

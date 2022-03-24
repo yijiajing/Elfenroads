@@ -3,7 +3,7 @@ package domain;
 import javax.swing.*;
 
 import commands.DrawCounterCommand;
-import enums.RoundPhaseType;
+import enums.*;
 import gamemanager.GameManager;
 import loginwindow.MP3Player;
 import loginwindow.MainFrame;
@@ -11,8 +11,6 @@ import networking.ActionManager;
 import networking.GameState;
 import gamescreen.GameScreen;
 import utils.GameRuleUtils;
-import enums.CounterType;
-import enums.CounterUnitType;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -132,13 +130,15 @@ public abstract class CounterUnit extends Drawable{
 
                 }
                 // RETURN COUNTERS PHASE
-                else if (GameState.instance().getCurrentPhase() == RoundPhaseType.RETURN_COUNTERS) {
+                else if (GameState.instance().getCurrentPhase() == EGRoundPhaseType.RETURN_COUNTERS ||
+                        GameState.instance().getCurrentPhase() == ELRoundPhaseType.RETURN_COUNTERS) {
                     GameManager.getInstance().returnCounter(CounterUnit.this);
                     track1.play();
                 }
 
                 // PLAN TRAVEL ROUTES PHASE
-                else if (GameState.instance().getCurrentPhase() == RoundPhaseType.PLAN_ROUTES) {
+                else if (GameState.instance().getCurrentPhase() == EGRoundPhaseType.PLAN_ROUTES ||
+                        GameState.instance().getCurrentPhase() == ELRoundPhaseType.PLAN_ROUTES) {
                     if (getPlacedOn() == null) {
                         ActionManager.getInstance().setSelectedCounter(CounterUnit.this);
                     } else {
