@@ -1,10 +1,7 @@
 package gamemanager;
 
 import commands.DrawCardCommand;
-import domain.Obstacle;
-import domain.Player;
-import domain.TownCardDeck;
-import domain.TransportationCounter;
+import domain.*;
 import enums.GameVariant;
 import enums.RoundPhaseType;
 import gamescreen.GameScreen;
@@ -78,7 +75,7 @@ public class EGGameManager extends GameManager {
 
 
     @Override
-    public void returnCounter(TransportationCounter toKeep) {
+    public void returnCounter(CounterUnit toKeep) {
 
     }
 

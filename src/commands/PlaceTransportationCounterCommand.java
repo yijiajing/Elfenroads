@@ -37,7 +37,7 @@ public class PlaceTransportationCounterCommand implements GameCommand {
         Town startTown = map.getTown(start);
         Town destinationTown = map.getTown(destination);
         Road road = map.getRoadBetween(startTown, destinationTown, regionType);
-        TransportationCounter counter = TransportationCounter.getNew(counterType);
+        TransportationCounter counter = (TransportationCounter)TransportationCounter.getNew(counterType);
         road.setTransportationCounter(counter);
 
         // remove the counter from the sending player's hand

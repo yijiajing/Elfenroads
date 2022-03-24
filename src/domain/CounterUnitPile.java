@@ -1,27 +1,33 @@
 package domain;
 
+import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.IOException;
+
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+
 import commands.DrawCounterCommand;
 import enums.CounterType;
+import enums.GoldPieceType;
+import enums.MagicSpellType;
+import enums.ObstacleType;
 import gamemanager.GameManager;
 import loginwindow.MainFrame;
 import networking.GameState;
 import gamescreen.GameScreen;
 import utils.GameRuleUtils;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.io.IOException;
+//Only for Elfengold
+//This class is similar to the TransportationCounterPile class, except for that it supports all counterUnits. 
+//TODO: Probably merge TransportationCounterPile into this after later.
 
-/**
- * The face-down pile of transportation counters
- */
-public class TransportationCounterPile extends Deck<TransportationCounter> {
+public class CounterUnitPile extends Deck<CounterUnit> {
 
     private JLabel deckImage;
 
-    public TransportationCounterPile(String sessionID) {
+    public CounterUnitPile(String sessionID) {
 
         super(sessionID);
 
@@ -30,6 +36,9 @@ public class TransportationCounterPile extends Deck<TransportationCounter> {
                 components.add(new TransportationCounter(type, MainFrame.instance.getWidth() * 67 / 1440, MainFrame.instance.getHeight() * 60 / 900));
             }
         }
+        
+        
+        
 
         // initialize the deck image
         ImageIcon imageIcon = new ImageIcon("./assets/sprites/M08.png");
@@ -41,7 +50,35 @@ public class TransportationCounterPile extends Deck<TransportationCounter> {
 
         shuffle();
     }
+    
+    private void addCountersToDeck() {
+    	int width = MainFrame.instance.getWidth() * 67 / 1440;
+    	int height = MainFrame.instance.getHeight() * 60 / 900;
+    	for(int i = 0; i < 9; i++) {
+    		if (i < 2) {
+    			components.add(new GoldPiece(GoldPieceType.GOLDPIECE, width, height));
+    			components.add(new EGObstacle(ObstacleType.OBSTACLE, width, height));
+    			components.add(new EGObstacle(ObstacleType.SEAMONSTER, width, height));
+    			components.add(new MagicSpell(MagicSpellType.DOUBLE, width, height));
+    			components.add(new MagicSpell(MagicSpellType.EXCHANGE, width, height));
+    		}
+    		if (i < 4) {
+        		components.add(new TransportationCounter(CounterType.DRAGON, width, height));
+        		components.add(new TransportationCounter(CounterType.MAGICCLOUD, width, height));
+    		}
+    		if(i < 5) {
+    			components.add(new TransportationCounter(CounterType.UNICORN, width,height));
+    		}
+    		if(i < 8) {
+    			components.add(new TransportationCounter(CounterType.ELFCYCLE, width,height));
+    			components.add(new TransportationCounter(CounterType.TROLLWAGON, width,height));
+    		}
+    		components.add(new TransportationCounter(CounterType.GIANTPIG, width,height));
+    		
 
+    	}
+    }
+    
     public JLabel getImage() {
         return this.deckImage;
     }

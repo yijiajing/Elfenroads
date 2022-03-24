@@ -80,7 +80,16 @@ public class ChooseBootWindow extends JPanel {
                     // the player is not the host of the session, so he should go to the playerWaitingRoom
                     else
                     {
-                        MainFrame.mainPanel.add(new PlayerWaitWindow(sessionID), "playerWaitingRoom");
+                        // if we previously had a PlayerWaitWindow (meaning we were in a game before and then left,) we need to completely reinitialize it
+                        if (MainFrame.getPlayerWait() != null)
+                        {
+                            PlayerWaitWindow prev = MainFrame.getPlayerWait();
+                            MainFrame.mainPanel.remove(prev);
+                        }
+                        // initialize a new PlayerWaitWindow
+                        PlayerWaitWindow updated = new PlayerWaitWindow(sessionID);
+                        MainFrame.setPlayerWaitWindow(updated);
+                        MainFrame.mainPanel.add(updated, "playerWaitingRoom");
                         MainFrame.cardLayout.show(MainFrame.mainPanel, "playerWaitingRoom");
                     }
                 }

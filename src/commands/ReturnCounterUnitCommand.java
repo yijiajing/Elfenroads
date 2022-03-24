@@ -1,24 +1,32 @@
 package commands;
 
+import java.util.logging.Logger;
+
 import gamemanager.GameManager;
-import domain.TransportationCounter;
+import domain.CounterUnit;
 import domain.Hand;
-import enums.CounterType;
+import enums.CounterUnitType;
 import loginwindow.MainFrame;
 import networking.GameState;
 
-import java.util.logging.Logger;
 
-public class ReturnTransportationCounterCommand implements GameCommand {
-
-    private final CounterType type;
+/**
+ * This command supports all types of counters.
+ *
+ */
+public class ReturnCounterUnitCommand implements GameCommand{
+	
+    private final CounterUnitType type;
     private final boolean isSecret;
     private final String senderName;
+    
+    CounterUnit pCounter;
 
-    public ReturnTransportationCounterCommand(TransportationCounter returnedCounter) {
+    public ReturnCounterUnitCommand(CounterUnit returnedCounter) {
         this.type = returnedCounter.getType();
         this.isSecret = returnedCounter.isSecret();
         this.senderName = GameManager.getInstance().getThisPlayer().getName();
+        pCounter = returnedCounter;
     }
 
     /**
@@ -26,15 +34,16 @@ public class ReturnTransportationCounterCommand implements GameCommand {
      */
     @Override
     public void execute() {
-        Logger.getGlobal().info("Executing ReturnTransportationCounterCommand, keep " + type);
-        TransportationCounter counter = new TransportationCounter(type, MainFrame.instance.getWidth() * 67 / 1440, MainFrame.instance.getHeight() * 60 / 900);
+        Logger.getGlobal().info("Executing ReturnCounterCommand, keep " + type);
+        CounterUnit counter = pCounter.getNew(type);
         GameState.instance().getCounterPile().addDrawable(counter);
 
         // update the sending player's hand
-        TransportationCounter newCounter = (TransportationCounter)TransportationCounter.getNew(type);
+        CounterUnit newCounter = CounterUnit.getNew(type);
         newCounter.setSecret(isSecret);
         Hand senderHand = GameState.instance().getPlayerByName(senderName).getHand();
         senderHand.clearCounters();
         senderHand.addUnit(newCounter);
     }
+
 }

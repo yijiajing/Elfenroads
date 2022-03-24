@@ -1,10 +1,27 @@
 package domain;
 
 import javax.swing.*;
-import java.awt.*;
-import java.io.Serializable;
 
-public abstract class CounterUnit extends Drawable {
+import commands.DrawCounterCommand;
+import enums.RoundPhaseType;
+import gamemanager.GameManager;
+import loginwindow.MP3Player;
+import loginwindow.MainFrame;
+import networking.ActionManager;
+import networking.GameState;
+import gamescreen.GameScreen;
+import utils.GameRuleUtils;
+import enums.CounterType;
+import enums.CounterUnitType;
+
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.logging.Logger;
+
+public abstract class CounterUnit extends Drawable{
 
     private Road placedOn;
     boolean owned;
@@ -12,13 +29,16 @@ public abstract class CounterUnit extends Drawable {
     boolean aSelected;
     JLabel miniDisplay; // for when the counter is on the map
     JLabel superMiniDisplay;// for obstacle on the map
-
-    CounterUnit(int resizeWidth, int resizeHeight, int imageNumber) {
-
+    private CounterUnitType aType;
+    protected MP3Player track1 = new MP3Player("./assets/Music/0000171.mp3");
+    
+    
+    CounterUnit(CounterUnitType pType, int resizeWidth, int resizeHeight, String imageNumber) {
         // find the picture of the card based on what type it is
         // since the images are named similarly and ordered the same way as they are in the enum declaration,
         // we can get the filepath just by using the type
-        super("./assets/sprites/M0" + imageNumber + ".png");
+    	super("./assets/sprites/M0" + imageNumber + ".png");
+        aType = pType;
         owned = false; // default value
         isSecret = false;
         // String filepath = ("./assets/sprites/M0" + imageNumber + ".png");
@@ -77,5 +97,69 @@ public abstract class CounterUnit extends Drawable {
         }
     	aSelected = pSelected;
     }
+    
+    protected void initializeMouseListener() {
+        this.getDisplay().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (!GameManager.getInstance().isLocalPlayerTurn()) {
+                    return;
+                }
 
+                // DRAW COUNTERS PHASE, counter is face-up and available to be chosen
+                if (!isOwned() && GameRuleUtils.isDrawCountersPhase()) {
+                    // adding the counter to my hand
+                    track1.play();
+                    GameState.instance().getFaceUpCounters().remove(CounterUnit.this); // remove the counter from the face-up pile
+                    GameManager.getInstance().getThisPlayer().getHand().addUnit(CounterUnit.this);
+                    GameState.instance().addFaceUpCounterFromPile(); // replenish the face-up counters with one from the pile
+                    GameScreen.getInstance().updateAll(); // update GUI
+                    CounterUnit.this.owned = true;
+                    CounterUnit.this.setSecret(false);
+                    Logger.getGlobal().info("Just added " + CounterUnit.this.getType() +
+                            ", current counters in hand: " +
+                            GameManager.getInstance().getThisPlayer().getHand().getCounters().toString());
+
+                    // tell the other peers to remove the counter
+                    try {
+                        GameManager.getInstance().getComs().sendGameCommandToAllPlayers(
+                                new DrawCounterCommand(CounterUnit.this, true));
+                    } catch (IOException err) {
+                        System.out.println("Error: there was a problem sending the DrawCounterCommand to the other peers.");
+                    }
+
+                    GameManager.getInstance().endTurn();
+
+                }
+                // RETURN COUNTERS PHASE
+                else if (GameState.instance().getCurrentPhase() == RoundPhaseType.RETURN_COUNTERS) {
+                    GameManager.getInstance().returnCounter(CounterUnit.this);
+                    track1.play();
+                }
+
+                // PLAN TRAVEL ROUTES PHASE
+                else if (GameState.instance().getCurrentPhase() == RoundPhaseType.PLAN_ROUTES) {
+                    if (getPlacedOn() == null) {
+                        ActionManager.getInstance().setSelectedCounter(CounterUnit.this);
+                    } else {
+                        // If the counter is placed on a road, then the user's intention is to click on the road
+                        ActionManager.getInstance().setSelectedRoad(getPlacedOn());
+                    }
+                    track1.play();
+                }
+            }
+        });
+    }
+    public CounterUnitType getType() {
+    	return aType;
+    }
+    
+    protected void setType(CounterUnitType pType) {
+    	aType = pType;
+    }
+    
+    //getNew should be hidden by all subclasses.
+    public static CounterUnit getNew(CounterUnitType pType) {
+    	return null;
+    }
 }

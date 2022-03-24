@@ -225,7 +225,9 @@ public class LoginWindow extends JPanel implements Runnable{
                 }
 
             	remove(background_elvenroads);
-                MainFrame.mainPanel.add(new LobbyWindow(), "lobby");
+                LobbyWindow lob = new LobbyWindow();
+                MainFrame.setLobbyWindow(lob);
+                MainFrame.mainPanel.add(lob, "lobby");
                 MainFrame.cardLayout.show(MainFrame.mainPanel,"lobby");
             }
             

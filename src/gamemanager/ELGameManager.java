@@ -107,7 +107,7 @@ public class ELGameManager extends GameManager {
         if (!(isLocalPlayerTurn() && gameState.getCurrentPhase() == RoundPhaseType.DEAL_HIDDEN_COUNTER)) return;
 
         // add the counter to our hand
-        TransportationCounter counter = gameState.getCounterPile().draw();
+        CounterUnit counter = gameState.getCounterPile().draw();
         counter.setOwned(true);
         counter.setSecret(true);
         thisPlayer.getHand().addUnit(counter);
@@ -234,7 +234,8 @@ public class ELGameManager extends GameManager {
      * @param toKeep
      */
     @Override
-    public void returnCounter(TransportationCounter toKeep) {
+    public void returnCounter(CounterUnit toKeep) {
+        assert toKeep instanceof TransportationCounter; // can only be transportation counter for Elfenland
         List<TransportationCounter> myCounters = thisPlayer.getHand().getCounters();
 
         for (TransportationCounter c : myCounters) {

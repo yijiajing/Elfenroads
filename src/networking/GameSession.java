@@ -24,7 +24,13 @@ public class GameSession {
     // this class will represent a networking.GameSession
     // its constructor will intialize a networking.GameSession
 
-
+    /**
+     *
+     * @param pCreator
+     * @param pGameName
+     * @param pSaveGameName MUST BE EMPTY IF THERE IS NO EXISTING SAVEGAME
+     * @throws Exception
+     */
     public GameSession(User pCreator, String pGameName, String pSaveGameName) throws Exception
     {
         creator = pCreator;
@@ -38,6 +44,7 @@ public class GameSession {
 
 
 
+    // TODO: allow user to enter savegame name
     private void createNewSession() throws IOException
     {
         String token = creator.getAccessToken();
@@ -139,7 +146,7 @@ public class GameSession {
         {
             // if a session has been launched already, it must be deleted by the game service admin
             Logger.getGlobal().info("I see you are calling GameSession.delete(). This method is not well-adapted to be used in the actual game code.");
-            token = User.getAccessTokenUsingCreds("elfenlands", "abc123_ABC123");
+            token = User.getAccessTokenUsingCreds("Elfenland_Classic", "abc123_ABC123");
         }
         else
         {
@@ -558,13 +565,15 @@ public class GameSession {
      */
     public static void leaveSession(User leaver, String sessionID) throws Exception
     {
+        String ip = NetworkUtils.getLocalIPAddPort();
+
         if (!leaver.getRole().equals(User.Role.PLAYER))
         {
             throw new Exception("Only players can leave games.");
         }
         String token = leaver.getAccessToken();
 
-        URL url = new URL("http://35.182.122.111:4242/api/sessions/" + sessionID + "/players/" + leaver.getUsername() + "&access_token=" + token);
+        URL url = new URL("http://35.182.122.111:4242/api/sessions/" + sessionID + "/players/" + leaver.getUsername() + "?location=" + ip + "&access_token=" + token);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("DELETE");
 

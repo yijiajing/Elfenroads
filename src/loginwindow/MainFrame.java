@@ -17,6 +17,10 @@ public class MainFrame extends JFrame
     public static User loggedIn;
     public static MainFrame instance;
 
+    // we need to store these to be able to remove and fully reinitialize them later
+    private static LobbyWindow lobby;
+    private static PlayerWaitWindow playerWait;
+
     private MainFrame()
     {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -91,4 +95,21 @@ public class MainFrame extends JFrame
 
     }
 
+    public static void setLobbyWindow(LobbyWindow pLobbyWindow)
+    {
+        lobby = pLobbyWindow;
+    }
+
+    public static void setPlayerWaitWindow(PlayerWaitWindow pPlayerWaitWindow)
+    {
+        playerWait = pPlayerWaitWindow;
+    }
+
+    public static LobbyWindow getLobby() {
+        return lobby;
+    }
+
+    public static PlayerWaitWindow getPlayerWait() {
+        return playerWait;
+    }
 }

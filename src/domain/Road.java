@@ -19,7 +19,7 @@ public class Road {
     }
 
     public void roadSelected() {
-
+    		
     }
 
     public boolean canPlaceCounter() {
@@ -45,6 +45,16 @@ public class Road {
             return false;
         }
     }
+    
+	public void setMagicSpell(MagicSpell counter) {
+		// TODO 
+		
+	}
+	
+	public void placeGoldPiece(GoldPiece counter) {
+		//TODO
+	}
+    
 
     public TransportationCounter getTransportationCounter() {
         return transportationCounter;
@@ -82,4 +92,6 @@ public class Road {
         return obstacle != null;
 
     }
+
+
 }

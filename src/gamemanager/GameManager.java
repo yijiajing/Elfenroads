@@ -2,10 +2,7 @@ package gamemanager;
 
 import commands.AddPlayerCommand;
 import commands.GetBootColourCommand;
-import domain.ElfBoot;
-import domain.GameMap;
-import domain.Player;
-import domain.TransportationCounter;
+import domain.*;
 import enums.Colour;
 import enums.GameVariant;
 import loginwindow.ChooseBootWindow;
@@ -138,7 +135,7 @@ public abstract class GameManager {
 
     public abstract void setUpRound();
 
-    public abstract void returnCounter(TransportationCounter toKeep);
+    public abstract void returnCounter(CounterUnit toKeep);
 
     public abstract void endTurn();
 
