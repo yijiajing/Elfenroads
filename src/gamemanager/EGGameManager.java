@@ -47,14 +47,14 @@ public class EGGameManager extends GameManager {
             gameState.setCurrentPhase(EGRoundPhaseType.CHOOSE_FACE_UP);
             // Triggered only on one instance (the first player)
             if (isLocalPlayerTurn()) {
-                chooseFaceUpCounter(); // distribute cards to each player (PHASE 1)
+                chooseFaceUpCounter();
                 GameScreen.getInstance().updateAll();
             }
         } else {
             gameState.setCurrentPhase(EGRoundPhaseType.DRAW_CARD_ONE);
             // Triggered only on one instance (the first player)
             if (isLocalPlayerTurn()) {
-                drawTravelCard(); // distribute cards to each player (PHASE 1)
+                drawTravelCard();
                 GameScreen.getInstance().updateAll();
             }
         }
