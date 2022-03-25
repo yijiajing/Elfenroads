@@ -1,10 +1,14 @@
 package commands;
 
+import enums.EGRoundPhaseType;
+import enums.ELRoundPhaseType;
+import gamemanager.EGGameManager;
 import gamemanager.ELGameManager;
 import gamemanager.GameManager;
 import enums.RoundPhaseType;
 import networking.GameState;
 import gamescreen.GameScreen;
+import utils.GameRuleUtils;
 
 import java.io.Serial;
 import java.util.logging.Logger;
@@ -27,37 +31,72 @@ public class NotifyTurnCommand implements GameCommand {
     @Override
     public void execute() {
 
-        ELGameManager gameManager = (ELGameManager) GameManager.getInstance();
-        Logger.getGlobal().info("It is now my turn");
-        GameState.instance().setCurrentPlayer(gameManager.getThisPlayer());
-        Logger.getGlobal().info("Phase is " + phase);
-        GameState.instance().setCurrentPhase(phase);
+        // ELFENGOLD
+        if (GameRuleUtils.isElfengoldVariant(GameManager.getInstance().getVariant())) {
+            EGGameManager gameManager = (EGGameManager) GameManager.getInstance();
+            Logger.getGlobal().info("It is now my turn");
+            GameState.instance().setCurrentPlayer(gameManager.getThisPlayer());
+            Logger.getGlobal().info("Phase is " + phase);
+            GameState.instance().setCurrentPhase(phase);
 
-        switch (phase) {
-            case DEAL_CARDS:
-                gameManager.distributeTravelCards();
-                break;
-            case DEAL_HIDDEN_COUNTER:
-                gameManager.distributeHiddenCounter();
-                break;
-            case DRAW_COUNTER_ONE: case DRAW_COUNTER_TWO: case DRAW_COUNTER_THREE:
-                if (gameManager.getThisPlayer().getHand().getCounters().size() >= 5) {
-                    GameScreen.displayMessage("You already have 5 counters in hand. You cannot draw more.");
-                    gameManager.endTurn();
-                } else {
-                    gameManager.drawCounters();
-                }
-                break;
-            case PLAN_ROUTES:
-                gameManager.planTravelRoutes();
-                break;
-            case MOVE:
-                gameManager.moveOnMap();
-                break;
-            case RETURN_COUNTERS:
-                gameManager.returnCountersPhase();
-                break;
+            // TODO: implement all phases
+            switch ((EGRoundPhaseType) phase) {
+                case DRAW_CARD_ONE: case DRAW_CARD_TWO: case DRAW_CARD_THREE:
+
+                    break;
+                case CHOOSE_FACE_UP:
+
+                    break;
+                case AUCTION:
+
+                    break;
+                case PLAN_ROUTES:
+
+                    break;
+                case MOVE:
+
+                    break;
+                case RETURN_COUNTERS:
+
+                    break;
+            }
         }
+
+        // ELFENLAND
+        else {
+            ELGameManager gameManager = (ELGameManager) GameManager.getInstance();
+            Logger.getGlobal().info("It is now my turn");
+            GameState.instance().setCurrentPlayer(gameManager.getThisPlayer());
+            Logger.getGlobal().info("Phase is " + phase);
+            GameState.instance().setCurrentPhase(phase);
+
+            switch ((ELRoundPhaseType) phase) {
+                case DEAL_CARDS:
+                    gameManager.distributeTravelCards();
+                    break;
+                case DEAL_HIDDEN_COUNTER:
+                    gameManager.distributeHiddenCounter();
+                    break;
+                case DRAW_COUNTER_ONE: case DRAW_COUNTER_TWO: case DRAW_COUNTER_THREE:
+                    if (gameManager.getThisPlayer().getHand().getCounters().size() >= 5) {
+                        GameScreen.displayMessage("You already have 5 counters in hand. You cannot draw more.");
+                        gameManager.endTurn();
+                    } else {
+                        gameManager.drawCounters();
+                    }
+                    break;
+                case PLAN_ROUTES:
+                    gameManager.planTravelRoutes();
+                    break;
+                case MOVE:
+                    gameManager.moveOnMap();
+                    break;
+                case RETURN_COUNTERS:
+                    gameManager.returnCountersPhase();
+                    break;
+            }
+        }
+
         GameScreen.getInstance().updateAll();
     }
 }

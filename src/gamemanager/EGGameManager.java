@@ -1,16 +1,12 @@
 package gamemanager;
 
-import commands.DrawCardCommand;
 import domain.*;
 import enums.EGRoundPhaseType;
 import enums.GameVariant;
-import enums.RoundPhaseType;
 import gamescreen.GameScreen;
-import loginwindow.MainFrame;
 import networking.GameState;
 import utils.GameRuleUtils;
 
-import java.io.IOException;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -48,14 +44,14 @@ public class EGGameManager extends GameManager {
         gameState.getTravelCardDeck().shuffle(); // only shuffle once at the beginning of each round
         if (gameState.getCurrentRound() == 1) {
             // Draw Card phase is ignored in the first round
-            gameState.setCurrentEGPhase(EGRoundPhaseType.CHOOSE_FACE_UP);
+            gameState.setCurrentPhase(EGRoundPhaseType.CHOOSE_FACE_UP);
             // Triggered only on one instance (the first player)
             if (isLocalPlayerTurn()) {
                 chooseFaceUpCounter(); // distribute cards to each player (PHASE 1)
                 GameScreen.getInstance().updateAll();
             }
         } else {
-            gameState.setCurrentEGPhase(EGRoundPhaseType.DRAW_CARD_ONE);
+            gameState.setCurrentPhase(EGRoundPhaseType.DRAW_CARD_ONE);
             // Triggered only on one instance (the first player)
             if (isLocalPlayerTurn()) {
                 drawTravelCard(); // distribute cards to each player (PHASE 1)
@@ -67,11 +63,10 @@ public class EGGameManager extends GameManager {
 
     public void drawTravelCard() {
 
-
     }
 
     public void chooseFaceUpCounter() {
-        if (gameState.getCurrentEGPhase() != EGRoundPhaseType.CHOOSE_FACE_UP) {
+        if (gameState.getCurrentPhase() != EGRoundPhaseType.CHOOSE_FACE_UP) {
             return;
         }
 

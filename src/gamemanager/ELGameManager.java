@@ -2,6 +2,7 @@ package gamemanager;
 
 import commands.*;
 import domain.*;
+import enums.ELRoundPhaseType;
 import enums.GameVariant;
 import enums.RoundPhaseType;
 import loginwindow.*;
@@ -57,7 +58,7 @@ public class ELGameManager extends GameManager {
      */
     @Override
     public void setUpRound() {
-        gameState.setCurrentPhase(RoundPhaseType.DEAL_CARDS);
+        gameState.setCurrentPhase(ELRoundPhaseType.DEAL_CARDS);
         gameState.setToFirstPlayer();
         gameState.getTravelCardDeck().shuffle(); // only shuffle once at the beginning of each round
 
@@ -78,7 +79,7 @@ public class ELGameManager extends GameManager {
         LOGGER.info("Distributing travel cards...");
         LOGGER.info("Local player turn: " + isLocalPlayerTurn());
 
-        if (!(isLocalPlayerTurn() && gameState.getCurrentPhase() == RoundPhaseType.DEAL_CARDS)) return;
+        if (!(isLocalPlayerTurn() && gameState.getCurrentPhase() == ELRoundPhaseType.DEAL_CARDS)) return;
 
         int numCards = thisPlayer.getHand().getNumTravelCards();
         for (int i = numCards; i < 8; i++) {
@@ -104,7 +105,7 @@ public class ELGameManager extends GameManager {
      * Distribute 1 face-down transportation counter to each Player by popping from the CounterPile
      */
     public void distributeHiddenCounter() {
-        if (!(isLocalPlayerTurn() && gameState.getCurrentPhase() == RoundPhaseType.DEAL_HIDDEN_COUNTER)) return;
+        if (!(isLocalPlayerTurn() && gameState.getCurrentPhase() == ELRoundPhaseType.DEAL_HIDDEN_COUNTER)) return;
 
         // add the counter to our hand
         CounterUnit counter = gameState.getCounterPile().draw();
@@ -137,7 +138,7 @@ public class ELGameManager extends GameManager {
                 GameScreen.displayMessage("This is the long variant of Elfenland. You will go through 4 rounds instead of 3.");
             }
 
-            if (gameState.getGameVariant() == GameVariant.ELFENLAND_DESTINATION && gameState.getCurrentPhase() == RoundPhaseType.DRAW_COUNTER_ONE) {
+            if (gameState.getGameVariant() == GameVariant.ELFENLAND_DESTINATION && gameState.getCurrentPhase() == ELRoundPhaseType.DRAW_COUNTER_ONE) {
                 GameScreen.displayMessage("Your destination Town is " +
                         thisPlayer.getDestinationTown().getName() + ". Please collect town pieces and have your travel " +
                         "route end in a town as close as possible to the destination at the end of the game.");
@@ -156,14 +157,14 @@ public class ELGameManager extends GameManager {
      */
     public void planTravelRoutes() {
         if (gameState.getCurrentRound() <= gameState.getTotalRounds()
-                && gameState.getCurrentPhase() == RoundPhaseType.PLAN_ROUTES
+                && gameState.getCurrentPhase() == ELRoundPhaseType.PLAN_ROUTES
                 && isLocalPlayerTurn()) {
 
             updateGameState();
             System.out.println("Current phase: PLAN TRAVEL ROUTES");
 
             // display message
-            if (gameState.getCurrentPhase().equals(RoundPhaseType.PLAN_ROUTES)) {
+            if (gameState.getCurrentPhase().equals(ELRoundPhaseType.PLAN_ROUTES)) {
                 GameScreen.displayMessage("""
                         It is time to plan your travel routes! Begin by clicking the transportation counter in your hand that you want to use, then click on the road that you want to travel.
                         The chart in the bottom right corner indicates which transportation counters may be used on which road.
@@ -185,7 +186,7 @@ public class ELGameManager extends GameManager {
      */
     public void moveOnMap() {
         if (gameState.getCurrentRound() <= gameState.getTotalRounds()
-                && gameState.getCurrentPhase().equals(RoundPhaseType.MOVE)
+                && gameState.getCurrentPhase() == ELRoundPhaseType.MOVE
                 && gameState.getCurrentPlayer().equals(thisPlayer)) {
 
             updateGameState();
@@ -207,7 +208,7 @@ public class ELGameManager extends GameManager {
      * Return all counters except one
      */
     public void returnCountersPhase() {
-        if (!(isLocalPlayerTurn() && gameState.getCurrentPhase() == RoundPhaseType.RETURN_COUNTERS)) return;
+        if (!(isLocalPlayerTurn() && gameState.getCurrentPhase() == ELRoundPhaseType.RETURN_COUNTERS)) return;
 
         // no need to return the counters if we are at the end of the game
         if (gameState.getCurrentRound() == gameState.getTotalRounds()
@@ -305,22 +306,22 @@ public class ELGameManager extends GameManager {
     @Override
     public void endPhase() {
         actionManager.clearSelection();
-        int nextOrdinal = gameState.getCurrentPhase().ordinal() + 1;
-        if (nextOrdinal == RoundPhaseType.values().length) {
+        int nextOrdinal = ((ELRoundPhaseType) gameState.getCurrentPhase()).ordinal() + 1;
+        if (nextOrdinal == ELRoundPhaseType.values().length) {
             // all phases are done, go to the next round
             endRound();
-        } else if (gameState.getCurrentPhase() == RoundPhaseType.PLAN_ROUTES
+        } else if (gameState.getCurrentPhase() == ELRoundPhaseType.PLAN_ROUTES
                 && gameState.getPassedPlayerCount() < gameState.getNumOfPlayers()) {
             LOGGER.info("Pass turn ct: " + gameState.getPassedPlayerCount() + ", staying at the PLAN ROUTES phase");
             // continue with plan routes phase if not all players have passed their turn
             gameState.setToFirstPlayer();
             // the first player will take action
             if (isLocalPlayerTurn()) {
-                NotifyTurnCommand notifyTurnCommand = new NotifyTurnCommand(RoundPhaseType.PLAN_ROUTES);
+                NotifyTurnCommand notifyTurnCommand = new NotifyTurnCommand(ELRoundPhaseType.PLAN_ROUTES);
                 notifyTurnCommand.execute(); // notify themself to take action
             }
         } else { // go to the next phase within the same round
-            gameState.setCurrentPhase(RoundPhaseType.values()[nextOrdinal]);
+            gameState.setCurrentPhase(ELRoundPhaseType.values()[nextOrdinal]);
             LOGGER.info("...Going to the next phase : " + gameState.getCurrentPhase());
             gameState.setToFirstPlayer();
             // the first player will take action

@@ -46,9 +46,6 @@ public class GameState implements Serializable{
 
     private ArrayList<ElfBoot> elfBoots;
 
-    // Elfengold specific
-    private EGRoundPhaseType currentEGPhase;
-
     private GameState (String sessionID, GameVariant gameVariant)
     {
         this.elfBoots = new ArrayList<>();
@@ -281,15 +278,5 @@ public class GameState implements Serializable{
     public void sortPlayers()
     {
         Collections.sort(players);
-    }
-
-    // Elfengold specific
-
-    public EGRoundPhaseType getCurrentEGPhase() {
-        return currentEGPhase;
-    }
-
-    public void setCurrentEGPhase(EGRoundPhaseType currentEGPhase) {
-        this.currentEGPhase = currentEGPhase;
     }
 }
