@@ -186,7 +186,7 @@ public class ELGameManager extends GameManager {
      */
     public void moveOnMap() {
         if (gameState.getCurrentRound() <= gameState.getTotalRounds()
-                && gameState.getCurrentPhase().equals(ELRoundPhaseType.MOVE)
+                && gameState.getCurrentPhase() == ELRoundPhaseType.MOVE
                 && gameState.getCurrentPlayer().equals(thisPlayer)) {
 
             updateGameState();

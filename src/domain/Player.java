@@ -23,6 +23,8 @@ public class Player implements Comparable<Player> {
     
     private Hand hand; //The Hand of this Player, including hand of CardUnit and hand of CounterUnit
 
+    private int goldCoins;
+
     public Player(Colour pColour, String pName)
     {
         this.curTown = GameMap.getInstance().getTownByName("Elvenhold");
@@ -102,6 +104,18 @@ public class Player implements Comparable<Player> {
 
     public void setDestinationTown(Town destinationTown) {
         this.destinationTown = destinationTown;
+    }
+
+    public int getGoldCoins() {
+        return goldCoins;
+    }
+
+    public void addGoldCoins(int value) {
+        goldCoins += value;
+    }
+
+    public void removeGoldCoins(int value) {
+        goldCoins -= value;
     }
 
     // need to be able to sort a list of players so that everyone has the same list
