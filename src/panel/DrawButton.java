@@ -1,14 +1,14 @@
 package panel;// package testing;
 
-import domain.TransportationCounterPile;
+import domain.CounterUnitPile;
 
 import javax.swing.*;
 
 public class DrawButton extends JButton {
 
-    private final TransportationCounterPile drawnFrom;
+    private final CounterUnitPile drawnFrom;
 
-    public DrawButton(TransportationCounterPile pDrawnFrom)
+    public DrawButton(CounterUnitPile pDrawnFrom)
     {
         this.drawnFrom = pDrawnFrom;
         // this.addActionListener(new panel.DrawListener(drawnFrom));

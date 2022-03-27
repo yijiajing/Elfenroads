@@ -4,6 +4,7 @@ import domain.*;
 import enums.*;
 import org.json.JSONObject;
 import gamescreen.GameScreen;
+import utils.GameRuleUtils;
 
 import java.io.Serializable;
 import java.util.*;
@@ -41,8 +42,10 @@ public class GameState implements Serializable{
     private int passedPlayerCount;
 
     private TravelCardDeck travelCardDeck;
+    private ArrayList<CardUnit> faceUpCards = new ArrayList<>(); // EG
+
     private CounterUnitPile counterPile;
-    private ArrayList<TransportationCounter> faceUpCounters = new ArrayList<>();
+    private ArrayList<TransportationCounter> faceUpCounters = new ArrayList<>(); // EL
 
     private ArrayList<ElfBoot> elfBoots;
 
@@ -53,6 +56,8 @@ public class GameState implements Serializable{
         this.passedPlayerCount = 0;
         if (gameVariant == GameVariant.ELFENLAND_LONG) {
             this.totalRounds = 4;
+        } else if (GameRuleUtils.isElfengoldVariant(gameVariant)) {
+            this.totalRounds = 6;
         } else {
             this.totalRounds = 3;
         }
@@ -60,8 +65,9 @@ public class GameState implements Serializable{
         // the below line gives a nullPointerException when it is called from the GameManager constructor because, inside the constructor, the GameManager.instance() is still null
         // String sessionID = GameManager.getInstance().getSessionID();
         // that is why we are passing the sessionID to the GameState constructor instead (there is no reason for it to really be a field)
-        this.travelCardDeck = new TravelCardDeck(sessionID);
-        this.counterPile = new CounterUnitPile(sessionID);
+        this.travelCardDeck = new TravelCardDeck(sessionID, gameVariant);
+
+        this.counterPile = new CounterUnitPile(sessionID, gameVariant);
     }
 
     // TODO: implement this second constructor
@@ -196,12 +202,12 @@ public class GameState implements Serializable{
     public ArrayList<TransportationCounter> getFaceUpCounters() {
         return this.faceUpCounters;
     }
-    
-    //this method returns a pile for Elfenland
+
     public CounterUnitPile getCounterPile() {
         return this.counterPile;
     }
-    
+
+    public ArrayList<CardUnit> getFaceUpCards() { return this.faceUpCards; }
 
     public GameVariant getGameVariant() {
         return gameVariant;
@@ -212,7 +218,7 @@ public class GameState implements Serializable{
     }
 
     /**
-     * Flips over a counter from the pile so that it is face-up
+     * Flips over a counter from the pile so that it is face-up (EL)
      */
     public void addFaceUpCounterFromPile() {
         if (counterPile.getSize() > 0) {
@@ -221,10 +227,21 @@ public class GameState implements Serializable{
             assert counter instanceof TransportationCounter; // only used for Elfenland
             counter.setOwned(false);
             faceUpCounters.add((TransportationCounter)counter);
-        } else {
-            // TODO what to do if the counter pile is empty?? reshuffle?
         }
     }
+
+    /**
+     * Flips over a card from the deck so that it is face-up (EG)
+     */
+    // TODO: add GUI elements to EGGameScreen
+    public void addFaceUpCardFromDeck() {
+        if (travelCardDeck.getSize() > 0) {
+            LOGGER.info("Adding face-up card from travel card deck");
+            CardUnit card = travelCardDeck.draw();
+            faceUpCards.add(card);
+        }
+    }
+
 
     public void removeFaceUpCounter(CounterUnitType type) {
         CounterUnit toRemove = null;

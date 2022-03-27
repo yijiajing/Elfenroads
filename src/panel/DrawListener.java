@@ -1,19 +1,18 @@
 package panel;// package testing;
 
-import domain.TransportationCounterPile;
+import domain.CounterUnitPile;
 import domain.CounterUnit;
-import domain.TransportationCounter;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class DrawListener implements ActionListener {
-    private final TransportationCounterPile drawnFrom;
+
+    private final CounterUnitPile drawnFrom;
     private JPanel[] destination;
 
-    public DrawListener(TransportationCounterPile pDrawnFrom, JPanel[] pDestination)
-
+    public DrawListener(CounterUnitPile pDrawnFrom, JPanel[] pDestination)
     {
         this.drawnFrom = pDrawnFrom;
         this.destination = pDestination;
