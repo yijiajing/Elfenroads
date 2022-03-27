@@ -61,7 +61,8 @@ public class GameState implements Serializable{
         // String sessionID = GameManager.getInstance().getSessionID();
         // that is why we are passing the sessionID to the GameState constructor instead (there is no reason for it to really be a field)
         this.travelCardDeck = new TravelCardDeck(sessionID);
-        this.counterPile = new CounterUnitPile(sessionID);
+
+        this.counterPile = new CounterUnitPile(sessionID, gameVariant);
     }
 
     // TODO: implement this second constructor
@@ -196,12 +197,10 @@ public class GameState implements Serializable{
     public ArrayList<TransportationCounter> getFaceUpCounters() {
         return this.faceUpCounters;
     }
-    
-    //this method returns a pile for Elfenland
+
     public CounterUnitPile getCounterPile() {
         return this.counterPile;
     }
-    
 
     public GameVariant getGameVariant() {
         return gameVariant;
