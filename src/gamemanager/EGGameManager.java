@@ -22,19 +22,16 @@ public class EGGameManager extends GameManager {
 
     @Override
     protected void setUpNewGame() {
-        // put 5 counters face up, these are shared across peers
-        for (int i = 0; i < 5; i++) {
-            //TODO: delete this
-            this.gameState.addFaceUpCounterFromPile();
-        }
-
-        //TODO: put 3 cards face up, similar to above.
-
         // initial preparation: deal five cards to each player
         for (Player p: gameState.getPlayers()) {
             for (int i = 0; i < 5; i++) {
                 p.getHand().addUnit(gameState.getTravelCardDeck().draw());
             }
+        }
+
+        // put 3 cards face up, these are shared across peers
+        for (int j = 0; j < 3; j++) {
+            this.gameState.addFaceUpCardFromDeck();
         }
     }
 
