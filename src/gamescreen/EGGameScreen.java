@@ -25,7 +25,7 @@ public class EGGameScreen extends GameScreen {
 
     @Override
     public void updateAll() {
-        updateTransportationCountersAndObstacle(); // updates the player's counter area
+        updateTransportationCounters(); // updates the player's counter area
         updateCards(); // update's the player's cards
         updateFaceUpTravelCards(); // updates the face-up transportation counters
         notifyObservers(); // updates elf boots and town pieces
@@ -38,7 +38,7 @@ public class EGGameScreen extends GameScreen {
         Logger.getGlobal().info("Initializing...");
         initializeMapImage();
         initializeRoundCardImage(1);
-        initializeTransportationCountersAndObstacle();
+        initializeTransportationCounters();
         initializeBackgroundPanels();
         initializeCardPanels();
         initializeInformationCardImage();
@@ -59,10 +59,6 @@ public class EGGameScreen extends GameScreen {
         // Set Bounds for background Player's Transportation Counter zone
         backgroundPanel_ForTransportationCounters.setBounds(width * 0 / 1440, height * 623 / 900, width * 900 / 1440, height * 70 / 900);
         backgroundPanel_ForTransportationCounters.setBackground(Color.DARK_GRAY);
-
-        // Set Bounds for background Obstacle zone
-        backgroundPanel_ForObstacle.setBackground(Color.RED);
-        backgroundPanel_ForObstacle.setBounds(width * 900 / 1440, height * 623 / 900, width * 80 / 1440, height * 70 / 900);
 
         // Set Bounds for background Image zone
         backgroundPanel_ForMap.setBounds(width * 0 / 1440, height * 0 / 900, width * 1150 / 1440, height * 625 / 900);
@@ -125,7 +121,7 @@ public class EGGameScreen extends GameScreen {
         boardGame_Layers.add(panel4, 0);
     }
 
-    public void initializeTransportationCountersAndObstacle()
+    public void initializeTransportationCounters()
     {
         int xCoordinate = width*10/1440;
 
@@ -140,12 +136,6 @@ public class EGGameScreen extends GameScreen {
             xCoordinate += width*100/1440;
             boardGame_Layers.add(panel, 0);
         }
-
-        // Obstacle
-        panelForObstacle.setOpaque(false);
-        //panelForObstacle.setBorder(whiteLine);
-        panelForObstacle.setBounds(width*900/1440, height*625/900, width*70/1440, height*65/900);
-        boardGame_Layers.add(panelForObstacle,0);
     }
 
     @Override
@@ -167,7 +157,6 @@ public class EGGameScreen extends GameScreen {
         boardGame_Layers.add(panelForDeckOfTransportationCounters,0);
         boardGame_Layers.add(backgroundPanel_ForTransportationCounters, -1);
         boardGame_Layers.add(backgroundPanel_ForMap, -1);
-        boardGame_Layers.add(backgroundPanel_ForObstacle,-1);
         boardGame_Layers.add(backgroundPanel_ForCards, -1);
         boardGame_Layers.add(backgroundPanel_ForInformationCard, -1);
         boardGame_Layers.add(backgroundPanel_ForDeckOfTransportationCounters, -1);
@@ -201,7 +190,7 @@ public class EGGameScreen extends GameScreen {
         }
     }
 
-    public void updateTransportationCountersAndObstacle()
+    public void updateTransportationCounters()
     {
         // remove a counter if it was already there
         for (JPanel panel : panelForPlayerTransportationCounters) {
@@ -222,18 +211,6 @@ public class EGGameScreen extends GameScreen {
             panel.repaint();
             panel.revalidate();
         }
-
-        // Obstacle
-        Obstacle o = GameManager.getInstance().getThisPlayer().getHand().getObstacle();
-
-        if (o != null) {
-            panelForObstacle.add(o.getDisplay());
-        } else {
-            panelForObstacle.removeAll();
-        }
-
-        panelForObstacle.repaint();
-        panelForObstacle.revalidate();
     }
 
     private void drawGoldValueTokens() {
