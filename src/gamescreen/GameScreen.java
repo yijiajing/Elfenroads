@@ -7,6 +7,7 @@ import domain.Town;
 import enums.GameVariant;
 import gamemanager.GameManager;
 import loginwindow.ChatBoxGUI;
+import loginwindow.MainFrame;
 import networking.GameState;
 import org.json.JSONObject;
 import panel.EndTurnButton;
@@ -44,7 +45,6 @@ public abstract class GameScreen extends JPanel implements Serializable {
 
     protected final JPanel backgroundPanel_ForMap = new JPanel();
     protected final JPanel backgroundPanel_ForRound = new JPanel();
-    protected final JPanel backgroundPanel_ForObstacle = new JPanel();
     protected final JPanel backgroundPanel_ForCards = new JPanel();
     protected final JPanel backgroundPanel_ForTransportationCounters = new JPanel();
     protected final JPanel backgroundPanel_ForInformationCard = new JPanel();
@@ -53,9 +53,8 @@ public abstract class GameScreen extends JPanel implements Serializable {
 
     protected final JPanel[] panelForPlayerTransportationCounters = new JPanel[5];
     protected final JPanel[] panelForPlayerCards = new JPanel[8];
-    protected final JPanel[] panelForFaceUpTransportationCounters = new JPanel[5];
+
     protected final JPanel panelForDeckOfTransportationCounters = new JPanel();
-    protected final JPanel panelForObstacle = new JPanel();
 
     protected ArrayList<ObserverPanel> observerPanels = new ArrayList<>();
 
