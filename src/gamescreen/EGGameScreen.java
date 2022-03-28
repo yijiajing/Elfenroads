@@ -1,9 +1,6 @@
 package gamescreen;
 
-import domain.GameMap;
-import domain.Obstacle;
-import domain.Town;
-import domain.TransportationCounter;
+import domain.*;
 import enums.GameVariant;
 import gamemanager.GameManager;
 import networking.GameState;
@@ -20,6 +17,8 @@ import java.util.logging.Logger;
 // There is no face up transportation counter or a unique place for obstacle, for example.
 public class EGGameScreen extends GameScreen {
 
+    protected final JPanel[] panelForFaceUpTravelCards = new JPanel[3];
+
     EGGameScreen(JFrame frame, GameVariant variant) {
         super(frame, variant);
     }
@@ -28,7 +27,7 @@ public class EGGameScreen extends GameScreen {
     public void updateAll() {
         updateTransportationCountersAndObstacle(); // updates the player's counter area
         updateCards(); // update's the player's cards
-        updateFaceUpTransportationCounters(); // updates the face-up transportation counters
+        updateFaceUpTravelCards(); // updates the face-up transportation counters
         notifyObservers(); // updates elf boots and town pieces
         updateLeaderboard();
     }
@@ -43,7 +42,7 @@ public class EGGameScreen extends GameScreen {
         initializeBackgroundPanels();
         initializeCardPanels();
         initializeInformationCardImage();
-        initializeFaceUpTransportationCounters();
+        initializeFaceUpTravelCards();
         initializeDeckOfTransportationCounters();
         initializeLeaderboard();
         initializeEndTurnButton();
@@ -100,44 +99,30 @@ public class EGGameScreen extends GameScreen {
         boardGame_Layers.add(panel, 0);
     }
 
-    public void initializeFaceUpTransportationCounters()
+    public void initializeFaceUpTravelCards()
     {
-        Logger.getGlobal().info("Initializing face up transportation counters");
+        Logger.getGlobal().info("Initializing face up travel cards");
         Border whiteLine = BorderFactory.createLineBorder(Color.WHITE);
         JPanel panel2 = new JPanel();
-        panel2.setBounds(width*1315/1440, height*290/900, width*70/1440, height*65/900);
+        panel2.setBounds(width*1315/1440, height*290/900, width*130/1440, height/5);
         panel2.setOpaque(false);
         //panel2.setBorder(whiteLine);
-        panelForFaceUpTransportationCounters[0] = panel2;
+        panelForFaceUpTravelCards[0] = panel2;
         boardGame_Layers.add(panel2, 0);
 
         JPanel panel3 = new JPanel();
-        panel3.setBounds(width*1210/1440, height*385/900, width*70/1440, height*65/900);
+        panel3.setBounds(width*1210/1440, height*400/900, width*130/1440, height/5);
         panel3.setOpaque(false);
         //panel3.setBorder(whiteLine);
-        panelForFaceUpTransportationCounters[1] = panel3;
+        panelForFaceUpTravelCards[1] = panel3;
         boardGame_Layers.add(panel3, 0);
 
         JPanel panel4 = new JPanel();
-        panel4.setBounds(width*1315/1440, height*385/900, width*70/1440, height*65/900);
+        panel4.setBounds(width*1315/1440, height*400/900, width*130/1440, height/5);
         panel4.setOpaque(false);
         //panel4.setBorder(whiteLine);
-        panelForFaceUpTransportationCounters[2] = panel4;
+        panelForFaceUpTravelCards[2] = panel4;
         boardGame_Layers.add(panel4, 0);
-
-        JPanel panel5 = new JPanel();
-        panel5.setBounds(width*1210/1440, height*480/900, width*70/1440, height*65/900);
-        panel5.setOpaque(false);
-        //panel5.setBorder(whiteLine);
-        panelForFaceUpTransportationCounters[3] = panel5;
-        boardGame_Layers.add(panel5, 0);
-
-        JPanel panel6 = new JPanel();
-        panel6.setBounds(width*1315/1440, height*480/900, width*70/1440, height*65/900);
-        panel6.setOpaque(false);
-        //panel6.setBorder(whiteLine);
-        panelForFaceUpTransportationCounters[4] = panel6;
-        boardGame_Layers.add(panel6, 0);
     }
 
     public void initializeTransportationCountersAndObstacle()
@@ -194,12 +179,12 @@ public class EGGameScreen extends GameScreen {
         }
     }
 
-    public void updateFaceUpTransportationCounters()
+    public void updateFaceUpTravelCards()
     {
-        ArrayList<TransportationCounter> faceUpCounters = GameState.instance().getFaceUpCounters();
+        ArrayList<CardUnit> faceUpCards = GameState.instance().getFaceUpCards();
 
         // clear the previous counters from the screen
-        for (JPanel panel : panelForFaceUpTransportationCounters) {
+        for (JPanel panel : panelForFaceUpTravelCards) {
             if (panel != null) {
                 panel.removeAll();
                 panel.repaint();
@@ -207,10 +192,10 @@ public class EGGameScreen extends GameScreen {
             }
         }
 
-        for (int i = 0; i < 5; i++) {
-            JPanel panel = panelForFaceUpTransportationCounters[i];
-            TransportationCounter counter = faceUpCounters.get(i);
-            panel.add(counter.getDisplay());
+        for (int i = 0; i < 3; i++) {
+            JPanel panel = panelForFaceUpTravelCards[i];
+            CardUnit card = faceUpCards.get(i);
+            panel.add(card.getDisplay());
             panel.repaint();
             panel.revalidate();
         }

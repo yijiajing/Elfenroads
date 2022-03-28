@@ -20,6 +20,7 @@ import networking.GameState;
  */
 public class ELGameScreen extends GameScreen
 {
+	protected final JPanel[] panelForFaceUpTransportationCounters = new JPanel[5];
 
 	ELGameScreen(JFrame frame, GameVariant variant) {
 		super(frame, variant);

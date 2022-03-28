@@ -233,7 +233,6 @@ public class GameState implements Serializable{
     /**
      * Flips over a card from the deck so that it is face-up (EG)
      */
-    // TODO: add GUI elements to EGGameScreen
     public void addFaceUpCardFromDeck() {
         if (travelCardDeck.getSize() > 0) {
             LOGGER.info("Adding face-up card from travel card deck");
