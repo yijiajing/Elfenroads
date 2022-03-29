@@ -1,5 +1,8 @@
 package commands;
 
+import domain.TravelCard;
+import enums.TravelCardType;
+import gamescreen.GameScreen;
 import networking.GameState;
 
 import java.util.logging.Logger;
@@ -7,9 +10,11 @@ import java.util.logging.Logger;
 public class DrawCardCommand implements GameCommand {
 
     private final int numCards;
+    private final TravelCardType type;
 
-    public DrawCardCommand(int numCards) {
+    public DrawCardCommand(int numCards, TravelCardType type) {
         this.numCards = numCards;
+        this.type = type;
     }
 
     /**
@@ -20,6 +25,10 @@ public class DrawCardCommand implements GameCommand {
     public void execute() {
         Logger.getGlobal().info("Executing DrawCardCommand, removing the first " + numCards + " cards.");
         GameState gameState = GameState.instance();
-        gameState.getTravelCardDeck().removeFirst(numCards);
+        if (type != null) {
+            gameState.removeFaceUpCard(type);
+        } else {
+            gameState.getTravelCardDeck().removeFirst(numCards);
+        }
     }
 }

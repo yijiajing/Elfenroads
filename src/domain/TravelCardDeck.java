@@ -44,6 +44,13 @@ public class TravelCardDeck extends Deck <CardUnit> {
             }
         }
 
+        // Add gold cards for Elfengold
+        if (GameRuleUtils.isElfengoldVariant(variant)) {
+            for (int i = 0; i < 7; i++) {
+                components.add(new GoldCard(GameScreen.getInstance().getWidth()*130/1440, GameScreen.getInstance().getHeight()*2/10));
+            }
+        }
+
         shuffle();
     }
 }

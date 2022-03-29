@@ -108,7 +108,7 @@ public abstract class CounterUnit extends Drawable{
                 if (!isOwned() && GameRuleUtils.isDrawCountersPhase()) {
                     // adding the counter to my hand
                     track1.play();
-                    GameState.instance().getFaceUpCounters().remove(CounterUnit.this); // remove the counter from the face-up pile
+                    GameState.instance().getFaceUpCounters().remove((TransportationCounter) CounterUnit.this); // remove the counter from the face-up pile
                     GameManager.getInstance().getThisPlayer().getHand().addUnit(CounterUnit.this);
                     GameState.instance().addFaceUpCounterFromPile(); // replenish the face-up counters with one from the pile
                     GameScreen.getInstance().updateAll(); // update GUI
