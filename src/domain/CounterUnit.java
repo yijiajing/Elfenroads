@@ -6,6 +6,7 @@ import commands.DrawCounterCommand;
 import enums.*;
 import gamemanager.GameManager;
 import windows.MP3Player;
+import windows.MainFrame;
 import networking.ActionManager;
 import networking.GameState;
 import gamescreen.GameScreen;
@@ -15,6 +16,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.logging.Logger;
 
 public abstract class CounterUnit extends Drawable{
@@ -158,6 +160,14 @@ public abstract class CounterUnit extends Drawable{
     
     //getNew should be hidden by all subclasses.
     public static CounterUnit getNew(CounterUnitType pType) {
-    	return null;
+    	if (Arrays.asList(enums.CounterType.values()).contains(pType)) {
+    		return new TransportationCounter((CounterType)pType, MainFrame.instance.getWidth() * 67 / 1440, MainFrame.instance.getHeight() * 60 / 900);
+    	}else if (Arrays.asList(enums.GoldPieceType.values()).contains(pType)) {
+    		return new GoldPiece((GoldPieceType)pType, MainFrame.instance.getWidth() * 67 / 1440, MainFrame.instance.getHeight() * 60 / 900);
+    	}else if (Arrays.asList(enums.MagicSpellType.values()).contains(pType)) {
+        	return new MagicSpell((MagicSpellType)pType, MainFrame.instance.getWidth() * 67 / 1440, MainFrame.instance.getHeight() * 60 / 900);
+    	}else {
+    		return new EGObstacle((ObstacleType)pType ,MainFrame.instance.getWidth()*67/1440, MainFrame.instance.getHeight()*60/900);
+    	}
     }
 }
