@@ -14,13 +14,11 @@ public class ReturnTransportationCounterCommand implements GameCommand {
     private final CounterType type;
     private final boolean isSecret;
     private final String senderName;
-    private TransportationCounter aCounter;
 
     public ReturnTransportationCounterCommand(TransportationCounter returnedCounter) {
         this.type = returnedCounter.getType();
         this.isSecret = returnedCounter.isSecret();
         this.senderName = GameManager.getInstance().getThisPlayer().getName();
-        aCounter = returnedCounter;
     }
 
     /**
@@ -33,7 +31,7 @@ public class ReturnTransportationCounterCommand implements GameCommand {
         GameState.instance().getCounterPile().addDrawable(counter);
 
         // update the sending player's hand
-        TransportationCounter newCounter = (TransportationCounter)aCounter.getNew();
+        TransportationCounter newCounter = (TransportationCounter)TransportationCounter.getNew(type);
         newCounter.setSecret(isSecret);
         Hand senderHand = GameState.instance().getPlayerByName(senderName).getHand();
         senderHand.clearCounters();

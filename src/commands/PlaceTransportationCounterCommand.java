@@ -18,8 +18,7 @@ public class PlaceTransportationCounterCommand implements GameCommand {
     private final CounterType counterType;
     private final boolean isSecret;
     private final String senderName;
-    private TransportationCounter aCounter;
-    
+
     public PlaceTransportationCounterCommand(Road road, TransportationCounter counter) {
         GameMap map = GameMap.getInstance();
         start = map.getRoadSource(road).getName();
@@ -28,7 +27,6 @@ public class PlaceTransportationCounterCommand implements GameCommand {
         counterType = counter.getType();
         isSecret = counter.isSecret();
         senderName = GameManager.getInstance().getThisPlayer().getName();
-        aCounter = counter;
     }
 
     @Override
@@ -39,7 +37,7 @@ public class PlaceTransportationCounterCommand implements GameCommand {
         Town startTown = map.getTown(start);
         Town destinationTown = map.getTown(destination);
         Road road = map.getRoadBetween(startTown, destinationTown, regionType);
-        TransportationCounter counter = (TransportationCounter)aCounter.getNew();
+        TransportationCounter counter = (TransportationCounter)TransportationCounter.getNew(counterType);
         road.setTransportationCounter(counter);
 
         // remove the counter from the sending player's hand

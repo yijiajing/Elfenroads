@@ -157,5 +157,7 @@ public abstract class CounterUnit extends Drawable{
     }
     
     //getNew should be hidden by all subclasses.
-    public abstract CounterUnit getNew();
+    public static CounterUnit getNew(CounterUnitType pType) {
+    	return null;
+    }
 }
