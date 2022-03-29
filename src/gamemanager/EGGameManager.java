@@ -62,20 +62,23 @@ public class EGGameManager extends GameManager {
     }
 
     public void drawTravelCard() {
-        if (gameState.getCurrentRound() <= gameState.getTotalRounds()
+        if (!(gameState.getCurrentRound() <= gameState.getTotalRounds()
                 && GameRuleUtils.isDrawCountersPhase()
-                && isLocalPlayerTurn()) {
-            updateGameState();
-            GameScreen.displayMessage("""
-                    Please select a transportation counter to add to your hand. You may choose one of the face-up cards, 
-                    a card from the deck or take the entire gold card deck, shown on the right side of the screen.
-                    """);
-            // all logic is implemented in the mouse listeners of the cards
+                && isLocalPlayerTurn())) {
+            return;
         }
+        updateGameState();
+        GameScreen.displayMessage("""
+                Please select a transportation counter to add to your hand. You may choose one of the face-up cards, 
+                a card from the deck or take the entire gold card deck, shown on the right side of the screen.
+                """);
+        // all logic is implemented in the mouse listeners of the cards
     }
 
     public void chooseFaceUpCounter() {
-        if (gameState.getCurrentPhase() != EGRoundPhaseType.CHOOSE_FACE_UP) {
+        if (!(gameState.getCurrentRound() <= gameState.getTotalRounds()
+                && gameState.getCurrentPhase() == EGRoundPhaseType.CHOOSE_FACE_UP
+                && isLocalPlayerTurn())) {
             return;
         }
 
@@ -98,7 +101,12 @@ public class EGGameManager extends GameManager {
     }
 
     public void auction() {
-
+        if (!(gameState.getCurrentRound() <= gameState.getTotalRounds()
+                && gameState.getCurrentPhase() == EGRoundPhaseType.AUCTION
+                && isLocalPlayerTurn())) {
+            return;
+        }
+        //TODO: show auction window and display hints
     }
 
     @Override
@@ -108,6 +116,21 @@ public class EGGameManager extends GameManager {
 
     @Override
     public void returnCounter(CounterUnit toKeep) {
+
+    }
+
+    @Override
+    public void endTurn() {
+
+    }
+
+    @Override
+    public void endPhase() {
+
+    }
+
+    @Override
+    public void endRound() {
 
     }
 
