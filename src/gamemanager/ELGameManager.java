@@ -89,7 +89,7 @@ public class ELGameManager extends GameManager {
         LOGGER.info(getThisPlayer().getHand().getCards().toString());
 
         int numDrawn = 8 - numCards;
-        DrawCardCommand drawCardCommand = new DrawCardCommand(numDrawn);
+        DrawCardCommand drawCardCommand = new DrawCardCommand(numDrawn, null);
         try {
             coms.sendGameCommandToAllPlayers(drawCardCommand);
         } catch (IOException e) {

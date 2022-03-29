@@ -170,7 +170,7 @@ public class EGGameScreen extends GameScreen {
 
     public void updateFaceUpTravelCards()
     {
-        ArrayList<CardUnit> faceUpCards = GameState.instance().getFaceUpCards();
+        ArrayList<TravelCard> faceUpCards = GameState.instance().getFaceUpCards();
 
         // clear the previous counters from the screen
         for (JPanel panel : panelForFaceUpTravelCards) {

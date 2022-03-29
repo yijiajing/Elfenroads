@@ -2,7 +2,6 @@ package domain;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.Serializable;
 
 public abstract class CardUnit extends Drawable {
 
@@ -15,10 +14,7 @@ public abstract class CardUnit extends Drawable {
         Image resized = toResize.getScaledInstance(resizeWidth, resizeHeight,  java.awt.Image.SCALE_SMOOTH);
         display = new JLabel(new ImageIcon(resized));
         selected = false;
-
     }
-
-
 
     public boolean isSelected() {
         return selected;

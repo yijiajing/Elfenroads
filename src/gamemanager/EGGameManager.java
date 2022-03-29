@@ -22,11 +22,12 @@ public class EGGameManager extends GameManager {
 
     @Override
     protected void setUpNewGame() {
-        // initial preparation: deal five cards to each player
+        // initial preparation: deal five cards to each player; give each player 7 gold coins
         for (Player p: gameState.getPlayers()) {
             for (int i = 0; i < 5; i++) {
                 p.getHand().addUnit(gameState.getTravelCardDeck().draw());
             }
+            p.addGoldCoins(7);
         }
 
         // put 3 cards face up, these are shared across peers
@@ -59,7 +60,16 @@ public class EGGameManager extends GameManager {
     }
 
     public void drawTravelCard() {
-
+        if (gameState.getCurrentRound() <= gameState.getTotalRounds()
+                && GameRuleUtils.isDrawCountersPhase()
+                && isLocalPlayerTurn()) {
+            updateGameState();
+            GameScreen.displayMessage("""
+                    Please select a transportation counter to add to your hand. You may choose one of the face-up cards, 
+                    a card from the deck or take the entire gold card deck, shown on the right side of the screen.
+                    """);
+            // all logic is implemented in the mouse listeners of the cards
+        }
     }
 
     public void chooseFaceUpCounter() {
