@@ -197,9 +197,9 @@ public class ELGameManager extends GameManager {
     @Override
     public void returnCounter(CounterUnit toKeep) {
         assert toKeep instanceof TransportationCounter; // can only be transportation counter for Elfenland
-        List<TransportationCounter> myCounters = thisPlayer.getHand().getCounters();
+        List<CounterUnit> myCounters = thisPlayer.getHand().getCounters();
 
-        for (TransportationCounter c : myCounters) {
+        for (CounterUnit c : myCounters) {
             if (c.equals(toKeep)) {
                 continue;
             }
@@ -208,7 +208,7 @@ public class ELGameManager extends GameManager {
 
             try {
                 LOGGER.info("Sending ReturnTransportationCounterCommand to all players");
-                coms.sendGameCommandToAllPlayers(new ReturnTransportationCounterCommand(c));
+                coms.sendGameCommandToAllPlayers(new ReturnTransportationCounterCommand((TransportationCounter) c));
             } catch (IOException e) {
                 System.out.println("There was a problem sending the ReturnTransportationCounterCommand to all players.");
                 e.printStackTrace();
@@ -220,41 +220,6 @@ public class ELGameManager extends GameManager {
         thisPlayer.getHand().addUnit(toKeep);
 
         endTurn();
-    }
-
-    /**
-     * Called once by each peer within a phase. From here we might go to the next phase and next round.
-     * If we are still in the same phase, we notify the next peer in list to take action.
-     */
-    // totalRounds Round <--in-- numOfRoundPhaseType Phases <--in-- numOfPlayer Turns
-    public void endTurn() {
-        GameScreen.getInstance().updateAll(); // update the GUI
-        actionManager.clearSelection();
-
-        // all players have passed their turn in the current phase
-        if (gameState.getCurrentPlayerIdx() + 1 == gameState.getNumOfPlayers()) {
-            // Since players take turns, only one player will first reach endPhase from endTurn.
-            // We then tell everyone to end phase.
-            GameCommand endPhaseCommand = new EndPhaseCommand();
-            endPhaseCommand.execute(); // execute locally before sending to everyone else
-            try {
-                coms.sendGameCommandToAllPlayers(endPhaseCommand);
-            } catch (IOException e) {
-                System.out.println("There was a problem sending the endPhaseCommand to all players.");
-                e.printStackTrace();
-            }
-        } else {
-            // within the same phase, next player will take action
-            gameState.setToNextPlayer();
-            NotifyTurnCommand notifyTurnCommand = new NotifyTurnCommand(gameState.getCurrentPhase());
-            try {
-                LOGGER.info("Notifying " + gameState.getCurrentPlayer().getName() + " to take action.");
-                coms.sendCommandToIndividual(notifyTurnCommand, gameState.getCurrentPlayer().getName());
-            } catch (IOException e) {
-                LOGGER.info("There was a problem sending the command to take turns!");
-                e.printStackTrace();
-            }
-        }
     }
 
     /**
@@ -290,28 +255,6 @@ public class ELGameManager extends GameManager {
             }
         }
         gameState.clearPassedPlayerCount();
-    }
-
-    /**
-     * Trigger for every peers when endPhase is called
-     */
-    @Override
-    public void endRound() {
-        gameState.incrementCurrentRound();
-        LOGGER.info("...Going to the next round #" + gameState.getCurrentRound());
-        LOGGER.info("Total: " + gameState.getTotalRounds() + ", Current: " + gameState.getCurrentRound());
-        if (gameState.getCurrentRound() > gameState.getTotalRounds()) {
-            LOGGER.info("Total: " + gameState.getTotalRounds() + ", Current: " + gameState.getCurrentRound());
-            endGame();
-            return;
-        }
-        actionManager.clearSelection();
-
-        GameMap.getInstance().clearAllCounters();
-        GameState.instance().getCounterPile().shuffle();
-
-        GameScreen.getInstance().initializeRoundCardImage(gameState.getCurrentRound()); // update round card image
-        setUpRound(); // start next round
     }
 
     @Override

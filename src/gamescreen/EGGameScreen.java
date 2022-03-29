@@ -201,12 +201,12 @@ public class EGGameScreen extends GameScreen {
             }
         }
 
-        List<TransportationCounter> counters = GameManager.getInstance().getThisPlayer().getHand().getCounters();
+        List<CounterUnit> counters = GameManager.getInstance().getThisPlayer().getHand().getCounters();
 
         // draw the counters to the screen
         for (int c = 0; c < counters.size(); c++) {
             JPanel panel = panelForPlayerTransportationCounters[c];
-            TransportationCounter counter = counters.get(c);
+            CounterUnit counter = counters.get(c);
             panel.add(counter.getDisplay());
             panel.repaint();
             panel.revalidate();

@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Hand {
 	private List<CardUnit> cardList;
-	private List<TransportationCounter> counterList;
+	private List<CounterUnit> counterList;
 	private Optional<Obstacle> obstacle;
 	
 	public Hand() {
@@ -18,8 +18,8 @@ public class Hand {
 			cardList.add((CardUnit)pUnit);
 		} else if (pUnit instanceof Obstacle) {
 			obstacle = Optional.of((Obstacle) pUnit);
-		} else if (pUnit instanceof TransportationCounter) {
-			counterList.add((TransportationCounter) pUnit);
+		} else if (pUnit instanceof CounterUnit) {
+			counterList.add((CounterUnit) pUnit);
 		}
 	}
 
@@ -28,7 +28,7 @@ public class Hand {
 			cardList.remove(pUnit);
 		} else if (pUnit instanceof Obstacle) {
 			obstacle = Optional.empty();
-		} else if (pUnit instanceof TransportationCounter) {
+		} else if (pUnit instanceof CounterUnit) {
 			counterList.remove(pUnit);
 		}
 	}
@@ -49,7 +49,7 @@ public class Hand {
 		this.counterList.clear();
 	}
 	
-	public List<TransportationCounter> getCounters() {
+	public List<CounterUnit> getCounters() {
 		return this.counterList;
 	}
 	

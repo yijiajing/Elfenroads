@@ -34,32 +34,32 @@ public class PlaceCounterUnitCommand implements GameCommand {
 
 	    @Override
 	    public void execute() {
-	        Logger.getGlobal().info("Executing PlaceTransportationCounterCommand");
-	        GameMap map = GameMap.getInstance();
+			Logger.getGlobal().info("Executing PlaceTransportationCounterCommand");
+			GameMap map = GameMap.getInstance();
 
-	        Town startTown = map.getTown(start);
-	        Town destinationTown = map.getTown(destination);
-	        Road road = map.getRoadBetween(startTown, destinationTown, regionType);
-	        CounterUnit counter = CounterUnit.getNew(aCounterUnitType);
-	        assert counter instanceof TransportationCounter || counter instanceof MagicSpell || counter instanceof Obstacle;
-	        
-	        //Call different methods in road for different types of CounterUnit
-	        if (counter instanceof TransportationCounter) {
-	        	road.setTransportationCounter((TransportationCounter)counter);
-	        }else if (counter instanceof MagicSpell) {
-	        	road.setMagicSpell((MagicSpell)counter);
-	        }else if (counter instanceof Obstacle) {
-	            Obstacle obstacle = (Obstacle)Obstacle.getNew();//For Elfengold, should call EGObstacle.getNew(type)
-	            road.placeObstacle(obstacle);
-	        }else if (counter instanceof GoldPiece) {
-	        	road.placeGoldPiece((GoldPiece)counter);
-	        }
+			Town startTown = map.getTown(start);
+			Town destinationTown = map.getTown(destination);
+			Road road = map.getRoadBetween(startTown, destinationTown, regionType);
+			CounterUnit counter = CounterUnit.getNew(aCounterUnitType);
+			assert counter instanceof TransportationCounter || counter instanceof MagicSpell || counter instanceof Obstacle;
+
+			//Call different methods in road for different types of CounterUnit
+			if (counter instanceof TransportationCounter) {
+				road.setTransportationCounter((TransportationCounter) counter);
+			} else if (counter instanceof MagicSpell) {
+				road.setMagicSpell((MagicSpell) counter);
+			} else if (counter instanceof Obstacle) {
+				Obstacle obstacle = (Obstacle) Obstacle.getNew();//For Elfengold, should call EGObstacle.getNew(type)
+				road.placeObstacle(obstacle);
+			} else if (counter instanceof GoldPiece) {
+				road.placeGoldPiece((GoldPiece) counter);
+			}
 	        
 	        
 
 	        // remove the counter from the sending player's hand if counter is not an obstacle
 	        if (!(counter instanceof Obstacle)) {
-	        	List<TransportationCounter> senderHand = GameState.instance().getPlayerByName(senderName).getHand().getCounters();
+	        	List<CounterUnit> senderHand = GameState.instance().getPlayerByName(senderName).getHand().getCounters();
 		        int toRemoveIdx = -1;
 		        for (int i = 0; i < senderHand.size(); i++) {
 		            if (senderHand.get(i).getType() == aCounterUnitType
