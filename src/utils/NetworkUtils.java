@@ -172,9 +172,10 @@ public class NetworkUtils {
 
         for (InetAddress address : allAddresses)
         {
-            if (address.isLoopbackAddress() || !isValidIP(address.getHostAddress())) // we don't want the loopback address or an invalid one, like a MAC address
+            if (address.isLoopbackAddress() || !isValidIP(address.getHostAddress()) || !beginsWithTen(address.getHostAddress())) // we don't want the loopback address or an invalid one, like a MAC address
             {
                 // do nothing and keep going
+                continue;
             }
 
             else
@@ -265,6 +266,12 @@ public class NetworkUtils {
     {
         return Pattern.compile("(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|" +
                 "2[0-4][0-9]|25[0-5])").matcher(ip).find();
+    }
+
+    public static boolean beginsWithTen(String ip)
+    {
+        String [] tokenized = ip.split(".");
+        return tokenized[0].equals("10");
     }
 
 
