@@ -121,6 +121,27 @@ public class ActionManager {
                 GameScreen.displayMessage("You cannot place a transportation counter here. Please try again.");
             }
         }
+
+        else if (selectedCounter instanceof GoldPiece) {
+            GoldPiece counter = (GoldPiece) selectedCounter;
+            if (selectedRoad.placeGoldPiece(counter)) {
+                gameManager.getThisPlayer().getHand().removeUnit(selectedCounter);
+                selectedCounter.setOwned(false);
+                LOGGER.info("Just removed gold piece");
+                GameCommand toSendOverNetwork = ;
+
+                try {
+                    gameManager.getComs().sendGameCommandToAllPlayers(toSendOverNetwork);
+                    GameScreen.getInstance().updateAll();
+                } catch (IOException e) {
+                    LOGGER.info("There was a problem sending the command to place the obstacle!");
+                    e.printStackTrace();
+                }
+                gameManager.endTurn();
+            } else { // Invalid move
+                GameScreen.displayMessage("You cannot place a gold piece here. Please try again.");
+            }
+        }
         clearSelection();
     }
 
