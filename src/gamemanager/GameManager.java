@@ -4,6 +4,8 @@ import commands.AddPlayerCommand;
 import commands.GetBootColourCommand;
 import domain.*;
 import enums.Colour;
+import enums.EGRoundPhaseType;
+import enums.ELRoundPhaseType;
 import enums.GameVariant;
 import loginwindow.ChooseBootWindow;
 import loginwindow.MainFrame;
@@ -155,6 +157,48 @@ public abstract class GameManager {
             gameState.addElfBoot(new ElfBoot(p.getColour(), GameScreen.getInstance().getWidth(), GameScreen.getInstance().getHeight(), elvenholdBootPanel, GameScreen.getInstance()));
         }
     }
+
+    public void planTravelRoutes() {
+        if (gameState.getCurrentRound() <= gameState.getTotalRounds()
+                && gameState.getCurrentPhase() == ELRoundPhaseType.PLAN_ROUTES
+                && isLocalPlayerTurn()) {
+
+            updateGameState();
+            System.out.println("Current phase: PLAN TRAVEL ROUTES");
+
+            // display message
+            if (gameState.getCurrentPhase() == ELRoundPhaseType.PLAN_ROUTES
+                    || gameState.getCurrentPhase() == EGRoundPhaseType.PLAN_ROUTES) {
+                GameScreen.displayMessage("""
+                        It is time to plan your travel routes! Begin by clicking the transportation counter in your hand that you want to use, then click on the road that you want to travel.
+                        The chart in the bottom right corner indicates which transportation counters may be used on which road.
+                        Alternatively, you may choose to place your Obstacle on a road that already has a counter. But be warned... you can only do this once!
+                        When you are done placing one counter, click "End Turn". Alternatively, you can pass your turn by clicking "End Turn".
+                        """);
+            }
+        }
+    }
+
+    public void moveOnMap() {
+        if (gameState.getCurrentRound() <= gameState.getTotalRounds()
+                && gameState.getCurrentPhase() == ELRoundPhaseType.MOVE
+                && gameState.getCurrentPlayer().equals(thisPlayer)) {
+
+            updateGameState();
+            System.out.println("Current phase: MOVE ON MAP");
+
+            // display message
+            GameScreen.displayMessage("""
+                    It is time to travel across the map and collect your town pieces! Begin by clicking the travel card(s) that you want to use, then click on the town that you want to travel to.
+                    The number of required travel cards depends on the region and is indicated by the chart in the bottom right corner. 
+                    You can repeat this as many times as you want. When you are done travelling, click "End Turn". 
+                    """);
+
+            // logic implemented in ActionManager
+        }
+    }
+
+    public abstract void returnCountersPhase();
 
     protected void updateGameState() {
         GameScreen.getInstance().updateAll();

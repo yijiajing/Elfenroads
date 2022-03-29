@@ -42,6 +42,7 @@ public class EGGameManager extends GameManager {
         gameState.getTravelCardDeck().shuffle(); // only shuffle once at the beginning of each round
         if (gameState.getCurrentRound() == 1) {
             // Draw Card phase is ignored in the first round
+            LOGGER.info("In the first round, go directly to choose face-up counter");
             gameState.setCurrentPhase(EGRoundPhaseType.CHOOSE_FACE_UP);
             // Triggered only on one instance (the first player)
             if (isLocalPlayerTurn()) {
@@ -49,6 +50,7 @@ public class EGGameManager extends GameManager {
                 GameScreen.getInstance().updateAll();
             }
         } else {
+            LOGGER.info("In round " + gameState.getCurrentRound() + ", go directly to choose face-up counter");
             gameState.setCurrentPhase(EGRoundPhaseType.DRAW_CARD_ONE);
             // Triggered only on one instance (the first player)
             if (isLocalPlayerTurn()) {
@@ -60,20 +62,23 @@ public class EGGameManager extends GameManager {
     }
 
     public void drawTravelCard() {
-        if (gameState.getCurrentRound() <= gameState.getTotalRounds()
+        if (!(gameState.getCurrentRound() <= gameState.getTotalRounds()
                 && GameRuleUtils.isDrawCountersPhase()
-                && isLocalPlayerTurn()) {
-            updateGameState();
-            GameScreen.displayMessage("""
-                    Please select a transportation counter to add to your hand. You may choose one of the face-up cards, 
-                    a card from the deck or take the entire gold card deck, shown on the right side of the screen.
-                    """);
-            // all logic is implemented in the mouse listeners of the cards
+                && isLocalPlayerTurn())) {
+            return;
         }
+        updateGameState();
+        GameScreen.displayMessage("""
+                Please select a transportation counter to add to your hand. You may choose one of the face-up cards, 
+                a card from the deck or take the entire gold card deck, shown on the right side of the screen.
+                """);
+        // all logic is implemented in the mouse listeners of the cards
     }
 
     public void chooseFaceUpCounter() {
-        if (gameState.getCurrentPhase() != EGRoundPhaseType.CHOOSE_FACE_UP) {
+        if (!(gameState.getCurrentRound() <= gameState.getTotalRounds()
+                && gameState.getCurrentPhase() == EGRoundPhaseType.CHOOSE_FACE_UP
+                && isLocalPlayerTurn())) {
             return;
         }
 
@@ -93,6 +98,20 @@ public class EGGameManager extends GameManager {
                 the counter you wish to place face-up and the other counter will be placed face-down.
                 """);
         //TODO: show ChooseCounterWindow
+    }
+
+    public void auction() {
+        if (!(gameState.getCurrentRound() <= gameState.getTotalRounds()
+                && gameState.getCurrentPhase() == EGRoundPhaseType.AUCTION
+                && isLocalPlayerTurn())) {
+            return;
+        }
+        //TODO: show auction window and display hints
+    }
+
+    @Override
+    public void returnCountersPhase() {
+
     }
 
     @Override
