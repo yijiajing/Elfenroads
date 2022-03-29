@@ -92,8 +92,8 @@ public class Player implements Comparable<Player> {
 
     public Hand getHand() { return this.hand; }
 
+    public boolean hasObstacle () {return this.hand.hasObstacle();}
 
-    
     public String getName() {
         return name;
     }
@@ -126,5 +126,9 @@ public class Player implements Comparable<Player> {
 
     public String toString() {
         return name + " " + colour + " " + curTown.getName();
+    }
+
+    public Set<Town> getTownsVisited() {
+        return townsVisited;
     }
 }

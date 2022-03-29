@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Hand {
 	private List<CardUnit> cardList;
-	private List<TransportationCounter> counterList;
+	private List<CounterUnit> counterList;
 	private Optional<Obstacle> obstacle;
 	
 	public Hand() {
@@ -49,12 +49,13 @@ public class Hand {
 		this.counterList.clear();
 	}
 	
-	public List<TransportationCounter> getCounters() {
+	public List<CounterUnit> getCounters() {
 		return this.counterList;
 	}
-	
-	
+
 	public Obstacle getObstacle() {
 		return obstacle.orElse(null);
 	}
+
+	public boolean hasObstacle() { return obstacle.isPresent();}
 }

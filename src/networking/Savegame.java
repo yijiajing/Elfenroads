@@ -37,7 +37,7 @@ public class Savegame implements Serializable {
         currentRound = pState.getCurrentRound();
         currentPhase = pState.getCurrentPhase();
         passedPlayerCount = pState.getPassedPlayerCount();
-        
+
 
         state = pState;
     }
