@@ -24,14 +24,9 @@ public class Obstacle extends CounterUnit {
             }
         });
     }
-    
-    public static CounterUnit getNewObstacle() {
+
+    public static CounterUnit getNew() {
         return new Obstacle(MainFrame.instance.getWidth()*67/1440, MainFrame.instance.getHeight()*60/900);
     }
-
-	@Override
-	public CounterUnit getNew() {
-		return new Obstacle(MainFrame.instance.getWidth()*67/1440, MainFrame.instance.getHeight()*60/900);
-	}
     
 }

@@ -21,7 +21,6 @@ public class PlaceCounterUnitCommand implements GameCommand {
 	    private final CounterUnitType aCounterUnitType;
 	    private final boolean isSecret;
 	    private final String senderName;
-	    private CounterUnit aCounter;
 
 	    public PlaceCounterUnitCommand(Road road, CounterUnit counter) {
 	        GameMap map = GameMap.getInstance();
@@ -31,7 +30,6 @@ public class PlaceCounterUnitCommand implements GameCommand {
 	        aCounterUnitType = counter.getType();
 	        isSecret = counter.isSecret();
 	        senderName = GameManager.getInstance().getThisPlayer().getName();
-	        aCounter = counter;
 	    }
 
 	    @Override
@@ -42,7 +40,7 @@ public class PlaceCounterUnitCommand implements GameCommand {
 			Town startTown = map.getTown(start);
 			Town destinationTown = map.getTown(destination);
 			Road road = map.getRoadBetween(startTown, destinationTown, regionType);
-			CounterUnit counter = aCounter.getNew();//get the new counter to be placed.
+			CounterUnit counter = CounterUnit.getNew(aCounterUnitType);
 			assert counter instanceof TransportationCounter || counter instanceof MagicSpell || counter instanceof Obstacle;
 
 			//Call different methods in road for different types of CounterUnit
@@ -51,7 +49,7 @@ public class PlaceCounterUnitCommand implements GameCommand {
 			} else if (counter instanceof MagicSpell) {
 				road.setMagicSpell((MagicSpell) counter);
 			} else if (counter instanceof Obstacle) {
-				Obstacle obstacle = (Obstacle) Obstacle.getNewObstacle();//For Elfengold, should call EGObstacle.getNew(type)
+				Obstacle obstacle = (Obstacle) Obstacle.getNew();//For Elfengold, should call EGObstacle.getNew(type)
 				road.placeObstacle(obstacle);
 			} else if (counter instanceof GoldPiece) {
 				road.placeGoldPiece((GoldPiece) counter);
