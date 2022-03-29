@@ -1,4 +1,4 @@
-package loginwindow;
+package windows;
 
 import gamemanager.GameManager;
 import enums.GameVariant;

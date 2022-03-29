@@ -4,6 +4,7 @@ import domain.*;
 import enums.GameVariant;
 import gamemanager.GameManager;
 import networking.GameState;
+import windows.ChooseCounterPopup;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -14,10 +15,10 @@ import java.util.List;
 import java.util.logging.Logger;
 
 //TODO: modify everything for Elfengold.
-// There is no face up transportation counter or a unique place for obstacle, for example.
 public class EGGameScreen extends GameScreen {
 
     protected final JPanel[] panelForFaceUpTravelCards = new JPanel[3];
+    protected ChooseCounterPopup counterPopup;
 
     EGGameScreen(JFrame frame, GameVariant variant) {
         super(frame, variant);
@@ -221,5 +222,14 @@ public class EGGameScreen extends GameScreen {
                 t.getTokenPanel().drawGoldValueToken();
             }
         }
+    }
+
+    public void showCounterPopup(CounterUnit counter1, CounterUnit counter2) {
+        counterPopup = new ChooseCounterPopup(counter1, counter2);
+        boardGame_Layers.add(counterPopup);
+    }
+
+    public void hideCounterPopup() {
+        boardGame_Layers.remove(counterPopup);
     }
 }

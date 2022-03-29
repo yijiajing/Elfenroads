@@ -2,7 +2,7 @@ package domain;
 
 import enums.CounterUnitType;
 import enums.GoldPieceType;
-import loginwindow.MainFrame;
+import windows.MainFrame;
 
 public class GoldPiece extends CounterUnit {
 	public GoldPiece(GoldPieceType pType, int resizeWidth, int resizeHeight) {
@@ -10,8 +10,7 @@ public class GoldPiece extends CounterUnit {
 		super.initializeMouseListener();
 	}
 
-    public static CounterUnit getNew(CounterUnitType pType) {
-        assert pType instanceof GoldPieceType;
-    	return new GoldPiece((GoldPieceType)pType, MainFrame.instance.getWidth() * 67 / 1440, MainFrame.instance.getHeight() * 60 / 900);
+    public CounterUnit getNew() {
+    	return new GoldPiece((GoldPieceType)this.getType(), MainFrame.instance.getWidth() * 67 / 1440, MainFrame.instance.getHeight() * 60 / 900);
     }
 }

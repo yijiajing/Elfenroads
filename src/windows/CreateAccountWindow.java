@@ -1,4 +1,4 @@
-package loginwindow;
+package windows;
 
 import networking.User;
 import utils.NetworkUtils;
