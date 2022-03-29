@@ -3,7 +3,7 @@ package domain;
 import enums.CounterType;
 import enums.CounterUnitType;
 import enums.RegionType;
-import loginwindow.MainFrame;
+import windows.MainFrame;
 import java.util.Objects;
 
 public class TransportationCounter extends CounterUnit implements Comparable<TransportationCounter> {

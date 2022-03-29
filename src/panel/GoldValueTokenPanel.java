@@ -2,7 +2,6 @@ package panel;
 
 import domain.GoldValueToken;
 import domain.Town;
-import loginwindow.MainFrame;
 
 import javax.swing.*;
 

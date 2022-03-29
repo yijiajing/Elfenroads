@@ -1,12 +1,11 @@
 package domain;
 
 import enums.TravelCardType;
-import loginwindow.MP3Player;
+import windows.MP3Player;
 import networking.ActionManager;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.Serializable;
 
 public class TravelCard extends CardUnit {
 

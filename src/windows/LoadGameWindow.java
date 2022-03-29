@@ -1,7 +1,4 @@
-package loginwindow;
-
-import loginwindow.LobbyWindow;
-import loginwindow.MainFrame;
+package windows;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

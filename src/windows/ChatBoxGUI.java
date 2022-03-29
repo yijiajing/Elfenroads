@@ -1,4 +1,4 @@
-package loginwindow;
+package windows;
 
 import commands.ChatMessageCommand;
 import gamemanager.GameManager;

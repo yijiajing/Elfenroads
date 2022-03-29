@@ -5,8 +5,7 @@ import javax.swing.*;
 import commands.DrawCounterCommand;
 import enums.*;
 import gamemanager.GameManager;
-import loginwindow.MP3Player;
-import loginwindow.MainFrame;
+import windows.MP3Player;
 import networking.ActionManager;
 import networking.GameState;
 import gamescreen.GameScreen;
@@ -16,7 +15,6 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.logging.Logger;
 
 public abstract class CounterUnit extends Drawable{

@@ -52,8 +52,7 @@ public class Hand {
 	public List<TransportationCounter> getCounters() {
 		return this.counterList;
 	}
-	
-	
+
 	public Obstacle getObstacle() {
 		return obstacle.orElse(null);
 	}
