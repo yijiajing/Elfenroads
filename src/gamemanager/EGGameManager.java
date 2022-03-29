@@ -1,5 +1,6 @@
 package gamemanager;
 
+import commands.NotifyTurnCommand;
 import domain.*;
 import enums.EGRoundPhaseType;
 import enums.GameVariant;
@@ -121,7 +122,32 @@ public class EGGameManager extends GameManager {
 
     @Override
     public void endPhase() {
-
+        actionManager.clearSelection();
+        int nextOrdinal = ((EGRoundPhaseType) gameState.getCurrentPhase()).ordinal() + 1;
+        if (nextOrdinal == EGRoundPhaseType.values().length) {
+            // all phases are done, go to the next round
+            endRound();
+        } else if (gameState.getCurrentPhase() == EGRoundPhaseType.PLAN_ROUTES
+                && gameState.getPassedPlayerCount() < gameState.getNumOfPlayers()) {
+            LOGGER.info("Pass turn ct: " + gameState.getPassedPlayerCount() + ", staying at the PLAN ROUTES phase");
+            // continue with plan routes phase if not all players have passed their turn
+            gameState.setToFirstPlayer();
+            // the first player will take action
+            if (isLocalPlayerTurn()) {
+                NotifyTurnCommand notifyTurnCommand = new NotifyTurnCommand(EGRoundPhaseType.PLAN_ROUTES);
+                notifyTurnCommand.execute(); // notify themself to take action
+            }
+        } else { // go to the next phase within the same round
+            gameState.setCurrentPhase(EGRoundPhaseType.values()[nextOrdinal]);
+            LOGGER.info("...Going to the next phase : " + gameState.getCurrentPhase());
+            gameState.setToFirstPlayer();
+            // the first player will take action
+            if (isLocalPlayerTurn()) {
+                NotifyTurnCommand notifyTurnCommand = new NotifyTurnCommand(gameState.getCurrentPhase());
+                notifyTurnCommand.execute(); // notify themself to take action
+            }
+        }
+        gameState.clearPassedPlayerCount();
     }
 
     @Override
