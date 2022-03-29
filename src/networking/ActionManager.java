@@ -123,19 +123,20 @@ public class ActionManager {
             }
         }
 
+        // Player intends to place a gold piece
         else if (selectedCounter instanceof GoldPiece) {
             GoldPiece counter = (GoldPiece) selectedCounter;
             if (selectedRoad.placeGoldPiece(counter)) {
                 gameManager.getThisPlayer().getHand().removeUnit(selectedCounter);
                 selectedCounter.setOwned(false);
                 LOGGER.info("Just removed gold piece");
-                GameCommand toSendOverNetwork = ;
+                GameCommand toSendOverNetwork = new PlaceCounterUnitCommand(selectedRoad, counter);
 
                 try {
                     gameManager.getComs().sendGameCommandToAllPlayers(toSendOverNetwork);
                     GameScreen.getInstance().updateAll();
                 } catch (IOException e) {
-                    LOGGER.info("There was a problem sending the command to place the obstacle!");
+                    LOGGER.info("There was a problem sending the command to place the gold piece!");
                     e.printStackTrace();
                 }
                 gameManager.endTurn();
