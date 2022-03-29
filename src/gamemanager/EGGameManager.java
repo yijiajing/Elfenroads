@@ -120,17 +120,7 @@ public class EGGameManager extends GameManager {
     }
 
     @Override
-    public void endTurn() {
-
-    }
-
-    @Override
     public void endPhase() {
-
-    }
-
-    @Override
-    public void endRound() {
 
     }
 
