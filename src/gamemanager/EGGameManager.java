@@ -11,6 +11,7 @@ import networking.GameState;
 import utils.GameRuleUtils;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -209,6 +210,38 @@ public class EGGameManager extends GameManager {
 
     @Override
     public void endGame() {
+        LOGGER.info("Game ends in " + gameState.getCurrentRound() + " rounds");
+        gameState.setCurrentPhase(null);
+        List<Player> players = gameState.getPlayers();
+        List<Player> winners = new ArrayList<>();
+        winners.add(players.get(0));
 
+        //update scoreboard
+        GameScreen.getInstance().updateAll();
+
+        for (Player p : players) {
+            if (p.getScore() > winners.get(0).getScore()) {
+                winners.clear();
+                winners.add(p);
+            } else if (p.getScore() == winners.get(0).getScore()) {
+                if (p.getGoldCoins() > winners.get(0).getGoldCoins()) {
+                    winners.clear();
+                    winners.add(p);
+                } else if (p.getGoldCoins() == winners.get(0).getGoldCoins() && p != winners.get(0)) {
+                    winners.add(p);
+                }
+            }
+        }
+
+        assert winners.size() >= 1;
+        if (winners.size() == 1) {
+            GameScreen.displayMessage(winners.get(0).getName() + " is the winner!");
+        } else {
+            String winnersNames = "";
+            for (Player winner : winners) {
+                winnersNames = winnersNames.concat(" " + winner.getName());
+            }
+            GameScreen.displayMessage("There is a tie. " + winnersNames + " are the winners!");
+        }
     }
 }
