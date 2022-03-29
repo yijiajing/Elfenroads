@@ -42,6 +42,7 @@ public class EGGameManager extends GameManager {
         gameState.getTravelCardDeck().shuffle(); // only shuffle once at the beginning of each round
         if (gameState.getCurrentRound() == 1) {
             // Draw Card phase is ignored in the first round
+            LOGGER.info("In the first round, go directly to choose face-up counter");
             gameState.setCurrentPhase(EGRoundPhaseType.CHOOSE_FACE_UP);
             // Triggered only on one instance (the first player)
             if (isLocalPlayerTurn()) {
@@ -49,6 +50,7 @@ public class EGGameManager extends GameManager {
                 GameScreen.getInstance().updateAll();
             }
         } else {
+            LOGGER.info("In round " + gameState.getCurrentRound() + ", go directly to choose face-up counter");
             gameState.setCurrentPhase(EGRoundPhaseType.DRAW_CARD_ONE);
             // Triggered only on one instance (the first player)
             if (isLocalPlayerTurn()) {
@@ -95,23 +97,17 @@ public class EGGameManager extends GameManager {
         //TODO: show ChooseCounterWindow
     }
 
+    public void auction() {
+
+    }
+
+    @Override
+    public void returnCountersPhase() {
+
+    }
+
     @Override
     public void returnCounter(CounterUnit toKeep) {
-
-    }
-
-    @Override
-    public void endTurn() {
-
-    }
-
-    @Override
-    public void endPhase() {
-
-    }
-
-    @Override
-    public void endRound() {
 
     }
 
