@@ -24,7 +24,7 @@ public class PlaceObstacleCommand implements GameCommand {
         Town startTown = map.getTown(start);
         Town destinationTown = map.getTown(destination);
         Road road = map.getRoadBetween(startTown, destinationTown, regionType);
-        Obstacle obstacle = (Obstacle)Obstacle.getNew();
+        Obstacle obstacle = (Obstacle)Obstacle.getNewObstacle();
         road.placeObstacle(obstacle);
     }
 }
