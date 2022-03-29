@@ -36,7 +36,7 @@ public final class GameRuleUtils {
         }
         Set<Road> roads = gameMap.getRoadsBetween(srcTown, destTown);
 
-        //TODO: implement elven witch and special transportation counters for Elfengold
+        //TODO: implement elven witch and special transportation counters for Elfengold (seamonster done)
 
         for (Road road : roads) {
             // cannot move on a non-river and non-lake road without transportation counter
@@ -45,22 +45,28 @@ public final class GameRuleUtils {
                 continue;
             }
             if (road.getRegionType() == RegionType.LAKE) {
-                // lake - two raft cards
-                if (cards.size() == 2 && cards.stream().allMatch(card -> card.getType() == TravelCardType.RAFT)) {
-                    LOGGER.info("[Lake] Can travel with two raft cards");
+                // lake - two raft cards (three with seamonster)
+                int requiredCards = 2;
+                if (road.hasObstacle()) { requiredCards++; }
+
+                if (cards.size() == requiredCards && cards.stream().allMatch(card -> card.getType() == TravelCardType.RAFT)) {
+                    LOGGER.info("[Lake] Can travel with " + Integer.toString(requiredCards) + " raft cards");
                     return true;
                 }
             } else if (road.getRegionType() == RegionType.RIVER) {
+                int extraCard = 0;
+                if (road.hasObstacle()) { extraCard = 1; }
+
                 if (gameMap.getRoadSource(road).equals(destTown)) {
-                    // upriver - two raft cards
-                    if (cards.size() == 2 && cards.stream().allMatch(card -> card.getType() == TravelCardType.RAFT)) {
-                        LOGGER.info("[Upriver] Can travel with two raft cards");
+                    // upriver - two raft cards (three with seamonster)
+                    if (cards.size() == 2+extraCard && cards.stream().allMatch(card -> card.getType() == TravelCardType.RAFT)) {
+                        LOGGER.info("[Upriver] Can travel with " + Integer.toString(2+extraCard) + " raft cards");
                         return true;
                     }
                 } else {
-                    // downriver - one raft card
-                    if (cards.size() == 1 && cards.get(0).getType() == TravelCardType.RAFT) {
-                        LOGGER.info("[Downriver] Can travel with one raft card");
+                    // downriver - one raft card (two with seamonster)
+                    if (cards.size() == 1+extraCard && cards.get(0).getType() == TravelCardType.RAFT) {
+                        LOGGER.info("[Downriver] Can travel with " + Integer.toString(1+extraCard) + " raft card");
                         return true;
                     }
                 }
@@ -99,14 +105,6 @@ public final class GameRuleUtils {
                 ELRoundPhaseType.DRAW_COUNTER_TWO, ELRoundPhaseType.DRAW_COUNTER_THREE)
                 .contains(GameState.instance().getCurrentPhase());
     }
-
-//    public static boolean isPlanRoutesPhase() {
-//        return List.of(RoundPhaseType.PLAN_ROUTES_ONE,
-//                RoundPhaseType.PLAN_ROUTES_TWO, RoundPhaseType.PLAN_ROUTES_THREE,
-//                RoundPhaseType.PLAN_ROUTES_FOUR, RoundPhaseType.PLAN_ROUTES_FIVE,
-//                RoundPhaseType.PLAN_ROUTES_SIX)
-//                .contains(GameState.instance().getCurrentPhase());
-//    }
 
     public static boolean isElfengoldVariant(GameVariant gameVariant) {
         return ((gameVariant == GameVariant.ELFENGOLD_CLASSIC) || (gameVariant == GameVariant.ELFENGOLD_WITCH) ||
