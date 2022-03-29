@@ -13,6 +13,7 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 public class NetworkUtils {
@@ -184,7 +185,8 @@ public class NetworkUtils {
             }
         }
 
-        return getLocalIP();
+        Logger.getGlobal().info("PROBLEM: COULD NOT FIND A VALID NON-LOOPBACK IP ADDRESS");
+        throw new Exception("Could not find a valid IP address.");
         // Logger.getGlobal().info("There was a problem finding a valid local IP address for this computer.");
         // throw new Exception ("Could not find an IP that was not a loopback and was a valid IP.");
     }
@@ -271,6 +273,12 @@ public class NetworkUtils {
     public static boolean beginsWithTen(String ip)
     {
         String [] tokenized = ip.split(".");
+
+        if (tokenized.length == 0)
+        {
+            return false;
+        }
+
         return tokenized[0].equals("10");
     }
 
