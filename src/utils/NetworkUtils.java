@@ -272,14 +272,7 @@ public class NetworkUtils {
 
     public static boolean beginsWithTen(String ip)
     {
-        String [] tokenized = ip.split(".");
-
-        if (tokenized.length == 0)
-        {
-            return false;
-        }
-
-        return tokenized[0].equals("10");
+       return ip.startsWith("10");
     }
 
 
