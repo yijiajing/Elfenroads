@@ -68,9 +68,10 @@ public class TransportationCounter extends CounterUnit implements Comparable<Tra
         }
         return -1; // not applicable
     }
-    @Override
-    public CounterUnit getNew() {
-    	return new TransportationCounter((CounterType)this.getType(), MainFrame.instance.getWidth() * 67 / 1440, MainFrame.instance.getHeight() * 60 / 900);
+    
+    public static CounterUnit getNew(CounterUnitType pType) {
+        assert pType instanceof CounterType;
+    	return new TransportationCounter((CounterType)pType, MainFrame.instance.getWidth() * 67 / 1440, MainFrame.instance.getHeight() * 60 / 900);
     }
     
 

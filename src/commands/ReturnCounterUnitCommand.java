@@ -19,7 +19,7 @@ public class ReturnCounterUnitCommand implements GameCommand{
     private final boolean isSecret;
     private final String senderName;
     
-    private CounterUnit pCounter;
+    CounterUnit pCounter;
 
     public ReturnCounterUnitCommand(CounterUnit returnedCounter) {
         this.type = returnedCounter.getType();
@@ -34,11 +34,11 @@ public class ReturnCounterUnitCommand implements GameCommand{
     @Override
     public void execute() {
         Logger.getGlobal().info("Executing ReturnCounterCommand, keep " + type);
-        CounterUnit counter = pCounter.getNew();
+        CounterUnit counter = pCounter.getNew(type);
         GameState.instance().getCounterPile().addDrawable(counter);
 
         // update the sending player's hand
-        CounterUnit newCounter = pCounter.getNew();
+        CounterUnit newCounter = CounterUnit.getNew(type);
         newCounter.setSecret(isSecret);
         Hand senderHand = GameState.instance().getPlayerByName(senderName).getHand();
         senderHand.clearCounters();

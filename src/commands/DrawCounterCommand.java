@@ -14,21 +14,19 @@ public class DrawCounterCommand implements GameCommand {
     private final boolean isSecret;
     private final boolean isFaceUp;
     private final String senderName;
-    private CounterUnit aCounter;
 
     public DrawCounterCommand(CounterUnit counter, boolean isFaceUp) {
         this.type = counter.getType();
         this.isSecret = counter.isSecret();
         this.isFaceUp = isFaceUp;
         this.senderName = GameManager.getInstance().getThisPlayer().getName();
-        aCounter = counter;
     }
 
     @Override
     public void execute() {
         Logger.getGlobal().info("Executing DrawCounterCommand with type: " + type);
         GameState gameState = GameState.instance();
-        
+
         // counter was taken from the face-up options
         if (isFaceUp) {
             gameState.removeFaceUpCounter(type);
@@ -39,7 +37,7 @@ public class DrawCounterCommand implements GameCommand {
         }
 
         // Add to the sender player's hand
-        CounterUnit newCounter = aCounter.getNew();
+        CounterUnit newCounter = CounterUnit.getNew(type);
         newCounter.setSecret(isSecret);
         GameState.instance().getPlayerByName(senderName).getHand().addUnit(newCounter);
 
