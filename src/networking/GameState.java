@@ -238,12 +238,12 @@ public class GameState implements Serializable{
         if (travelCardDeck.getSize() > 0) {
             LOGGER.info("Adding face-up card from travel card deck");
             CardUnit card = travelCardDeck.draw();
-            card.setOwned(false);
             if (card instanceof GoldCard) {
                 // if it is a gold card, we just add it to the gold card deck
                 incrementGoldCardDeckCount();
                 GameScreen.getInstance().updateAll();
             } else if (card instanceof TravelCard){
+                ((TravelCard) card).setOwned(false);
                 faceUpCards.add((TravelCard) card);
             }
         }
