@@ -1,6 +1,8 @@
 package gamemanager;
 
 import commands.NotifyTurnCommand;
+import commands.ReturnCounterUnitCommand;
+import commands.ReturnTransportationCounterCommand;
 import domain.*;
 import enums.EGRoundPhaseType;
 import enums.GameVariant;
@@ -8,6 +10,8 @@ import gamescreen.GameScreen;
 import networking.GameState;
 import utils.GameRuleUtils;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -15,6 +19,7 @@ import java.util.logging.Logger;
 public class EGGameManager extends GameManager {
 
     private final static Logger LOGGER = Logger.getLogger("Game Manager");
+    private CounterUnit prevCounterKept;
 
     EGGameManager(Optional<GameState> loadedState, String sessionID, GameVariant variant) {
         super(loadedState, sessionID, variant);
@@ -112,12 +117,64 @@ public class EGGameManager extends GameManager {
 
     @Override
     public void returnCountersPhase() {
+        if (!(gameState.getCurrentRound() <= gameState.getTotalRounds()
+                && gameState.getCurrentPhase() == EGRoundPhaseType.RETURN_COUNTERS
+                && isLocalPlayerTurn())) {
+            return;
+        }
 
+        // no need to return the counters if we are at the end of the game
+        if (gameState.getCurrentRound() == gameState.getTotalRounds()
+                || thisPlayer.getHand().getCounters().size() <= 2) {
+            LOGGER.info("Did not return counters because there is no counter or the end of the game, or the player have 2 or less counters");
+            endTurn();
+            return;
+        }
+
+        actionManager.clearSelection();
+
+        GameScreen.displayMessage("""
+                The round is over! All of your counters must be returned except for two. Please select two items 
+                (any combination of transportation counters, gold pieces, obstacles or magic spells) from your hand 
+                that you wish to keep.
+                """);
+
+        // once the player clicks a transportation counter it will call returnCounter()
     }
 
     @Override
     public void returnCounter(CounterUnit toKeep) {
+        List<CounterUnit> myCounters = thisPlayer.getHand().getCounters();
+        assert myCounters.contains(toKeep);
 
+        if (prevCounterKept == null) {
+            prevCounterKept = toKeep;
+        } else {
+            // the player has selected all two counters to keep, return all counters except these two
+            for (CounterUnit c : myCounters) {
+                if (c.equals(toKeep) || c.equals(prevCounterKept)) {
+                    continue;
+                }
+
+                GameState.instance().getCounterPile().addDrawable(c); // put counter back in the deck
+
+                try {
+                    LOGGER.info("Sending ReturnCounterUnitCommand to all players");
+                    coms.sendGameCommandToAllPlayers(new ReturnCounterUnitCommand(c));
+                } catch (IOException e) {
+                    System.out.println("There was a problem sending the ReturnCounterUnitCommand to all players.");
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        // clear all counters and then add toKeep back, otherwise we get concurrent modification exception
+        thisPlayer.getHand().getCounters().clear();
+        thisPlayer.getHand().addUnit(toKeep);
+        thisPlayer.getHand().addUnit(prevCounterKept);
+        prevCounterKept = null;
+
+        endTurn();
     }
 
     @Override

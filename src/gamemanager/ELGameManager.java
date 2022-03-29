@@ -197,9 +197,9 @@ public class ELGameManager extends GameManager {
     @Override
     public void returnCounter(CounterUnit toKeep) {
         assert toKeep instanceof TransportationCounter; // can only be transportation counter for Elfenland
-        List<TransportationCounter> myCounters = thisPlayer.getHand().getCounters();
+        List<CounterUnit> myCounters = thisPlayer.getHand().getCounters();
 
-        for (TransportationCounter c : myCounters) {
+        for (CounterUnit c : myCounters) {
             if (c.equals(toKeep)) {
                 continue;
             }
@@ -208,7 +208,7 @@ public class ELGameManager extends GameManager {
 
             try {
                 LOGGER.info("Sending ReturnTransportationCounterCommand to all players");
-                coms.sendGameCommandToAllPlayers(new ReturnTransportationCounterCommand(c));
+                coms.sendGameCommandToAllPlayers(new ReturnTransportationCounterCommand((TransportationCounter) c));
             } catch (IOException e) {
                 System.out.println("There was a problem sending the ReturnTransportationCounterCommand to all players.");
                 e.printStackTrace();
