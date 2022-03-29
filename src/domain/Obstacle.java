@@ -1,12 +1,11 @@
 package domain;
 
-import loginwindow.MainFrame;
+import windows.MainFrame;
 import networking.ActionManager;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import enums.CounterType;
 import enums.ObstacleType;
 
 public class Obstacle extends CounterUnit {

@@ -1,4 +1,4 @@
-package loginwindow;
+package windows;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;

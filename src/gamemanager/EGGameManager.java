@@ -1,15 +1,16 @@
 package gamemanager;
 
+import commands.DrawCounterCommand;
 import commands.NotifyTurnCommand;
 import commands.ReturnCounterUnitCommand;
 import commands.ReturnTransportationCounterCommand;
 import domain.*;
 import enums.EGRoundPhaseType;
 import enums.GameVariant;
+import gamescreen.EGGameScreen;
 import gamescreen.GameScreen;
 import networking.GameState;
 import utils.GameRuleUtils;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -40,6 +41,8 @@ public class EGGameManager extends GameManager {
         for (int j = 0; j < 3; j++) {
             this.gameState.addFaceUpCardFromDeck();
         }
+
+
     }
 
     @Override
@@ -81,6 +84,9 @@ public class EGGameManager extends GameManager {
         // all logic is implemented in the mouse listeners of the cards
     }
 
+    /**
+     * PHASE 4
+     */
     public void chooseFaceUpCounter() {
         if (!(gameState.getCurrentRound() <= gameState.getTotalRounds()
                 && gameState.getCurrentPhase() == EGRoundPhaseType.CHOOSE_FACE_UP
@@ -97,13 +103,34 @@ public class EGGameManager extends GameManager {
         // distribute two items from the face-down counter pile
         CounterUnit counter1 = gameState.getCounterPile().draw();
         CounterUnit counter2 = gameState.getCounterPile().draw();
+        thisPlayer.getHand().getCounters().add((TransportationCounter) counter1);
+        thisPlayer.getHand().getCounters().add((TransportationCounter) counter2);
+
+        // by default, both are hidden
+        // once a player clicks one of them, it will change secret to false
+        counter1.setSecret(true);
+        counter2.setSecret(true);
 
         // let the player choose which counter to place face-up (hence the other one is face-down)
-        GameScreen.displayMessage("""
-                It is time to decide which counter you would like to reveal to other players. Click on 
-                the counter you wish to place face-up and the other counter will be placed face-down.
-                """);
-        //TODO: show ChooseCounterWindow
+        ((EGGameScreen) GameScreen.getInstance()).showCounterPopup(counter1, counter2);
+    }
+
+    /**
+     * Called after the user chooses their face-up counter from the ChooseCounterPopup window
+     */
+    public void sendCounters(CounterUnit counter1, CounterUnit counter2) {
+        Logger.getGlobal().info("Sending two DrawCounterCommands");
+        DrawCounterCommand cmd1 = new DrawCounterCommand(counter1, !counter1.isSecret());
+        DrawCounterCommand cmd2 = new DrawCounterCommand(counter2, !counter2.isSecret());
+        try {
+            coms.sendGameCommandToAllPlayers(cmd1);
+            coms.sendGameCommandToAllPlayers(cmd2);
+        } catch (IOException e) {
+            LOGGER.info("There was a problem sending the command to draw counters!");
+            e.printStackTrace();
+        }
+
+        endTurn();
     }
 
     public void auction() {

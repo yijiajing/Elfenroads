@@ -1,8 +1,6 @@
-package loginwindow;
+package windows;
 
-import networking.*;
 import javax.swing.*;
-import javax.swing.text.html.MinimalHTMLWriter;
 
 
 import java.awt.*;
@@ -10,8 +8,6 @@ import java.awt.*;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
 
 public class StartWindow extends JPanel {
     

@@ -1,4 +1,4 @@
-package loginwindow;
+package windows;
 
 import commands.SendBootColourCommand;
 import gamemanager.GameManager;

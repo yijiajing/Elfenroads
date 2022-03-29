@@ -2,7 +2,7 @@ package domain;
 
 import enums.CounterUnitType;
 import enums.GoldPieceType;
-import loginwindow.MainFrame;
+import windows.MainFrame;
 
 public class GoldPiece extends CounterUnit {
 	public GoldPiece(GoldPieceType pType, int resizeWidth, int resizeHeight) {

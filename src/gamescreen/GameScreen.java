@@ -6,8 +6,7 @@ import domain.Player;
 import domain.Town;
 import enums.GameVariant;
 import gamemanager.GameManager;
-import loginwindow.ChatBoxGUI;
-import loginwindow.MainFrame;
+import windows.ChatBoxGUI;
 import networking.GameState;
 import org.json.JSONObject;
 import panel.EndTurnButton;
@@ -380,4 +379,6 @@ public abstract class GameScreen extends JPanel implements Serializable {
     {
         return prevMessage;
     }
+
+
 }
