@@ -9,6 +9,7 @@ import gamemanager.GameManager;
 import loginwindow.ChatBoxGUI;
 import loginwindow.MainFrame;
 import networking.GameState;
+import networking.Savegame;
 import org.json.JSONObject;
 import panel.EndTurnButton;
 import panel.MenuButton;
@@ -262,7 +263,10 @@ public abstract class GameScreen extends JPanel implements Serializable {
             public void actionPerformed(ActionEvent e) {
 
                 GameState gamestateToSave = GameState.instance();
-                JSONObject serialized = gamestateToSave.serialize();
+                try {Savegame.saveGameToFile();}
+                catch (IOException e3) {e3.printStackTrace();}
+
+                // TODO: decide what to do after the game has been saved
 
             }
 

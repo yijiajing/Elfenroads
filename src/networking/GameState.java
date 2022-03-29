@@ -25,7 +25,6 @@ public class GameState implements Serializable{
     3. 
      */
     private final Logger LOGGER = Logger.getGlobal();
-    private JSONObject serialized;
 
     // Global variable holding the singleton GameState instance
     private static GameState instance;
@@ -71,22 +70,6 @@ public class GameState implements Serializable{
         this.counterPile = new CounterUnitPile(sessionID, gameVariant);
     }
 
-    // TODO: implement this second constructor
-    // public networking.GameState (JSONObject gameStateJSON)
-
-    public GameState(JSONObject gamestateJSON){
-        
-
-    }
-
-    public JSONObject serialize()
-    {
-        // we will call the JSONObject constructor with the networking.GameState object as an argument
-        // that class comes from org.json (see documentation for details)
-        JSONObject serializedVersion = new JSONObject(this);
-        serialized = serializedVersion;
-        return serialized;
-    }
     
    
     /**
