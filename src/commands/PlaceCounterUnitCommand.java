@@ -2,6 +2,7 @@ package commands;
 
 import domain.*;
 import enums.CounterUnitType;
+import enums.ObstacleType;
 import enums.RegionType;
 import gamemanager.GameManager;
 import networking.GameState;
@@ -49,8 +50,14 @@ public class PlaceCounterUnitCommand implements GameCommand {
 			} else if (counter instanceof MagicSpell) {
 				road.setMagicSpell((MagicSpell) counter);
 			} else if (counter instanceof Obstacle) {
-				Obstacle obstacle = (Obstacle) Obstacle.getNew();//For Elfengold, should call EGObstacle.getNew(type)
-				road.placeObstacle(obstacle);
+				Obstacle obstacle;
+				if (counter.getType() == ObstacleType.TREE) {
+					obstacle = (Obstacle) Obstacle.getNew(ObstacleType.TREE);
+					road.placeObstacle(obstacle);
+				} else if (counter.getType() == ObstacleType.SEAMONSTER) {
+					obstacle = (Obstacle) Obstacle.getNew(ObstacleType.SEAMONSTER);
+					road.placeObstacle(obstacle);
+				}
 			} else if (counter instanceof GoldPiece) {
 				road.placeGoldPiece((GoldPiece) counter);
 			}
