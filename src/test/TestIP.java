@@ -27,7 +27,7 @@ public class TestIP {
                 System.out.println(cur.getHostAddress().startsWith("10"));
             }
         }
-        
+
          */
 
 
