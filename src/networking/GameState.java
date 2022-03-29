@@ -42,7 +42,8 @@ public class GameState implements Serializable{
     private int passedPlayerCount;
 
     private TravelCardDeck travelCardDeck;
-    private ArrayList<CardUnit> faceUpCards = new ArrayList<>(); // EG
+    private ArrayList<TravelCard> faceUpCards = new ArrayList<>(); // EG
+    private int goldCardDeckCount;
 
     private CounterUnitPile counterPile;
     private ArrayList<TransportationCounter> faceUpCounters = new ArrayList<>(); // EL
@@ -207,7 +208,7 @@ public class GameState implements Serializable{
         return this.counterPile;
     }
 
-    public ArrayList<CardUnit> getFaceUpCards() { return this.faceUpCards; }
+    public ArrayList<TravelCard> getFaceUpCards() { return this.faceUpCards; }
 
     public GameVariant getGameVariant() {
         return gameVariant;
@@ -237,7 +238,14 @@ public class GameState implements Serializable{
         if (travelCardDeck.getSize() > 0) {
             LOGGER.info("Adding face-up card from travel card deck");
             CardUnit card = travelCardDeck.draw();
-            faceUpCards.add(card);
+            if (card instanceof GoldCard) {
+                // if it is a gold card, we just add it to the gold card deck
+                incrementGoldCardDeckCount();
+                GameScreen.getInstance().updateAll();
+            } else if (card instanceof TravelCard){
+                ((TravelCard) card).setOwned(false);
+                faceUpCards.add((TravelCard) card);
+            }
         }
     }
 
@@ -252,15 +260,35 @@ public class GameState implements Serializable{
         }
 
         if (toRemove != null) {
-            Logger.getGlobal().info("There are " + faceUpCounters.size() + " face up counters.");
-            Logger.getGlobal().info("Removing face-up counter of type " + toRemove.getType());
+            LOGGER.info("There are " + faceUpCounters.size() + " face up counters.");
+            LOGGER.info("Removing face-up counter of type " + toRemove.getType());
             faceUpCounters.remove(toRemove);
-            Logger.getGlobal().info("There are now " + faceUpCounters.size() + " face up counters.");
+            LOGGER.info("There are now " + faceUpCounters.size() + " face up counters.");
             addFaceUpCounterFromPile();
-            Logger.getGlobal().info("There are now " + faceUpCounters.size() + " face up counters.");
+            LOGGER.info("There are now " + faceUpCounters.size() + " face up counters.");
             GameScreen.getInstance().updateAll();
         } else {
             LOGGER.info("Error: Counter drawn by another player is not present in the face-up counters on this device.");
+        }
+    }
+
+    public void removeFaceUpCard(TravelCardType type) {
+        TravelCard toRemove = null;
+
+        for (TravelCard c: faceUpCards) {
+            if (c.getType() == type) {
+                toRemove = c;
+            }
+        }
+
+        if (toRemove != null) {
+            LOGGER.info("There are " + faceUpCounters.size() + " face up cards.");
+            LOGGER.info("Removing face-up card of type " + toRemove.getType());
+            faceUpCards.remove(toRemove);
+            addFaceUpCardFromDeck();
+            GameScreen.getInstance().updateAll();
+        } else {
+            LOGGER.info("Error: Card drawn by another player is not present in the face-up cards on this device.");
         }
     }
 
@@ -294,5 +322,13 @@ public class GameState implements Serializable{
     public void sortPlayers()
     {
         Collections.sort(players);
+    }
+
+    public void incrementGoldCardDeckCount() {
+        goldCardDeckCount++;
+    }
+
+    public void clearGoldCardDeck() {
+        goldCardDeckCount = 0;
     }
 }

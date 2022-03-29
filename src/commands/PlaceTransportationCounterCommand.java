@@ -41,7 +41,7 @@ public class PlaceTransportationCounterCommand implements GameCommand {
         road.setTransportationCounter(counter);
 
         // remove the counter from the sending player's hand
-        List<TransportationCounter> senderHand = GameState.instance().getPlayerByName(senderName).getHand().getCounters();
+        List<CounterUnit> senderHand = GameState.instance().getPlayerByName(senderName).getHand().getCounters();
         int toRemoveIdx = -1;
         for (int i = 0; i < senderHand.size(); i++) {
             if (senderHand.get(i).getType() == counterType

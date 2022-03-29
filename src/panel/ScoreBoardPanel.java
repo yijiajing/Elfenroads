@@ -1,7 +1,9 @@
 package panel;
 
+import domain.CounterUnit;
 import domain.Player;
 import domain.TransportationCounter;
+import enums.CounterUnitType;
 import gamescreen.GameScreen;
 
 import javax.swing.*;
@@ -44,8 +46,8 @@ public class ScoreBoardPanel extends JPanel implements ObserverPanel {
         //Card2: the card showing counters owned by other players
         countersCard = new JPanel();
         countersCard.setLayout(new FlowLayout());
-        List<TransportationCounter> counters = pPlayer.getHand().getCounters();
-        for (TransportationCounter c : counters) {
+        List<CounterUnit> counters = pPlayer.getHand().getCounters();
+        for (CounterUnit c : counters) {
             //display a black square if c is secret.
             if (c.isSecret()) {
                 JLabel display = new JLabel();

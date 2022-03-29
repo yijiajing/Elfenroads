@@ -13,6 +13,7 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 public class NetworkUtils {
@@ -172,9 +173,10 @@ public class NetworkUtils {
 
         for (InetAddress address : allAddresses)
         {
-            if (address.isLoopbackAddress() || !isValidIP(address.getHostAddress())) // we don't want the loopback address or an invalid one, like a MAC address
+            if (address.isLoopbackAddress() || !isValidIP(address.getHostAddress()) || !beginsWithTen(address.getHostAddress())) // we don't want the loopback address or an invalid one, like a MAC address
             {
                 // do nothing and keep going
+                continue;
             }
 
             else
@@ -183,7 +185,8 @@ public class NetworkUtils {
             }
         }
 
-        return getLocalIP();
+        Logger.getGlobal().info("PROBLEM: COULD NOT FIND A VALID NON-LOOPBACK IP ADDRESS");
+        throw new Exception("Could not find a valid IP address.");
         // Logger.getGlobal().info("There was a problem finding a valid local IP address for this computer.");
         // throw new Exception ("Could not find an IP that was not a loopback and was a valid IP.");
     }
@@ -265,6 +268,11 @@ public class NetworkUtils {
     {
         return Pattern.compile("(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|" +
                 "2[0-4][0-9]|25[0-5])").matcher(ip).find();
+    }
+
+    public static boolean beginsWithTen(String ip)
+    {
+       return ip.startsWith("10");
     }
 
 

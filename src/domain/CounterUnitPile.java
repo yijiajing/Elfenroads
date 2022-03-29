@@ -49,11 +49,6 @@ public class CounterUnitPile extends Deck<CounterUnit> {
     	int width = MainFrame.instance.getWidth() * 67 / 1440;
     	int height = MainFrame.instance.getHeight() * 60 / 900;
 
-        for (CounterType type : CounterType.values()) {
-            for (int i = 0; i < 8; i++) {
-                components.add(new TransportationCounter(type, width, height));
-            }
-        }
 
         if (GameRuleUtils.isElfengoldVariant(this.variant)) {
             for(int i = 0; i < 9; i++) {
@@ -76,6 +71,12 @@ public class CounterUnitPile extends Deck<CounterUnit> {
                     components.add(new TransportationCounter(CounterType.TROLLWAGON, width,height));
                 }
                 components.add(new TransportationCounter(CounterType.GIANTPIG, width,height));
+            }
+        }else {
+        	for (CounterType type : CounterType.values()) {
+                for (int i = 0; i < 8; i++) {
+                    components.add(new TransportationCounter(type, width, height));
+                }
             }
         }
     }

@@ -1,6 +1,9 @@
 package gamemanager;
 
 import commands.DrawCounterCommand;
+import commands.NotifyTurnCommand;
+import commands.ReturnCounterUnitCommand;
+import commands.ReturnTransportationCounterCommand;
 import domain.*;
 import enums.EGRoundPhaseType;
 import enums.GameVariant;
@@ -8,8 +11,8 @@ import gamescreen.EGGameScreen;
 import gamescreen.GameScreen;
 import networking.GameState;
 import utils.GameRuleUtils;
-
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -17,6 +20,7 @@ import java.util.logging.Logger;
 public class EGGameManager extends GameManager {
 
     private final static Logger LOGGER = Logger.getLogger("Game Manager");
+    private CounterUnit prevCounterKept;
 
     EGGameManager(Optional<GameState> loadedState, String sessionID, GameVariant variant) {
         super(loadedState, sessionID, variant);
@@ -25,11 +29,12 @@ public class EGGameManager extends GameManager {
 
     @Override
     protected void setUpNewGame() {
-        // initial preparation: deal five cards to each player
+        // initial preparation: deal five cards to each player; give each player 7 gold coins
         for (Player p: gameState.getPlayers()) {
             for (int i = 0; i < 5; i++) {
                 p.getHand().addUnit(gameState.getTravelCardDeck().draw());
             }
+            p.addGoldCoins(7);
         }
 
         // put 3 cards face up, these are shared across peers
@@ -46,6 +51,7 @@ public class EGGameManager extends GameManager {
         gameState.getTravelCardDeck().shuffle(); // only shuffle once at the beginning of each round
         if (gameState.getCurrentRound() == 1) {
             // Draw Card phase is ignored in the first round
+            LOGGER.info("In the first round, go directly to choose face-up counter");
             gameState.setCurrentPhase(EGRoundPhaseType.CHOOSE_FACE_UP);
             // Triggered only on one instance (the first player)
             if (isLocalPlayerTurn()) {
@@ -53,6 +59,7 @@ public class EGGameManager extends GameManager {
                 GameScreen.getInstance().updateAll();
             }
         } else {
+            LOGGER.info("In round " + gameState.getCurrentRound() + ", go directly to choose face-up counter");
             gameState.setCurrentPhase(EGRoundPhaseType.DRAW_CARD_ONE);
             // Triggered only on one instance (the first player)
             if (isLocalPlayerTurn()) {
@@ -64,14 +71,26 @@ public class EGGameManager extends GameManager {
     }
 
     public void drawTravelCard() {
-
+        if (!(gameState.getCurrentRound() <= gameState.getTotalRounds()
+                && GameRuleUtils.isDrawCountersPhase()
+                && isLocalPlayerTurn())) {
+            return;
+        }
+        updateGameState();
+        GameScreen.displayMessage("""
+                Please select a transportation counter to add to your hand. You may choose one of the face-up cards, 
+                a card from the deck or take the entire gold card deck, shown on the right side of the screen.
+                """);
+        // all logic is implemented in the mouse listeners of the cards
     }
 
     /**
      * PHASE 4
      */
     public void chooseFaceUpCounter() {
-        if (gameState.getCurrentPhase() != EGRoundPhaseType.CHOOSE_FACE_UP) {
+        if (!(gameState.getCurrentRound() <= gameState.getTotalRounds()
+                && gameState.getCurrentPhase() == EGRoundPhaseType.CHOOSE_FACE_UP
+                && isLocalPlayerTurn())) {
             return;
         }
 
@@ -114,24 +133,105 @@ public class EGGameManager extends GameManager {
         endTurn();
     }
 
-    @Override
-    public void returnCounter(CounterUnit toKeep) {
-
+    public void auction() {
+        if (!(gameState.getCurrentRound() <= gameState.getTotalRounds()
+                && gameState.getCurrentPhase() == EGRoundPhaseType.AUCTION
+                && isLocalPlayerTurn())) {
+            return;
+        }
+        //TODO: show auction window and display hints
     }
 
     @Override
-    public void endTurn() {
+    public void returnCountersPhase() {
+        if (!(gameState.getCurrentRound() <= gameState.getTotalRounds()
+                && gameState.getCurrentPhase() == EGRoundPhaseType.RETURN_COUNTERS
+                && isLocalPlayerTurn())) {
+            return;
+        }
 
+        // no need to return the counters if we are at the end of the game
+        if (gameState.getCurrentRound() == gameState.getTotalRounds()
+                || thisPlayer.getHand().getCounters().size() <= 2) {
+            LOGGER.info("Did not return counters because there is no counter or the end of the game, or the player have 2 or less counters");
+            endTurn();
+            return;
+        }
+
+        actionManager.clearSelection();
+
+        GameScreen.displayMessage("""
+                The round is over! All of your counters must be returned except for two. Please select two items 
+                (any combination of transportation counters, gold pieces, obstacles or magic spells) from your hand 
+                that you wish to keep.
+                """);
+
+        // once the player clicks a transportation counter it will call returnCounter()
+    }
+
+    @Override
+    public void returnCounter(CounterUnit toKeep) {
+        List<CounterUnit> myCounters = thisPlayer.getHand().getCounters();
+        assert myCounters.contains(toKeep);
+
+        if (prevCounterKept == null) {
+            prevCounterKept = toKeep;
+        } else {
+            // the player has selected all two counters to keep, return all counters except these two
+            for (CounterUnit c : myCounters) {
+                if (c.equals(toKeep) || c.equals(prevCounterKept)) {
+                    continue;
+                }
+
+                GameState.instance().getCounterPile().addDrawable(c); // put counter back in the deck
+
+                try {
+                    LOGGER.info("Sending ReturnCounterUnitCommand to all players");
+                    coms.sendGameCommandToAllPlayers(new ReturnCounterUnitCommand(c));
+                } catch (IOException e) {
+                    System.out.println("There was a problem sending the ReturnCounterUnitCommand to all players.");
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        // clear all counters and then add toKeep back, otherwise we get concurrent modification exception
+        thisPlayer.getHand().getCounters().clear();
+        thisPlayer.getHand().addUnit(toKeep);
+        thisPlayer.getHand().addUnit(prevCounterKept);
+        prevCounterKept = null;
+
+        endTurn();
     }
 
     @Override
     public void endPhase() {
-
-    }
-
-    @Override
-    public void endRound() {
-
+        actionManager.clearSelection();
+        int nextOrdinal = ((EGRoundPhaseType) gameState.getCurrentPhase()).ordinal() + 1;
+        if (nextOrdinal == EGRoundPhaseType.values().length) {
+            // all phases are done, go to the next round
+            endRound();
+        } else if (gameState.getCurrentPhase() == EGRoundPhaseType.PLAN_ROUTES
+                && gameState.getPassedPlayerCount() < gameState.getNumOfPlayers()) {
+            LOGGER.info("Pass turn ct: " + gameState.getPassedPlayerCount() + ", staying at the PLAN ROUTES phase");
+            // continue with plan routes phase if not all players have passed their turn
+            gameState.setToFirstPlayer();
+            // the first player will take action
+            if (isLocalPlayerTurn()) {
+                NotifyTurnCommand notifyTurnCommand = new NotifyTurnCommand(EGRoundPhaseType.PLAN_ROUTES);
+                notifyTurnCommand.execute(); // notify themself to take action
+            }
+        } else { // go to the next phase within the same round
+            gameState.setCurrentPhase(EGRoundPhaseType.values()[nextOrdinal]);
+            LOGGER.info("...Going to the next phase : " + gameState.getCurrentPhase());
+            gameState.setToFirstPlayer();
+            // the first player will take action
+            if (isLocalPlayerTurn()) {
+                NotifyTurnCommand notifyTurnCommand = new NotifyTurnCommand(gameState.getCurrentPhase());
+                notifyTurnCommand.execute(); // notify themself to take action
+            }
+        }
+        gameState.clearPassedPlayerCount();
     }
 
     @Override

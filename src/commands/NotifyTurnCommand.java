@@ -10,7 +10,6 @@ import networking.GameState;
 import gamescreen.GameScreen;
 import utils.GameRuleUtils;
 
-import java.io.Serial;
 import java.util.logging.Logger;
 
 /**
@@ -19,7 +18,6 @@ import java.util.logging.Logger;
  */
 public class NotifyTurnCommand implements GameCommand {
 
-    @Serial
     private static final long serialVersionUID = 6529685098267757690L;
 
     private final RoundPhaseType phase;
@@ -42,22 +40,22 @@ public class NotifyTurnCommand implements GameCommand {
             // TODO: implement all phases
             switch ((EGRoundPhaseType) phase) {
                 case DRAW_CARD_ONE: case DRAW_CARD_TWO: case DRAW_CARD_THREE:
-
+                    gameManager.drawTravelCard();
                     break;
                 case CHOOSE_FACE_UP:
-
+                    gameManager.chooseFaceUpCounter();
                     break;
                 case AUCTION:
-
+                    gameManager.auction();
                     break;
                 case PLAN_ROUTES:
-
+                    gameManager.planTravelRoutes();
                     break;
                 case MOVE:
-
+                    gameManager.moveOnMap();
                     break;
                 case RETURN_COUNTERS:
-
+                    gameManager.returnCountersPhase();
                     break;
             }
         }
