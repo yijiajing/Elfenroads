@@ -10,8 +10,5 @@ public class GoldPiece extends CounterUnit {
 		super.initializeMouseListener();
 	}
 
-    public static CounterUnit getNew(CounterUnitType pType) {
-        assert pType instanceof GoldPieceType;
-    	return new GoldPiece((GoldPieceType)pType, MainFrame.instance.getWidth() * 67 / 1440, MainFrame.instance.getHeight() * 60 / 900);
-    }
+
 }
