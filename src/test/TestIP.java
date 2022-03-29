@@ -21,6 +21,7 @@ public class TestIP {
             if (NetworkUtils.isValidIP(cur.getHostAddress()) && !cur.isLoopbackAddress())
             {
                 System.out.println(cur.getHostAddress());
+                System.out.println(cur.getHostAddress().startsWith("10"));
             }
         }
 
