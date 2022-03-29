@@ -19,9 +19,11 @@ public class GameMap {
     private List<Town> townList = new ArrayList<>();
     private List<Road> roadList = new ArrayList<>();
     private Map<String, Town> townMap = new HashMap<>();
+    private GameVariant variant;
 
     private GameMap(GameScreen pGameScreen, GameVariant gameVariant) {
         this.gameScreen = pGameScreen;
+        this.variant = gameVariant;
         initializeTowns(gameVariant);
         initializeRoads();
     }

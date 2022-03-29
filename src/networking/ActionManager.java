@@ -4,6 +4,7 @@ import commands.*;
 import domain.*;
 import enums.EGRoundPhaseType;
 import enums.ELRoundPhaseType;
+import enums.ObstacleType;
 import enums.RoundPhaseType;
 import gamemanager.GameManager;
 import panel.ElfBootPanel;
@@ -81,7 +82,7 @@ public class ActionManager {
                 gameManager.getThisPlayer().getHand().removeUnit(selectedCounter);
                 selectedCounter.setOwned(false);
                 LOGGER.info("Just removed obstacle, obstacle presence: " + gameManager.getThisPlayer().getHand().getObstacle());
-                PlaceObstacleCommand toSendOverNetwork = new PlaceObstacleCommand(selectedRoad);
+                PlaceObstacleCommand toSendOverNetwork = new PlaceObstacleCommand(selectedRoad, (ObstacleType) selectedCounter.getType());
 
                 try {
                     gameManager.getComs().sendGameCommandToAllPlayers(toSendOverNetwork);
