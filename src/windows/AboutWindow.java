@@ -1,4 +1,4 @@
-package loginwindow;
+package windows;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -6,12 +6,9 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
-import networking.*;
 
 public class AboutWindow extends JPanel {
 

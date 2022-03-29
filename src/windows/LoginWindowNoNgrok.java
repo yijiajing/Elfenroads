@@ -1,6 +1,5 @@
-package loginwindow;
+package windows;
 
-import networking.PlayerServer;
 import networking.User;
 import utils.NetworkUtils;
 
@@ -8,9 +7,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 
 import static javax.swing.Box.createVerticalStrut;
 

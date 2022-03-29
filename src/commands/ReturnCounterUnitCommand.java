@@ -6,7 +6,6 @@ import gamemanager.GameManager;
 import domain.CounterUnit;
 import domain.Hand;
 import enums.CounterUnitType;
-import loginwindow.MainFrame;
 import networking.GameState;
 
 

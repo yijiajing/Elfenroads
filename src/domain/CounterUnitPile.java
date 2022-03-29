@@ -11,7 +11,7 @@ import javax.swing.JLabel;
 import commands.DrawCounterCommand;
 import enums.*;
 import gamemanager.GameManager;
-import loginwindow.MainFrame;
+import windows.MainFrame;
 import networking.GameState;
 import gamescreen.GameScreen;
 import utils.GameRuleUtils;

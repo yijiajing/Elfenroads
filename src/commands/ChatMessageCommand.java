@@ -1,7 +1,7 @@
 package commands;
 
 import domain.Player;
-import loginwindow.ChatBoxGUI;
+import windows.ChatBoxGUI;
 
 // will help us implement the chat feature
 public class ChatMessageCommand implements GameCommand {

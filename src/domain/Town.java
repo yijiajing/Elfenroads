@@ -3,7 +3,7 @@ package domain;
 import enums.Colour;
 import enums.GameVariant;
 import gamescreen.GameScreen;
-import loginwindow.MainFrame;
+import windows.MainFrame;
 import networking.GameState;
 import panel.*;
 

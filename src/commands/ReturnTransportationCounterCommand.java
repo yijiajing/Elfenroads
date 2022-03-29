@@ -4,7 +4,7 @@ import gamemanager.GameManager;
 import domain.TransportationCounter;
 import domain.Hand;
 import enums.CounterType;
-import loginwindow.MainFrame;
+import windows.MainFrame;
 import networking.GameState;
 
 import java.util.logging.Logger;

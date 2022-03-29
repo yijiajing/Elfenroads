@@ -2,7 +2,7 @@ package domain;
 
 import enums.MagicSpellType;
 import enums.CounterUnitType;
-import loginwindow.MainFrame;
+import windows.MainFrame;
 
 public class MagicSpell extends CounterUnit{
 	
