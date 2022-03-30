@@ -2,9 +2,13 @@ package domain;
 
 import enums.Colour;
 import networking.*;
+import savegames.SerializableCardUnit;
+import savegames.SerializableCounterUnit;
+import savegames.SerializableObstacle;
 import savegames.SerializablePlayer;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.awt.*;
@@ -49,6 +53,7 @@ public class Player implements Comparable<Player> {
 
         loadTownsVisited(loaded);
         // TODO: load in hand
+        loadHand(loaded);
     }
 
     public String getCurrentTownName() {
@@ -156,5 +161,17 @@ public class Player implements Comparable<Player> {
         {
             townsVisited.add(GameMap.getInstance().getTownByName(townName));
         }
+    }
+
+    private void loadHand(SerializablePlayer loaded)
+    {
+        ArrayList<SerializableCounterUnit> counters = loaded.getCounters();
+        ArrayList<SerializableCardUnit> cards = loaded.getCards();
+        SerializableObstacle obstacle = loaded.getObstacle();
+
+        // the Hand should have a list of CardUnit, a list of CounterUnit, and an optional obstacle
+        // TODO: finish implementing this after creating new constructors for CounterUnit and CardUnit
+
+
     }
 }

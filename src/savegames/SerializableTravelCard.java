@@ -10,7 +10,7 @@ public class SerializableTravelCard extends SerializableCardUnit {
 
     public SerializableTravelCard (TravelCard original)
     {
-        super(original);
+        super("T0" + original.getType().ordinal() + 1);
         type = original.getType();
         owned = original.isOwned();
     }

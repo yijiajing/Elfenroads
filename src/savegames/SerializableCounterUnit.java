@@ -1,19 +1,21 @@
 package savegames;
 
 import domain.CounterUnit;
+import domain.Drawable;
+import domain.TransportationCounter;
 import enums.CounterType;
 import enums.CounterUnitType;
-import org.w3c.dom.css.Counter;
 
 // a serializable translation of CounterUnit that we can save to a file
-public class SerializableCounterUnit {
+public abstract class SerializableCounterUnit extends SerializableDrawable {
 
     private CounterUnitType type;
     private boolean isSecret;
 
-    public SerializableCounterUnit(CounterUnit original)
+    public SerializableCounterUnit(CounterUnit original, int imageNumber)
     {
-        type = (CounterUnitType) original.getType(); // this should be a safe upcast
+        super ("./assets/sprites/M0" + imageNumber + ".png");
+        type = original.getType();
         isSecret = original.isSecret();
     }
 

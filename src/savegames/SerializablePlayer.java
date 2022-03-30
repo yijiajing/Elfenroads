@@ -50,42 +50,38 @@ public class SerializablePlayer implements Serializable {
         return visitedNames;
     }
 
-    private static ArrayList<SerializableCounterUnit> getCounters(Player original)
+    private void addCounters(Player original)
     {
-        List<CounterUnit> counters = original.getHand().getCounters();
+        List<CounterUnit> origCounters = original.getHand().getCounters();
         ArrayList<SerializableCounterUnit> out = new ArrayList<SerializableCounterUnit>();
 
-        for (CounterUnit cur : counters)
+        for (CounterUnit cur : origCounters)
         {
-            out.add(new SerializableCounterUnit(cur));
+            counters.add(new SerializableCounterUnit(cur));
         }
 
-        return out;
     }
 
-    private static SerializableObstacle getObstacle(Player original)
+    private void getObstacle(Player original)
     {
         // for Elfenland, check if the player has an obstacle
 
         if (original.hasObstacle())
         {
-            return new SerializableObstacle(original.getHand().getObstacle());
+            obstacle = new SerializableObstacle(original.getHand().getObstacle());
         }
 
-        else return null;
     }
 
-    private static List<SerializableCardUnit> addCards(Player original)
+    private void addCards(Player original)
     {
-        List <CardUnit> cards = original.getHand().getCards();
+        List <CardUnit> origCards = original.getHand().getCards();
         List <SerializableCardUnit> out = new ArrayList<SerializableCardUnit>();
 
-        for (CardUnit cur : cards)
+        for (CardUnit cur : origCards)
         {
-            out.add(new SerializableCardUnit(cur));
+            cards.add(new SerializableCardUnit(cur));
         }
-
-        return out;
     }
 
     public String getCurrentTownName() {

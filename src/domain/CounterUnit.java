@@ -49,6 +49,7 @@ public abstract class CounterUnit extends Drawable{
         superMiniDisplay = new JLabel (new ImageIcon(resized_supermini));
     }
 
+
     public Road getPlacedOn() {
         return placedOn;
     }

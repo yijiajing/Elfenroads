@@ -1,14 +1,15 @@
 package savegames;
 
 import domain.CardUnit;
+import domain.Drawable;
 import domain.TravelCard;
 import enums.TravelCardType;
 
-public class SerializableCardUnit {
+public abstract class SerializableCardUnit extends SerializableDrawable {
 
-    public SerializableCardUnit (CardUnit original)
+    public SerializableCardUnit (String filename)
     {
-
+        super("./assets/sprites/" + filename + ".png");
     }
 
 
