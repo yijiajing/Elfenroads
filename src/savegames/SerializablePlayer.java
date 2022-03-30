@@ -1,4 +1,4 @@
-package networking;
+package savegames;
 
 import domain.*;
 import enums.Colour;
@@ -6,7 +6,6 @@ import enums.Colour;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 public class SerializablePlayer implements Serializable {
@@ -16,10 +15,9 @@ public class SerializablePlayer implements Serializable {
     private String destinationTownName;
 
     private Colour color;
-    // TODO: write code for the special versions of counters and cards and have a list of each as a part of this class
 
     private ArrayList<SerializableCardUnit> cards;
-    private ArrayList<SerializableCounterUnit> counters;
+    private ArrayList<SerializableCounterUnit> counters; // in Elfengold, the obstacles will be in here
     private SerializableObstacle obstacle; // could be null (optional is not serializable)
 
     public SerializablePlayer (Player original)
@@ -62,7 +60,6 @@ public class SerializablePlayer implements Serializable {
         return out;
     }
 
-    // TODO: update hand class and then fix this
     private static SerializableObstacle getObstacle(Player original)
     {
         // for Elfenland, check if the player has an obstacle

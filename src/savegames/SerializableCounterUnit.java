@@ -1,4 +1,4 @@
-package networking;
+package savegames;
 
 import domain.CounterUnit;
 import enums.CounterType;

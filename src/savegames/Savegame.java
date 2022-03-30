@@ -1,17 +1,19 @@
-package networking;
+package savegames;
 
 // will be used to record a game when we save it
 // will contain very similar information to a GameState, except only with stuff that's serializable
 
+import domain.*;
 import enums.GameVariant;
 import enums.RoundPhaseType;
+import enums.TravelCardType;
 import gamemanager.GameManager;
+import networking.GameState;
 
 import java.io.*;
+import java.util.ArrayList;
 
 public class Savegame implements Serializable {
-
-    private GameState state;
 
     // serializable fields from GameState
     private int totalRounds;
@@ -22,6 +24,12 @@ public class Savegame implements Serializable {
     private int passedPlayerCount;
 
     private int goldCardDeckCount;
+
+    // fields turned into serializable version
+    private ArrayList<SerializablePlayer> players;
+    private SerializablePlayer currentPlayer;
+    private ArrayList<SerializableTravelCard> travelCardDeck;
+    private ArrayList<SerializableCounterUnit> counterPile;
 
 
     /**
@@ -38,8 +46,10 @@ public class Savegame implements Serializable {
         currentPhase = pState.getCurrentPhase();
         passedPlayerCount = pState.getPassedPlayerCount();
 
-
-        state = pState;
+        // now, handle the non-serializable fields
+        savePlayers(pState);
+        saveTravelCardPile(pState);
+        saveTransportationCounterPile(pState);
     }
 
     /**
@@ -72,5 +82,37 @@ public class Savegame implements Serializable {
 
     }
 
+    private void savePlayers (GameState pGameState)
+    {
+        // get all the players from the GameState and turn them into serializable objects to be saved
+        for (Player cur : pGameState.getPlayers())
+        {
+            SerializablePlayer toAdd = new SerializablePlayer(cur);
+            if (pGameState.getCurrentPlayer().equals(cur))
+            {
+                currentPlayer = toAdd;
+            }
 
+            players.add(toAdd);
+        }
+    }
+
+    private void saveTravelCardPile(GameState pGameState)
+    {
+        TravelCardDeck origDeck = pGameState.getTravelCardDeck();
+        for (CardUnit cur : origDeck.getComponents()) // I think we can safely downcast this to a TravelCard
+        {
+            TravelCard tc = (TravelCard) cur;
+            travelCardDeck.add(new SerializableTravelCard(tc));
+        }
+    }
+
+    private void saveTransportationCounterPile (GameState pGameState)
+    {
+        CounterUnitPile origPile = pGameState.getCounterPile();
+        for (CounterUnit cur : origPile.getComponents())
+        {
+            counterPile.add(new SerializableCounterUnit(cur));
+        }
+    }
 }
