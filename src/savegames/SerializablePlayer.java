@@ -10,6 +10,8 @@ import java.util.Set;
 
 public class SerializablePlayer implements Serializable {
 
+    private String name;
+
     private String currentTownName;
     private ArrayList<String> visitedTownNames;
     private String destinationTownName;
@@ -22,6 +24,7 @@ public class SerializablePlayer implements Serializable {
 
     public SerializablePlayer (Player original)
     {
+        name = original.getName();
         // will turn a Player object into a serializable version which can be saved to a file
         currentTownName = original.getCurrentTownName();
         visitedTownNames = getVisitedTownNames(original);
@@ -85,7 +88,35 @@ public class SerializablePlayer implements Serializable {
         return out;
     }
 
+    public String getCurrentTownName() {
+        return currentTownName;
+    }
 
+    public ArrayList<String> getVisitedTownNames() {
+        return visitedTownNames;
+    }
 
+    public String getDestinationTownName() {
+        return destinationTownName;
+    }
 
+    public Colour getColor() {
+        return color;
+    }
+
+    public ArrayList<SerializableCardUnit> getCards() {
+        return cards;
+    }
+
+    public ArrayList<SerializableCounterUnit> getCounters() {
+        return counters;
+    }
+
+    public SerializableObstacle getObstacle() {
+        return obstacle;
+    }
+
+    public String getName() {
+        return name;
+    }
 }

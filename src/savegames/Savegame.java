@@ -118,4 +118,43 @@ public class Savegame implements Serializable {
         }
     }
 
+    public int getTotalRounds() {
+        return totalRounds;
+    }
+
+    public GameVariant getGameVariant() {
+        return gameVariant;
+    }
+
+    public int getCurrentRound() {
+        return currentRound;
+    }
+
+    public RoundPhaseType getCurrentPhase() {
+        return currentPhase;
+    }
+
+    public int getPassedPlayerCount() {
+        return passedPlayerCount;
+    }
+
+    public int getGoldCardDeckCount() {
+        return goldCardDeckCount;
+    }
+
+    public ArrayList<SerializablePlayer> getPlayers() {
+        return players;
+    }
+
+    public SerializablePlayer getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    public ArrayList<SerializableTravelCard> getTravelCardDeck() {
+        return travelCardDeck;
+    }
+
+    public ArrayList<SerializableCounterUnit> getCounterPile() {
+        return counterPile;
+    }
 }

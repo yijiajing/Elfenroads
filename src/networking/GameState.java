@@ -4,6 +4,7 @@ import domain.*;
 import enums.*;
 import org.json.JSONObject;
 import gamescreen.GameScreen;
+import savegames.Savegame;
 import utils.GameRuleUtils;
 
 import java.io.Serializable;
@@ -68,6 +69,25 @@ public class GameState implements Serializable{
         this.travelCardDeck = new TravelCardDeck(sessionID, gameVariant);
 
         this.counterPile = new CounterUnitPile(sessionID, gameVariant);
+    }
+
+    // TODO: how to mediate this constructor with a singleton feature
+
+    /**
+     * will read in game info from a save
+     * @param loadedState the savegame, read from a file
+     */
+    public GameState (Savegame loadedState)
+    {
+        totalRounds = loadedState.getTotalRounds();
+        gameVariant = loadedState.getGameVariant();
+
+        currentRound = loadedState.getCurrentRound();
+        currentPhase = loadedState.getCurrentPhase();
+        passedPlayerCount = loadedState.getPassedPlayerCount();
+
+        goldCardDeckCount = loadedState.getGoldCardDeckCount();
+
     }
 
     
@@ -314,4 +334,15 @@ public class GameState implements Serializable{
     public void clearGoldCardDeck() {
         goldCardDeckCount = 0;
     }
+
+    // METHODS USED TO READ IN A LOADED GAME
+    // TODO: implement these and implement constructors
+    private void loadPlayers()
+    {}
+
+    private void loadTravelCardDeck()
+    {}
+
+    private void loadCounterPile()
+    {}
 }

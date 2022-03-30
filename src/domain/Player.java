@@ -2,7 +2,9 @@ package domain;
 
 import enums.Colour;
 import networking.*;
+import savegames.SerializablePlayer;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import java.awt.*;
@@ -32,6 +34,21 @@ public class Player implements Comparable<Player> {
         this.colour = pColour;
         this.hand = new Hand();
         this.name = pName;
+    }
+
+    /**
+     * loads a player from a savegame SerializablePlayer object
+     * @param loaded the player to load
+     */
+    public Player (SerializablePlayer loaded)
+    {
+        curTown = GameMap.getInstance().getTownByName(loaded.getCurrentTownName());
+        destinationTown = GameMap.getInstance().getTownByName(loaded.getDestinationTownName());
+        colour = loaded.getColor();
+        name = loaded.getName();
+
+        loadTownsVisited(loaded);
+        // TODO: load in hand
     }
 
     public String getCurrentTownName() {
@@ -130,5 +147,14 @@ public class Player implements Comparable<Player> {
 
     public Set<Town> getTownsVisited() {
         return townsVisited;
+    }
+
+    // METHODS USED FOR READING IN A PLAYER FROM A SAVEGAME
+    private void loadTownsVisited(SerializablePlayer loaded)
+    {
+        for (String townName : loaded.getVisitedTownNames())
+        {
+            townsVisited.add(GameMap.getInstance().getTownByName(townName));
+        }
     }
 }
