@@ -50,6 +50,8 @@ public class Savegame implements Serializable {
         savePlayers(pState);
         saveTravelCardPile(pState);
         saveTransportationCounterPile(pState);
+
+        // we will omit elf boots, since we can figure that out upon load by looking at each player, his current town, and his color
     }
 
     /**
@@ -115,4 +117,5 @@ public class Savegame implements Serializable {
             counterPile.add(new SerializableCounterUnit(cur));
         }
     }
+
 }
