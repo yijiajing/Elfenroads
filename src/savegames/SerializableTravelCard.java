@@ -15,8 +15,11 @@ public class SerializableTravelCard extends SerializableCardUnit {
         owned = original.isOwned();
     }
 
+    public TravelCardType getType() {
+        return type;
+    }
 
-
-
-
+    public boolean isOwned() {
+        return owned;
+    }
 }
