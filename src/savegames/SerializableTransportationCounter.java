@@ -9,7 +9,7 @@ public class SerializableTransportationCounter extends SerializableCounterUnit {
 
     public SerializableTransportationCounter(TransportationCounter original)
     {
-        super(original, original.getType().ordinal() - 1);
+        super(original, Integer.toString(original.getType().ordinal() - 1));
         type = original.getType();
     }
 

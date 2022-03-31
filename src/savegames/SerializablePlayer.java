@@ -1,5 +1,6 @@
 package savegames;
 
+import com.sun.jdi.connect.Transport;
 import domain.*;
 import enums.Colour;
 
@@ -32,8 +33,9 @@ public class SerializablePlayer implements Serializable {
         color = original.getColour();
 
         // add the counters, cards, and obstacles
-        counters = getCounters(original);
-        obstacle = getObstacle(original); // could be null
+        addCounters(original);
+        addCards(original);
+        addObstacle(original);
 
     }
 
@@ -57,12 +59,21 @@ public class SerializablePlayer implements Serializable {
 
         for (CounterUnit cur : origCounters)
         {
-            counters.add(new SerializableCounterUnit(cur));
+            if (cur instanceof TransportationCounter)
+            {
+                TransportationCounter curDowncasted = (TransportationCounter) cur;
+                counters.add(new SerializableTransportationCounter(curDowncasted));
+            }
+            else // for Elfengold, cur could also be an obstacle
+            {
+                Obstacle curDowncasted = (Obstacle) cur;
+                counters.add(new SerializableObstacle(curDowncasted));
+            }
         }
 
     }
 
-    private void getObstacle(Player original)
+    private void addObstacle(Player original)
     {
         // for Elfenland, check if the player has an obstacle
 
@@ -80,7 +91,12 @@ public class SerializablePlayer implements Serializable {
 
         for (CardUnit cur : origCards)
         {
-            cards.add(new SerializableCardUnit(cur));
+            if (cur instanceof TravelCard)
+            {
+                TravelCard curDowncasted = (TravelCard) cur;
+                cards.add(new SerializableTravelCard(curDowncasted));
+            }
+            // do we do anything with gold cards?
         }
     }
 

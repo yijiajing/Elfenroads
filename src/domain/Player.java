@@ -1,6 +1,7 @@
 package domain;
 
 import enums.Colour;
+import loginwindow.MainFrame;
 import networking.*;
 import savegames.SerializableCardUnit;
 import savegames.SerializableCounterUnit;
@@ -169,8 +170,15 @@ public class Player implements Comparable<Player> {
         ArrayList<SerializableCardUnit> cards = loaded.getCards();
         SerializableObstacle obstacle = loaded.getObstacle();
 
+        // default values to pass to constructors
+        int transCtrWidth = MainFrame.getInstance().getWidth() * 67 / 1440;
+        int transCtrHeight = MainFrame.getInstance().getHeight() * 60 / 900;
+        int tCardWidth = MainFrame.getInstance().getWidth() * 130 / 1440;
+        int tCardHeight = MainFrame.getInstance().getHeight() * 2 / 10;
+        int obstacleWidth = MainFrame.getInstance().getWidth() * 67 / 1440;
+        int obstacleHeight = MainFrame.getInstance().getHeight() * 60 / 900;
         // the Hand should have a list of CardUnit, a list of CounterUnit, and an optional obstacle
-        // TODO: finish implementing this after creating new constructors for CounterUnit and CardUnit
+
 
 
     }

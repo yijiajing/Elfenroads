@@ -8,7 +8,7 @@ public class SerializableObstacle extends SerializableCounterUnit
 {
     public SerializableObstacle (Obstacle original)
     {
-        super (original);
+        super (original, Integer.toString(9));
 
     }
 

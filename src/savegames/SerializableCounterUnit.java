@@ -12,7 +12,7 @@ public abstract class SerializableCounterUnit extends SerializableDrawable {
     private CounterUnitType type;
     private boolean isSecret;
 
-    public SerializableCounterUnit(CounterUnit original, int imageNumber)
+    public SerializableCounterUnit(CounterUnit original, String imageNumber) // need this to be a String for magic spells
     {
         super ("./assets/sprites/M0" + imageNumber + ".png");
         type = original.getType();

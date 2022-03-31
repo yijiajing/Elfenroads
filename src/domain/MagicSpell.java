@@ -16,5 +16,7 @@ public class MagicSpell extends CounterUnit{
         assert pType instanceof MagicSpellType;
     	return new MagicSpell((MagicSpellType)pType, MainFrame.instance.getWidth() * 67 / 1440, MainFrame.instance.getHeight() * 60 / 900);
     }
+
+
 	
 }

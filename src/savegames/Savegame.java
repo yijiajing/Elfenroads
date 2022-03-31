@@ -114,7 +114,16 @@ public class Savegame implements Serializable {
         CounterUnitPile origPile = pGameState.getCounterPile();
         for (CounterUnit cur : origPile.getComponents())
         {
-            counterPile.add(new SerializableCounterUnit(cur));
+            if (cur instanceof TransportationCounter)
+            {
+                TransportationCounter curDowncasted = (TransportationCounter) cur;
+                counterPile.add(new SerializableTransportationCounter(curDowncasted));
+            }
+            else // if cur is an obstacle
+            {
+                Obstacle curDowncasted = (Obstacle) cur;
+                counterPile.add(new SerializableObstacle(curDowncasted));
+            }
         }
     }
 
