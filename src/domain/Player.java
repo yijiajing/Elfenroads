@@ -3,10 +3,7 @@ package domain;
 import enums.Colour;
 import loginwindow.MainFrame;
 import networking.*;
-import savegames.SerializableCardUnit;
-import savegames.SerializableCounterUnit;
-import savegames.SerializableObstacle;
-import savegames.SerializablePlayer;
+import savegames.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -53,7 +50,6 @@ public class Player implements Comparable<Player> {
         name = loaded.getName();
 
         loadTownsVisited(loaded);
-        // TODO: load in hand
         loadHand(loaded);
     }
 
@@ -168,17 +164,48 @@ public class Player implements Comparable<Player> {
     {
         ArrayList<SerializableCounterUnit> counters = loaded.getCounters();
         ArrayList<SerializableCardUnit> cards = loaded.getCards();
-        SerializableObstacle obstacle = loaded.getObstacle();
+        SerializableObstacle loadedObstacle = loaded.getObstacle();
 
-        // default values to pass to constructors
-        int transCtrWidth = MainFrame.getInstance().getWidth() * 67 / 1440;
-        int transCtrHeight = MainFrame.getInstance().getHeight() * 60 / 900;
-        int tCardWidth = MainFrame.getInstance().getWidth() * 130 / 1440;
-        int tCardHeight = MainFrame.getInstance().getHeight() * 2 / 10;
-        int obstacleWidth = MainFrame.getInstance().getWidth() * 67 / 1440;
-        int obstacleHeight = MainFrame.getInstance().getHeight() * 60 / 900;
-        // the Hand should have a list of CardUnit, a list of CounterUnit, and an optional obstacle
+        // load each part of the hand
+        // load counters
+        for (SerializableCounterUnit ctr : counters)
+        {
+            if (ctr instanceof SerializableObstacle)
+            {
+                SerializableObstacle counterDowncasted = (SerializableObstacle) ctr;
+                hand.addUnit(new Obstacle(counterDowncasted));
+            }
 
+            else if (ctr instanceof SerializableMagicSpell)
+            {
+                SerializableMagicSpell counterDowncasted = (SerializableMagicSpell) ctr;
+                hand.addUnit(new MagicSpell(counterDowncasted));
+            }
+            else // if ctr is a transportation counter
+            {
+                SerializableTransportationCounter counterDowncasted = (SerializableTransportationCounter) ctr;
+                hand.addUnit(new TransportationCounter(counterDowncasted));
+            }
+        }
+
+        // load cards
+        // TODO: are there any CardUnits other than TravelCards in the player's hand?
+        for (SerializableCardUnit crd : cards)
+        {
+            if (crd instanceof SerializableTravelCard)
+            {
+                SerializableTravelCard crdDowncasted = (SerializableTravelCard) crd;
+                hand.addUnit(new TravelCard(crdDowncasted));
+            }
+        }
+
+        // TODO: make sure this is the right check
+        if (loadedObstacle != null)
+        {
+            hand.addUnit(new Obstacle(loadedObstacle));
+        }
+
+        // done loading in the player's hand
 
 
     }
