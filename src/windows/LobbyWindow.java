@@ -298,22 +298,9 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
             } 
             catch (IOException e) 
             {
-                // TODO Auto-generated catch block
                 Logger.getGlobal().info("Caught an IOException in the LobbyWindow. The long polling request probably timed out. Sending a new one.");
                 e.printStackTrace();
             }
-
-            /* try
-            {
-                // Thread.sleep(5000);
-            } 
-            catch (InterruptedException e) 
-            {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-
-             */
         } 
     }
 

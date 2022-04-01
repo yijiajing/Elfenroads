@@ -47,13 +47,10 @@ public abstract class GameScreen extends JPanel implements Serializable {
     protected final JPanel backgroundPanel_ForCards = new JPanel();
     protected final JPanel backgroundPanel_ForTransportationCounters = new JPanel();
     protected final JPanel backgroundPanel_ForInformationCard = new JPanel();
-    protected final JPanel backgroundPanel_ForDeckOfTransportationCounters = new JPanel();
     protected final JPanel backgroundPanel_ForLeaderboard = new JPanel();
 
     protected final JPanel[] panelForPlayerTransportationCounters = new JPanel[5];
     protected final JPanel[] panelForPlayerCards = new JPanel[8];
-
-    protected final JPanel panelForDeckOfTransportationCounters = new JPanel();
 
     protected ArrayList<ObserverPanel> observerPanels = new ArrayList<>();
 

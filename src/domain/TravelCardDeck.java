@@ -5,13 +5,22 @@ import enums.TravelCardType;
 import gamescreen.GameScreen;
 import utils.GameRuleUtils;
 
+import javax.swing.*;
+import java.awt.*;
+
 public class TravelCardDeck extends Deck <CardUnit> {
 
     private GameVariant variant;
+    private JLabel deckImage;
 
     public TravelCardDeck (String sessionID, GameVariant variant) {
-
         super(sessionID);
+
+        // initialize the deck image
+        ImageIcon imageIcon = new ImageIcon("./assets/sprites/grey.png");
+        Image image = imageIcon.getImage();
+        Image imageResized = image.getScaledInstance(GameScreen.getInstance().getWidth()*130/1440-40, GameScreen.getInstance().getHeight()/5-50, java.awt.Image.SCALE_SMOOTH);
+        this.deckImage = new JLabel(new ImageIcon(imageResized));
 
         this.variant = variant;
 
@@ -35,11 +44,11 @@ public class TravelCardDeck extends Deck <CardUnit> {
 
             if (type.equals(TravelCardType.RAFT)) {
                 for (int i = 0; i < numRafts; i++) {
-                    components.add(new TravelCard(type, GameScreen.getInstance().getWidth()*130/1440, GameScreen.getInstance().getHeight()*2/10));
+                    components.add(new TravelCard(type, GameScreen.getInstance().getWidth()*130/1440, GameScreen.getInstance().getHeight()/5));
                 }
             } else {
                 for (int i = 0; i < numOtherTypes; i++) {
-                    components.add(new TravelCard(type, GameScreen.getInstance().getWidth()*130/1440, GameScreen.getInstance().getHeight()*2/10));
+                    components.add(new TravelCard(type, GameScreen.getInstance().getWidth()*130/1440, GameScreen.getInstance().getHeight()/5));
                 }
             }
         }
@@ -47,10 +56,14 @@ public class TravelCardDeck extends Deck <CardUnit> {
         // Add gold cards for Elfengold
         if (GameRuleUtils.isElfengoldVariant(variant)) {
             for (int i = 0; i < 7; i++) {
-                components.add(new GoldCard(GameScreen.getInstance().getWidth()*130/1440, GameScreen.getInstance().getHeight()*2/10));
+                components.add(new GoldCard(GameScreen.getInstance().getWidth()*130/1440, GameScreen.getInstance().getHeight()/5));
             }
         }
 
         shuffle();
+    }
+
+    public JLabel getImage() {
+        return this.deckImage;
     }
 }

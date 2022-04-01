@@ -25,7 +25,7 @@ public class Road {
     }
 
     public void roadSelected() {
-    		
+
     }
 
     public boolean canPlaceCounter() {
