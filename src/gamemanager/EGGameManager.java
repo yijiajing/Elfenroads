@@ -29,7 +29,7 @@ public class EGGameManager extends GameManager {
     }
 
     @Override
-    protected void setUpNewGame() {
+    public void setUpNewGame() {
         // initial preparation: deal five cards to each player; give each player 7 gold coins
         for (Player p: gameState.getPlayers()) {
             for (int i = 0; i < 5; i++) {

@@ -17,6 +17,9 @@ import java.util.logging.Logger;
 //TODO: modify everything for Elfengold.
 public class EGGameScreen extends GameScreen {
 
+    protected final JPanel panelForDeckOfTravelCards = new JPanel();
+    protected final JPanel backgroundPanel_ForFaceUpTravelCards = new JPanel();
+
     protected final JPanel[] panelForFaceUpTravelCards = new JPanel[3];
     protected ChooseCounterPopup counterPopup;
 
@@ -44,7 +47,7 @@ public class EGGameScreen extends GameScreen {
         initializeCardPanels();
         initializeInformationCardImage();
         initializeFaceUpTravelCards();
-        initializeDeckOfTransportationCounters();
+        initializeDeckOfTravelCards();
         initializeLeaderboard();
         initializeEndTurnButton();
 
@@ -66,7 +69,7 @@ public class EGGameScreen extends GameScreen {
         backgroundPanel_ForMap.setBackground(Color.BLUE);
 
         // Set Bounds for background Round zone
-        backgroundPanel_ForRound.setBounds(width * 1000 / 1440, height * 34 / 900, width * 86 / 1440, height * 130 / 900);
+        backgroundPanel_ForRound.setBounds(width * 1005 / 1440, height * 34 / 900, width * 86 / 1440, height * 130 / 900);
         backgroundPanel_ForRound.setOpaque(false);
 
         // Set Bounds for background Cards zone
@@ -77,20 +80,20 @@ public class EGGameScreen extends GameScreen {
         backgroundPanel_ForInformationCard.setBounds(width * 1150 / 1440, height * 565 / 900, width * 290 / 1440, height * 330 / 900);
         backgroundPanel_ForInformationCard.setBackground(Color.WHITE);
 
-        // Set Bounds for background Face Up Transportation Counter zone
-        backgroundPanel_ForDeckOfTransportationCounters.setBounds(width * 1150 / 1440, height * 275 / 900, width * 290 / 1440, height * 289 / 900);
-        backgroundPanel_ForDeckOfTransportationCounters.setBackground(Color.DARK_GRAY);
+        // Set Bounds for background Face Up Travel Card zone
+        backgroundPanel_ForFaceUpTravelCards.setBounds(width * 1150 / 1440, height * 275 / 900, width * 290 / 1440, height * 289 / 900);
+        backgroundPanel_ForFaceUpTravelCards.setBackground(Color.DARK_GRAY);
 
         backgroundPanel_ForLeaderboard.setBounds(width * 1150 / 1440, height * 0 / 900, width * 290 / 1440, height * 274 / 900);
         backgroundPanel_ForLeaderboard.setBackground(Color.DARK_GRAY);
     }
 
-    public void initializeDeckOfTransportationCounters()
+    public void initializeDeckOfTravelCards()
     {
         Border whiteLine = BorderFactory.createLineBorder(Color.WHITE);
 
-        JPanel panel = panelForDeckOfTransportationCounters;
-        panel.setBounds(width*1210/1440, height*290/900, width*70/1440, height*65/900);
+        JPanel panel = panelForDeckOfTravelCards;
+        panel.setBounds(width*1185/1440, height*280/900, width*100/1440, height/6);
         panel.setOpaque(false);
         //panel.setBorder(whiteLine);
         boardGame_Layers.add(panel, 0);
@@ -101,21 +104,21 @@ public class EGGameScreen extends GameScreen {
         Logger.getGlobal().info("Initializing face up travel cards");
         Border whiteLine = BorderFactory.createLineBorder(Color.WHITE);
         JPanel panel2 = new JPanel();
-        panel2.setBounds(width*1315/1440, height*290/900, width*130/1440, height/5);
+        panel2.setBounds(width*1307/1440, height*280/900, width*100/1440, height/6);
         panel2.setOpaque(false);
         //panel2.setBorder(whiteLine);
         panelForFaceUpTravelCards[0] = panel2;
         boardGame_Layers.add(panel2, 0);
 
         JPanel panel3 = new JPanel();
-        panel3.setBounds(width*1210/1440, height*400/900, width*130/1440, height/5);
+        panel3.setBounds(width*1185/1440, height*415/900, width*100/1440, height/6);
         panel3.setOpaque(false);
         //panel3.setBorder(whiteLine);
         panelForFaceUpTravelCards[1] = panel3;
         boardGame_Layers.add(panel3, 0);
 
         JPanel panel4 = new JPanel();
-        panel4.setBounds(width*1315/1440, height*400/900, width*130/1440, height/5);
+        panel4.setBounds(width*1307/1440, height*415/900, width*100/1440, height/6);
         panel4.setOpaque(false);
         //panel4.setBorder(whiteLine);
         panelForFaceUpTravelCards[2] = panel4;
@@ -144,7 +147,7 @@ public class EGGameScreen extends GameScreen {
     {
         backgroundPanel_ForMap.add(mapImage_BottomLayer);
         backgroundPanel_ForInformationCard.add(informationCardImage_TopLayer);
-        panelForDeckOfTransportationCounters.add(GameState.instance().getCounterPile().getImage());
+        panelForDeckOfTravelCards.add(GameState.instance().getTravelCardDeck().getImage());
 
         drawTownPieces();
         drawGoldValueTokens();
@@ -155,17 +158,21 @@ public class EGGameScreen extends GameScreen {
     public void addPanelToScreen()
     {
         boardGame_Layers.add(backgroundPanel_ForRound, 0);
-        boardGame_Layers.add(panelForDeckOfTransportationCounters,0);
+        boardGame_Layers.add(panelForDeckOfTravelCards,0);
         boardGame_Layers.add(backgroundPanel_ForTransportationCounters, -1);
         boardGame_Layers.add(backgroundPanel_ForMap, -1);
         boardGame_Layers.add(backgroundPanel_ForCards, -1);
         boardGame_Layers.add(backgroundPanel_ForInformationCard, -1);
-        boardGame_Layers.add(backgroundPanel_ForDeckOfTransportationCounters, -1);
+        boardGame_Layers.add(backgroundPanel_ForFaceUpTravelCards, -1);
         boardGame_Layers.add(backgroundPanel_ForLeaderboard,-1);
 
         for (Town town: gameMap.getTownList()) {
             boardGame_Layers.add(town.getPanel(), 0);
             boardGame_Layers.add(town.getElfBootPanel(), 0);
+
+            if (town.getTokenPanel() != null) {
+                boardGame_Layers.add(town.getTokenPanel(), 0);
+            }
         }
     }
 
@@ -185,7 +192,7 @@ public class EGGameScreen extends GameScreen {
         for (int i = 0; i < 3; i++) {
             JPanel panel = panelForFaceUpTravelCards[i];
             CardUnit card = faceUpCards.get(i);
-            panel.add(card.getDisplay());
+            panel.add(card.getMiniDisplay());
             panel.repaint();
             panel.revalidate();
         }
@@ -217,7 +224,6 @@ public class EGGameScreen extends GameScreen {
     private void drawGoldValueTokens() {
         // put gold value token on every town
         for (Town t : GameMap.getInstance().getTownList()) {
-//            System.out.println(t.getName());
             if (t.getTokenPanel() != null && !t.getName().equals("Elvenhold")) {
                 t.getTokenPanel().drawGoldValueToken();
             }

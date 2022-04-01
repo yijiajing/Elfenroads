@@ -4,6 +4,7 @@ import commands.*;
 import domain.*;
 import enums.ELRoundPhaseType;
 import enums.GameVariant;
+import enums.ObstacleType;
 import windows.*;
 import networking.*;
 import gamescreen.GameScreen;
@@ -30,14 +31,14 @@ public class ELGameManager extends GameManager {
     }
 
     @Override
-    protected void setUpNewGame() {
+    public void setUpNewGame() {
         // put 5 counters face up, these are shared across peers
         for (int i = 0; i < 5; i++) {
             this.gameState.addFaceUpCounterFromPile();
         }
 
         // give all players (each peer) an obstacle
-        thisPlayer.getHand().addUnit(new Obstacle(MainFrame.instance.getWidth() * 67 / 1440, MainFrame.instance.getHeight() * 60 / 900));
+        thisPlayer.getHand().addUnit(new Obstacle(ObstacleType.TREE,MainFrame.instance.getWidth() * 67 / 1440, MainFrame.instance.getHeight() * 60 / 900, variant));
 
         // assign each player a destination town if applicable
         if (gameState.getGameVariant() == GameVariant.ELFENLAND_DESTINATION) {

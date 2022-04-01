@@ -22,6 +22,10 @@ public class Road {
         }
     }
 
+    public void roadSelected() {
+
+    }
+
     public boolean canPlaceCounter() {
         return !(regionType == RegionType.LAKE || regionType == RegionType.RIVER);
     }

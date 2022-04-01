@@ -67,6 +67,7 @@ public abstract class GameManager {
 
     public static GameManager init(Optional<GameState> loadedState, String sessionID, GameVariant variant) {
         if (INSTANCE == null) {
+            Logger.getGlobal().info("Initializing GameManager");
             if (GameRuleUtils.isElfengoldVariant(variant)) {
                 INSTANCE = new EGGameManager(loadedState, sessionID, variant);
             } else {
@@ -134,7 +135,7 @@ public abstract class GameManager {
         gameState.addPlayer(p);
     }
 
-    protected abstract void setUpNewGame();
+    public abstract void setUpNewGame();
 
     public abstract void setUpRound();
 

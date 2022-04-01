@@ -6,13 +6,17 @@ import java.awt.*;
 public abstract class CardUnit extends Drawable {
 
     boolean selected;
+    JLabel miniDisplay;
 
     public CardUnit(int resizeWidth, int resizeHeight, String filename) {
 
         super ("./assets/sprites/" + filename + ".png");
+
         Image toResize = icon.getImage();
         Image resized = toResize.getScaledInstance(resizeWidth, resizeHeight,  java.awt.Image.SCALE_SMOOTH);
+        Image resized_mini = toResize.getScaledInstance(resizeWidth-40, resizeHeight-50,  java.awt.Image.SCALE_SMOOTH);
         display = new JLabel(new ImageIcon(resized));
+        miniDisplay = new JLabel(new ImageIcon(resized_mini));
         selected = false;
     }
 
@@ -33,5 +37,7 @@ public abstract class CardUnit extends Drawable {
         this.selected = pSelected;
     }
 
-
+    public JLabel getMiniDisplay() {
+        return this.miniDisplay;
+    }
 }
