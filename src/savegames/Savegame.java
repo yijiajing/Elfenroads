@@ -30,6 +30,9 @@ public class Savegame implements Serializable {
     private SerializablePlayer currentPlayer;
     private ArrayList<SerializableTravelCard> travelCardDeck;
     private ArrayList<SerializableCounterUnit> counterPile;
+    private ArrayList<SerializableTransportationCounter> faceUpCounters; // for elfenland classic games
+    private ArrayList<SerializableTravelCard> faceUpCards; // for elfengold games
+
 
 
     /**
@@ -50,6 +53,8 @@ public class Savegame implements Serializable {
         savePlayers(pState);
         saveTravelCardPile(pState);
         saveTransportationCounterPile(pState);
+
+        // TODO: save faceupcards for elfengold and faceupcounters for elfenland
 
         // we will omit elf boots, since we can figure that out upon load by looking at each player, his current town, and his color
     }
@@ -127,6 +132,23 @@ public class Savegame implements Serializable {
         }
     }
 
+    private void saveFaceUpCounters (GameState pGameState)
+    {
+        // save the list of face up counters for Elfenland classic games
+        for (TransportationCounter ctr : pGameState.getFaceUpCounters())
+        {
+            faceUpCounters.add(new SerializableTransportationCounter(ctr));
+        }
+    }
+
+    private void saveFaceUpCards (GameState pGameState)
+    {
+        for (TravelCard crd : pGameState.getFaceUpCards())
+        {
+            faceUpCards.add(new SerializableTravelCard(crd));
+        }
+    }
+
     public int getTotalRounds() {
         return totalRounds;
     }
@@ -165,5 +187,13 @@ public class Savegame implements Serializable {
 
     public ArrayList<SerializableCounterUnit> getCounterPile() {
         return counterPile;
+    }
+
+    public ArrayList<SerializableTransportationCounter> getFaceUpCounters() {
+        return faceUpCounters;
+    }
+
+    public ArrayList<SerializableTravelCard> getFaceUpCards() {
+        return faceUpCards;
     }
 }
