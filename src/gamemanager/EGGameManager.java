@@ -3,7 +3,6 @@ package gamemanager;
 import commands.DrawCounterCommand;
 import commands.NotifyTurnCommand;
 import commands.ReturnCounterUnitCommand;
-import commands.ReturnTransportationCounterCommand;
 import domain.*;
 import enums.EGRoundPhaseType;
 import enums.GameVariant;
@@ -11,8 +10,6 @@ import gamescreen.EGGameScreen;
 import gamescreen.GameScreen;
 import networking.GameState;
 import utils.GameRuleUtils;
-import windows.ChooseCounterPopup;
-import windows.DoubleMagicSpellPopup;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -124,7 +121,7 @@ public class EGGameManager extends GameManager {
         counter2.setSecret(true);
 
         // let the player choose which counter to place face-up (hence the other one is face-down)
-        ((EGGameScreen)GameScreen.getInstance()).showCounterPopup(counter1, counter2);
+        ((EGGameScreen) GameScreen.getInstance()).showCounterPopup(counter1, counter2);
     }
 
     /**

@@ -51,6 +51,7 @@ public class PlaceTransportationCounterCommand implements GameCommand {
         }
         assert toRemoveIdx >= 0; // The counter should be in the sending player's hand
         senderHand.remove(toRemoveIdx);
+        senderHand.get(toRemoveIdx).setOwned(false);
 
         GameScreen.getInstance().updateAll();
     }

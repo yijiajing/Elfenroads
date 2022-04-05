@@ -5,7 +5,6 @@ import domain.*;
 import enums.EGRoundPhaseType;
 import enums.ELRoundPhaseType;
 import enums.ObstacleType;
-import enums.RoundPhaseType;
 import enums.TravelCardType;
 import enums.*;
 import gamemanager.GameManager;
@@ -34,6 +33,7 @@ public class ActionManager {
     private GameManager gameManager;
 
     private Road selectedRoad;
+    private boolean inExchange;
     private CounterUnit selectedCounter;
     private final List<TravelCard> selectedCards = new ArrayList<>();
     private Town selectedTown;
@@ -77,6 +77,34 @@ public class ActionManager {
         }
         LOGGER.info("Before removing the counter, counters in hand: " +
                 GameManager.getInstance().getThisPlayer().getHand().getCounters().toString());
+
+        // the player wish to exchange the transportation counters on the previously selected
+        // road and the newly selected road
+        if (inExchange) {
+            assert selectedCounter.getType() == MagicSpellType.EXCHANGE;
+            LOGGER.info("In exchange");
+            if (selectedRoad.exchangeWith(road)) {
+                gameManager.getThisPlayer().getHand().removeUnit(selectedCounter);
+                selectedCounter.setOwned(false);
+                gameState.getCounterPile().addDrawable(selectedCounter);
+                GameCommand toSendOverNetwork = new ExchangeCommand(selectedRoad, road, selectedCounter.isSecret());
+                try {
+                    gameManager.getComs().sendGameCommandToAllPlayers(toSendOverNetwork);
+                    GameScreen.getInstance().updateAll();
+                } catch (IOException e) {
+                    LOGGER.info("There was a problem sending the command to exchange two transportation counters!");
+                    e.printStackTrace();
+                }
+                gameManager.endTurn();
+            } else {
+                inExchange = false;
+                clearSelection();
+                GameScreen.displayMessage("The exchanged transportation counters are not legal on the roads they are " +
+                        "exchanged to. Please try again. ");
+            }
+            return;
+        }
+
         selectedRoad = road;
 
         // Player intends to place an obstacle
@@ -148,33 +176,26 @@ public class ActionManager {
             }
         }
 
+        // Player intends to place a magic spell
         else if (selectedCounter instanceof MagicSpell) {
-            MagicSpell spell = (MagicSpell) selectedCounter;
-            if (selectedRoad.setMagicSpell(spell)) {
-                gameManager.getThisPlayer().getHand().removeUnit(spell);
-                spell.setOwned(false);
-                LOGGER.info("Just removed magic spell from hand.");
-                GameCommand toSendOverNetwork = new PlaceCounterUnitCommand(selectedRoad, spell);
-
-                try {
-                    gameManager.getComs().sendGameCommandToAllPlayers(toSendOverNetwork);
-                    GameScreen.getInstance().updateAll();
-                } catch (IOException e) {
-                    LOGGER.info("There was a problem sending the command to place the magic spell!");
-                    e.printStackTrace();
+            MagicSpell counter = (MagicSpell) selectedCounter;
+            if (counter.getType() == MagicSpellType.EXCHANGE) {
+                if (road.getRegionType() == RegionType.RIVER || road.getRegionType() == RegionType.LAKE
+                        || road.hasDouble() || road.numOfTransportationCounter() == 0) {
+                    GameScreen.displayMessage("You cannot place an Exchange here. Please try again.");
+                } else {
+                    inExchange = true;
                 }
-
-                if (spell.getType() == MagicSpellType.DOUBLE) {
-                    ((EGGameScreen)GameScreen.getInstance()).showDoubleMagicSpellPopup();
-                    return;
+            } else if (counter.getType() == MagicSpellType.DOUBLE) {
+                if (road.getRegionType() == RegionType.RIVER || road.getRegionType() == RegionType.LAKE
+                        || road.hasDouble() || road.numOfTransportationCounter() == 0) {
+                    GameScreen.displayMessage("You cannot place a Double here. Please try again.");
+                } else {
+                    //TODO: see if there's anything else to do e.g. place the double on the road
+                    ((EGGameScreen) GameScreen.getInstance()).showDoubleMagicSpellPopup();
                 }
-
-                gameManager.endTurn();
-            } else {
-                GameScreen.displayMessage("You cannot place a magic spell here. Please try again.");
             }
         }
-
         clearSelection();
     }
 
@@ -184,6 +205,11 @@ public class ActionManager {
 
     public void setSelectedCounter(CounterUnit pCounter) {
         if (!(gameState.getCurrentPhase() == ELRoundPhaseType.PLAN_ROUTES || gameState.getCurrentPhase() == EGRoundPhaseType.PLAN_ROUTES)) {
+            return;
+        }
+
+        if (inExchange) {
+            GameScreen.displayMessage("You just placed an Exchange Magic Spell. Please select another road instead.");
             return;
         }
 
