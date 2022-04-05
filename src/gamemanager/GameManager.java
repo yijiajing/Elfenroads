@@ -212,7 +212,8 @@ public abstract class GameManager {
 
     public void planTravelRoutes() {
         if (gameState.getCurrentRound() <= gameState.getTotalRounds()
-                && gameState.getCurrentPhase() == ELRoundPhaseType.PLAN_ROUTES
+                && (gameState.getCurrentPhase() == ELRoundPhaseType.PLAN_ROUTES
+                || gameState.getCurrentPhase() == EGRoundPhaseType.PLAN_ROUTES)
                 && isLocalPlayerTurn()) {
 
             updateGameState();
