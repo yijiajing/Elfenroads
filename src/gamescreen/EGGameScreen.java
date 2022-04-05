@@ -129,7 +129,7 @@ public class EGGameScreen extends GameScreen {
         
         //panel for num of gold card deck
         JPanel panel5 = panelForGoldCardDeck;
-        panel5.setBounds(width*1200/1440, height*20/900, width*250/1440, height*20/900);
+        panel5.setBounds(width*1200/1440, height*394/900, width*250/1440, height*20/900);
         panel5.setLayout(new GridBagLayout());
         JLabel goldCardDeck = new JLabel("Gold Cards: " + GameState.instance().getGoldCardDeckCount());
         panel5.add(goldCardDeck);
