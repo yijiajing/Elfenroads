@@ -190,7 +190,7 @@ public class GameMap {
     }
 
     private Road createAndSaveRoad(RegionType regionType, int x, int y) {
-        Road r = new Road(regionType, x, y, gameScreen);
+        Road r = new Road(regionType, x, y, gameScreen, variant);
         roadList.add(r);
         return r;
     }

@@ -1,5 +1,6 @@
 package domain;
 
+import enums.GameVariant;
 import enums.ObstacleType;
 import enums.RegionType;
 import panel.CounterPanel;
@@ -15,9 +16,9 @@ public class Road {
     private CounterPanel counterPanel;
     private List<CounterUnit> counters = new ArrayList<>();
 
-    public Road(RegionType regionType, int x, int y, GameScreen pScreen) {
+    public Road(RegionType regionType, int x, int y, GameScreen pScreen, GameVariant variant) {
         this.regionType = regionType;
-        if (canPlaceCounter() || canPlaceSeaMonster()) {
+        if (canPlaceCounter() || canPlaceSeaMonster(variant)) {
             counterPanel = new CounterPanel(x, y, this, pScreen);
         }
     }
@@ -32,6 +33,10 @@ public class Road {
 
     public boolean canPlaceSeaMonster() {
         return (isElfengoldVariant() && (regionType == RegionType.LAKE || regionType == RegionType.RIVER));
+    }
+
+    public boolean canPlaceSeaMonster(GameVariant variant) {
+        return (isElfengoldVariant(variant) && (regionType == RegionType.LAKE || regionType == RegionType.RIVER));
     }
 
     public boolean canPlaceTreeObstacle() {
