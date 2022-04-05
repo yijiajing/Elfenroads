@@ -104,8 +104,8 @@ public class EGGameManager extends GameManager {
         // distribute two items from the face-down counter pile
         CounterUnit counter1 = gameState.getCounterPile().draw();
         CounterUnit counter2 = gameState.getCounterPile().draw();
-        thisPlayer.getHand().getCounters().add((TransportationCounter) counter1);
-        thisPlayer.getHand().getCounters().add((TransportationCounter) counter2);
+        thisPlayer.getHand().getCounters().add((CounterUnit) counter1);
+        thisPlayer.getHand().getCounters().add((CounterUnit) counter2);
 
         // by default, both are hidden
         // once a player clicks one of them, it will change secret to false
