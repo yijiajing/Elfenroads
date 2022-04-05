@@ -6,6 +6,7 @@ import enums.Colour;
 import enums.EGRoundPhaseType;
 import enums.ELRoundPhaseType;
 import enums.GameVariant;
+import savegames.Savegame;
 import windows.ChooseBootWindow;
 import windows.MainFrame;
 import networking.*;
@@ -40,16 +41,16 @@ public abstract class GameManager {
     protected ArrayList<Colour> availableColours = new ArrayList<>();
     protected HashMap<Colour, String> bootColours = new HashMap<>(); // <boot colour, player IP> TODO change to Player
 
-    GameManager(Optional<GameState> loadedState, String pSessionID, GameVariant pVariant) {
-        MainFrame.mainPanel.add(GameScreen.init(MainFrame.getInstance(), variant), "gameScreen");
-        sessionID = pSessionID; //
+    GameManager(Optional<Savegame> savegame, String pSessionID, GameVariant pVariant) {
+        sessionID = pSessionID;
         // TODO: I will decide whether to move this inside the conditional:
         // need to see if loaded games start with a different session ID than when they were saved
 
 
         // start a new game if there is no state to be loaded
-        if (loadedState.isEmpty()) {
+        if (savegame.isEmpty()) {
             this.variant = pVariant;
+            MainFrame.mainPanel.add(GameScreen.init(MainFrame.getInstance(), variant), "gameScreen");
             gameState = GameState.init(pSessionID, variant);
             actionManager = ActionManager.init(gameState, this);
 
@@ -60,8 +61,10 @@ public abstract class GameManager {
 
         // load state
         else {
-            gameState = loadedState.get();
-            this.variant = gameState.getGameVariant();
+            Savegame loadedGame = savegame.get();
+            this.variant = loadedGame.getGameVariant();
+            MainFrame.mainPanel.add(GameScreen.init(MainFrame.getInstance(), variant), "gameScreen");
+            gameState = GameState.initFromSave(loadedGame);
             loaded = true;
             actionManager = ActionManager.init(gameState, this);
         }
@@ -69,13 +72,13 @@ public abstract class GameManager {
         coms = CommunicationsManager.init(this, sessionID);
     }
 
-    public static GameManager init(Optional<GameState> loadedState, String sessionID, GameVariant variant) {
+    public static GameManager init(Optional<Savegame> savegame, String sessionID, GameVariant variant) {
         if (INSTANCE == null) {
             Logger.getGlobal().info("Initializing GameManager");
             if (GameRuleUtils.isElfengoldVariant(variant)) {
-                INSTANCE = new EGGameManager(loadedState, sessionID, variant);
+                INSTANCE = new EGGameManager(savegame, sessionID, variant);
             } else {
-                INSTANCE = new ELGameManager(loadedState, sessionID, variant);
+                INSTANCE = new ELGameManager(savegame, sessionID, variant);
             }
         }
         return INSTANCE;

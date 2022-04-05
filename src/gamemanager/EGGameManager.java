@@ -10,6 +10,7 @@ import enums.GameVariant;
 import gamescreen.EGGameScreen;
 import gamescreen.GameScreen;
 import networking.GameState;
+import savegames.Savegame;
 import utils.GameRuleUtils;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,8 +24,8 @@ public class EGGameManager extends GameManager {
     private final static Logger LOGGER = Logger.getLogger("Game Manager");
     private CounterUnit prevCounterKept;
 
-    EGGameManager(Optional<GameState> loadedState, String sessionID, GameVariant variant) {
-        super(loadedState, sessionID, variant);
+    EGGameManager(Optional<Savegame> savegame, String sessionID, GameVariant variant) {
+        super(savegame, sessionID, variant);
         assert GameRuleUtils.isElfengoldVariant(variant);
     }
 

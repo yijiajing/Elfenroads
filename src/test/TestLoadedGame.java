@@ -33,21 +33,21 @@ public class TestLoadedGame {
 
         try {
             // load in a gamestate from a save file
+            Logger.getGlobal().info("Attempting to read in the savegame from a file.");
             Savegame testSaveGame = Savegame.read("123");
-            GameState loadedState = GameState.initFromSave(testSaveGame);
-            GameManager.init(Optional.of(loadedState), "123", GameVariant.ELFENGOLD_CLASSIC); // set the variant here
+            Logger.getGlobal().info("Successfully read in the savegame from a file.");
+            GameManager.init(Optional.of(testSaveGame), "123", GameVariant.ELFENGOLD_CLASSIC); // set the variant here
+            Logger.getGlobal().info("Successfully initialized the GameManager with the saved game.");
 
-            Player p = new Player(Colour.BLACK, "chloe");
-            GameManager.getInstance().setThisPlayer(p);
-            GameManager.getInstance().setUpNewGame();
-            GameState.instance().addPlayer(p); // need this to avoid a null pointer when testing saving
-            GameState.instance().setToFirstPlayer(); // need this to avoid a null pointer when testing saving
+            GameScreen.init(MainFrame.instance, GameState.instance().getGameVariant());
+            Logger.getGlobal().info("Initialized GameScreen.");
             GameScreen.getInstance().draw();
 
             Logger.getGlobal().info("Showing game screen");
             MainFrame.cardLayout.show(MainFrame.mainPanel, "gameScreen");
 
         } catch (Exception e) {
+            e.printStackTrace();
 
         }
     }

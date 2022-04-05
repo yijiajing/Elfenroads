@@ -16,6 +16,8 @@ import java.util.ArrayList;
 
 public class Savegame implements Serializable {
 
+    private static final long serialVersionUID = 1234567890;
+
     // serializable fields from GameState
     private int totalRounds;
     private GameVariant gameVariant;
@@ -69,14 +71,13 @@ public class Savegame implements Serializable {
     {
         FileInputStream reading = new FileInputStream("./out/saves/" + filename);
         ObjectInputStream readingObject = new ObjectInputStream(reading);
-        Object read = readingObject.readObject();
+        Savegame save = (Savegame) readingObject.readObject();
 
         // close the streams
         readingObject.close();
         reading.close();
 
         // return the read savegame
-        Savegame save = (Savegame) read;
         return save;
     }
 
