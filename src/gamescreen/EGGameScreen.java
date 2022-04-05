@@ -20,7 +20,7 @@ public class EGGameScreen extends GameScreen {
 
     protected final JPanel panelForDeckOfTravelCards = new JPanel();
     protected final JPanel backgroundPanel_ForFaceUpTravelCards = new JPanel();
-
+    protected final JPanel panelForGoldCardDeck = new JPanel();
     protected final JPanel[] panelForFaceUpTravelCards = new JPanel[3];
 
 
@@ -82,10 +82,10 @@ public class EGGameScreen extends GameScreen {
         backgroundPanel_ForInformationCard.setBackground(Color.WHITE);
 
         // Set Bounds for background Face Up Travel Card zone
-        backgroundPanel_ForFaceUpTravelCards.setBounds(width * 1150 / 1440, height * 275 / 900, width * 290 / 1440, height * 289 / 900);
+        backgroundPanel_ForFaceUpTravelCards.setBounds(width * 1150 / 1440, height * 251 / 900, width * 290 / 1440, height * 311 / 900);
         backgroundPanel_ForFaceUpTravelCards.setBackground(Color.DARK_GRAY);
 
-        backgroundPanel_ForLeaderboard.setBounds(width * 1150 / 1440, height * 0 / 900, width * 290 / 1440, height * 274 / 900);
+        backgroundPanel_ForLeaderboard.setBounds(width * 1150 / 1440, height * 0 / 900, width * 290 / 1440, height * 250 / 900);
         backgroundPanel_ForLeaderboard.setBackground(Color.DARK_GRAY);
     }
 
@@ -94,7 +94,7 @@ public class EGGameScreen extends GameScreen {
         Border whiteLine = BorderFactory.createLineBorder(Color.WHITE);
 
         JPanel panel = panelForDeckOfTravelCards;
-        panel.setBounds(width*1185/1440, height*280/900, width*100/1440, height/6);
+        panel.setBounds(width*1185/1440, height*257/900, width*100/1440, height/6);
         panel.setOpaque(false);
         //panel.setBorder(whiteLine);
         boardGame_Layers.add(panel, 0);
@@ -105,25 +105,33 @@ public class EGGameScreen extends GameScreen {
         Logger.getGlobal().info("Initializing face up travel cards");
         Border whiteLine = BorderFactory.createLineBorder(Color.WHITE);
         JPanel panel2 = new JPanel();
-        panel2.setBounds(width*1307/1440, height*280/900, width*100/1440, height/6);
+        panel2.setBounds(width*1307/1440, height*257/900, width*100/1440, height/6);
         panel2.setOpaque(false);
         //panel2.setBorder(whiteLine);
         panelForFaceUpTravelCards[0] = panel2;
         boardGame_Layers.add(panel2, 0);
 
         JPanel panel3 = new JPanel();
-        panel3.setBounds(width*1185/1440, height*415/900, width*100/1440, height/6);
+        panel3.setBounds(width*1185/1440, height*392/900, width*100/1440, height/6);
         panel3.setOpaque(false);
         //panel3.setBorder(whiteLine);
         panelForFaceUpTravelCards[1] = panel3;
         boardGame_Layers.add(panel3, 0);
 
         JPanel panel4 = new JPanel();
-        panel4.setBounds(width*1307/1440, height*415/900, width*100/1440, height/6);
+        panel4.setBounds(width*1307/1440, height*392/900, width*100/1440, height/6);
         panel4.setOpaque(false);
         //panel4.setBorder(whiteLine);
         panelForFaceUpTravelCards[2] = panel4;
         boardGame_Layers.add(panel4, 0);
+        
+        //panel for num of gold card deck
+        JPanel panel5 = panelForGoldCardDeck;
+        panel5.setBounds(width*1200/1440, height*20/900, width*250/1440, height*20/900);
+        panel5.setLayout(new GridBagLayout());
+        JLabel goldCardDeck = new JLabel("Gold Cards: " + GameState.instance().getGoldCardDeckCount());
+        panel5.add(goldCardDeck);
+
     }
 
     public void initializeTransportationCounters()
@@ -211,6 +219,16 @@ public class EGGameScreen extends GameScreen {
                 panel.revalidate();
             }
         }
+        
+        //update goldcard deck
+        panelForGoldCardDeck.removeAll();
+        panelForGoldCardDeck.repaint();
+        panelForGoldCardDeck.revalidate();
+        panelForGoldCardDeck.setLayout(new GridBagLayout());
+        JLabel goldCardDeck = new JLabel("Gold Cards: " + GameState.instance().getGoldCardDeckCount());
+        panelForGoldCardDeck.add(goldCardDeck); 
+        panelForGoldCardDeck.repaint();
+        panelForGoldCardDeck.revalidate();
     }
 
     public void updateTransportationCounters()
