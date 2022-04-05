@@ -331,4 +331,8 @@ public class GameState implements Serializable{
     public void clearGoldCardDeck() {
         goldCardDeckCount = 0;
     }
+    
+    public int getGoldCardDeckCount() {
+    	return goldCardDeckCount;
+    }
 }
