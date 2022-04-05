@@ -226,7 +226,20 @@ public class ActionManager {
             return;
         }
 
-        if (GameRuleUtils.validateMove(GameMap.getInstance(), gameState.getCurrentPlayer().getCurrentTown(), selectedTown, selectedCards)) {
+        Road road = GameRuleUtils.validateMove(GameMap.getInstance(), gameState.getCurrentPlayer().getCurrentTown(), selectedTown, selectedCards);
+        if (road != null) {
+            //TODO: 1. let the player choose whether they wish to draw two cards or take the gold coins
+            // 2. Update other players of this player's gold coins
+
+            // update gold coins of the player
+            if (GameRuleUtils.isElfengoldVariant()) {
+                int goldEarned = selectedTown.getGoldValue();
+                if (road.hasGoldPiece()) {
+                    goldEarned *= 2;
+                }
+                gameState.getCurrentPlayer().addGoldCoins(goldEarned);
+            }
+
             // remove cards from the local player's hand
             gameState.getCurrentPlayer().getHand().removeUnits(selectedCards);
             // add cards back to local deck

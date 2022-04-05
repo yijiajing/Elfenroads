@@ -21,64 +21,73 @@ public final class GameRuleUtils {
      * @param srcTown  the town where the player is current in
      * @param destTown the town where the player intends to move to
      * @param cards    the travel cards the player intends to use
-     * @return whether the player can move from srcTown to destTown using the cards provided
-     * Note: returns false when there are extra cards provided. In other words, the move is only valid
+     * @return on which road the player can move from srcTown to destTown using the cards provided
+     * Note: returns null when there are extra cards provided. In other words, the move is only valid
      * with an exact number of exact types of travel cards
      */
-    public static boolean validateMove(GameMap gameMap, Town srcTown, Town destTown, List<TravelCard> cards) {
+    public static Road validateMove(GameMap gameMap, Town srcTown, Town destTown, List<TravelCard> cards) {
         if (cards == null || cards.isEmpty()) {
-            return false;
+            return null;
         } else if (!((GameState.instance().getCurrentPhase() == EGRoundPhaseType.MOVE ||
                 GameState.instance().getCurrentPhase() == ELRoundPhaseType.MOVE)
                 && !cards.isEmpty()
                 && GameManager.getInstance().isLocalPlayerTurn())) {
-            return false;
+            return null;
         }
         Set<Road> roads = gameMap.getRoadsBetween(srcTown, destTown);
 
-        //TODO: implement elven witch and special transportation counters for Elfengold (seamonster done)
+        //TODO: implement elven witch and special transportation counters for Elfengold (seamonster done, magic spell done)
 
         for (Road road : roads) {
             // cannot move on a non-river and non-lake road without transportation counter
             if (road.getRegionType() != RegionType.LAKE && road.getRegionType() != RegionType.RIVER
-                    && road.getTransportationCounter() == null) {
+                    && road.numOfTransportationCounter() == 0) {
                 continue;
             }
             if (road.getRegionType() == RegionType.LAKE) {
                 // lake - two raft cards (three with seamonster)
                 int requiredCards = 2;
-                if (road.hasObstacle()) { requiredCards++; }
+                if (road.hasObstacle()) {
+                    requiredCards++;
+                }
 
                 if (cards.size() == requiredCards && cards.stream().allMatch(card -> card.getType() == TravelCardType.RAFT)) {
                     LOGGER.info("[Lake] Can travel with " + Integer.toString(requiredCards) + " raft cards");
-                    return true;
+                    return road;
                 }
             } else if (road.getRegionType() == RegionType.RIVER) {
                 int extraCard = 0;
-                if (road.hasObstacle()) { extraCard = 1; }
+                if (road.hasObstacle()) {
+                    extraCard = 1;
+                }
 
                 if (gameMap.getRoadSource(road).equals(destTown)) {
                     // upriver - two raft cards (three with seamonster)
-                    if (cards.size() == 2+extraCard && cards.stream().allMatch(card -> card.getType() == TravelCardType.RAFT)) {
-                        LOGGER.info("[Upriver] Can travel with " + Integer.toString(2+extraCard) + " raft cards");
-                        return true;
+                    if (cards.size() == 2 + extraCard && cards.stream().allMatch(card -> card.getType() == TravelCardType.RAFT)) {
+                        LOGGER.info("[Upriver] Can travel with " + Integer.toString(2 + extraCard) + " raft cards");
+                        return road;
                     }
                 } else {
                     // downriver - one raft card (two with seamonster)
-                    if (cards.size() == 1+extraCard && cards.get(0).getType() == TravelCardType.RAFT) {
-                        LOGGER.info("[Downriver] Can travel with " + Integer.toString(1+extraCard) + " raft card");
-                        return true;
+                    if (cards.size() == 1 + extraCard && cards.get(0).getType() == TravelCardType.RAFT) {
+                        LOGGER.info("[Downriver] Can travel with " + Integer.toString(1 + extraCard) + " raft card");
+                        return road;
                     }
                 }
             } else {
-                // convert transportation counter type to corresponding card type
-                TravelCardType requiredType = TravelCardType.valueOf(road.getTransportationCounter().getType().name());
-                int requiredNumOfCards = road.getTransportationCounter().getRequiredNumOfUnitsOn(road);
-                if (road.hasObstacle()) {
-                    requiredNumOfCards++;
-                }
-                if (cards.size() == requiredNumOfCards && cards.stream().allMatch(card -> card.getType() == requiredType)) {
-                    return true;
+                // If there is a Double Magic Spell, there are two transportation counters. The way it is checked is
+                // the same as one, so we just loop through all transportation counters.
+                // We don't need to do anything extra for Exchange Magic Spell.
+                for (TransportationCounter t : road.getAllTransportationCounters()) {
+                    // convert transportation counter type to corresponding card type
+                    TravelCardType requiredType = TravelCardType.valueOf(t.getType().name());
+                    int requiredNumOfCards = t.getRequiredNumOfUnitsOn(road);
+                    if (road.hasObstacle()) {
+                        requiredNumOfCards++;
+                    }
+                    if (cards.size() == requiredNumOfCards && cards.stream().allMatch(card -> card.getType() == requiredType)) {
+                        return road;
+                    }
                 }
             }
         }
@@ -87,17 +96,17 @@ public final class GameRuleUtils {
         for (Road road : roads) {
             LOGGER.info("No matching cards, checking for Caravan...");
             if (road.getRegionType() == RegionType.LAKE || road.getRegionType() == RegionType.RIVER
-                    || road.getTransportationCounter() == null) {
+                    || road.numOfTransportationCounter() == 0) {
                 // caravan cannot move on a lake/river or a road without transportation counter
                 continue;
             }
             int requiredNumOfCards = road.hasObstacle() ? 4 : 3;
             if (cards.size() == requiredNumOfCards) {
                 LOGGER.info("Caravan triggered with " + requiredNumOfCards + " cards");
-                return true;
+                return road;
             }
         }
-        return false;
+        return null;
     }
 
     public static boolean isDrawCountersPhase() {

@@ -42,7 +42,8 @@ public class PlaceCounterUnitCommand implements GameCommand {
 			Town destinationTown = map.getTown(destination);
 			Road road = map.getRoadBetween(startTown, destinationTown, regionType);
 			CounterUnit counter = CounterUnit.getNew(aCounterUnitType);
-			assert counter instanceof TransportationCounter || counter instanceof MagicSpell || counter instanceof Obstacle;
+			assert counter instanceof TransportationCounter || counter instanceof MagicSpell
+					|| counter instanceof Obstacle || counter instanceof GoldPiece;
 
 			//Call different methods in road for different types of CounterUnit
 			if (counter instanceof TransportationCounter) {
