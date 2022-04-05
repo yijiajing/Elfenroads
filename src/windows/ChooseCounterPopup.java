@@ -24,7 +24,7 @@ public class ChooseCounterPopup extends JPanel {
         setLayout(new FlowLayout(FlowLayout.CENTER, 0, 40));
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setBounds((int) screenSize.getWidth()/4, (int) screenSize.getHeight()/6, (int) screenSize.getWidth()/2, (int) screenSize.getHeight()/2);
-        setOpaque(false);
+        setOpaque(true);
 
         JPanel textPanel = new JPanel();
         JLabel text = new JLabel();
