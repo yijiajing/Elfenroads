@@ -1,12 +1,10 @@
 package gamescreen;
 
-import domain.CardUnit;
-import domain.GameMap;
-import domain.Player;
-import domain.Town;
+import domain.*;
 import enums.GameVariant;
 import gamemanager.GameManager;
 import loginwindow.ChatBoxGUI;
+import windows.ChatBoxGUI;
 import networking.GameState;
 import savegames.Savegame;
 import panel.EndTurnButton;
@@ -14,6 +12,7 @@ import panel.MenuButton;
 import panel.ObserverPanel;
 import panel.ScoreBoardPanel;
 import utils.GameRuleUtils;
+import windows.ChooseCounterPopup;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -47,15 +46,13 @@ public abstract class GameScreen extends JPanel implements Serializable {
     protected final JPanel backgroundPanel_ForCards = new JPanel();
     protected final JPanel backgroundPanel_ForTransportationCounters = new JPanel();
     protected final JPanel backgroundPanel_ForInformationCard = new JPanel();
-    protected final JPanel backgroundPanel_ForDeckOfTransportationCounters = new JPanel();
     protected final JPanel backgroundPanel_ForLeaderboard = new JPanel();
 
     protected final JPanel[] panelForPlayerTransportationCounters = new JPanel[5];
     protected final JPanel[] panelForPlayerCards = new JPanel[8];
 
-    protected final JPanel panelForDeckOfTransportationCounters = new JPanel();
-
     protected ArrayList<ObserverPanel> observerPanels = new ArrayList<>();
+    protected ChooseCounterPopup counterPopup;
 
     protected GameMap gameMap;
 
@@ -181,23 +178,16 @@ public abstract class GameScreen extends JPanel implements Serializable {
         // draw the cards to the screen
         for (int p = 0; p < myCards.size(); p++) {
             JPanel panel = panelForPlayerCards[p];
-            CardUnit card = myCards.get(p);
-            panel.add(card.getDisplay());
-            panel.repaint();
-            panel.revalidate();
+            if (panel != null) {
+                CardUnit card = myCards.get(p);
+                panel.add(card.getDisplay());
+                panel.repaint();
+                panel.revalidate();
+            }
         }
     }
 
-    public void initializeLeaderboard() {
-        List<Player> aPlayers = GameState.instance().getPlayers();
-
-        backgroundPanel_ForLeaderboard.setLayout(new BoxLayout(backgroundPanel_ForLeaderboard, BoxLayout.Y_AXIS));
-        backgroundPanel_ForLeaderboard.setAlignmentX(CENTER_ALIGNMENT);
-        for (Player player : aPlayers) {
-            backgroundPanel_ForLeaderboard.add(new ScoreBoardPanel(this, player));
-            backgroundPanel_ForLeaderboard.add(Box.createRigidArea(new Dimension(0, 5)));
-        }
-    }
+    public abstract void initializeLeaderboard();
 
     public void initializeRoundCardImage(int round)
     {
@@ -382,4 +372,10 @@ public abstract class GameScreen extends JPanel implements Serializable {
     {
         return prevMessage;
     }
+
+    public void showCounterPopup(CounterUnit counter1, CounterUnit counter2) {
+        counterPopup = new ChooseCounterPopup(counter1, counter2);
+        boardGame_Layers.add(counterPopup);
+    }
+
 }

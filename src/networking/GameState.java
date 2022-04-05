@@ -440,5 +440,8 @@ public class GameState implements Serializable{
             faceUpCounters.add(new TransportationCounter(ctr));
         }
     }
-
+    
+    public int getGoldCardDeckCount() {
+    	return goldCardDeckCount;
+    }
 }

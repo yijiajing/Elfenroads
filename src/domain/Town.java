@@ -3,7 +3,7 @@ package domain;
 import enums.Colour;
 import enums.GameVariant;
 import gamescreen.GameScreen;
-import loginwindow.MainFrame;
+import windows.MainFrame;
 import networking.GameState;
 import panel.*;
 
@@ -39,7 +39,7 @@ public class Town implements Comparable<Town> {
         this.elfBootPanel = new ElfBootPanel(this, this.x-10, this.y+height, MainFrame.getInstance().getWidth()*13/144, MainFrame.getInstance().getHeight()/35, pScreen);
 
         if (isElfengoldVariant(variant) && tokenValue > 0) {
-            this.goldValueToken = new GoldValueToken(tokenValue, MainFrame.getInstance().getWidth()/144, MainFrame.getInstance().getHeight()/70);
+            this.goldValueToken = new GoldValueToken(tokenValue, MainFrame.getInstance().getWidth()/50, MainFrame.getInstance().getHeight()/40);
             this.tokenPanel = new GoldValueTokenPanel(this, this.goldValueToken, this.x-10, this.y);
         }
     }
@@ -100,6 +100,10 @@ public class Town implements Comparable<Town> {
 
     public GoldValueToken getGoldValueToken() {
         return this.goldValueToken;
+    }
+
+    public int getGoldValue() {
+        return goldValueToken.getValue();
     }
 
     public GoldValueTokenPanel getTokenPanel() {

@@ -1,7 +1,7 @@
 package domain;
 
 import enums.Colour;
-import loginwindow.MainFrame;
+import windows.MainFrame;
 
 import javax.swing.*;
 import java.awt.*;

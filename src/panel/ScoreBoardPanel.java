@@ -1,7 +1,7 @@
 package panel;
 
+import domain.CounterUnit;
 import domain.Player;
-import domain.TransportationCounter;
 import gamescreen.GameScreen;
 
 import javax.swing.*;
@@ -17,14 +17,14 @@ public class ScoreBoardPanel extends JPanel implements ObserverPanel {
     private GameScreen aScreen;
     private Player aPlayer;
     private JLabel score;
+    private JLabel gold;
     private JPanel scoreCard;
     private JPanel countersCard;
 
 
-    public ScoreBoardPanel(GameScreen pScreen, Player pPlayer) {
+    public ScoreBoardPanel(GameScreen pScreen, Player pPlayer, boolean includeGold) {
         aScreen = pScreen;
         aPlayer = pPlayer;
-
 
         this.setPreferredSize(new Dimension(aScreen.getWidth() * 290 / 1440, aScreen.getHeight() * 40 / 900));
         this.setBorder(BorderFactory.createLineBorder(aPlayer.getColor(), 5));
@@ -41,11 +41,16 @@ public class ScoreBoardPanel extends JPanel implements ObserverPanel {
         scoreCard.add(score);
         scoreCard.add(new JLabel(aPlayer.getColour().toString()));
 
+        if (includeGold) {
+            gold = new JLabel(aPlayer.getGoldCoins() + " gold coins");
+            scoreCard.add(gold);
+        }
+
         //Card2: the card showing counters owned by other players
         countersCard = new JPanel();
         countersCard.setLayout(new FlowLayout());
-        List<TransportationCounter> counters = pPlayer.getHand().getCounters();
-        for (TransportationCounter c : counters) {
+        List<CounterUnit> counters = pPlayer.getHand().getCounters();
+        for (CounterUnit c : counters) {
             //display a black square if c is secret.
             if (c.isSecret()) {
                 JLabel display = new JLabel();

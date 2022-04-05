@@ -2,9 +2,10 @@ package panel;
 
 import domain.GoldValueToken;
 import domain.Town;
-import loginwindow.MainFrame;
 
 import javax.swing.*;
+
+import java.awt.*;
 
 import static utils.GameRuleUtils.isElfengoldVariant;
 
@@ -17,8 +18,9 @@ public class GoldValueTokenPanel extends JPanel {
         this.town = pTown;
         this.token = pToken;
 
-        this.setBounds(x, y, this.token.getWidth(), this.token.getHeight());
+        this.setBounds(x, y, this.token.getWidth()+20, this.token.getHeight()+20);
         this.setOpaque(false);
+        this.setVisible(true);
     }
 
     public void drawGoldValueToken() {

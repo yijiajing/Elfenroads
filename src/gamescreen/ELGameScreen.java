@@ -14,6 +14,7 @@ import domain.*;
 import enums.GameVariant;
 import gamemanager.GameManager;
 import networking.GameState;
+import panel.ScoreBoardPanel;
 
 /**
  * A Singleton class that represents the main screen in which the board game is played
@@ -21,8 +22,11 @@ import networking.GameState;
 public class ELGameScreen extends GameScreen
 {
 	protected final JPanel[] panelForFaceUpTransportationCounters = new JPanel[5];
-	protected final JPanel backgroundPanel_ForObstacle = new JPanel();
+	protected final JPanel panelForDeckOfTransportationCounters = new JPanel();
 	protected final JPanel panelForObstacle = new JPanel();
+	protected final JPanel backgroundPanel_ForFaceUpTransportationCounters = new JPanel();
+	protected final JPanel backgroundPanel_ForObstacle = new JPanel();
+
 
 	ELGameScreen(JFrame frame, GameVariant variant) {
 		super(frame, variant);
@@ -74,7 +78,7 @@ public class ELGameScreen extends GameScreen
 		backgroundPanel_ForMap.setBackground(Color.BLUE);
 
 		// Set Bounds for background Round zone
-		backgroundPanel_ForRound.setBounds(width * 1000 / 1440, height * 34 / 900, width * 86 / 1440, height * 130 / 900);
+		backgroundPanel_ForRound.setBounds(width * 1005 / 1440, height * 34 / 900, width * 86 / 1440, height * 130 / 900);
 		backgroundPanel_ForRound.setOpaque(false);
 
 		// Set Bounds for background Cards zone
@@ -86,8 +90,8 @@ public class ELGameScreen extends GameScreen
 		backgroundPanel_ForInformationCard.setBackground(Color.WHITE);
 
 		// Set Bounds for background Face Up Transportation Counter zone
-		backgroundPanel_ForDeckOfTransportationCounters.setBounds(width * 1150 / 1440, height * 275 / 900, width * 290 / 1440, height * 289 / 900);
-		backgroundPanel_ForDeckOfTransportationCounters.setBackground(Color.DARK_GRAY);
+		backgroundPanel_ForFaceUpTransportationCounters.setBounds(width * 1150 / 1440, height * 275 / 900, width * 290 / 1440, height * 289 / 900);
+		backgroundPanel_ForFaceUpTransportationCounters.setBackground(Color.DARK_GRAY);
 
 		backgroundPanel_ForLeaderboard.setBounds(width * 1150 / 1440, height * 0 / 900, width * 290 / 1440, height * 274 / 900);
 		backgroundPanel_ForLeaderboard.setBackground(Color.DARK_GRAY);
@@ -95,6 +99,7 @@ public class ELGameScreen extends GameScreen
 	
 	public void initializeDeckOfTransportationCounters()
 	{
+		Logger.getGlobal().info("Initializing deck of transportation counters");
 		Border whiteLine = BorderFactory.createLineBorder(Color.WHITE);
 		
 		JPanel panel = panelForDeckOfTransportationCounters;
@@ -168,6 +173,18 @@ public class ELGameScreen extends GameScreen
 	}
 
 	@Override
+	public void initializeLeaderboard() {
+		List<Player> aPlayers = GameState.instance().getPlayers();
+
+		backgroundPanel_ForLeaderboard.setLayout(new BoxLayout(backgroundPanel_ForLeaderboard, BoxLayout.Y_AXIS));
+		backgroundPanel_ForLeaderboard.setAlignmentX(CENTER_ALIGNMENT);
+		for (Player player : aPlayers) {
+			backgroundPanel_ForLeaderboard.add(new ScoreBoardPanel(this, player, false));
+			backgroundPanel_ForLeaderboard.add(Box.createRigidArea(new Dimension(0, 5)));
+		}
+	}
+
+	@Override
 	public void addImages()
 	{
 		backgroundPanel_ForMap.add(mapImage_BottomLayer);
@@ -188,7 +205,7 @@ public class ELGameScreen extends GameScreen
 		boardGame_Layers.add(backgroundPanel_ForObstacle,-1);
 		boardGame_Layers.add(backgroundPanel_ForCards, -1);
 		boardGame_Layers.add(backgroundPanel_ForInformationCard, -1);
-		boardGame_Layers.add(backgroundPanel_ForDeckOfTransportationCounters, -1);
+		boardGame_Layers.add(backgroundPanel_ForFaceUpTransportationCounters, -1);
 		boardGame_Layers.add(backgroundPanel_ForLeaderboard,-1);
 
 		for (Town town: gameMap.getTownList()) {
@@ -230,12 +247,12 @@ public class ELGameScreen extends GameScreen
 			}
 		}
 
-		List<TransportationCounter> counters = GameManager.getInstance().getThisPlayer().getHand().getCounters();
+		List<CounterUnit> counters = GameManager.getInstance().getThisPlayer().getHand().getCounters();
 
 		// draw the counters to the screen
 		for (int c = 0; c < counters.size(); c++) {
 			JPanel panel = panelForPlayerTransportationCounters[c];
-			TransportationCounter counter = counters.get(c);
+			CounterUnit counter = counters.get(c);
 			panel.add(counter.getDisplay());
 			panel.repaint();
 			panel.revalidate();

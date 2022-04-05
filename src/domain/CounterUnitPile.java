@@ -11,7 +11,7 @@ import javax.swing.JLabel;
 import commands.DrawCounterCommand;
 import enums.*;
 import gamemanager.GameManager;
-import loginwindow.MainFrame;
+import windows.MainFrame;
 import networking.GameState;
 import gamescreen.GameScreen;
 import utils.GameRuleUtils;
@@ -49,18 +49,13 @@ public class CounterUnitPile extends Deck<CounterUnit> {
     	int width = MainFrame.instance.getWidth() * 67 / 1440;
     	int height = MainFrame.instance.getHeight() * 60 / 900;
 
-        for (CounterType type : CounterType.values()) {
-            for (int i = 0; i < 8; i++) {
-                components.add(new TransportationCounter(type, width, height));
-            }
-        }
 
         if (GameRuleUtils.isElfengoldVariant(this.variant)) {
             for(int i = 0; i < 9; i++) {
                 if (i < 2) {
                     components.add(new GoldPiece(GoldPieceType.GOLDPIECE, width, height));
-                    components.add(new EGObstacle(ObstacleType.OBSTACLE, width, height));
-                    components.add(new EGObstacle(ObstacleType.SEAMONSTER, width, height));
+                    components.add(new Obstacle(ObstacleType.TREE, width, height, variant));
+                    components.add(new Obstacle(ObstacleType.SEAMONSTER, width, height, variant));
                     components.add(new MagicSpell(MagicSpellType.DOUBLE, width, height));
                     components.add(new MagicSpell(MagicSpellType.EXCHANGE, width, height));
                 }
@@ -76,6 +71,12 @@ public class CounterUnitPile extends Deck<CounterUnit> {
                     components.add(new TransportationCounter(CounterType.TROLLWAGON, width,height));
                 }
                 components.add(new TransportationCounter(CounterType.GIANTPIG, width,height));
+            }
+        } else {
+        	for (CounterType type : CounterType.values()) {
+                for (int i = 0; i < 8; i++) {
+                    components.add(new TransportationCounter(type, width, height));
+                }
             }
         }
     }

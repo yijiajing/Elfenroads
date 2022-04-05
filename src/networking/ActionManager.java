@@ -4,6 +4,7 @@ import commands.*;
 import domain.*;
 import enums.EGRoundPhaseType;
 import enums.ELRoundPhaseType;
+import enums.ObstacleType;
 import enums.RoundPhaseType;
 import gamemanager.GameManager;
 import panel.ElfBootPanel;
@@ -81,7 +82,7 @@ public class ActionManager {
                 gameManager.getThisPlayer().getHand().removeUnit(selectedCounter);
                 selectedCounter.setOwned(false);
                 LOGGER.info("Just removed obstacle, obstacle presence: " + gameManager.getThisPlayer().getHand().getObstacle());
-                PlaceObstacleCommand toSendOverNetwork = new PlaceObstacleCommand(selectedRoad);
+                PlaceObstacleCommand toSendOverNetwork = new PlaceObstacleCommand(selectedRoad, (ObstacleType) selectedCounter.getType());
 
                 try {
                     gameManager.getComs().sendGameCommandToAllPlayers(toSendOverNetwork);
@@ -119,6 +120,28 @@ public class ActionManager {
                 gameManager.endTurn();
             } else { // Invalid move
                 GameScreen.displayMessage("You cannot place a transportation counter here. Please try again.");
+            }
+        }
+
+        // Player intends to place a gold piece
+        else if (selectedCounter instanceof GoldPiece) {
+            GoldPiece counter = (GoldPiece) selectedCounter;
+            if (selectedRoad.placeGoldPiece(counter)) {
+                gameManager.getThisPlayer().getHand().removeUnit(selectedCounter);
+                selectedCounter.setOwned(false);
+                LOGGER.info("Just removed gold piece");
+                GameCommand toSendOverNetwork = new PlaceCounterUnitCommand(selectedRoad, counter);
+
+                try {
+                    gameManager.getComs().sendGameCommandToAllPlayers(toSendOverNetwork);
+                    GameScreen.getInstance().updateAll();
+                } catch (IOException e) {
+                    LOGGER.info("There was a problem sending the command to place the gold piece!");
+                    e.printStackTrace();
+                }
+                gameManager.endTurn();
+            } else { // Invalid move
+                GameScreen.displayMessage("You cannot place a gold piece here. Please try again.");
             }
         }
         clearSelection();
@@ -203,7 +226,20 @@ public class ActionManager {
             return;
         }
 
-        if (GameRuleUtils.validateMove(GameMap.getInstance(), gameState.getCurrentPlayer().getCurrentTown(), selectedTown, selectedCards)) {
+        Road road = GameRuleUtils.validateMove(GameMap.getInstance(), gameState.getCurrentPlayer().getCurrentTown(), selectedTown, selectedCards);
+        if (road != null) {
+            //TODO: 1. let the player choose whether they wish to draw two cards or take the gold coins
+            // 2. Update other players of this player's gold coins
+
+            // update gold coins of the player
+            if (GameRuleUtils.isElfengoldVariant()) {
+                int goldEarned = selectedTown.getGoldValue();
+                if (road.hasGoldPiece()) {
+                    goldEarned *= 2;
+                }
+                gameState.getCurrentPlayer().addGoldCoins(goldEarned);
+            }
+
             // remove cards from the local player's hand
             gameState.getCurrentPlayer().getHand().removeUnits(selectedCards);
             // add cards back to local deck

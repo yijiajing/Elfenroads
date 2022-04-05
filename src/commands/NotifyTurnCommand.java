@@ -10,7 +10,6 @@ import networking.GameState;
 import gamescreen.GameScreen;
 import utils.GameRuleUtils;
 
-import java.io.Serial;
 import java.util.logging.Logger;
 
 /**
@@ -19,7 +18,6 @@ import java.util.logging.Logger;
  */
 public class NotifyTurnCommand implements GameCommand {
 
-    @Serial
     private static final long serialVersionUID = 6529685098267757690L;
 
     private final RoundPhaseType phase;

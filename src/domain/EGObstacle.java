@@ -1,11 +1,7 @@
 package domain;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
 import enums.ObstacleType;
-import loginwindow.MainFrame;
-import networking.ActionManager;
+import windows.MainFrame;
 
 /**
  * This class represents the regular obstacle and the seaMonster obstacle in Elfengold, and shoud only be used in Elfengold.

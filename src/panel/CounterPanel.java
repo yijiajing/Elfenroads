@@ -55,19 +55,10 @@ public class CounterPanel extends JPanel {
         });
     }
 
-    public void setTransportationCounter(TransportationCounter transportationCounter) {
-        this.add(transportationCounter.getMiniDisplay());
+    public void addCounterUnit(CounterUnit counter) {
+        this.add(counter.getMiniDisplay());
         this.repaint();
         this.revalidate();
-    }
-
-    public void placeObstacle(Obstacle obstacle) {
-    	gameScreen.addAncestorListener(null);
-
-    	this.add(obstacle.getMiniDisplay());
-    	this.repaint();
-    	this.revalidate();
-
     }
 
     public void update() {

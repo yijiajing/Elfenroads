@@ -32,4 +32,8 @@ public class GoldValueToken {
     public int getHeight() {
         return this.height;
     }
+
+    public int getValue() {
+        return value;
+    }
 }

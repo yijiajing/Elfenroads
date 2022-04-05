@@ -6,8 +6,8 @@ import enums.Colour;
 import enums.EGRoundPhaseType;
 import enums.ELRoundPhaseType;
 import enums.GameVariant;
-import loginwindow.ChooseBootWindow;
-import loginwindow.MainFrame;
+import windows.ChooseBootWindow;
+import windows.MainFrame;
 import networking.*;
 import panel.ElfBootPanel;
 import gamescreen.GameScreen;
@@ -67,6 +67,7 @@ public abstract class GameManager {
 
     public static GameManager init(Optional<GameState> loadedState, String sessionID, GameVariant variant) {
         if (INSTANCE == null) {
+            Logger.getGlobal().info("Initializing GameManager");
             if (GameRuleUtils.isElfengoldVariant(variant)) {
                 INSTANCE = new EGGameManager(loadedState, sessionID, variant);
             } else {
@@ -134,7 +135,7 @@ public abstract class GameManager {
         gameState.addPlayer(p);
     }
 
-    protected abstract void setUpNewGame();
+    public abstract void setUpNewGame();
 
     public abstract void setUpRound();
 
@@ -175,39 +176,7 @@ public abstract class GameManager {
         }
     }
 
-    /**
-     * Triggered for every peer. One peer (the last player) calls it directly in endTurn
-     * and others call it through command execution (endPhaseCommand in endTurn).
-     * If we are still in the same round, the first player will take action in the new phase.
-     */
-    public void endPhase() {
-        actionManager.clearSelection();
-        int nextOrdinal = ((ELRoundPhaseType) gameState.getCurrentPhase()).ordinal() + 1;
-        if (nextOrdinal == ELRoundPhaseType.values().length) {
-            // all phases are done, go to the next round
-            endRound();
-        } else if (gameState.getCurrentPhase() == ELRoundPhaseType.PLAN_ROUTES
-                && gameState.getPassedPlayerCount() < gameState.getNumOfPlayers()) {
-            LOGGER.info("Pass turn ct: " + gameState.getPassedPlayerCount() + ", staying at the PLAN ROUTES phase");
-            // continue with plan routes phase if not all players have passed their turn
-            gameState.setToFirstPlayer();
-            // the first player will take action
-            if (isLocalPlayerTurn()) {
-                NotifyTurnCommand notifyTurnCommand = new NotifyTurnCommand(ELRoundPhaseType.PLAN_ROUTES);
-                notifyTurnCommand.execute(); // notify themself to take action
-            }
-        } else { // go to the next phase within the same round
-            gameState.setCurrentPhase(ELRoundPhaseType.values()[nextOrdinal]);
-            LOGGER.info("...Going to the next phase : " + gameState.getCurrentPhase());
-            gameState.setToFirstPlayer();
-            // the first player will take action
-            if (isLocalPlayerTurn()) {
-                NotifyTurnCommand notifyTurnCommand = new NotifyTurnCommand(gameState.getCurrentPhase());
-                notifyTurnCommand.execute(); // notify themself to take action
-            }
-        }
-        gameState.clearPassedPlayerCount();
-    }
+    public abstract void endPhase();
 
     /**
      * Trigger for every peers when endPhase is called

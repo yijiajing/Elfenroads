@@ -4,6 +4,7 @@ import enums.MagicSpellType;
 import enums.CounterUnitType;
 import loginwindow.MainFrame;
 import savegames.SerializableMagicSpell;
+import windows.MainFrame;
 
 public class MagicSpell extends CounterUnit{
 	
@@ -13,7 +14,7 @@ public class MagicSpell extends CounterUnit{
 		super.initializeMouseListener();
 	}
 
-    public static CounterUnit getNew(CounterUnitType pType) {
+  public static CounterUnit getNew(CounterUnitType pType) {
         assert pType instanceof MagicSpellType;
     	return new MagicSpell((MagicSpellType)pType, MainFrame.instance.getWidth() * 67 / 1440, MainFrame.instance.getHeight() * 60 / 900);
     }
@@ -23,6 +24,7 @@ public class MagicSpell extends CounterUnit{
 		super (loaded.getType(), MainFrame.instance.getWidth() * 67 / 1440, MainFrame.instance.getHeight() * 60 / 900, loaded.getType().toString());
 		super.initializeMouseListener();
 	}
+
 
 
 	

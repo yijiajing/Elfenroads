@@ -1,28 +1,45 @@
 package domain;
 
+import enums.GameVariant;
+import enums.ObstacleType;
 import enums.RegionType;
 import panel.CounterPanel;
 import gamescreen.GameScreen;
+
+import java.util.ArrayList;
+import java.util.List;
+import static utils.GameRuleUtils.isElfengoldVariant;
 
 public class Road {
 
     private RegionType regionType;
     private CounterPanel counterPanel;
-    private TransportationCounter transportationCounter;
-    private Obstacle obstacle;
+    private List<CounterUnit> counters = new ArrayList<>();
 
-    public Road(RegionType regionType, int x, int y, GameScreen pScreen) {
+    public Road(RegionType regionType, int x, int y, GameScreen pScreen, GameVariant variant) {
         this.regionType = regionType;
-        if (canPlaceCounter()) {
+        if (canPlaceCounter() || canPlaceSeaMonster(variant)) {
             counterPanel = new CounterPanel(x, y, this, pScreen);
         }
     }
 
     public void roadSelected() {
-    		
+
     }
 
     public boolean canPlaceCounter() {
+        return !(regionType == RegionType.LAKE || regionType == RegionType.RIVER);
+    }
+
+    public boolean canPlaceSeaMonster() {
+        return (isElfengoldVariant() && (regionType == RegionType.LAKE || regionType == RegionType.RIVER));
+    }
+
+    public boolean canPlaceSeaMonster(GameVariant variant) {
+        return (isElfengoldVariant(variant) && (regionType == RegionType.LAKE || regionType == RegionType.RIVER));
+    }
+
+    public boolean canPlaceTreeObstacle() {
         return !(regionType == RegionType.LAKE || regionType == RegionType.RIVER);
     }
 
@@ -31,54 +48,81 @@ public class Road {
     }
 
     public boolean setTransportationCounter(TransportationCounter transportationCounter) {
-        if (regionType == RegionType.LAKE || regionType == RegionType.RIVER || this.transportationCounter != null) {
+        if (regionType == RegionType.LAKE || regionType == RegionType.RIVER || numOfTransportationCounter() > 0) {
             return false;
         }
 
-        if (transportationCounter.getRequiredNumOfUnitsOn(this) >= 1){
+        if (transportationCounter.getRequiredNumOfUnitsOn(this) > 0) {
             transportationCounter.setPlacedOn(this);
-            this.transportationCounter = transportationCounter;
-            counterPanel.setTransportationCounter(transportationCounter); // update map
-            this.transportationCounter.setOwned(false);
+            transportationCounter.setOwned(false);
+            counters.add(transportationCounter);
+            counterPanel.addCounterUnit(transportationCounter); // update map
             return true;
         } else {
             return false;
         }
     }
-    
-	public void setMagicSpell(MagicSpell counter) {
-		// TODO 
-		
-	}
-	
-	public void placeGoldPiece(GoldPiece counter) {
-		//TODO
-	}
-    
 
-    public TransportationCounter getTransportationCounter() {
-        return transportationCounter;
+    public void setMagicSpell(MagicSpell counter) {
+        // TODO
+
     }
 
-    public boolean placeObstacle(Obstacle obstacle) {
-        if (transportationCounter == null || this.obstacle != null) {
+    public boolean placeGoldPiece(GoldPiece goldPiece) {
+        if (regionType == RegionType.LAKE || regionType == RegionType.RIVER || numOfTransportationCounter() == 0
+                || hasObstacle() || hasGoldPiece()) {
             return false;
         }
-        this.obstacle = obstacle;
-        obstacle.setPlacedOn(this);
-        counterPanel.placeObstacle(obstacle); // update map
+        counters.add(goldPiece);
+        goldPiece.setPlacedOn(this);
+        goldPiece.setOwned(false);
+        counterPanel.addCounterUnit(goldPiece);
         return true;
     }
 
+
+    public List<CounterUnit> getCounters() {
+        return counters;
+    }
+
+    public boolean placeObstacle(Obstacle obstacle) {
+        if (hasObstacle()) {
+            return false; // obstacle already exists on this road
+        }
+
+        if (obstacle.getType() == ObstacleType.TREE) {
+            if (numOfTransportationCounter() == 0) {
+                return false; // Tree obstacles can only be placed on roads that have a counter already
+            }
+            if (canPlaceTreeObstacle()) {
+                counters.add(obstacle);
+                obstacle.setPlacedOn(this);
+                obstacle.setOwned(false);
+                counterPanel.addCounterUnit(obstacle); // update map
+                return true;
+            } else {
+                return false;
+            }
+        } else if (obstacle.getType() == ObstacleType.SEAMONSTER) {
+            if (canPlaceSeaMonster()) {
+                counters.add(obstacle);
+                obstacle.setPlacedOn(this);
+                obstacle.setOwned(false);
+                counterPanel.addCounterUnit(obstacle); // update map
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
     public void clear() {
-        if (this.transportationCounter != null) {
-            this.transportationCounter.setPlacedOn(null);
-            this.transportationCounter = null;
+        for (CounterUnit c : counters) {
+            c.setPlacedOn(null);
         }
-        if (this.obstacle != null) {
-            this.obstacle.setPlacedOn(null);
-            this.obstacle = null;
-        }
+        counters.clear();
         if (counterPanel != null) {
             counterPanel.clear();
         }
@@ -88,10 +132,50 @@ public class Road {
         return counterPanel;
     }
 
-    public boolean hasObstacle() {
-        return obstacle != null;
-
+    public int numOfTransportationCounter() {
+        int ct = 0;
+        for (CounterUnit c : counters) {
+            if (c instanceof TransportationCounter) {
+                ct++;
+            }
+        }
+        return ct;
     }
 
+    public List<TransportationCounter> getAllTransportationCounters() {
+        List<TransportationCounter> tcs = new ArrayList<>();
+        for (CounterUnit c : counters) {
+            if (c instanceof TransportationCounter) {
+                tcs.add((TransportationCounter) c);
+            }
+        }
+        return tcs;
+    }
 
+    public boolean hasObstacle() {
+        for (CounterUnit c : counters) {
+            if (c instanceof Obstacle) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean hasMagicSpell() {
+        for (CounterUnit c : counters) {
+            if (c instanceof MagicSpell) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean hasGoldPiece() {
+        for (CounterUnit c : counters) {
+            if (c instanceof GoldPiece) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

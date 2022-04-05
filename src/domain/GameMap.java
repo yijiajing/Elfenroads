@@ -6,6 +6,7 @@ import gamescreen.GameScreen;
 import networking.GameState;
 import org.jgrapht.alg.shortestpath.BellmanFordShortestPath;
 import org.jgrapht.graph.Pseudograph;
+import utils.GameRuleUtils;
 
 import java.util.*;
 
@@ -18,9 +19,11 @@ public class GameMap {
     private List<Town> townList = new ArrayList<>();
     private List<Road> roadList = new ArrayList<>();
     private Map<String, Town> townMap = new HashMap<>();
+    private GameVariant variant;
 
     private GameMap(GameScreen pGameScreen, GameVariant gameVariant) {
         this.gameScreen = pGameScreen;
+        this.variant = gameVariant;
         initializeTowns(gameVariant);
         initializeRoads();
     }
@@ -93,12 +96,15 @@ public class GameMap {
 
     public void clearAllCounters() {
         for (Road road : roadList) {
-            TransportationCounter counter = road.getTransportationCounter();
-            if (counter != null) {
-                counter.setOwned(false);
-                GameState.instance().getCounterPile().addDrawable(counter);
-                road.clear();
+            List<CounterUnit> counters = road.getCounters();
+            for (CounterUnit c: counters) {
+                c.setOwned(false);
+                // for Elfenland, we do not add an obstacle to the counter pile
+                if (!(c instanceof Obstacle) || GameRuleUtils.isElfengoldVariant()) {
+                    GameState.instance().getCounterPile().addDrawable(c);
+                }
             }
+            road.clear();
         }
     }
 
@@ -184,7 +190,7 @@ public class GameMap {
     }
 
     private Road createAndSaveRoad(RegionType regionType, int x, int y) {
-        Road r = new Road(regionType, x, y, gameScreen);
+        Road r = new Road(regionType, x, y, gameScreen, variant);
         roadList.add(r);
         return r;
     }
