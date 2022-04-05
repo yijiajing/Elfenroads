@@ -6,6 +6,7 @@ import enums.EGRoundPhaseType;
 import enums.ELRoundPhaseType;
 import enums.ObstacleType;
 import enums.RoundPhaseType;
+import enums.TravelCardType;
 import gamemanager.GameManager;
 import panel.ElfBootPanel;
 import gamescreen.GameScreen;
@@ -225,14 +226,26 @@ public class ActionManager {
                 || !gameManager.isLocalPlayerTurn()) {
             return;
         }
+        
+        //if the player only choose one travel card and it's an elven witch, the player intends to make a magic flight
+        boolean magicFlightSuccess = false;
+        if(selectedCards.size() == 1 && selectedCards.get(0).getType() == TravelCardType.WITCH) {
+        	if(gameState.getCurrentPlayer().getGoldCoins() >= 3) {
+        		magicFlightSuccess = true;
+        		gameState.getCurrentPlayer().removeGoldCoins(3);
+        		LOGGER.info("The current player intends to make a magic flight. Take away 3 coins");
+        	}else {
+        		LOGGER.info("The current player intends to make a magic flight but does not have enough coins.");
+        	}
+        }
 
         Road road = GameRuleUtils.validateMove(GameMap.getInstance(), gameState.getCurrentPlayer().getCurrentTown(), selectedTown, selectedCards);
-        if (road != null) {
+        if (road != null || magicFlightSuccess) {
             //TODO: 1. let the player choose whether they wish to draw two cards or take the gold coins
             // 2. Update other players of this player's gold coins
 
-            // update gold coins of the player
-            if (GameRuleUtils.isElfengoldVariant()) {
+            // update gold coins of the player. The player does not collect coins if he makes a magic flight
+            if (GameRuleUtils.isElfengoldVariant() && !magicFlightSuccess) {
                 int goldEarned = selectedTown.getGoldValue();
                 if (road.hasGoldPiece()) {
                     goldEarned *= 2;
