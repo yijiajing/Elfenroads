@@ -48,8 +48,6 @@ public class PlaceCounterUnitCommand implements GameCommand {
 			//Call different methods in road for different types of CounterUnit
 			if (counter instanceof TransportationCounter) {
 				road.setTransportationCounter((TransportationCounter) counter);
-			} else if (counter instanceof MagicSpell) {
-				road.setMagicSpell((MagicSpell) counter);
 			} else if (counter instanceof Obstacle) {
 				Obstacle obstacle;
 				if (counter.getType() == ObstacleType.TREE) {

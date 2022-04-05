@@ -2,10 +2,7 @@ package networking;
 
 import commands.*;
 import domain.*;
-import enums.EGRoundPhaseType;
-import enums.ELRoundPhaseType;
-import enums.ObstacleType;
-import enums.RoundPhaseType;
+import enums.*;
 import gamemanager.GameManager;
 import panel.ElfBootPanel;
 import gamescreen.GameScreen;
@@ -31,6 +28,7 @@ public class ActionManager {
     private GameManager gameManager;
 
     private Road selectedRoad;
+    private boolean inExchange;
     private CounterUnit selectedCounter;
     private final List<TravelCard> selectedCards = new ArrayList<>();
     private Town selectedTown;
@@ -74,6 +72,34 @@ public class ActionManager {
         }
         LOGGER.info("Before removing the counter, counters in hand: " +
                 GameManager.getInstance().getThisPlayer().getHand().getCounters().toString());
+
+        // the player wish to exchange the transportation counters on the previously selected
+        // road and the newly selected road
+        if (inExchange) {
+            assert selectedCounter.getType() == MagicSpellType.EXCHANGE;
+            LOGGER.info("In exchange");
+            if (selectedRoad.exchangeWith(road)) {
+                gameManager.getThisPlayer().getHand().removeUnit(selectedCounter);
+                selectedCounter.setOwned(false);
+                GameCommand toSendOverNetwork = new ExchangeCommand(selectedRoad, road, gameManager.getThisPlayer(),
+                        selectedCounter.isSecret());
+                try {
+                    gameManager.getComs().sendGameCommandToAllPlayers(toSendOverNetwork);
+                    GameScreen.getInstance().updateAll();
+                } catch (IOException e) {
+                    LOGGER.info("There was a problem sending the command to exchange two transportation counters!");
+                    e.printStackTrace();
+                }
+                gameManager.endTurn();
+            } else {
+                inExchange = false;
+                clearSelection();
+                GameScreen.displayMessage("The exchanged transportation counters are not legal on the roads they are " +
+                        "exchanged to. Please try again. ");
+            }
+            return;
+        }
+
         selectedRoad = road;
 
         // Player intends to place an obstacle
@@ -144,6 +170,20 @@ public class ActionManager {
                 GameScreen.displayMessage("You cannot place a gold piece here. Please try again.");
             }
         }
+
+        // Player intends to place a magic spell
+        else if (selectedCounter instanceof MagicSpell) {
+            MagicSpell counter = (MagicSpell) selectedCounter;
+            if (counter.getType() == MagicSpellType.EXCHANGE) {
+                if (road.hasDouble()) {
+                    GameScreen.displayMessage("You cannot place an Exchange here. Please try again.");
+                } else {
+                    inExchange = true;
+                }
+            } else if (counter.getType() == MagicSpellType.DOUBLE) {
+                //TODO: IMPLEMENT
+            }
+        }
         clearSelection();
     }
 
@@ -153,6 +193,11 @@ public class ActionManager {
 
     public void setSelectedCounter(CounterUnit pCounter) {
         if (!(gameState.getCurrentPhase() == ELRoundPhaseType.PLAN_ROUTES || gameState.getCurrentPhase() == EGRoundPhaseType.PLAN_ROUTES)) {
+            return;
+        }
+
+        if (inExchange) {
+            GameScreen.displayMessage("You just placed an Exchange Magic Spell. Please select another road instead.");
             return;
         }
 

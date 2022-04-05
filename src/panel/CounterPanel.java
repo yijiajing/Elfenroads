@@ -57,8 +57,7 @@ public class CounterPanel extends JPanel {
 
     public void addCounterUnit(CounterUnit counter) {
         this.add(counter.getMiniDisplay());
-        this.repaint();
-        this.revalidate();
+        update();
     }
 
     public void update() {

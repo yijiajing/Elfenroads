@@ -1,6 +1,7 @@
 package domain;
 
 import enums.GameVariant;
+import enums.MagicSpellType;
 import enums.ObstacleType;
 import enums.RegionType;
 import panel.CounterPanel;
@@ -63,9 +64,28 @@ public class Road {
         }
     }
 
-    public void setMagicSpell(MagicSpell counter) {
-        // TODO
+    public boolean exchangeWith(Road anotherRoad) {
+        assert numOfTransportationCounter() == 1 && anotherRoad.numOfTransportationCounter() == 1;
+        TransportationCounter t1 = getAllTransportationCounters().get(0);
+        TransportationCounter t2 = anotherRoad.getAllTransportationCounters().get(0);
+        assert counters.contains(t1) && anotherRoad.counters.contains(t2);
+        if (t2.getRequiredNumOfUnitsOn(this) > 0 && t1.getRequiredNumOfUnitsOn(anotherRoad) > 0) {
+            counters.remove(t1);
+            anotherRoad.counters.remove(t2);
+            updateCounterPanel();
+            setTransportationCounter(t2);
+            anotherRoad.setTransportationCounter(t1);
+            return true;
+        } else {
+            return false;
+        }
+    }
 
+    private void updateCounterPanel() {
+        counterPanel.clear();
+        for (CounterUnit c : counters) {
+            counterPanel.addCounterUnit(c);
+        }
     }
 
     public boolean placeGoldPiece(GoldPiece goldPiece) {
@@ -164,6 +184,15 @@ public class Road {
     public boolean hasMagicSpell() {
         for (CounterUnit c : counters) {
             if (c instanceof MagicSpell) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean hasDouble() {
+        for (CounterUnit c : counters) {
+            if (c instanceof MagicSpell && c.getType() == MagicSpellType.DOUBLE) {
                 return true;
             }
         }
