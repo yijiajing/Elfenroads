@@ -25,7 +25,6 @@ public class ChooseCounterPopup extends JPanel {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setBounds((int) screenSize.getWidth()/4, (int) screenSize.getHeight()/6, (int) screenSize.getWidth()/2, (int) screenSize.getHeight()/2);
         setOpaque(false);
-        setBorder(BorderFactory.createLineBorder(Color.BLUE));
 
         JPanel textPanel = new JPanel();
         JLabel text = new JLabel();

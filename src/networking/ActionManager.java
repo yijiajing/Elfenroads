@@ -2,11 +2,9 @@ package networking;
 
 import commands.*;
 import domain.*;
-import enums.EGRoundPhaseType;
-import enums.ELRoundPhaseType;
-import enums.ObstacleType;
-import enums.RoundPhaseType;
+import enums.*;
 import gamemanager.GameManager;
+import gamescreen.EGGameScreen;
 import panel.ElfBootPanel;
 import gamescreen.GameScreen;
 import utils.GameRuleUtils;
@@ -144,6 +142,34 @@ public class ActionManager {
                 GameScreen.displayMessage("You cannot place a gold piece here. Please try again.");
             }
         }
+
+        else if (selectedCounter instanceof MagicSpell) {
+            MagicSpell spell = (MagicSpell) selectedCounter;
+            if (selectedRoad.setMagicSpell(spell)) {
+                gameManager.getThisPlayer().getHand().removeUnit(spell);
+                spell.setOwned(false);
+                LOGGER.info("Just removed magic spell from hand.");
+                GameCommand toSendOverNetwork = new PlaceCounterUnitCommand(selectedRoad, spell);
+
+                try {
+                    gameManager.getComs().sendGameCommandToAllPlayers(toSendOverNetwork);
+                    GameScreen.getInstance().updateAll();
+                } catch (IOException e) {
+                    LOGGER.info("There was a problem sending the command to place the magic spell!");
+                    e.printStackTrace();
+                }
+
+                if (spell.getType() == MagicSpellType.DOUBLE) {
+                    ((EGGameScreen)GameScreen.getInstance()).showDoubleMagicSpellPopup();
+                    return;
+                }
+
+                gameManager.endTurn();
+            } else {
+                GameScreen.displayMessage("You cannot place a magic spell here. Please try again.");
+            }
+        }
+
         clearSelection();
     }
 
