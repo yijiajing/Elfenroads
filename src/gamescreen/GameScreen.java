@@ -178,10 +178,12 @@ public abstract class GameScreen extends JPanel implements Serializable {
         // draw the cards to the screen
         for (int p = 0; p < myCards.size(); p++) {
             JPanel panel = panelForPlayerCards[p];
-            CardUnit card = myCards.get(p);
-            panel.add(card.getDisplay());
-            panel.repaint();
-            panel.revalidate();
+            if (panel != null) {
+                CardUnit card = myCards.get(p);
+                panel.add(card.getDisplay());
+                panel.repaint();
+                panel.revalidate();
+            }
         }
     }
 
