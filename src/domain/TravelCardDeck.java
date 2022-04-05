@@ -38,9 +38,9 @@ public class TravelCardDeck extends Deck <CardUnit> {
         }
 
         for (TravelCardType type : TravelCardType.values()) {
-            //add 6 wich cards only if the gamevariant is elfengold_witch
+            //add 6 witch cards only if the gamevariant is elfengold_witch
             if (type.equals(TravelCardType.WITCH)) {
-                if (GameState.instance().getGameVariant() == GameVariant.ELFENGOLD_WITCH) {
+                if (variant == GameVariant.ELFENGOLD_WITCH) {
                 	for(int i = 0; i < 6; i++) {
                 		components.add(new TravelCard(TravelCardType.WITCH,GameScreen.getInstance().getWidth()*130/1440, GameScreen.getInstance().getHeight()/5));
                 	}
