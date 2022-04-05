@@ -383,6 +383,7 @@ public class GameState implements Serializable{
             Colour playerColor = cur.getColour();
             ElfBoot thatPlayer = new ElfBoot(playerColor, bootWidth, bootHeight, curPanel, GameScreen.getInstance());
             elfBoots.add(thatPlayer);
+            // TODO: do we need to call a method in Player class to assign the boot?
         }
     }
 

@@ -62,6 +62,7 @@ public class Savegame implements Serializable {
     /**
      * @pre GameState instance is not null
      */
+    // TODO: add extension to filename
     public static void saveGameToFile() throws IOException
     {
         // create a savegame object and write it to a file
