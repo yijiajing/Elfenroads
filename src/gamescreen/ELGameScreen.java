@@ -14,6 +14,7 @@ import domain.*;
 import enums.GameVariant;
 import gamemanager.GameManager;
 import networking.GameState;
+import panel.ScoreBoardPanel;
 
 /**
  * A Singleton class that represents the main screen in which the board game is played
@@ -169,6 +170,18 @@ public class ELGameScreen extends GameScreen
 		//panelForObstacle.setBorder(whiteLine);
 		panelForObstacle.setBounds(width*900/1440, height*625/900, width*70/1440, height*65/900);
 		boardGame_Layers.add(panelForObstacle,0);
+	}
+
+	@Override
+	public void initializeLeaderboard() {
+		List<Player> aPlayers = GameState.instance().getPlayers();
+
+		backgroundPanel_ForLeaderboard.setLayout(new BoxLayout(backgroundPanel_ForLeaderboard, BoxLayout.Y_AXIS));
+		backgroundPanel_ForLeaderboard.setAlignmentX(CENTER_ALIGNMENT);
+		for (Player player : aPlayers) {
+			backgroundPanel_ForLeaderboard.add(new ScoreBoardPanel(this, player, false));
+			backgroundPanel_ForLeaderboard.add(Box.createRigidArea(new Dimension(0, 5)));
+		}
 	}
 
 	@Override

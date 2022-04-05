@@ -187,16 +187,7 @@ public abstract class GameScreen extends JPanel implements Serializable {
         }
     }
 
-    public void initializeLeaderboard() {
-        List<Player> aPlayers = GameState.instance().getPlayers();
-
-        backgroundPanel_ForLeaderboard.setLayout(new BoxLayout(backgroundPanel_ForLeaderboard, BoxLayout.Y_AXIS));
-        backgroundPanel_ForLeaderboard.setAlignmentX(CENTER_ALIGNMENT);
-        for (Player player : aPlayers) {
-            backgroundPanel_ForLeaderboard.add(new ScoreBoardPanel(this, player));
-            backgroundPanel_ForLeaderboard.add(Box.createRigidArea(new Dimension(0, 5)));
-        }
-    }
+    public abstract void initializeLeaderboard();
 
     public void initializeRoundCardImage(int round)
     {
