@@ -212,10 +212,12 @@ public class EGGameScreen extends GameScreen {
 
         for (int i = 0; i < 3; i++) {
             JPanel panel = panelForFaceUpTravelCards[i];
-            CardUnit card = faceUpCards.get(i);
-            panel.add(card.getMiniDisplay());
-            panel.repaint();
-            panel.revalidate();
+            if (panel != null) {
+                CardUnit card = faceUpCards.get(i);
+                panel.add(card.getMiniDisplay());
+                panel.repaint();
+                panel.revalidate();
+            }
         }
         
         //update goldcard deck

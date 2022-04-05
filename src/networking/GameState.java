@@ -242,6 +242,7 @@ public class GameState implements Serializable{
                 // if it is a gold card, we just add it to the gold card deck
                 incrementGoldCardDeckCount();
                 GameScreen.getInstance().updateAll();
+                addFaceUpCardFromDeck();
             } else if (card instanceof TravelCard){
                 ((TravelCard) card).setOwned(false);
                 faceUpCards.add((TravelCard) card);
