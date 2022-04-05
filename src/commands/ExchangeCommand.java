@@ -44,16 +44,17 @@ public class ExchangeCommand implements GameCommand {
 
         // remove the exchange counter from the sending player's hand
         List<CounterUnit> senderHand = GameState.instance().getPlayerByName(senderName).getHand().getCounters();
-        int toRemoveIdx = -1;
-        for (int i = 0; i < senderHand.size(); i++) {
-            if (senderHand.get(i).getType() == MagicSpellType.EXCHANGE
-                    && senderHand.get(i).isSecret() == isSecret) {
-                toRemoveIdx = i;
+        CounterUnit toRemove = null;
+        for (CounterUnit c : senderHand) {
+            if (c.getType() == MagicSpellType.EXCHANGE && c.isSecret() == isSecret) {
+                toRemove = c;
             }
         }
-        assert toRemoveIdx >= 0; // The counter should be in the sending player's hand
-        senderHand.remove(toRemoveIdx);
-
+        assert toRemove != null; // The counter should be in the sending player's hand
+        senderHand.remove(toRemove);
+        
+        // add the exchange back to the counter pile
+        GameState.instance().getCounterPile().addDrawable(toRemove);
         GameScreen.getInstance().updateAll();
     }
 }
