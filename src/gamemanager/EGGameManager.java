@@ -89,11 +89,17 @@ public class EGGameManager extends GameManager {
      * PHASE 4
      */
     public void chooseFaceUpCounter() {
+        Logger.getGlobal().info(Integer.toString(gameState.getCurrentRound()));
+        Logger.getGlobal().info(gameState.getCurrentPhase().toString());
+        Logger.getGlobal().info(Boolean.toString(gameState.getCurrentPhase() == EGRoundPhaseType.CHOOSE_FACE_UP));
+
         if (!(gameState.getCurrentRound() <= gameState.getTotalRounds()
                 && gameState.getCurrentPhase() == EGRoundPhaseType.CHOOSE_FACE_UP
                 && isLocalPlayerTurn())) {
             return;
         }
+
+        Logger.getGlobal().info("Preparing to show the counter popup window.");
 
         // distribute gold coins (beginning with the second round)
         if (gameState.getCurrentRound() > 1) {

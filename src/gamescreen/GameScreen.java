@@ -372,6 +372,8 @@ public abstract class GameScreen extends JPanel implements Serializable {
     public void showCounterPopup(CounterUnit counter1, CounterUnit counter2) {
         counterPopup = new ChooseCounterPopup(counter1, counter2);
         boardGame_Layers.add(counterPopup);
+        mainframe.repaint();
+        mainframe.revalidate();
     }
 
 }
