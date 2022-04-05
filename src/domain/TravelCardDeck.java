@@ -3,6 +3,7 @@ package domain;
 import enums.GameVariant;
 import enums.TravelCardType;
 import gamescreen.GameScreen;
+import networking.GameState;
 import utils.GameRuleUtils;
 
 import javax.swing.*;
@@ -37,9 +38,15 @@ public class TravelCardDeck extends Deck <CardUnit> {
         }
 
         for (TravelCardType type : TravelCardType.values()) {
-            // leave out witch cards for now (TODO: incorporate witch variant for elfengold)
+            //add 6 wich cards only if the gamevariant is elfengold_witch
             if (type.equals(TravelCardType.WITCH)) {
-                continue;
+                if (GameState.instance().getGameVariant() == GameVariant.ELFENGOLD_WITCH) {
+                	for(int i = 0; i < 6; i++) {
+                		components.add(new TravelCard(TravelCardType.WITCH,GameScreen.getInstance().getWidth()*130/1440, GameScreen.getInstance().getHeight()/5));
+                	}
+                }else {
+                	continue;
+                }
             }
 
             if (type.equals(TravelCardType.RAFT)) {
