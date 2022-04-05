@@ -1,6 +1,7 @@
 package gamescreen;
 
 import domain.*;
+import enums.CounterType;
 import enums.GameVariant;
 import gamemanager.GameManager;
 import windows.ChatBoxGUI;
@@ -13,6 +14,7 @@ import panel.ObserverPanel;
 import panel.ScoreBoardPanel;
 import utils.GameRuleUtils;
 import windows.ChooseCounterPopup;
+import windows.DoubleMagicSpellPopup;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -52,7 +54,6 @@ public abstract class GameScreen extends JPanel implements Serializable {
     protected final JPanel[] panelForPlayerCards = new JPanel[8];
 
     protected ArrayList<ObserverPanel> observerPanels = new ArrayList<>();
-    protected ChooseCounterPopup counterPopup;
 
     protected GameMap gameMap;
 
@@ -372,10 +373,4 @@ public abstract class GameScreen extends JPanel implements Serializable {
     {
         return prevMessage;
     }
-
-    public void showCounterPopup(CounterUnit counter1, CounterUnit counter2) {
-        counterPopup = new ChooseCounterPopup(counter1, counter2);
-        boardGame_Layers.add(counterPopup, 0);
-    }
-
 }

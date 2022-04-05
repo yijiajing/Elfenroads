@@ -1,5 +1,5 @@
 package enums;
 
-public enum MagicSpellType implements CounterUnitType{
+public enum MagicSpellType implements CounterUnitType {
 	DOUBLE, EXCHANGE
 }
