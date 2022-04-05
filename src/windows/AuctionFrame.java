@@ -4,6 +4,11 @@ package windows;
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 
+import java.awt.Component;
+
+import javax.swing.GroupLayout;
+
+import domain.TransportationCounter;
 
 /**
  *
@@ -147,7 +152,8 @@ public class AuctionFrame extends javax.swing.JFrame {
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(271, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                //.addContainerGap(271, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -260,6 +266,20 @@ public class AuctionFrame extends javax.swing.JFrame {
             }
         });
     }
+
+    public void addCounter(TransportationCounter counter){
+        javax.swing.JPanel cardJPanel;
+        javax.swing.GroupLayout layout = (GroupLayout) jPanel1.getLayout();
+        //cardJPanel.add(counter)
+        jPanel1.add(counter.getDisplay());
+        jPanel3.add(counter.getDisplay());
+    }
+
+    public void setAuction(int num){
+
+    }
+
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField CurrentBidOutput;
