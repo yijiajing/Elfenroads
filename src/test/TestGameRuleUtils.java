@@ -1,4 +1,4 @@
-package Test;
+package test;
 
 import domain.*;
 import enums.GameVariant;
@@ -30,16 +30,16 @@ public class TestGameRuleUtils {
         TravelCard cloud = new TravelCard(TravelCardType.MAGICCLOUD, 1, 1);
 
         // no road from Elvenhold to Feodor, expect false
-        assert !GameRuleUtils.validateMove(gameMap, elvenhold, feodor, Arrays.asList(unicorn, raft));
-        assert !GameRuleUtils.validateMove(gameMap, elvenhold, feodor, Arrays.asList(unicorn, raft, raft));
+        assert GameRuleUtils.validateMove(gameMap, elvenhold, feodor, Arrays.asList(unicorn, raft)) == null;
+        assert GameRuleUtils.validateMove(gameMap, elvenhold, feodor, Arrays.asList(unicorn, raft, raft)) == null;
 
         // a river and a plain road from Beata to Elvenhold
-        assert GameRuleUtils.validateMove(gameMap, elvenhold, beata, Arrays.asList(raft, raft));
-        assert GameRuleUtils.validateMove(gameMap, beata, elvenhold, Arrays.asList(raft));
-        assert !GameRuleUtils.validateMove(gameMap, elvenhold, beata, Arrays.asList(unicorn));
-        assert !GameRuleUtils.validateMove(gameMap, elvenhold, beata, Arrays.asList(cloud));
-        assert GameRuleUtils.validateMove(gameMap, elvenhold, beata, Arrays.asList(cloud, cloud));
-        assert !GameRuleUtils.validateMove(gameMap, elvenhold, beata, Arrays.asList(cloud, cloud, cloud));
+        assert GameRuleUtils.validateMove(gameMap, elvenhold, beata, Arrays.asList(raft, raft)) != null;
+        assert GameRuleUtils.validateMove(gameMap, beata, elvenhold, Arrays.asList(raft)) != null;
+        assert GameRuleUtils.validateMove(gameMap, elvenhold, beata, Arrays.asList(unicorn)) == null;
+        assert GameRuleUtils.validateMove(gameMap, elvenhold, beata, Arrays.asList(cloud)) == null;
+        assert GameRuleUtils.validateMove(gameMap, elvenhold, beata, Arrays.asList(cloud, cloud)) != null;
+        assert GameRuleUtils.validateMove(gameMap, elvenhold, beata, Arrays.asList(cloud, cloud, cloud)) == null;
 
         // test shortest distance algorithm
         assert gameMap.getDistanceBetween(elvenhold, feodor) == 2;

@@ -102,6 +102,10 @@ public class Town implements Comparable<Town> {
         return this.goldValueToken;
     }
 
+    public int getGoldValue() {
+        return goldValueToken.getValue();
+    }
+
     public GoldValueTokenPanel getTokenPanel() {
         return this.tokenPanel;
     }

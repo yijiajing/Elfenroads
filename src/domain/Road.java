@@ -137,6 +137,16 @@ public class Road {
         return ct;
     }
 
+    public List<TransportationCounter> getAllTransportationCounters() {
+        List<TransportationCounter> tcs = new ArrayList<>();
+        for (CounterUnit c : counters) {
+            if (c instanceof TransportationCounter) {
+                tcs.add((TransportationCounter) c);
+            }
+        }
+        return tcs;
+    }
+
     public boolean hasObstacle() {
         for (CounterUnit c : counters) {
             if (c instanceof Obstacle) {
