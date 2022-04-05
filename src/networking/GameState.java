@@ -76,13 +76,11 @@ public class GameState implements Serializable{
         this.counterPile = new CounterUnitPile(sessionID, gameVariant);
     }
 
-    // TODO: how to mediate this constructor with a singleton feature
-
     /**
      * will read in game info from a save
      * @param pLoadedState the savegame, read from a file
      */
-    public GameState (Savegame pLoadedState)
+    private GameState (Savegame pLoadedState)
     {
         loadedState = pLoadedState;
         // load directly saved fields first
@@ -127,6 +125,13 @@ public class GameState implements Serializable{
     }
 
     public static GameState instance() {
+        return instance;
+    }
+
+    // clears the singleton field, and sets the loaded GameState as the singleton field
+    public static GameState initFromSave(Savegame loadedState)
+    {
+        instance = new GameState(loadedState);
         return instance;
     }
 
@@ -392,9 +397,19 @@ public class GameState implements Serializable{
      */
     private void loadTravelCardDeck()
     {
-       for (SerializableTravelCard crd : loadedState.getTravelCardDeck())
+       for (SerializableCardUnit crd : loadedState.getTravelCardDeck())
        {
-           travelCardDeck.addDrawable(new TravelCard(crd));
+           if (crd instanceof SerializableGoldCard)
+           {
+               SerializableGoldCard crdDowncasted = (SerializableGoldCard) crd;
+               travelCardDeck.addDrawable(new GoldCard(crdDowncasted));
+           }
+
+           else // if crd is a SerializableTravelCard
+           {
+               SerializableTravelCard crdDowncasted = (SerializableTravelCard) crd;
+               travelCardDeck.addDrawable(new TravelCard(crdDowncasted));
+           }
        }
     }
 

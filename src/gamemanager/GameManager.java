@@ -40,13 +40,16 @@ public abstract class GameManager {
     protected ArrayList<Colour> availableColours = new ArrayList<>();
     protected HashMap<Colour, String> bootColours = new HashMap<>(); // <boot colour, player IP> TODO change to Player
 
-    GameManager(Optional<GameState> loadedState, String pSessionID, GameVariant variant) {
+    GameManager(Optional<GameState> loadedState, String pSessionID, GameVariant pVariant) {
         MainFrame.mainPanel.add(GameScreen.init(MainFrame.getInstance(), variant), "gameScreen");
-        sessionID = pSessionID;
-        this.variant = variant;
+        sessionID = pSessionID; //
+        // TODO: I will decide whether to move this inside the conditional:
+        // need to see if loaded games start with a different session ID than when they were saved
+
 
         // start a new game if there is no state to be loaded
         if (loadedState.isEmpty()) {
+            this.variant = pVariant;
             gameState = GameState.init(pSessionID, variant);
             actionManager = ActionManager.init(gameState, this);
 
@@ -58,8 +61,9 @@ public abstract class GameManager {
         // load state
         else {
             gameState = loadedState.get();
+            this.variant = gameState.getGameVariant();
             loaded = true;
-            //TODO implement
+            actionManager = ActionManager.init(gameState, this);
         }
 
         coms = CommunicationsManager.init(this, sessionID);
