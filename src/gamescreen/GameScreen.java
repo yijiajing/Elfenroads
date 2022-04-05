@@ -3,7 +3,7 @@ package gamescreen;
 import domain.*;
 import enums.GameVariant;
 import gamemanager.GameManager;
-import loginwindow.ChatBoxGUI;
+import windows.ChatBoxGUI;
 import windows.ChatBoxGUI;
 import networking.GameState;
 import savegames.Savegame;

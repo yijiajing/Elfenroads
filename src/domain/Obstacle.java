@@ -35,7 +35,7 @@ public class Obstacle extends CounterUnit {
     }
     public Obstacle (SerializableObstacle loaded)
     {
-        super(ObstacleType.OBSTACLE, MainFrame.instance.getWidth()*67/1440, MainFrame.getInstance().getHeight() *60/900, Integer.toString(9));
+        super(loaded.getType(), MainFrame.instance.getWidth()*67/1440, MainFrame.getInstance().getHeight() *60/900, Integer.toString(9));
 
         // init mouse listener
         this.getDisplay().addMouseListener(new MouseAdapter() {
@@ -51,13 +51,10 @@ public class Obstacle extends CounterUnit {
         });
     }
 
-    public static CounterUnit getNew() {
-        return new Obstacle(MainFrame.instance.getWidth()*67/1440, MainFrame.instance.getHeight()*60/900);
-      
-    public static CounterUnit getNew(ObstacleType type, GameVariant variant) {
-        return new Obstacle(type,MainFrame.instance.getWidth()*67/1440,
-                MainFrame.instance.getHeight()*60/900, variant);
 
+        public static CounterUnit getNew (ObstacleType type, GameVariant variant){
+            return new Obstacle(type, MainFrame.instance.getWidth() * 67 / 1440,
+                    MainFrame.instance.getHeight() * 60 / 900, variant);
+        }
 
-    
-}
+    }

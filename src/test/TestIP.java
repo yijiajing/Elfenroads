@@ -10,7 +10,7 @@ public class TestIP {
     public static void main (String [] args) throws Exception
     {
 
-        System.out.println(NetworkUtils.getLocalIP());
+        System.out.println(NetworkUtils.getLocalIP(0));
 
 
         /* InetAddress add = InetAddress.getLocalHost();

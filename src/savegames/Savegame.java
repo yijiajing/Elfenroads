@@ -33,8 +33,6 @@ public class Savegame implements Serializable {
     private ArrayList<SerializableTransportationCounter> faceUpCounters; // for elfenland classic games
     private ArrayList<SerializableTravelCard> faceUpCards; // for elfengold games
 
-
-
     /**
      * creates a savegame from a GameState
      * @param pState

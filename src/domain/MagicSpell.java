@@ -2,7 +2,7 @@ package domain;
 
 import enums.MagicSpellType;
 import enums.CounterUnitType;
-import loginwindow.MainFrame;
+import windows.MainFrame;
 import savegames.SerializableMagicSpell;
 import windows.MainFrame;
 

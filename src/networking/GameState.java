@@ -2,7 +2,7 @@ package networking;
 
 import domain.*;
 import enums.*;
-import loginwindow.MainFrame;
+import windows.MainFrame;
 import org.json.JSONObject;
 import gamescreen.GameScreen;
 import panel.ElfBootPanel;

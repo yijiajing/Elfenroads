@@ -19,7 +19,7 @@ public abstract class SerializableCounterUnit extends SerializableDrawable {
         isSecret = original.isSecret();
     }
 
-
-
-
+    public CounterUnitType getType() {
+        return type;
+    }
 }
