@@ -187,12 +187,10 @@ public class ActionManager {
                     inExchange = true;
                 }
             } else if (counter.getType() == MagicSpellType.DOUBLE) {
-                if (road.getRegionType() == RegionType.RIVER || road.getRegionType() == RegionType.LAKE
-                        || road.hasDouble() || road.numOfTransportationCounter() == 0) {
-                    GameScreen.displayMessage("You cannot place a Double here. Please try again.");
-                } else {
-                    //TODO: see if there's anything else to do e.g. place the double on the road
+                if (selectedRoad.placeDouble(counter)) {
                     ((EGGameScreen) GameScreen.getInstance()).showDoubleMagicSpellPopup();
+                } else {
+                    GameScreen.displayMessage("You cannot place a Double here. Please try again.");
                 }
             }
         }

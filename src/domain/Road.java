@@ -138,6 +138,19 @@ public class Road {
         }
     }
 
+    public boolean placeDouble(MagicSpell magicSpell) {
+        assert magicSpell.getType() == MagicSpellType.DOUBLE;
+        if (regionType == RegionType.RIVER || regionType == RegionType.LAKE
+                || hasDouble() || numOfTransportationCounter() == 0) {
+            return false;
+        }
+        counters.add(magicSpell);
+        magicSpell.setPlacedOn(this);
+        magicSpell.setOwned(false);
+        counterPanel.addCounterUnit(magicSpell);
+        return true;
+    }
+
     public void clear() {
         for (CounterUnit c : counters) {
             c.setPlacedOn(null);
