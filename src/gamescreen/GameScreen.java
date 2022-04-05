@@ -4,8 +4,9 @@ import domain.*;
 import enums.GameVariant;
 import gamemanager.GameManager;
 import windows.ChatBoxGUI;
+import windows.ChatBoxGUI;
 import networking.GameState;
-import org.json.JSONObject;
+import savegames.Savegame;
 import panel.EndTurnButton;
 import panel.MenuButton;
 import panel.ObserverPanel;
@@ -250,7 +251,10 @@ public abstract class GameScreen extends JPanel implements Serializable {
             public void actionPerformed(ActionEvent e) {
 
                 GameState gamestateToSave = GameState.instance();
-                JSONObject serialized = gamestateToSave.serialize();
+                try {Savegame.saveGameToFile();}
+                catch (IOException e3) {e3.printStackTrace();}
+
+                // TODO: decide what to do after the game has been saved
 
             }
 
