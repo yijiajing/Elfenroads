@@ -1,4 +1,4 @@
-package test;
+package Test;
 
 import domain.Player;
 import domain.TransportationCounter;
