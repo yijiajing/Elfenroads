@@ -2,8 +2,11 @@ package networking;
 
 import domain.*;
 import enums.*;
+import windows.MainFrame;
 import org.json.JSONObject;
 import gamescreen.GameScreen;
+import panel.ElfBootPanel;
+import savegames.*;
 import utils.GameRuleUtils;
 
 import java.io.Serializable;
@@ -25,7 +28,6 @@ public class GameState implements Serializable{
     3. 
      */
     private final Logger LOGGER = Logger.getGlobal();
-    private JSONObject serialized;
 
     // Global variable holding the singleton GameState instance
     private static GameState instance;
@@ -50,6 +52,9 @@ public class GameState implements Serializable{
 
     private ArrayList<ElfBoot> elfBoots;
 
+    // for loading games
+    private Savegame loadedState;
+
     private GameState (String sessionID, GameVariant gameVariant)
     {
         this.elfBoots = new ArrayList<>();
@@ -71,22 +76,40 @@ public class GameState implements Serializable{
         this.counterPile = new CounterUnitPile(sessionID, gameVariant);
     }
 
-    // TODO: implement this second constructor
-    // public networking.GameState (JSONObject gameStateJSON)
+    // TODO: how to mediate this constructor with a singleton feature
 
-    public GameState(JSONObject gamestateJSON){
-        
-
-    }
-
-    public JSONObject serialize()
+    /**
+     * will read in game info from a save
+     * @param pLoadedState the savegame, read from a file
+     */
+    public GameState (Savegame pLoadedState)
     {
-        // we will call the JSONObject constructor with the networking.GameState object as an argument
-        // that class comes from org.json (see documentation for details)
-        JSONObject serializedVersion = new JSONObject(this);
-        serialized = serializedVersion;
-        return serialized;
+        loadedState = pLoadedState;
+        // load directly saved fields first
+        totalRounds = loadedState.getTotalRounds();
+        gameVariant = loadedState.getGameVariant();
+        currentRound = loadedState.getCurrentRound();
+        currentPhase = loadedState.getCurrentPhase();
+        passedPlayerCount = loadedState.getPassedPlayerCount();
+        goldCardDeckCount = loadedState.getGoldCardDeckCount();
+        // load the counters and cards
+
+        // load all of the players from the savegame
+        loadPlayers();
+
+        // load the travel card deck and counter pile
+        loadTravelCardDeck();
+        loadCounterPile();
+
+        // load face up cards or counters
+        loadFaceUpCards();
+        loadFaceUpCounters();
+
+        // init elf boots and their locations based on player colors
+        loadBoots();
+
     }
+
     
    
     /**
@@ -242,6 +265,7 @@ public class GameState implements Serializable{
                 // if it is a gold card, we just add it to the gold card deck
                 incrementGoldCardDeckCount();
                 GameScreen.getInstance().updateAll();
+                addFaceUpCardFromDeck();
             } else if (card instanceof TravelCard){
                 ((TravelCard) card).setOwned(false);
                 faceUpCards.add((TravelCard) card);
@@ -330,6 +354,92 @@ public class GameState implements Serializable{
 
     public void clearGoldCardDeck() {
         goldCardDeckCount = 0;
+    }
+
+    // METHODS USED TO READ IN A LOADED GAME
+    // TODO: implement these and implement constructors
+    private void loadPlayers()
+    {
+        for (SerializablePlayer toLoad : loadedState.getPlayers())
+        {
+            addPlayer(new Player(toLoad));
+        }
+    }
+
+    /**
+     * @pre the gamescreen has been initialized
+     */
+    private void loadBoots()
+    {
+        elfBoots = new ArrayList<ElfBoot>();
+        int bootWidth = MainFrame.instance.getWidth() * 15 / 1440;
+        int bootHeight = MainFrame.instance.getHeight() * 15/900;
+
+        for (Player cur : players)
+        {
+            // add each player's elf boot to his current location
+            // TODO: the gamescreen needs to already exist when we set up the boots, somehow...
+            Town playerCurrentTown = cur.getCurrentTown();
+            ElfBootPanel curPanel = playerCurrentTown.getElfBootPanel();
+            Colour playerColor = cur.getColour();
+            ElfBoot thatPlayer = new ElfBoot(playerColor, bootWidth, bootHeight, curPanel, GameScreen.getInstance());
+            elfBoots.add(thatPlayer);
+            // TODO: do we need to call a method in Player class to assign the boot?
+        }
+    }
+
+    /**
+     * loads the travel card deck from a savegame
+     */
+    private void loadTravelCardDeck()
+    {
+       for (SerializableTravelCard crd : loadedState.getTravelCardDeck())
+       {
+           travelCardDeck.addDrawable(new TravelCard(crd));
+       }
+    }
+
+    /**
+     * loads the counter pile from a savegame
+     */
+    private void loadCounterPile()
+    {
+        for (SerializableCounterUnit ctr : loadedState.getCounterPile())
+        {
+            // load each counter from the savegame
+            if (ctr instanceof SerializableTransportationCounter)
+            {
+                SerializableTransportationCounter ctrDowncasted = (SerializableTransportationCounter) ctr;
+                counterPile.addDrawable(new TransportationCounter(ctrDowncasted));
+            }
+            else // if ctr is an obstacle
+            {
+                SerializableObstacle ctrDowncasted = (SerializableObstacle) ctr;
+                counterPile.addDrawable(new Obstacle(ctrDowncasted));
+            }
+        }
+    }
+
+    /**
+     * loads the face up travel cards from a saved Elfengold game
+     */
+    private void loadFaceUpCards()
+    {
+        for (SerializableTravelCard crd : loadedState.getFaceUpCards())
+        {
+            faceUpCards.add(new TravelCard(crd));
+        }
+    }
+
+    /**
+     * loads the face up transportation counters from a saved Elfenland game
+     */
+    private void loadFaceUpCounters()
+    {
+        for (SerializableTransportationCounter ctr : loadedState.getFaceUpCounters())
+        {
+            faceUpCounters.add(new TransportationCounter(ctr));
+        }
     }
     
     public int getGoldCardDeckCount() {

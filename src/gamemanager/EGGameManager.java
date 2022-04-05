@@ -11,6 +11,9 @@ import gamescreen.EGGameScreen;
 import gamescreen.GameScreen;
 import networking.GameState;
 import utils.GameRuleUtils;
+import windows.ChooseCounterPopup;
+import windows.DoubleMagicSpellPopup;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +25,7 @@ public class EGGameManager extends GameManager {
 
     private final static Logger LOGGER = Logger.getLogger("Game Manager");
     private CounterUnit prevCounterKept;
+
 
     EGGameManager(Optional<GameState> loadedState, String sessionID, GameVariant variant) {
         super(loadedState, sessionID, variant);
@@ -38,12 +42,13 @@ public class EGGameManager extends GameManager {
             p.addGoldCoins(7);
         }
 
+        // add gold cards later so that the initially assigned cards are all travel cards
+        gameState.getTravelCardDeck().addGoldCards();
+
         // put 3 cards face up, these are shared across peers
         for (int j = 0; j < 3; j++) {
             this.gameState.addFaceUpCardFromDeck();
         }
-
-
     }
 
     @Override
@@ -89,11 +94,17 @@ public class EGGameManager extends GameManager {
      * PHASE 4
      */
     public void chooseFaceUpCounter() {
+        Logger.getGlobal().info(Integer.toString(gameState.getCurrentRound()));
+        Logger.getGlobal().info(gameState.getCurrentPhase().toString());
+        Logger.getGlobal().info(Boolean.toString(gameState.getCurrentPhase() == EGRoundPhaseType.CHOOSE_FACE_UP));
+
         if (!(gameState.getCurrentRound() <= gameState.getTotalRounds()
                 && gameState.getCurrentPhase() == EGRoundPhaseType.CHOOSE_FACE_UP
                 && isLocalPlayerTurn())) {
             return;
         }
+
+        Logger.getGlobal().info("Preparing to show the counter popup window.");
 
         // distribute gold coins (beginning with the second round)
         if (gameState.getCurrentRound() > 1) {
@@ -113,7 +124,7 @@ public class EGGameManager extends GameManager {
         counter2.setSecret(true);
 
         // let the player choose which counter to place face-up (hence the other one is face-down)
-        GameScreen.getInstance().showCounterPopup(counter1, counter2);
+        ((EGGameScreen)GameScreen.getInstance()).showCounterPopup(counter1, counter2);
     }
 
     /**

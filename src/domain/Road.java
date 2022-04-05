@@ -63,9 +63,16 @@ public class Road {
         }
     }
 
-    public void setMagicSpell(MagicSpell counter) {
-        // TODO
+    public boolean setMagicSpell(MagicSpell spell) {
+        if (regionType == RegionType.LAKE || regionType == RegionType.RIVER || numOfTransportationCounter() == 0) {
+            return false;
+        }
 
+        counters.add(spell);
+        spell.setPlacedOn(this);
+        spell.setOwned(false);
+        counterPanel.addCounterUnit(spell);
+        return true;
     }
 
     public boolean placeGoldPiece(GoldPiece goldPiece) {

@@ -13,6 +13,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.logging.Logger;
 
 public class ChooseCounterPopup extends JPanel {
 
@@ -24,7 +25,6 @@ public class ChooseCounterPopup extends JPanel {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setBounds((int) screenSize.getWidth()/4, (int) screenSize.getHeight()/6, (int) screenSize.getWidth()/2, (int) screenSize.getHeight()/2);
         setOpaque(false);
-        setBorder(BorderFactory.createLineBorder(Color.BLUE));
 
         JPanel textPanel = new JPanel();
         JLabel text = new JLabel();
@@ -68,6 +68,8 @@ public class ChooseCounterPopup extends JPanel {
 
         add(textPanel);
         add(counterPanel);
+
+        Logger.getGlobal().info("Counter popup should be showing.");
     }
 
 
