@@ -81,8 +81,8 @@ public class ActionManager {
             if (selectedRoad.exchangeWith(road)) {
                 gameManager.getThisPlayer().getHand().removeUnit(selectedCounter);
                 selectedCounter.setOwned(false);
-                GameCommand toSendOverNetwork = new ExchangeCommand(selectedRoad, road, gameManager.getThisPlayer(),
-                        selectedCounter.isSecret());
+                gameState.getCounterPile().addDrawable(selectedCounter);
+                GameCommand toSendOverNetwork = new ExchangeCommand(selectedRoad, road, selectedCounter.isSecret());
                 try {
                     gameManager.getComs().sendGameCommandToAllPlayers(toSendOverNetwork);
                     GameScreen.getInstance().updateAll();

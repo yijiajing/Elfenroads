@@ -3,6 +3,7 @@ package commands;
 import domain.*;
 import enums.MagicSpellType;
 import enums.RegionType;
+import gamemanager.GameManager;
 import gamescreen.GameScreen;
 import networking.GameState;
 
@@ -19,7 +20,7 @@ public class ExchangeCommand implements GameCommand {
     private final String senderName;
     private final boolean isSecret;
 
-    public ExchangeCommand(Road r1, Road r2, Player sender, boolean isSecret) {
+    public ExchangeCommand(Road r1, Road r2, boolean isSecret) {
         GameMap map = GameMap.getInstance();
         start1 = map.getRoadSource(r1).getName();
         destination1 = map.getRoadTarget(r1).getName();
@@ -27,7 +28,7 @@ public class ExchangeCommand implements GameCommand {
         start2 = map.getRoadSource(r2).getName();
         destination2 = map.getRoadTarget(r2).getName();
         regionType2 = r2.getRegionType();
-        senderName = sender.getName();
+        senderName = GameManager.getInstance().getThisPlayer().getName();
         this.isSecret = isSecret;
     }
 
@@ -52,7 +53,8 @@ public class ExchangeCommand implements GameCommand {
         }
         assert toRemove != null; // The counter should be in the sending player's hand
         senderHand.remove(toRemove);
-        
+        toRemove.setOwned(false);
+
         // add the exchange back to the counter pile
         GameState.instance().getCounterPile().addDrawable(toRemove);
         GameScreen.getInstance().updateAll();
