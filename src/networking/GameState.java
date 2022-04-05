@@ -2,6 +2,7 @@ package networking;
 
 import domain.*;
 import enums.*;
+import gamemanager.GameManager;
 import windows.MainFrame;
 import org.json.JSONObject;
 import gamescreen.GameScreen;
@@ -397,6 +398,7 @@ public class GameState implements Serializable{
      */
     private void loadTravelCardDeck()
     {
+        travelCardDeck = TravelCardDeck.getEmpty(GameManager.getInstance().getSessionID());
        for (SerializableCardUnit crd : loadedState.getTravelCardDeck())
        {
            if (crd instanceof SerializableGoldCard)

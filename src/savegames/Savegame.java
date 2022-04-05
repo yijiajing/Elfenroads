@@ -28,6 +28,8 @@ public class Savegame implements Serializable {
 
     private int goldCardDeckCount;
 
+    private String sessionID; // TODO: for now we are using this to determine seeds in the loaded GameState, but we might need to remove this
+
     // fields turned into serializable version
     private ArrayList<SerializablePlayer> players;
     private SerializablePlayer currentPlayer;
@@ -49,6 +51,7 @@ public class Savegame implements Serializable {
         currentRound = pState.getCurrentRound();
         currentPhase = pState.getCurrentPhase();
         passedPlayerCount = pState.getPassedPlayerCount();
+        sessionID = GameManager.getInstance().getSessionID();
 
         // now, handle the non-serializable fields
         savePlayers(pState);
