@@ -90,6 +90,7 @@ public class Savegame implements Serializable {
 
     private void savePlayers (GameState pGameState)
     {
+        players = new ArrayList<>();
         // get all the players from the GameState and turn them into serializable objects to be saved
         for (Player cur : pGameState.getPlayers())
         {

@@ -6,6 +6,7 @@ import enums.GameVariant;
 import gamemanager.GameManager;
 import gamescreen.GameScreen;
 import networking.GameSession;
+import networking.GameState;
 import networking.User;
 import windows.MainFrame;
 
@@ -35,6 +36,8 @@ public class TestGameScreen {
             Player p = new Player(Colour.BLACK, "chloe");
             GameManager.getInstance().setThisPlayer(p);
             GameManager.getInstance().setUpNewGame();
+            GameState.instance().addPlayer(p); // need this to avoid a null pointer when testing saving
+            GameState.instance().setToFirstPlayer(); // need this to avoid a null pointer when testing saving
             GameScreen.getInstance().draw();
 
             Logger.getGlobal().info("Showing game screen");
