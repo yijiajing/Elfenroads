@@ -45,9 +45,9 @@ public class GameUpdateListener implements Runnable
 
             try {
                 // listener = new ServerSocket(port);
-                System.out.println("Going into accept() method and waiting for information...");
+                Logger.getGlobal().info("Going into accept() method and waiting for information...");
                 Socket update = listener.accept(); // the accept () will sit there and wait until an update is received
-                System.out.println("Got a message from the thing! Accept method terminated.");
+                Logger.getGlobal().info("Got a message from the update listener! Accept method terminated.");
                 InputStream updateContents = update.getInputStream();
                 // ObjectInputStream gameStateReceived = new ObjectInputStream(updateContents);
                 ObjectInputStream commandReceived = new ObjectInputStream(updateContents);
@@ -56,7 +56,7 @@ public class GameUpdateListener implements Runnable
                 // listener.close(); // close the connection and do it again
 
             } catch (Exception e) {
-                System.out.println("There was a problem setting up the ServerSocket.");
+                Logger.getGlobal().info("There was a problem setting up the ServerSocket.");
                 e.printStackTrace();
                 break;
             }
