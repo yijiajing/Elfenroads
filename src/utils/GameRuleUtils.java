@@ -37,7 +37,7 @@ public final class GameRuleUtils {
         Set<Road> roads = gameMap.getRoadsBetween(srcTown, destTown);
 
         //TODO: implement elven witch and special transportation counters for Elfengold (seamonster done, magic spell done)
-
+        
         for (Road road : roads) {
             // cannot move on a non-river and non-lake road without transportation counter
             if (road.getRegionType() != RegionType.LAKE && road.getRegionType() != RegionType.RIVER
