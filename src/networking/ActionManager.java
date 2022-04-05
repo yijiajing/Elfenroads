@@ -2,8 +2,13 @@ package networking;
 
 import commands.*;
 import domain.*;
+import enums.EGRoundPhaseType;
+import enums.ELRoundPhaseType;
+import enums.ObstacleType;
+import enums.TravelCardType;
 import enums.*;
 import gamemanager.GameManager;
+import gamescreen.EGGameScreen;
 import panel.ElfBootPanel;
 import gamescreen.GameScreen;
 import utils.GameRuleUtils;
@@ -175,13 +180,20 @@ public class ActionManager {
         else if (selectedCounter instanceof MagicSpell) {
             MagicSpell counter = (MagicSpell) selectedCounter;
             if (counter.getType() == MagicSpellType.EXCHANGE) {
-                if (road.hasDouble()) {
+                if (road.getRegionType() == RegionType.RIVER || road.getRegionType() == RegionType.LAKE
+                        || road.hasDouble() || road.numOfTransportationCounter() == 0) {
                     GameScreen.displayMessage("You cannot place an Exchange here. Please try again.");
                 } else {
                     inExchange = true;
                 }
             } else if (counter.getType() == MagicSpellType.DOUBLE) {
-                //TODO: IMPLEMENT
+                if (road.getRegionType() == RegionType.RIVER || road.getRegionType() == RegionType.LAKE
+                        || road.hasDouble() || road.numOfTransportationCounter() == 0) {
+                    GameScreen.displayMessage("You cannot place a Double here. Please try again.");
+                } else {
+                    //TODO: see if there's anything else to do e.g. place the double on the road
+                    ((EGGameScreen) GameScreen.getInstance()).showDoubleMagicSpellPopup();
+                }
             }
         }
         clearSelection();
@@ -270,14 +282,26 @@ public class ActionManager {
                 || !gameManager.isLocalPlayerTurn()) {
             return;
         }
+        
+        //if the player only choose one travel card and it's an elven witch, the player intends to make a magic flight
+        boolean magicFlightSuccess = false;
+        if(selectedCards.size() == 1 && selectedCards.get(0).getType() == TravelCardType.WITCH) {
+        	if(gameState.getCurrentPlayer().getGoldCoins() >= 3) {
+        		magicFlightSuccess = true;
+        		gameState.getCurrentPlayer().removeGoldCoins(3);
+        		LOGGER.info("The current player intends to make a magic flight. Take away 3 coins");
+        	}else {
+        		LOGGER.info("The current player intends to make a magic flight but does not have enough coins.");
+        	}
+        }
 
         Road road = GameRuleUtils.validateMove(GameMap.getInstance(), gameState.getCurrentPlayer().getCurrentTown(), selectedTown, selectedCards);
-        if (road != null) {
+        if (road != null || magicFlightSuccess) {
             //TODO: 1. let the player choose whether they wish to draw two cards or take the gold coins
             // 2. Update other players of this player's gold coins
 
-            // update gold coins of the player
-            if (GameRuleUtils.isElfengoldVariant()) {
+            // update gold coins of the player. The player does not collect coins if he makes a magic flight
+            if (GameRuleUtils.isElfengoldVariant() && !magicFlightSuccess) {
                 int goldEarned = selectedTown.getGoldValue();
                 if (road.hasGoldPiece()) {
                     goldEarned *= 2;

@@ -6,6 +6,7 @@ import gamemanager.GameManager;
 import networking.GameState;
 import panel.ScoreBoardPanel;
 import windows.ChooseCounterPopup;
+import windows.DoubleMagicSpellPopup;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -22,7 +23,8 @@ public class EGGameScreen extends GameScreen {
     protected final JPanel backgroundPanel_ForFaceUpTravelCards = new JPanel();
     protected final JPanel panelForGoldCardDeck = new JPanel();
     protected final JPanel[] panelForFaceUpTravelCards = new JPanel[3];
-
+    protected ChooseCounterPopup counterPopup;
+    protected DoubleMagicSpellPopup spellPopup;
 
     EGGameScreen(JFrame frame, GameVariant variant) {
         super(frame, variant);
@@ -212,7 +214,7 @@ public class EGGameScreen extends GameScreen {
 
         for (int i = 0; i < 3; i++) {
             JPanel panel = panelForFaceUpTravelCards[i];
-            if (panel != null) {
+            if (panel != null && faceUpCards.size() > i) {
                 CardUnit card = faceUpCards.get(i);
                 panel.add(card.getMiniDisplay());
                 panel.repaint();
@@ -263,7 +265,25 @@ public class EGGameScreen extends GameScreen {
         }
     }
 
+    public void showCounterPopup(CounterUnit counter1, CounterUnit counter2) {
+        counterPopup = new ChooseCounterPopup(counter1, counter2);
+        boardGame_Layers.add(counterPopup, 0);
+    }
+
     public void hideCounterPopup() {
         boardGame_Layers.remove(counterPopup);
+        boardGame_Layers.repaint();
+        boardGame_Layers.revalidate();
+    }
+
+    public void showDoubleMagicSpellPopup() {
+        spellPopup = new DoubleMagicSpellPopup();
+        boardGame_Layers.add(spellPopup, 0);
+    }
+
+    public void hideMagicSpellPopup() {
+        boardGame_Layers.remove(spellPopup);
+        boardGame_Layers.repaint();
+        boardGame_Layers.revalidate();
     }
 }
