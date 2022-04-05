@@ -4,6 +4,7 @@ import domain.*;
 import enums.GameVariant;
 import gamemanager.GameManager;
 import networking.GameState;
+import panel.ScoreBoardPanel;
 import windows.ChooseCounterPopup;
 
 import javax.swing.*;
@@ -139,6 +140,18 @@ public class EGGameScreen extends GameScreen {
             panelForPlayerTransportationCounters[i] = panel;
             xCoordinate += width*100/1440;
             boardGame_Layers.add(panel, 0);
+        }
+    }
+
+    @Override
+    public void initializeLeaderboard() {
+        List<Player> aPlayers = GameState.instance().getPlayers();
+
+        backgroundPanel_ForLeaderboard.setLayout(new BoxLayout(backgroundPanel_ForLeaderboard, BoxLayout.Y_AXIS));
+        backgroundPanel_ForLeaderboard.setAlignmentX(CENTER_ALIGNMENT);
+        for (Player player : aPlayers) {
+            backgroundPanel_ForLeaderboard.add(new ScoreBoardPanel(this, player, true));
+            backgroundPanel_ForLeaderboard.add(Box.createRigidArea(new Dimension(0, 5)));
         }
     }
 
