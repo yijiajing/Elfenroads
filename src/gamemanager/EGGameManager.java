@@ -104,8 +104,8 @@ public class EGGameManager extends GameManager {
         // distribute two items from the face-down counter pile
         CounterUnit counter1 = gameState.getCounterPile().draw();
         CounterUnit counter2 = gameState.getCounterPile().draw();
-        thisPlayer.getHand().getCounters().add((CounterUnit) counter1);
-        thisPlayer.getHand().getCounters().add((CounterUnit) counter2);
+        thisPlayer.getHand().getCounters().add(counter1);
+        thisPlayer.getHand().getCounters().add(counter2);
 
         // by default, both are hidden
         // once a player clicks one of them, it will change secret to false
@@ -113,7 +113,7 @@ public class EGGameManager extends GameManager {
         counter2.setSecret(true);
 
         // let the player choose which counter to place face-up (hence the other one is face-down)
-        ((EGGameScreen) GameScreen.getInstance()).showCounterPopup(counter1, counter2);
+        GameScreen.getInstance().showCounterPopup(counter1, counter2);
     }
 
     /**
