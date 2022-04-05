@@ -1,8 +1,12 @@
 package domain;
 
 import enums.Colour;
+import loginwindow.MainFrame;
 import networking.*;
+import savegames.*;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.awt.*;
@@ -32,6 +36,21 @@ public class Player implements Comparable<Player> {
         this.colour = pColour;
         this.hand = new Hand();
         this.name = pName;
+    }
+
+    /**
+     * loads a player from a savegame SerializablePlayer object
+     * @param loaded the player to load
+     */
+    public Player (SerializablePlayer loaded)
+    {
+        curTown = GameMap.getInstance().getTownByName(loaded.getCurrentTownName());
+        destinationTown = GameMap.getInstance().getTownByName(loaded.getDestinationTownName());
+        colour = loaded.getColor();
+        name = loaded.getName();
+
+        loadTownsVisited(loaded);
+        loadHand(loaded);
     }
 
     public String getCurrentTownName() {
@@ -92,8 +111,8 @@ public class Player implements Comparable<Player> {
 
     public Hand getHand() { return this.hand; }
 
+    public boolean hasObstacle () {return this.hand.hasObstacle();}
 
-    
     public String getName() {
         return name;
     }
@@ -126,5 +145,68 @@ public class Player implements Comparable<Player> {
 
     public String toString() {
         return name + " " + colour + " " + curTown.getName();
+    }
+
+    public Set<Town> getTownsVisited() {
+        return townsVisited;
+    }
+
+    // METHODS USED FOR READING IN A PLAYER FROM A SAVEGAME
+    private void loadTownsVisited(SerializablePlayer loaded)
+    {
+        for (String townName : loaded.getVisitedTownNames())
+        {
+            townsVisited.add(GameMap.getInstance().getTownByName(townName));
+        }
+    }
+
+    private void loadHand(SerializablePlayer loaded)
+    {
+        ArrayList<SerializableCounterUnit> counters = loaded.getCounters();
+        ArrayList<SerializableCardUnit> cards = loaded.getCards();
+        SerializableObstacle loadedObstacle = loaded.getObstacle();
+
+        // load each part of the hand
+        // load counters
+        for (SerializableCounterUnit ctr : counters)
+        {
+            if (ctr instanceof SerializableObstacle)
+            {
+                SerializableObstacle counterDowncasted = (SerializableObstacle) ctr;
+                hand.addUnit(new Obstacle(counterDowncasted));
+            }
+
+            else if (ctr instanceof SerializableMagicSpell)
+            {
+                SerializableMagicSpell counterDowncasted = (SerializableMagicSpell) ctr;
+                hand.addUnit(new MagicSpell(counterDowncasted));
+            }
+            else // if ctr is a transportation counter
+            {
+                SerializableTransportationCounter counterDowncasted = (SerializableTransportationCounter) ctr;
+                hand.addUnit(new TransportationCounter(counterDowncasted));
+            }
+        }
+
+        // load cards
+        // TODO: are there any CardUnits other than TravelCards in the player's hand?
+        for (SerializableCardUnit crd : cards)
+        {
+            if (crd instanceof SerializableTravelCard)
+            {
+                SerializableTravelCard crdDowncasted = (SerializableTravelCard) crd;
+                hand.addUnit(new TravelCard(crdDowncasted));
+            }
+        }
+
+        // TODO: make sure this is the right check
+        if (loadedObstacle != null)
+        {
+            hand.addUnit(new Obstacle(loadedObstacle));
+        }
+
+        // done loading in the player's hand
+
+
     }
 }

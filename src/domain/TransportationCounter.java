@@ -3,6 +3,9 @@ package domain;
 import enums.CounterType;
 import enums.CounterUnitType;
 import enums.RegionType;
+import loginwindow.MainFrame;
+import savegames.SerializableTransportationCounter;
+
 import windows.MainFrame;
 import java.util.Objects;
 
@@ -13,6 +16,14 @@ public class TransportationCounter extends CounterUnit implements Comparable<Tra
     public TransportationCounter(CounterType pType, int resizeWidth, int resizeHeight) {
         super(pType, resizeWidth, resizeHeight, Integer.toString(pType.ordinal() + 1)); // since the images start from M01, not M00
         this.aType = pType;
+
+        super.initializeMouseListener();
+    }
+
+    public TransportationCounter(SerializableTransportationCounter loaded)
+    {
+        super (loaded.getType(), MainFrame.instance.getWidth() * 67 / 1440, MainFrame.instance.getHeight() * 60 / 900, Integer.toString(loaded.getType().ordinal() + 1));
+        this.aType = loaded.getType();
 
         super.initializeMouseListener();
     }
