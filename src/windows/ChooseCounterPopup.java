@@ -3,6 +3,7 @@ package windows;
 import domain.CounterUnit;
 import domain.TransportationCounter;
 import enums.CounterType;
+import enums.CounterUnitType;
 import gamemanager.EGGameManager;
 import gamemanager.GameManager;
 import gamescreen.EGGameScreen;
@@ -46,7 +47,7 @@ public class ChooseCounterPopup extends JPanel {
         counterPanel.setVisible(true);
 
         // image for counter 1
-        ImageIcon counterIcon1 = new ImageIcon("./assets/sprites/M0" +  (((CounterType)counter1.getType()).ordinal() + 1) + ".png");
+        ImageIcon counterIcon1 = new ImageIcon(counter1.getImageFilePath());
         Image counterIcon1Resized = counterIcon1.getImage().getScaledInstance(screenSize.width/10,
                 screenSize.height/6,  java.awt.Image.SCALE_SMOOTH);
         JLabel counterImage1 = new JLabel(new ImageIcon(counterIcon1Resized));
@@ -54,7 +55,7 @@ public class ChooseCounterPopup extends JPanel {
         addMouseListener(counter1, counterImage1);
 
         // image for counter 2
-        ImageIcon counterIcon2 = new ImageIcon("./assets/sprites/M0" +  (((CounterType)counter2.getType()).ordinal() + 1) + ".png");
+        ImageIcon counterIcon2 = new ImageIcon(counter2.getImageFilePath());
         Image counterIcon2Resized = counterIcon2.getImage().getScaledInstance(screenSize.width/10,
                screenSize.height/6,  java.awt.Image.SCALE_SMOOTH);
         JLabel counterImage2 = new JLabel(new ImageIcon(counterIcon2Resized));

@@ -18,4 +18,8 @@ public abstract class Drawable {
     public JLabel getDisplay() {
         return display;
     }
+    
+    public String getImageFilePath() {
+    	return this.imageFilepath;
+    }
 }
