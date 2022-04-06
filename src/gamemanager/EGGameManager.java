@@ -62,7 +62,7 @@ public class EGGameManager extends GameManager {
                 GameScreen.getInstance().updateAll();
             }
         } else {
-            LOGGER.info("In round " + gameState.getCurrentRound() + ", go directly to choose face-up counter");
+            LOGGER.info("In round " + gameState.getCurrentRound() + ", go to draw card phase");
             gameState.setCurrentPhase(EGRoundPhaseType.DRAW_CARD_ONE);
             // Triggered only on one instance (the first player)
             if (isLocalPlayerTurn()) {
@@ -81,7 +81,7 @@ public class EGGameManager extends GameManager {
         }
         updateGameState();
         GameScreen.displayMessage("""
-                Please select a transportation counter to add to your hand. You may choose one of the face-up cards, 
+                Please select a card to add to your hand. You may choose one of the face-up cards, 
                 a card from the deck or take the entire gold card deck, shown on the right side of the screen.
                 """);
         // all logic is implemented in the mouse listeners of the cards
