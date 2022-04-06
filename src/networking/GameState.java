@@ -55,6 +55,8 @@ public class GameState implements Serializable{
 
     // for loading games
     private Savegame loadedState;
+    private Player thisPlayerFromLoaded; // this field will allow us to store the thisPlayer field
+                                            // we need to store it because we cannot set that field in GameManager until the GameManager instance has been initialized
 
     private GameState (String sessionID, GameVariant gameVariant)
     {
@@ -101,8 +103,15 @@ public class GameState implements Serializable{
         loadCounterPile();
 
         // load face up cards or counters
-        loadFaceUpCards();
-        loadFaceUpCounters();
+        // load face up cards if Elfengold, otherwise load face up counters
+        if (GameRuleUtils.isElfengoldVariant(gameVariant))
+        {
+            loadFaceUpCards();
+        }
+       else
+        {
+            loadFaceUpCounters();
+        }
 
         // init elf boots and their locations based on player colors
         loadBoots();
@@ -367,7 +376,18 @@ public class GameState implements Serializable{
     {
         for (SerializablePlayer toLoad : loadedState.getPlayers())
         {
-            addPlayer(new Player(toLoad));
+            Player loaded = new Player(toLoad);
+            if (loadedState.getCurrentPlayer().equals(toLoad))
+            {
+                addPlayer(loaded);
+                setCurrentPlayer(loaded);
+            }
+            else if (loadedState.getThisPlayer().equals(toLoad))
+            {
+                thisPlayerFromLoaded = loaded;
+                // we don't need to call addPlayer in this one, since GameManager.launch() will call setThisPlayer on its own.
+                // that method will automatically add thisPlayerFromLoaded to the list of players.
+            }
         }
     }
 
@@ -377,8 +397,6 @@ public class GameState implements Serializable{
     private void loadBoots()
     {
         elfBoots = new ArrayList<ElfBoot>();
-        int bootWidth = MainFrame.instance.getWidth() * 15 / 1440;
-        int bootHeight = MainFrame.instance.getHeight() * 15/900;
 
         for (Player cur : players)
         {
@@ -387,7 +405,7 @@ public class GameState implements Serializable{
             Town playerCurrentTown = cur.getCurrentTown();
             ElfBootPanel curPanel = playerCurrentTown.getElfBootPanel();
             Colour playerColor = cur.getColour();
-            ElfBoot thatPlayer = new ElfBoot(playerColor, bootWidth, bootHeight, curPanel, GameScreen.getInstance());
+            ElfBoot thatPlayer = new ElfBoot(playerColor, GameScreen.getInstance().getWidth(), GameScreen.getInstance().getHeight(), curPanel, GameScreen.getInstance());
             elfBoots.add(thatPlayer);
             // TODO: do we need to call a method in Player class to assign the boot?
         }
@@ -398,7 +416,7 @@ public class GameState implements Serializable{
      */
     private void loadTravelCardDeck()
     {
-        travelCardDeck = TravelCardDeck.getEmpty(GameManager.getInstance().getSessionID());
+        travelCardDeck = TravelCardDeck.getEmpty(loadedState.getSessionID());
        for (SerializableCardUnit crd : loadedState.getTravelCardDeck())
        {
            if (crd instanceof SerializableGoldCard)
@@ -420,6 +438,7 @@ public class GameState implements Serializable{
      */
     private void loadCounterPile()
     {
+        counterPile = CounterUnitPile.getEmpty(loadedState.getSessionID());
         for (SerializableCounterUnit ctr : loadedState.getCounterPile())
         {
             // load each counter from the savegame
@@ -427,6 +446,18 @@ public class GameState implements Serializable{
             {
                 SerializableTransportationCounter ctrDowncasted = (SerializableTransportationCounter) ctr;
                 counterPile.addDrawable(new TransportationCounter(ctrDowncasted));
+            }
+
+            else if (ctr instanceof SerializableMagicSpell)
+            {
+                SerializableMagicSpell ctrDowncasted = (SerializableMagicSpell) ctr;
+                counterPile.addDrawable(new MagicSpell(ctrDowncasted));
+            }
+
+            else if (ctr instanceof SerializableGoldPiece)
+            {
+                SerializableGoldPiece ctrDowncasted = (SerializableGoldPiece) ctr;
+                counterPile.addDrawable(new GoldPiece(ctrDowncasted));
             }
             else // if ctr is an obstacle
             {
@@ -438,6 +469,7 @@ public class GameState implements Serializable{
 
     /**
      * loads the face up travel cards from a saved Elfengold game
+     * @pre the game variant is Elfengold
      */
     private void loadFaceUpCards()
     {
@@ -449,6 +481,7 @@ public class GameState implements Serializable{
 
     /**
      * loads the face up transportation counters from a saved Elfenland game
+     * @pre the game variant is Elfenland
      */
     private void loadFaceUpCounters()
     {
@@ -460,5 +493,9 @@ public class GameState implements Serializable{
     
     public int getGoldCardDeckCount() {
     	return goldCardDeckCount;
+    }
+
+    public Player getThisPlayerFromLoaded() {
+        return thisPlayerFromLoaded;
     }
 }

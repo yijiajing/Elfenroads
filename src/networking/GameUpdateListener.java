@@ -39,6 +39,7 @@ public class GameUpdateListener implements Runnable
         catch (Exception e)
         {
             Logger.getGlobal().info("Listener intialization failed.");
+            e.printStackTrace();
         }
 
         while (true) {

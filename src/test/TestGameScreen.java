@@ -36,12 +36,14 @@ public class TestGameScreen {
             Player p = new Player(Colour.BLACK, "chloe");
             GameManager.getInstance().setThisPlayer(p);
             GameManager.getInstance().setUpNewGame();
-            GameState.instance().addPlayer(p); // need this to avoid a null pointer when testing saving
             GameState.instance().setToFirstPlayer(); // need this to avoid a null pointer when testing saving
             GameScreen.getInstance().draw();
 
             Logger.getGlobal().info("Showing game screen");
             MainFrame.cardLayout.show(MainFrame.mainPanel, "gameScreen");
+
+            // nick made these logs, you can delete them if you want.
+            Logger.getGlobal().info("There are " + GameState.instance().getNumOfPlayers() + "players in the game before saving.");
 
         } catch (Exception e) {
 

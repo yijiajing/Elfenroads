@@ -10,6 +10,7 @@ import enums.RoundPhaseType;
 import enums.TravelCardType;
 import gamemanager.GameManager;
 import networking.GameState;
+import utils.GameRuleUtils;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -33,6 +34,7 @@ public class Savegame implements Serializable {
     // fields turned into serializable version
     private ArrayList<SerializablePlayer> players;
     private SerializablePlayer currentPlayer;
+    private SerializablePlayer thisPlayer;
     private ArrayList<SerializableCardUnit> travelCardDeck; // can contain both gold cards and travel cards
     private ArrayList<SerializableCounterUnit> counterPile;
     private ArrayList<SerializableTransportationCounter> faceUpCounters; // for elfenland classic games
@@ -58,7 +60,15 @@ public class Savegame implements Serializable {
         saveTravelCardPile(pState);
         saveTransportationCounterPile(pState);
 
-        // TODO: save faceupcards for elfengold and faceupcounters for elfenland
+        // save faceupcards for elfengold and faceupcounters for elfenland
+        if (GameRuleUtils.isElfengoldVariant(gameVariant))
+        {
+            saveFaceUpCards(pState);
+        }
+        else // if elfenland, save face up counters
+        {
+            saveFaceUpCounters(pState);
+        }
 
         // we will omit elf boots, since we can figure that out upon load by looking at each player, his current town, and his color
     }
@@ -101,7 +111,7 @@ public class Savegame implements Serializable {
         }
 
         // now, we can write the game to a file
-        String saveGameFilepath = dirPath + "/" + GameManager.getInstance().getSessionID();
+        String saveGameFilepath = dirPath + "/" + GameManager.getInstance().getSessionID() + "_ROUND" + save.getCurrentRound() + ".elf";
         // first, we need to create the file itself so that we can write to it
         File saved = new File(saveGameFilepath);
         if (saved.exists()) // should be triggered every time
@@ -126,6 +136,11 @@ public class Savegame implements Serializable {
             {
                 currentPlayer = toAdd;
             }
+            if (GameManager.getInstance().getThisPlayer().equals(cur))
+            {
+                thisPlayer = toAdd;
+            }
+
 
             players.add(toAdd);
         }
@@ -182,6 +197,7 @@ public class Savegame implements Serializable {
 
     private void saveFaceUpCounters (GameState pGameState)
     {
+        faceUpCounters = new ArrayList<>();
         // save the list of face up counters for Elfenland classic games
         for (TransportationCounter ctr : pGameState.getFaceUpCounters())
         {
@@ -191,6 +207,7 @@ public class Savegame implements Serializable {
 
     private void saveFaceUpCards (GameState pGameState)
     {
+        faceUpCards = new ArrayList<>();
         for (TravelCard crd : pGameState.getFaceUpCards())
         {
             faceUpCards.add(new SerializableTravelCard(crd));
@@ -243,5 +260,13 @@ public class Savegame implements Serializable {
 
     public ArrayList<SerializableTravelCard> getFaceUpCards() {
         return faceUpCards;
+    }
+
+    public String getSessionID() {
+        return sessionID;
+    }
+
+    public SerializablePlayer getThisPlayer() {
+        return thisPlayer;
     }
 }

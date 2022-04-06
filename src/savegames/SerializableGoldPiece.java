@@ -9,7 +9,9 @@ public class SerializableGoldPiece extends SerializableCounterUnit
 
     public SerializableGoldPiece (GoldPiece original)
     {
+
         super(original, original.getType().toString());
+        aType = (GoldPieceType) original.getType();
     }
 
     public GoldPieceType getType() {

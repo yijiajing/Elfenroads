@@ -65,6 +65,7 @@ public abstract class GameManager {
             this.variant = loadedGame.getGameVariant();
             MainFrame.mainPanel.add(GameScreen.init(MainFrame.getInstance(), variant), "gameScreen");
             gameState = GameState.initFromSave(loadedGame);
+            setThisPlayer(gameState.getThisPlayerFromLoaded());
             loaded = true;
             actionManager = ActionManager.init(gameState, this);
         }
@@ -125,6 +126,11 @@ public abstract class GameManager {
         System.out.print(gameState.getPlayers());
 
         if (!loaded) setUpNewGame();
+        else // if we are loading a game, set the thisPlayer field.
+        {
+            setThisPlayer(gameState.getThisPlayerFromLoaded());
+            gameState.sortPlayers(); // re-sort since setThisPlayer adds another player to the list
+        }
 
         GameScreen.getInstance().draw();
         MainFrame.cardLayout.show(MainFrame.mainPanel, "gameScreen");

@@ -34,7 +34,7 @@ public class TestLoadedGame {
         try {
             // load in a gamestate from a save file
             Logger.getGlobal().info("Attempting to read in the savegame from a file.");
-            Savegame testSaveGame = Savegame.read("123");
+            Savegame testSaveGame = Savegame.read("123_ROUND1.elf");
             Logger.getGlobal().info("Successfully read in the savegame from a file.");
             GameManager.init(Optional.of(testSaveGame), "123", GameVariant.ELFENGOLD_CLASSIC); // set the variant here
             Logger.getGlobal().info("Successfully initialized the GameManager with the saved game.");
@@ -42,9 +42,14 @@ public class TestLoadedGame {
             GameScreen.init(MainFrame.instance, GameState.instance().getGameVariant());
             Logger.getGlobal().info("Initialized GameScreen.");
             GameScreen.getInstance().draw();
+            GameScreen.getInstance().updateAll();
 
             Logger.getGlobal().info("Showing game screen");
             MainFrame.cardLayout.show(MainFrame.mainPanel, "gameScreen");
+
+            // feel free to delete this if I forget to
+            Logger.getGlobal().info("The actual savegame has " + testSaveGame.getPlayers().size() + " players in it.");
+            Logger.getGlobal().info("There are " + GameState.instance().getNumOfPlayers() + " players in the game after loading.");
 
         } catch (Exception e) {
             e.printStackTrace();
