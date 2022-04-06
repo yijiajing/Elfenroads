@@ -1,4 +1,4 @@
-package Test;
+package test;
 
 import domain.Player;
 import domain.TransportationCounter;
@@ -42,9 +42,6 @@ public class TestGameScreen {
 
             Logger.getGlobal().info("Showing game screen");
             MainFrame.cardLayout.show(MainFrame.mainPanel, "gameScreen");
-
-            ((EGGameScreen) GameScreen.getInstance()).showCounterPopup(new TransportationCounter(CounterType.DRAGON,5,5),
-                    new TransportationCounter(CounterType.MAGICCLOUD, 5,5));
 
         } catch (Exception e) {
 

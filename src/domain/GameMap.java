@@ -139,11 +139,11 @@ public class GameMap {
 
     private void initializeRoads() {
         mapGraph.addEdge(townMap.get("Elvenhold"), townMap.get("Beata"), createAndSaveRoad(RegionType.PLAIN, 960, 390));
-        mapGraph.addEdge(townMap.get("Beata"), townMap.get("Elvenhold"), createAndSaveRoad(RegionType.RIVER, 0, 0));
-        mapGraph.addEdge(townMap.get("Elvenhold"), townMap.get("Strykhaven"), createAndSaveRoad(RegionType.LAKE, 0, 0));
-        mapGraph.addEdge(townMap.get("Elvenhold"), townMap.get("Virst"), createAndSaveRoad(RegionType.LAKE, 0, 0));
-        mapGraph.addEdge(townMap.get("Strykhaven"), townMap.get("Virst"), createAndSaveRoad(RegionType.LAKE, 0, 0));
-        mapGraph.addEdge(townMap.get("Elvenhold"), townMap.get("Rivinia"), createAndSaveRoad(RegionType.RIVER, 0, 0));
+        mapGraph.addEdge(townMap.get("Beata"), townMap.get("Elvenhold"), createAndSaveRoad(RegionType.RIVER, 990, 360));
+        mapGraph.addEdge(townMap.get("Elvenhold"), townMap.get("Strykhaven"), createAndSaveRoad(RegionType.LAKE, 860, 410));
+        mapGraph.addEdge(townMap.get("Elvenhold"), townMap.get("Virst"), createAndSaveRoad(RegionType.LAKE, 790, 430));
+        mapGraph.addEdge(townMap.get("Strykhaven"), townMap.get("Virst"), createAndSaveRoad(RegionType.LAKE, 825, 490));
+        mapGraph.addEdge(townMap.get("Elvenhold"), townMap.get("Rivinia"), createAndSaveRoad(RegionType.RIVER, 880, 250));
         mapGraph.addEdge(townMap.get("Elvenhold"), townMap.get("Erg'Eren"), createAndSaveRoad(RegionType.WOODS, 950, 290));
         mapGraph.addEdge(townMap.get("Elvenhold"), townMap.get("Lapphalya"), createAndSaveRoad(RegionType.PLAIN, 700, 410));
         mapGraph.addEdge(townMap.get("Beata"), townMap.get("Strykhaven"), createAndSaveRoad(RegionType.PLAIN, 990, 500));
@@ -153,10 +153,10 @@ public class GameMap {
         mapGraph.addEdge(townMap.get("Lapphalya"), townMap.get("Feodor"), createAndSaveRoad(RegionType.WOODS, 630, 340));
         mapGraph.addEdge(townMap.get("Lapphalya"), townMap.get("Dag'Amura"), createAndSaveRoad(RegionType.WOODS, 500, 400));
         mapGraph.addEdge(townMap.get("Lapphalya"), townMap.get("Ixara"), createAndSaveRoad(RegionType.WOODS, 490, 480));
-        mapGraph.addEdge(townMap.get("Virst"), townMap.get("Ixara"), createAndSaveRoad(RegionType.RIVER, 0, 0));
-        mapGraph.addEdge(townMap.get("Virst"), townMap.get("Ixara"), createAndSaveRoad(RegionType.PLAIN, 510, 550));
+        mapGraph.addEdge(townMap.get("Virst"), townMap.get("Ixara"), createAndSaveRoad(RegionType.RIVER, 540, 550));
+        mapGraph.addEdge(townMap.get("Virst"), townMap.get("Ixara"), createAndSaveRoad(RegionType.PLAIN, 510, 530));
         mapGraph.addEdge(townMap.get("Ixara"), townMap.get("Dag'Amura"), createAndSaveRoad(RegionType.WOODS, 390, 440));
-        mapGraph.addEdge(townMap.get("Ixara"), townMap.get("Mah'Davikia"), createAndSaveRoad(RegionType.RIVER, 0, 0));
+        mapGraph.addEdge(townMap.get("Ixara"), townMap.get("Mah'Davikia"), createAndSaveRoad(RegionType.RIVER, 200, 540));
         mapGraph.addEdge(townMap.get("Ixara"), townMap.get("Mah'Davikia"), createAndSaveRoad(RegionType.MOUNTAIN, 270, 520));
         mapGraph.addEdge(townMap.get("Dag'Amura"), townMap.get("Feodor"), createAndSaveRoad(RegionType.DESERT, 500, 330));
         mapGraph.addEdge(townMap.get("Dag'Amura"), townMap.get("Al'Baran"), createAndSaveRoad(RegionType.DESERT, 420, 330));
@@ -165,7 +165,7 @@ public class GameMap {
         mapGraph.addEdge(townMap.get("Feodor"), townMap.get("Al'Baran"), createAndSaveRoad(RegionType.DESERT, 520, 265));
         mapGraph.addEdge(townMap.get("Feodor"), townMap.get("Throtmanni"), createAndSaveRoad(RegionType.DESERT, 610, 230));
         mapGraph.addEdge(townMap.get("Feodor"), townMap.get("Rivinia"), createAndSaveRoad(RegionType.WOODS, 670, 270));
-        mapGraph.addEdge(townMap.get("Rivinia"), townMap.get("Tichih"), createAndSaveRoad(RegionType.RIVER, 0, 0));
+        mapGraph.addEdge(townMap.get("Rivinia"), townMap.get("Tichih"), createAndSaveRoad(RegionType.RIVER, 875, 150));
         mapGraph.addEdge(townMap.get("Rivinia"), townMap.get("Throtmanni"), createAndSaveRoad(RegionType.WOODS, 740, 190));
         mapGraph.addEdge(townMap.get("Tichih"), townMap.get("Erg'Eren"), createAndSaveRoad(RegionType.WOODS, 920, 170));
         mapGraph.addEdge(townMap.get("Tichih"), townMap.get("Throtmanni"), createAndSaveRoad(RegionType.PLAIN, 750, 135));
@@ -175,18 +175,17 @@ public class GameMap {
         mapGraph.addEdge(townMap.get("Wylhien"), townMap.get("Usselen"), createAndSaveRoad(RegionType.PLAIN, 134, 47));
         mapGraph.addEdge(townMap.get("Wylhien"), townMap.get("Parundia"), createAndSaveRoad(RegionType.PLAIN, 240, 107));
         mapGraph.addEdge(townMap.get("Wylhien"), townMap.get("Al'Baran"), createAndSaveRoad(RegionType.DESERT, 349, 122));
-        mapGraph.addEdge(townMap.get("Wylhien"), townMap.get("Usselen"), createAndSaveRoad(RegionType.RIVER, 0, 0));
+        mapGraph.addEdge(townMap.get("Wylhien"), townMap.get("Usselen"), createAndSaveRoad(RegionType.RIVER, 170, 70));
         mapGraph.addEdge(townMap.get("Parundia"), townMap.get("Usselen"), createAndSaveRoad(RegionType.WOODS, 164, 150));
-        mapGraph.addEdge(townMap.get("Parundia"), townMap.get("Yttar"), createAndSaveRoad(RegionType.LAKE, 0, 0));
-        mapGraph.addEdge(townMap.get("Parundia"), townMap.get("Grangor"), createAndSaveRoad(RegionType.LAKE, 0, 0));
+        mapGraph.addEdge(townMap.get("Parundia"), townMap.get("Yttar"), createAndSaveRoad(RegionType.LAKE, 160, 220));
+        mapGraph.addEdge(townMap.get("Parundia"), townMap.get("Grangor"), createAndSaveRoad(RegionType.LAKE, 180, 250));
         mapGraph.addEdge(townMap.get("Parundia"), townMap.get("Al'Baran"), createAndSaveRoad(RegionType.DESERT, 350, 200));
         mapGraph.addEdge(townMap.get("Throtmanni"), townMap.get("Al'Baran"), createAndSaveRoad(RegionType.DESERT, 520, 195));
         mapGraph.addEdge(townMap.get("Yttar"), townMap.get("Usselen"), createAndSaveRoad(RegionType.WOODS, 70, 180));
-        mapGraph.addEdge(townMap.get("Yttar"), townMap.get("Grangor"), createAndSaveRoad(RegionType.LAKE, 0, 0));
+        mapGraph.addEdge(townMap.get("Yttar"), townMap.get("Grangor"), createAndSaveRoad(RegionType.LAKE, 110, 300));
         mapGraph.addEdge(townMap.get("Yttar"), townMap.get("Grangor"), createAndSaveRoad(RegionType.MOUNTAIN, 66, 320));
         mapGraph.addEdge(townMap.get("Mah'Davikia"), townMap.get("Grangor"), createAndSaveRoad(RegionType.MOUNTAIN, 63, 450));
-        mapGraph.addEdge(townMap.get("Mah'Davikia"), townMap.get("Grangor"), createAndSaveRoad(RegionType.RIVER, 0, 0));
-
+        mapGraph.addEdge(townMap.get("Mah'Davikia"), townMap.get("Grangor"), createAndSaveRoad(RegionType.RIVER, 105, 450));
     }
 
     private Road createAndSaveRoad(RegionType regionType, int x, int y) {
