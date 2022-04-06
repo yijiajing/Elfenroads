@@ -1,13 +1,19 @@
 package domain;
 
+import commands.DrawCardCommand;
+import commands.DrawCounterCommand;
 import enums.GameVariant;
 import enums.TravelCardType;
+import gamemanager.GameManager;
 import gamescreen.GameScreen;
 import networking.GameState;
 import utils.GameRuleUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.IOException;
 
 public class TravelCardDeck extends Deck <CardUnit> {
 
@@ -60,6 +66,8 @@ public class TravelCardDeck extends Deck <CardUnit> {
             }
         }
 
+        initializeMouseListener();
+
         shuffle();
     }
 
@@ -75,5 +83,27 @@ public class TravelCardDeck extends Deck <CardUnit> {
 
     public JLabel getImage() {
         return this.deckImage;
+    }
+
+    private void initializeMouseListener() {
+        this.deckImage.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (GameRuleUtils.isDrawCardsPhase() && GameManager.getInstance().isLocalPlayerTurn()) {
+                    CardUnit drawn = GameState.instance().getTravelCardDeck().draw(); // draw a card
+                    GameManager.getInstance().getThisPlayer().getHand().addUnit(drawn); // add to player's hand
+                    GameScreen.getInstance().updateAll(); // update GUI
+
+                    // tell the other peers to remove the card from the pile
+                    try {
+                        GameManager.getInstance().getComs().sendGameCommandToAllPlayers(new DrawCardCommand(1, null));
+                    } catch (IOException err) {
+                        System.out.println("Error: there was a problem sending the DrawCardCommand to the other peers.");
+                    }
+
+                    GameManager.getInstance().endTurn();
+                }
+            }
+        });
     }
 }
