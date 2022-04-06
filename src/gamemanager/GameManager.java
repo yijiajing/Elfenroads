@@ -234,7 +234,8 @@ public abstract class GameManager {
 
     public void moveOnMap() {
         if (gameState.getCurrentRound() <= gameState.getTotalRounds()
-                && gameState.getCurrentPhase() == ELRoundPhaseType.MOVE
+                && (gameState.getCurrentPhase() == ELRoundPhaseType.MOVE
+                || gameState.getCurrentPhase() == EGRoundPhaseType.MOVE)
                 && gameState.getCurrentPlayer().equals(thisPlayer)) {
 
             updateGameState();
