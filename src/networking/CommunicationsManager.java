@@ -293,17 +293,10 @@ public class CommunicationsManager {
         int thisPlayerIndex = GameState.instance().getPlayers().indexOf(GameManager.getInstance().getThisPlayer());
         int numCommandsToWaitFor;
 
-        if (GameRuleUtils.isElfengoldVariant(GameState.instance().getGameVariant()))
-        {
-            numCommandsToWaitFor = 3 * thisPlayerIndex;
-            Logger.getGlobal().info("Since this is Elfengold, we need to wait for " + numCommandsToWaitFor + " DrawCardCommands before we can proceed.");
-        }
 
-        else
-        {
-            numCommandsToWaitFor = thisPlayerIndex;
-            Logger.getGlobal().info("We need to receive " + numCommandsToWaitFor + " DrawCardCommands before we can proceed.");
-        }
+        numCommandsToWaitFor = thisPlayerIndex;
+        Logger.getGlobal().info("We need to receive " + numCommandsToWaitFor + " DrawCardCommands before we can proceed.");
+        
         return drawCardCommandsExecuted == numCommandsToWaitFor;
     }
 
