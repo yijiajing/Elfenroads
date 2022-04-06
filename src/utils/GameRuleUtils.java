@@ -150,6 +150,12 @@ public final class GameRuleUtils {
                 .contains(GameState.instance().getCurrentPhase());
     }
 
+    public static boolean isDrawCardsPhase() {
+        return List.of(EGRoundPhaseType.DRAW_CARD_ONE,
+                EGRoundPhaseType.DRAW_CARD_TWO, EGRoundPhaseType.DRAW_CARD_THREE)
+                .contains(GameState.instance().getCurrentPhase());
+    }
+
     public static boolean isElfengoldVariant(GameVariant gameVariant) {
         return ((gameVariant == GameVariant.ELFENGOLD_CLASSIC) || (gameVariant == GameVariant.ELFENGOLD_WITCH) ||
                 (gameVariant == GameVariant.ELFENGOLD_RANDOM_GOLD) || (gameVariant == GameVariant.ELFENGOLD_TRAVEL_CARDS));
