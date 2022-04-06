@@ -23,39 +23,8 @@ public class MainFrame extends JFrame
     private static LobbyWindow lobby;
     private static PlayerWaitWindow playerWait;
 
-    private MainFrame()
-    {
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        setSize((int) screenSize.getWidth(), (int) screenSize.getHeight());
-
-        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-
-        addWindowListener(new WindowAdapter()
-        {
-            @Override
-            public void windowClosing(WindowEvent event)
-            {
-                exitGame();
-                PlayerServer.stopNgrok();;
-                dispose();
-                System.exit(0);
-            }
-        });
-
-        cardLayout = new CardLayout();
-        mainPanel = new JPanel(cardLayout);
-
-        mainPanel.add(new StartWindow(), "start");
-
-        add(mainPanel);
-        setVisible(true);
-    }
-
-    /**
-     * This constructor is for testing purposes only
-     * When running TestGameScreen, comment out the real constructor and use this one instead
-     **/
-//    private MainFrame() {
+//    private MainFrame()
+//    {
 //        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 //        setSize((int) screenSize.getWidth(), (int) screenSize.getHeight());
 //
@@ -76,9 +45,40 @@ public class MainFrame extends JFrame
 //        cardLayout = new CardLayout();
 //        mainPanel = new JPanel(cardLayout);
 //
+//        mainPanel.add(new StartWindow(), "start");
+//
 //        add(mainPanel);
 //        setVisible(true);
 //    }
+
+    /**
+     * This constructor is for testing purposes only
+     * When running TestGameScreen, comment out the real constructor and use this one instead
+     **/
+    private MainFrame() {
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        setSize((int) screenSize.getWidth(), (int) screenSize.getHeight());
+
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+
+        addWindowListener(new WindowAdapter()
+        {
+            @Override
+            public void windowClosing(WindowEvent event)
+            {
+                exitGame();
+                PlayerServer.stopNgrok();;
+                dispose();
+                System.exit(0);
+            }
+        });
+
+        cardLayout = new CardLayout();
+        mainPanel = new JPanel(cardLayout);
+
+        add(mainPanel);
+        setVisible(true);
+    }
 
     // Everything starts here
     public static void main(String[] args)

@@ -63,7 +63,7 @@ public class ActionManager {
      * If the player selects a transportation counter before selecting the road, a place transportation counter
      * command is triggered.
      * If the player selects an obstacle before selecting the road, a place obstacle command is triggered.
-     * <p>
+     *
      * Preconditions: the current phase is PLAN ROUTES and the requested player is the current player
      *
      * @param road the road that the player clicks on
