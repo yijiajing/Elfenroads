@@ -75,7 +75,7 @@ public class EGGameManager extends GameManager {
 
     public void drawTravelCard() {
         if (!(gameState.getCurrentRound() <= gameState.getTotalRounds()
-                && GameRuleUtils.isDrawCountersPhase()
+                && GameRuleUtils.isDrawCardsPhase()
                 && isLocalPlayerTurn())) {
             return;
         }
@@ -149,6 +149,8 @@ public class EGGameManager extends GameManager {
             return;
         }
         //TODO: show auction window and display hints
+
+        endTurn();
     }
 
     @Override
