@@ -35,9 +35,9 @@ public class CounterUnitPile extends Deck<CounterUnit> {
         addCountersToDeck();
 
         // initialize the deck image
-        ImageIcon imageIcon = new ImageIcon("./assets/sprites/M08.png");
+        ImageIcon imageIcon = new ImageIcon("./assets/sprites/counter_deck.png");
         Image image = imageIcon.getImage();
-        Image imageResized = image.getScaledInstance(GameScreen.getInstance().getWidth() * 67 / 1440, GameScreen.getInstance().getHeight() * 60 / 900, java.awt.Image.SCALE_SMOOTH);
+        Image imageResized = image.getScaledInstance(GameScreen.getInstance().getWidth() * 70 / 1440, GameScreen.getInstance().getHeight() * 70 / 900, java.awt.Image.SCALE_SMOOTH);
         this.deckImage = new JLabel(new ImageIcon(imageResized));
 
         initializeMouseListener();

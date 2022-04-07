@@ -33,7 +33,7 @@ public class TestGameScreen {
         MainFrame mainFrame = MainFrame.getInstance();
 
         try {
-            GameManager.init(Optional.empty(), "123", GameVariant.ELFENGOLD_CLASSIC); // set the variant here
+            GameManager.init(Optional.empty(), "123", GameVariant.ELFENLAND_CLASSIC); // set the variant here
 
             Player p = new Player(Colour.BLACK, "chloe");
             GameManager.getInstance().setThisPlayer(p);
