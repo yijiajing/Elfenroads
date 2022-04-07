@@ -1,6 +1,8 @@
 package commands;
 
 import domain.TravelCard;
+import domain.CardUnit;
+import domain.GoldCard;
 import enums.TravelCardType;
 import gamescreen.GameScreen;
 import networking.GameState;
@@ -27,7 +29,12 @@ public class DrawCardCommand implements GameCommand {
         GameState gameState = GameState.instance();
         if (type != null) {
             gameState.removeFaceUpCard(type);
-        } else {
+        }else if(numCards == 1) {
+        	CardUnit drawnCard = gameState.getTravelCardDeck().draw();
+        	if (drawnCard instanceof GoldCard) {
+        		gameState.incrementGoldCardDeckCount();
+        	}
+        }else {
             gameState.getTravelCardDeck().removeFirst(numCards);
         }
     }
