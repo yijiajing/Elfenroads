@@ -10,6 +10,7 @@ import gamescreen.EGGameScreen;
 import gamescreen.GameScreen;
 import networking.GameState;
 import utils.GameRuleUtils;
+import windows.AuctionFrame;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ public class EGGameManager extends GameManager {
 
     private final static Logger LOGGER = Logger.getLogger("Game Manager");
     private CounterUnit prevCounterKept;
-
+    private AuctionFrame auctionFrame;
 
     EGGameManager(Optional<GameState> loadedState, String sessionID, GameVariant variant) {
         super(loadedState, sessionID, variant);
@@ -148,7 +149,9 @@ public class EGGameManager extends GameManager {
                 && isLocalPlayerTurn())) {
             return;
         }
+
         //TODO: show auction window and display hints
+        this.auctionFrame = new AuctionFrame();
 
         endTurn();
     }
@@ -280,5 +283,9 @@ public class EGGameManager extends GameManager {
             }
             GameScreen.displayMessage("There is a tie. " + winnersNames + " are the winners!");
         }
+    }
+
+    public AuctionFrame getAuctionFrame() {
+        return this.auctionFrame;
     }
 }

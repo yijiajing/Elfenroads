@@ -5,10 +5,14 @@ package windows;
  */
 
 import java.awt.Component;
+import java.io.IOException;
 
 import javax.swing.GroupLayout;
 
+import commands.IncreaseBidCommand;
 import domain.TransportationCounter;
+import gamemanager.GameManager;
+import networking.CommunicationsManager;
 
 /**
  *
@@ -76,6 +80,7 @@ public class AuctionFrame extends javax.swing.JFrame {
         CurrentBidOutput.setEditable(false);
         CurrentBidOutput.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         CurrentBidOutput.setBorder(null);
+        CurrentBidOutput.setText("0");
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel1.setText("gold coins");
@@ -225,11 +230,22 @@ public class AuctionFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void EnterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EnterButtonActionPerformed
-        // TODO add your handling code here:
+        try {
+            int increaseAmount = Integer.parseInt(TextInput.getText());
+            IncreaseBidCommand bid = new IncreaseBidCommand(increaseAmount);
+            CommunicationsManager coms = GameManager.getInstance().getComs();
+            coms.sendGameCommandToAllPlayers(bid);
+        } catch (NumberFormatException e) {
+            System.out.println("String cannot be converted to integer.");
+        } catch (IOException e) {
+            System.out.println("There was a problem sending the IncreaseBidCommand to all players.");
+        }
+
     }//GEN-LAST:event_EnterButtonActionPerformed
 
     private void PassButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PassButtonActionPerformed
-        // TODO add your handling code here:
+
+
     }//GEN-LAST:event_PassButtonActionPerformed
 
     /**
@@ -279,6 +295,15 @@ public class AuctionFrame extends javax.swing.JFrame {
 
     }
 
+    public void increaseCurrentBid(int increaseAmount) {
+        try {
+            int currentBid = Integer.parseInt(CurrentBidOutput.getText());
+            CurrentBidOutput.setText(Integer.toString(currentBid + increaseAmount));
+        } catch (NumberFormatException e) {
+            System.out.println("String cannot be converted to integer.");
+        }
+
+    }
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
