@@ -204,7 +204,7 @@ public class EGGameManager extends GameManager {
             // the player has selected all two counters to keep, return all counters except these two
             LOGGER.info("The player chose to keep " + prevCounterKept.getType() + " and " + toKeep.getType());
             for (CounterUnit c : myCounters) {
-                if (c.equals(toKeep) || c.equals(prevCounterKept)) {
+                if (c == toKeep || c == prevCounterKept) {
                     continue;
                 }
 
