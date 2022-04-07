@@ -23,7 +23,7 @@ public class EGGameManager extends GameManager {
 
     private final static Logger LOGGER = Logger.getLogger("Game Manager");
     private CounterUnit prevCounterKept;
-
+    private AuctionFrame auctionFrame;
 
     EGGameManager(Optional<GameState> loadedState, String sessionID, GameVariant variant) {
         super(loadedState, sessionID, variant);
@@ -154,6 +154,7 @@ public class EGGameManager extends GameManager {
         }
         
         AuctionFrame auctionwindow = new AuctionFrame();
+        this.auctionFrame = auctionwindow;
 
         CounterUnitPile pile = GameState.instance().getCounterPile();
         int numplayers = GameState.instance().getNumOfPlayers();
@@ -292,5 +293,9 @@ public class EGGameManager extends GameManager {
             }
             GameScreen.displayMessage("There is a tie. " + winnersNames + " are the winners!");
         }
+    }
+
+    public AuctionFrame getAuctionFrame() {
+        return this.auctionFrame;
     }
 }
