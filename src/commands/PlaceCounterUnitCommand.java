@@ -50,13 +50,8 @@ public class PlaceCounterUnitCommand implements GameCommand {
 				road.setTransportationCounter((TransportationCounter) counter);
 			} else if (counter instanceof Obstacle) {
 				Obstacle obstacle;
-				if (counter.getType() == ObstacleType.TREE) {
-					obstacle = (Obstacle) Obstacle.getNew(ObstacleType.TREE);
-					road.placeObstacle(obstacle);
-				} else if (counter.getType() == ObstacleType.SEAMONSTER) {
-					obstacle = (Obstacle) Obstacle.getNew(ObstacleType.SEAMONSTER);
-					road.placeObstacle(obstacle);
-				}
+				obstacle = (Obstacle) Obstacle.getNew(counter.getType());
+				road.placeObstacle(obstacle);
 			} else if (counter instanceof GoldPiece) {
 				road.placeGoldPiece((GoldPiece) counter);
 			}
@@ -64,7 +59,7 @@ public class PlaceCounterUnitCommand implements GameCommand {
 	        
 
 	        // remove the counter from the sending player's hand if counter is not an obstacle
-	        if (!(counter instanceof Obstacle)) {
+	        if (!(counter instanceof Obstacle && counter.getType() == ObstacleType.TREE)) {
 	        	List<CounterUnit> senderHand = GameState.instance().getPlayerByName(senderName).getHand().getCounters();
 		        int toRemoveIdx = -1;
 		        for (int i = 0; i < senderHand.size(); i++) {

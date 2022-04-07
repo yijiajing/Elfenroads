@@ -64,6 +64,9 @@ public class EGGameManager extends GameManager {
             }
         } else {
             LOGGER.info("In round " + gameState.getCurrentRound() + ", go to draw card phase");
+            GameScreen.displayMessage("""
+                    New Round Start!
+                    """);
             gameState.setCurrentPhase(EGRoundPhaseType.DRAW_CARD_ONE);
             // Triggered only on one instance (the first player)
             if (isLocalPlayerTurn()) {
@@ -149,9 +152,16 @@ public class EGGameManager extends GameManager {
                 && isLocalPlayerTurn())) {
             return;
         }
+        
+        AuctionFrame auctionwindow = new AuctionFrame();
+        this.auctionFrame = auctionwindow;
 
-        //TODO: show auction window and display hints
-        this.auctionFrame = new AuctionFrame();
+        CounterUnitPile pile = GameState.instance().getCounterPile();
+        int numplayers = GameState.instance().getNumOfPlayers();
+        for (int i=0; i<numplayers;i++){
+            auctionwindow.addCounter(pile.draw());
+            auctionwindow.addCounter(pile.draw());
+        }
 
         endTurn();
     }
@@ -192,6 +202,7 @@ public class EGGameManager extends GameManager {
             prevCounterKept = toKeep;
         } else {
             // the player has selected all two counters to keep, return all counters except these two
+            LOGGER.info("The player chose to keep " + prevCounterKept.getType() + " and " + toKeep.getType());
             for (CounterUnit c : myCounters) {
                 if (c.equals(toKeep) || c.equals(prevCounterKept)) {
                     continue;
@@ -200,22 +211,21 @@ public class EGGameManager extends GameManager {
                 GameState.instance().getCounterPile().addDrawable(c); // put counter back in the deck
 
                 try {
-                    LOGGER.info("Sending ReturnCounterUnitCommand to all players");
+                    LOGGER.info("Sending ReturnCounterUnitCommand to all players, returning a " + c.getType());
                     coms.sendGameCommandToAllPlayers(new ReturnCounterUnitCommand(c));
                 } catch (IOException e) {
                     System.out.println("There was a problem sending the ReturnCounterUnitCommand to all players.");
                     e.printStackTrace();
                 }
             }
+            // clear all counters and then add toKeep and prevCounterKept back, otherwise we get concurrent modification exception
+            thisPlayer.getHand().getCounters().clear();
+            thisPlayer.getHand().addUnit(toKeep);
+            thisPlayer.getHand().addUnit(prevCounterKept);
+            prevCounterKept = null;
+
+            endTurn();
         }
-
-        // clear all counters and then add toKeep back, otherwise we get concurrent modification exception
-        thisPlayer.getHand().getCounters().clear();
-        thisPlayer.getHand().addUnit(toKeep);
-        thisPlayer.getHand().addUnit(prevCounterKept);
-        prevCounterKept = null;
-
-        endTurn();
     }
 
     @Override

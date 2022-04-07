@@ -6,13 +6,22 @@ package windows;
 
 import java.awt.Component;
 import java.io.IOException;
+import java.util.ArrayList;
 
+import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.GroupLayout.ParallelGroup;
+import javax.swing.GroupLayout.SequentialGroup;
 
 import commands.IncreaseBidCommand;
 import domain.TransportationCounter;
 import gamemanager.GameManager;
 import networking.CommunicationsManager;
+import domain.CounterUnit;
+import domain.TransportationCounter;
+import enums.CounterType;
 
 /**
  *
@@ -20,11 +29,14 @@ import networking.CommunicationsManager;
  */
 public class AuctionFrame extends javax.swing.JFrame {
 
+    private ArrayList<CounterUnit> listCounters = new ArrayList<CounterUnit>();
+
     /**
      * Creates new form AuctionFrame
      */
     public AuctionFrame() {
         initComponents();
+        //ArrayList<TransportationCounter> listCounters = new ArrayList<TransportationCounter>(); 
     }
 
     /**
@@ -51,7 +63,7 @@ public class AuctionFrame extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        //setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         PassButton.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         PassButton.setText("PASS");
@@ -146,11 +158,12 @@ public class AuctionFrame extends javax.swing.JFrame {
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
+        //sequentHor = jPanel1Layout.createSequentialGroup();
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(19, 19, 19))
+                /*.addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -158,16 +171,17 @@ public class AuctionFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                //.addContainerGap(271, Short.MAX_VALUE))
+                .addContainerGap(271, Short.MAX_VALUE))*/
         );
+        //vertLayout = jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING);
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING))
+                    /*.addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))*/
                 .addGap(0, 24, Short.MAX_VALUE))
         );
 
@@ -230,22 +244,66 @@ public class AuctionFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void EnterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EnterButtonActionPerformed
-        try {
-            int increaseAmount = Integer.parseInt(TextInput.getText());
-            IncreaseBidCommand bid = new IncreaseBidCommand(increaseAmount);
-            CommunicationsManager coms = GameManager.getInstance().getComs();
-            coms.sendGameCommandToAllPlayers(bid);
-        } catch (NumberFormatException e) {
-            System.out.println("String cannot be converted to integer.");
-        } catch (IOException e) {
-            System.out.println("There was a problem sending the IncreaseBidCommand to all players.");
+// <<<<<<< chloe
+//         try {
+//             int increaseAmount = Integer.parseInt(TextInput.getText());
+//             IncreaseBidCommand bid = new IncreaseBidCommand(increaseAmount);
+//             CommunicationsManager coms = GameManager.getInstance().getComs();
+//             coms.sendGameCommandToAllPlayers(bid);
+//         } catch (NumberFormatException e) {
+//             System.out.println("String cannot be converted to integer.");
+//         } catch (IOException e) {
+//             System.out.println("There was a problem sending the IncreaseBidCommand to all players.");
+// =======
+        addCounter(new TransportationCounter(CounterType.MAGICCLOUD, 70, 70));
+        int intInput = 0;
+        try{String input = TextInput.getText();
+            intInput = Integer.parseInt(input);
+        } catch (NullPointerException e){}
+        
+        //PassButton.setVisible(true);
+        //PassButton.isShowing();
+        //TextInput.setVisible(true);
+        //IncreaseLabel.setVisible(true);
+        //jLabel2.setVisible(true);
+        //PassButton.repaint();
+        if (intInput > 0){
+            TextInput.setText("");
+            String currentbid = CurrentBidOutput.getText();
+            if (currentbid.isEmpty()) 
+            {
+                int newInt = 0 + intInput;
+                String newbid = Integer.toString(newInt);
+                CurrentBidOutput.setText(newbid);
+                return;
+            }
+            int curr = Integer.parseInt(currentbid);
+            int newInt = curr + intInput;
+            String newbid = Integer.toString(newInt);
+            CurrentBidOutput.setText(newbid);
         }
 
     }//GEN-LAST:event_EnterButtonActionPerformed
 
     private void PassButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PassButtonActionPerformed
+        removeAllCounters();
+        //IncreaseLabel.setVisible(false);
+        //EnterButton.setVisible(false);
+        //PassButton.setVisible(false);
+        //TextInput.setVisible(false);
+        //jLabel2.setVisible(false);
+        //for (int i=0;i<50000;i++){
+        //    for (int j = 0;j<30000;j++){
+        //        for (int z = 0; z<100000;z++){
+        //            
+        //        }
 
-
+        //    }
+        //}
+        //IncreaseLabel.setVisible(true);
+        //EnterButton.setVisible(true);
+        //PassButton.setVisible(true);
+        //TextInput.setVisible(true);
     }//GEN-LAST:event_PassButtonActionPerformed
 
     /**
@@ -283,15 +341,96 @@ public class AuctionFrame extends javax.swing.JFrame {
         });
     }
 
-    public void addCounter(TransportationCounter counter){
-        javax.swing.JPanel cardJPanel;
-        javax.swing.GroupLayout layout = (GroupLayout) jPanel1.getLayout();
-        //cardJPanel.add(counter)
-        jPanel1.add(counter.getDisplay());
-        jPanel3.add(counter.getDisplay());
+    /**
+     * Add a counter to the display of the auction window
+     * ************* Important the size of the counter should be 70x70 **********
+     * @param counterUnit
+     */
+    public void addCounter(CounterUnit counterUnit){
+        
+        
+        listCounters.add(counterUnit);
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        SequentialGroup sequentHor = jPanel1Layout.createSequentialGroup();
+        
+        ParallelGroup vertLayout = jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING);
+        //for (TransportationCounter )
+        for (CounterUnit tc : listCounters){
+            JLabel icon = counterUnit.getDisplay();
+            icon.setVisible(true);
+            //icon.setBorder(BorderFactory.createBevelBorder(1));
+            javax.swing.JPanel cardJPanel = new javax.swing.JPanel();
+            //javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(cardJPanel);
+            //cardJPanel.setLayout(jPanel2Layout);
+            cardJPanel.setBorder(BorderFactory.createBevelBorder(1));
+            
+            cardJPanel.add(icon);
+            cardJPanel.setVisible(true);
+            sequentHor.addComponent(cardJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            //.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED);
+            .addGap(75, 75,75);
+            vertLayout.addComponent(cardJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE);
+        }
+        
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(sequentHor
+            )
+                
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(vertLayout)
+                .addGap(0, 24, Short.MAX_VALUE))
+        );
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1.setVisible(true);
+        jScrollPane1.setViewportView(jPanel1);
+        jScrollPane1.setVisible(true);
+        
+
+    }
+
+    public void removeAllCounters(){
+        
+        
+        listCounters.clear();
+        jPanel1 = new javax.swing.JPanel();
+        
+        jScrollPane1.setViewportView(jPanel1);
+        
+        this.repaint();
+        jPanel1.repaint();
+        
+
+    }
+
+    public void setAuctionWindowCurr(){
+        IncreaseLabel.setVisible(true);
+        EnterButton.setVisible(true);
+        PassButton.setVisible(true);
+        TextInput.setVisible(true);
+        jLabel2.setVisible(true);
+
+    }
+
+    public void setAuctionWindowNotCurr(){
+        IncreaseLabel.setVisible(false);
+        EnterButton.setVisible(false);
+        PassButton.setVisible(false);
+        TextInput.setVisible(false);
+        jLabel2.setVisible(false);
+
+    }
+
+    public void resetBid(){
+        CurrentBidOutput.setText("");
     }
 
     public void setAuction(int num){
+        
+        //CurrentBidPanel.setText(this.);
 
     }
 
@@ -321,5 +460,7 @@ public class AuctionFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
+    //private SequentialGroup sequentHor;
+    //private ParallelGroup vertLayout;
     // End of variables declaration//GEN-END:variables
 }

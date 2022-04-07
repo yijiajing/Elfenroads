@@ -54,8 +54,8 @@ public class CounterUnitPile extends Deck<CounterUnit> {
             for(int i = 0; i < 9; i++) {
                 if (i < 2) {
                     components.add(new GoldPiece(GoldPieceType.GOLDPIECE, width, height));
-                    components.add(new Obstacle(ObstacleType.TREE, width, height, variant));
-                    components.add(new Obstacle(ObstacleType.SEAMONSTER, width, height, variant));
+                    components.add(new Obstacle(ObstacleType.EGTREE, width, height));
+                    components.add(new Obstacle(ObstacleType.SEAMONSTER, width, height));
                     components.add(new MagicSpell(MagicSpellType.DOUBLE, width, height));
                     components.add(new MagicSpell(MagicSpellType.EXCHANGE, width, height));
                 }

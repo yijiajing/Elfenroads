@@ -38,7 +38,7 @@ public class ELGameManager extends GameManager {
         }
 
         // give all players (each peer) an obstacle
-        thisPlayer.getHand().addUnit(new Obstacle(ObstacleType.TREE,MainFrame.instance.getWidth() * 67 / 1440, MainFrame.instance.getHeight() * 60 / 900, variant));
+        thisPlayer.getHand().addUnit(new Obstacle(ObstacleType.TREE,MainFrame.instance.getWidth() * 67 / 1440, MainFrame.instance.getHeight() * 60 / 900));
 
         // assign each player a destination town if applicable
         if (gameState.getGameVariant() == GameVariant.ELFENLAND_DESTINATION) {
@@ -61,7 +61,9 @@ public class ELGameManager extends GameManager {
         gameState.setCurrentPhase(ELRoundPhaseType.DEAL_CARDS);
         gameState.setToFirstPlayer();
         gameState.getTravelCardDeck().shuffle(); // only shuffle once at the beginning of each round
-
+        GameScreen.displayMessage("""
+                New Round Start!
+                """);
         // Triggered only on one instance (the first player)
         if (isLocalPlayerTurn()) {
             distributeTravelCards(); // distribute cards to each player (PHASE 1)
