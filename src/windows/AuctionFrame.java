@@ -57,7 +57,7 @@ public class AuctionFrame extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        //setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         PassButton.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         PassButton.setText("PASS");
@@ -71,7 +71,7 @@ public class AuctionFrame extends javax.swing.JFrame {
         EnterButton.setText("ENTER");
         EnterButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addCounter(new TransportationCounter(CounterType.MAGICCLOUD, 70, 70));
+                EnterButtonActionPerformed(evt);
             }
         });
 
@@ -237,11 +237,29 @@ public class AuctionFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void EnterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EnterButtonActionPerformed
-        // TODO add your handling code here:
+        addCounter(new TransportationCounter(CounterType.MAGICCLOUD, 70, 70));
+        String input = TextInput.getText();
+        int intInput = Integer.parseInt(input);
+        if (intInput > 0){
+            TextInput.setText("");
+            String currentbid = CurrentBidOutput.getText();
+            if (currentbid.isEmpty()) 
+            {
+                int newInt = 0 + intInput;
+                String newbid = Integer.toString(newInt);
+                CurrentBidOutput.setText(newbid);
+                return;
+            }
+            int curr = Integer.parseInt(currentbid);
+            int newInt = curr + intInput;
+            String newbid = Integer.toString(newInt);
+            CurrentBidOutput.setText(newbid);
+        }
+
     }//GEN-LAST:event_EnterButtonActionPerformed
 
     private void PassButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PassButtonActionPerformed
-        // TODO add your handling code here:
+        removeAllCounters();
     }//GEN-LAST:event_PassButtonActionPerformed
 
     /**
@@ -330,13 +348,28 @@ public class AuctionFrame extends javax.swing.JFrame {
 
     }
 
-    public void update(){
+    public void removeAllCounters(){
+        
+        
+        listCounters.clear();
+        jPanel1 = new javax.swing.JPanel();
+        
+        jScrollPane1.setViewportView(jPanel1);
+        
+        this.repaint();
+        jPanel1.repaint();
+        
 
+
+    }
+
+    public void resetBid(){
+        CurrentBidOutput.setText("");
     }
 
     public void setAuction(int num){
 
-        CurrentBidPanel.setText("Current ");
+        //CurrentBidPanel.setText(this.);
 
     }
 
