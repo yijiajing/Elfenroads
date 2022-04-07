@@ -63,6 +63,9 @@ public class EGGameManager extends GameManager {
             }
         } else {
             LOGGER.info("In round " + gameState.getCurrentRound() + ", go to draw card phase");
+            GameScreen.displayMessage("""
+                    New Round Start!
+                    """);
             gameState.setCurrentPhase(EGRoundPhaseType.DRAW_CARD_ONE);
             // Triggered only on one instance (the first player)
             if (isLocalPlayerTurn()) {
