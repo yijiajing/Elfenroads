@@ -133,8 +133,8 @@ public class EGGameManager extends GameManager {
      */
     public void sendCounters(CounterUnit counter1, CounterUnit counter2) {
         Logger.getGlobal().info("Sending two DrawCounterCommands");
-        DrawCounterCommand cmd1 = new DrawCounterCommand(counter1, !counter1.isSecret());
-        DrawCounterCommand cmd2 = new DrawCounterCommand(counter2, !counter2.isSecret());
+        DrawCounterCommand cmd1 = new DrawCounterCommand(counter1, false);
+        DrawCounterCommand cmd2 = new DrawCounterCommand(counter2, false);
         try {
             coms.sendGameCommandToAllPlayers(cmd1);
             coms.sendGameCommandToAllPlayers(cmd2);
