@@ -32,18 +32,37 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
     private static String prevPayload = ""; // used for long polling requests
 
     private static Thread t;
+    private static Thread stopper; // use to forcefully stop the other thread when we need to
     private static int flag = 0;
 
     static MP3Player track1 = new MP3Player("./assets/Music/JLEX5AW-ui-medieval-click-heavy-positive-01.mp3");
 
-    private void initThread()
+    private void initThreads()
     {
         t = new Thread(this);
+        stopper = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true)
+                {
+                    try{Thread.sleep(500);}
+                    catch (InterruptedException e3) {e3.printStackTrace();}
+                    if (flag == 1)
+                    {
+                        Logger.getGlobal().info("Attempting to stop the main update thread.");
+                        t.stop();
+                        break;
+                    }
+
+                }
+
+            }
+        });
     }
 
     LobbyWindow()
     {
-        initThread();
+        initThreads();
         prevPayload = "";
         flag = 0;
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -128,6 +147,7 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
         add(background_elvenroads);
 
         t.start();
+        stopper.start();
 
     }
 
