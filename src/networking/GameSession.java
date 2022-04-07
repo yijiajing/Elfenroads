@@ -564,7 +564,7 @@ public class GameSession {
      *
      * @param joiner
      */
-    public static void joinSession(User joiner, String sessionID) throws Exception
+    public static void joinSession(User joiner, String sessionID, String pLocalIP) throws Exception
     {
 
         if (!joiner.getRole().equals(User.Role.PLAYER))
@@ -577,7 +577,7 @@ public class GameSession {
         // get ip to pass
         //String ip = NetworkUtils.ngrokAddrToPassToLS();
         // 03/02 changing to pass local address to ls instead
-        String ip = NetworkUtils.getLocalIPAddPort();
+        String ip = pLocalIP;
 
         URL url = new URL("http://35.182.122.111:4242/api/sessions/" + sessionID + "/players/" + joiner.getUsername() + "?location=" + ip + "&access_token=" + token);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();

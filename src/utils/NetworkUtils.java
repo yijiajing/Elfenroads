@@ -163,7 +163,7 @@ public class NetworkUtils {
 
     // as of 03-02-2022, ngrok public address changes (at least the DNS -> IP mapping does) too often to work with
     // this method exists to get the local (only usable on the local network) IP to pass to the LS for the local-multiplayer-only implementation
-    public static String getLocalIP(int callCounter) throws Exception {
+    private static String getLocalIP(int callCounter) throws Exception {
         // need to get the local IP address
         // InetAddress.getLocalHost() returns the loopback address sometimes, so we have to do this a different way
 

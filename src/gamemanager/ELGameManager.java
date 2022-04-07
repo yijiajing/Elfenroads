@@ -26,8 +26,8 @@ public class ELGameManager extends GameManager {
      * If the User is starting a new game, then loadedState == null
      * If the User is loading a previous game, then loadedState != null
      */
-    ELGameManager(Optional<GameState> loadedState, String pSessionID, GameVariant variant) {
-        super(loadedState, pSessionID, variant);
+    ELGameManager(Optional<GameState> loadedState, String pSessionID, GameVariant variant, String pLocalAddress) {
+        super(loadedState, pSessionID, variant, pLocalAddress);
     }
 
     @Override

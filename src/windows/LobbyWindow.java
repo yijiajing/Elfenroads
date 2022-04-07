@@ -4,6 +4,7 @@ import gamemanager.GameManager;
 import enums.GameVariant;
 import org.json.JSONObject;
 import networking.*;
+import utils.NetworkUtils;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -268,8 +269,9 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
                         track1.play();
                         flag = 1;
                         t.interrupt();
-                        GameSession.joinSession(MainFrame.loggedIn, id);
-                        GameManager.init(Optional.empty(), id, interpretVariant(gameName));
+                        String localIP = NetworkUtils.getLocalIPAddPort();
+                        GameSession.joinSession(MainFrame.loggedIn, id, localIP);
+                        GameManager.init(Optional.empty(), id, interpretVariant(gameName), localIP);
 
                         // prompt user to choose a boot colour
                         // this calls the ChooseBootWindow once all players have responded
