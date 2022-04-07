@@ -31,7 +31,7 @@ public class ReturnCounterUnitCommand implements GameCommand{
      */
     @Override
     public void execute() {
-        Logger.getGlobal().info("Executing ReturnCounterCommand, keep " + type);
+        Logger.getGlobal().info("Executing ReturnCounterCommand, returning " + type);
         CounterUnit counter = CounterUnit.getNew(type);
         // put counter back to the pile
         GameState.instance().getCounterPile().addDrawable(counter);
@@ -45,8 +45,9 @@ public class ReturnCounterUnitCommand implements GameCommand{
             }
         }
         assert toRemove != null;
-        senderHand.remove(toRemove);
         toRemove.setOwned(false);
+        Logger.getGlobal().info("Counter " + toRemove.getType() + " is removed");
+        senderHand.remove(toRemove);
     }
 
 }

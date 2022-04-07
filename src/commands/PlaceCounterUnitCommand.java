@@ -59,7 +59,7 @@ public class PlaceCounterUnitCommand implements GameCommand {
 	        
 
 	        // remove the counter from the sending player's hand if counter is not an obstacle
-	        if (!(counter instanceof Obstacle)) {
+	        if (!(counter instanceof Obstacle && counter.getType() == ObstacleType.TREE)) {
 	        	List<CounterUnit> senderHand = GameState.instance().getPlayerByName(senderName).getHand().getCounters();
 		        int toRemoveIdx = -1;
 		        for (int i = 0; i < senderHand.size(); i++) {
