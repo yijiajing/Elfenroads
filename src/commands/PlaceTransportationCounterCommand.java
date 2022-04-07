@@ -42,16 +42,19 @@ public class PlaceTransportationCounterCommand implements GameCommand {
 
         // remove the counter from the sending player's hand
         List<CounterUnit> senderHand = GameState.instance().getPlayerByName(senderName).getHand().getCounters();
-        int toRemoveIdx = -1;
-        for (int i = 0; i < senderHand.size(); i++) {
-            if (senderHand.get(i).getType() == counterType
-                    && senderHand.get(i).isSecret() == isSecret) {
-                toRemoveIdx = i;
+        CounterUnit toRemove = null;
+        for (CounterUnit c: senderHand) {
+            if (c.getType() == counterType && c.isSecret() == isSecret) {
+                toRemove = c;
             }
         }
-        assert toRemoveIdx >= 0; // The counter should be in the sending player's hand
-        senderHand.get(toRemoveIdx).setOwned(false);
-        senderHand.remove(toRemoveIdx);
+        if (toRemove == null) {
+            Logger.getGlobal().severe("the counter to remove is not in the sending player's hand");
+        } else {
+            toRemove.setOwned(false);
+            Logger.getGlobal().info("Counter " + toRemove.getType() + " is removed");
+            senderHand.remove(toRemove);
+        }
 
         GameScreen.getInstance().updateAll();
     }
