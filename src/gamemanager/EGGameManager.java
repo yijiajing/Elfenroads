@@ -200,7 +200,13 @@ public class EGGameManager extends GameManager {
 
         if (prevCounterKept == null) {
             prevCounterKept = toKeep;
+            prevCounterKept.setSelected(true);
         } else {
+            if (toKeep == prevCounterKept) {
+                toKeep.setSelected(false);
+                prevCounterKept = null;
+                return;
+            }
             // the player has selected all two counters to keep, return all counters except these two
             LOGGER.info("The player chose to keep " + prevCounterKept.getType() + " and " + toKeep.getType());
             for (CounterUnit c : myCounters) {
@@ -220,6 +226,8 @@ public class EGGameManager extends GameManager {
             }
             // clear all counters and then add toKeep and prevCounterKept back, otherwise we get concurrent modification exception
             thisPlayer.getHand().getCounters().clear();
+            toKeep.setSelected(false);
+            prevCounterKept.setSelected(false);
             thisPlayer.getHand().addUnit(toKeep);
             thisPlayer.getHand().addUnit(prevCounterKept);
             prevCounterKept = null;
