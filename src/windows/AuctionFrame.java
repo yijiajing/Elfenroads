@@ -244,45 +244,22 @@ public class AuctionFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void EnterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EnterButtonActionPerformed
-// <<<<<<< chloe
-//         try {
-//             int increaseAmount = Integer.parseInt(TextInput.getText());
-//             IncreaseBidCommand bid = new IncreaseBidCommand(increaseAmount);
-//             CommunicationsManager coms = GameManager.getInstance().getComs();
-//             coms.sendGameCommandToAllPlayers(bid);
-//         } catch (NumberFormatException e) {
-//             System.out.println("String cannot be converted to integer.");
-//         } catch (IOException e) {
-//             System.out.println("There was a problem sending the IncreaseBidCommand to all players.");
-// =======
         addCounter(new TransportationCounter(CounterType.MAGICCLOUD, 70, 70));
-        int intInput = 0;
-        try{String input = TextInput.getText();
-            intInput = Integer.parseInt(input);
-        } catch (NullPointerException e){}
-        
-        //PassButton.setVisible(true);
-        //PassButton.isShowing();
-        //TextInput.setVisible(true);
-        //IncreaseLabel.setVisible(true);
-        //jLabel2.setVisible(true);
-        //PassButton.repaint();
-        if (intInput > 0){
-            TextInput.setText("");
-            String currentbid = CurrentBidOutput.getText();
-            if (currentbid.isEmpty()) 
-            {
-                int newInt = 0 + intInput;
-                String newbid = Integer.toString(newInt);
-                CurrentBidOutput.setText(newbid);
-                return;
-            }
-            int curr = Integer.parseInt(currentbid);
-            int newInt = curr + intInput;
-            String newbid = Integer.toString(newInt);
-            CurrentBidOutput.setText(newbid);
-        }
 
+        int increaseAmount = 0;
+
+        try{
+            increaseAmount = Integer.parseInt(TextInput.getText());
+            increaseCurrentBid(increaseAmount);
+
+            CommunicationsManager coms = GameManager.getInstance().getComs();
+            IncreaseBidCommand bid = new IncreaseBidCommand(increaseAmount);
+            coms.sendGameCommandToAllPlayers(bid);
+        } catch (NumberFormatException e) {
+            System.out.println("String cannot be converted to integer.");
+        } catch (IOException e) {
+            System.out.println("There was a problem sending the IncreaseBidCommand to all players.");
+        }
     }//GEN-LAST:event_EnterButtonActionPerformed
 
     private void PassButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PassButtonActionPerformed
@@ -347,8 +324,6 @@ public class AuctionFrame extends javax.swing.JFrame {
      * @param counterUnit
      */
     public void addCounter(CounterUnit counterUnit){
-        
-        
         listCounters.add(counterUnit);
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         SequentialGroup sequentHor = jPanel1Layout.createSequentialGroup();
@@ -388,13 +363,9 @@ public class AuctionFrame extends javax.swing.JFrame {
         jPanel1.setVisible(true);
         jScrollPane1.setViewportView(jPanel1);
         jScrollPane1.setVisible(true);
-        
-
     }
 
     public void removeAllCounters(){
-        
-        
         listCounters.clear();
         jPanel1 = new javax.swing.JPanel();
         
@@ -402,8 +373,6 @@ public class AuctionFrame extends javax.swing.JFrame {
         
         this.repaint();
         jPanel1.repaint();
-        
-
     }
 
     public void setAuctionWindowCurr(){
@@ -412,7 +381,6 @@ public class AuctionFrame extends javax.swing.JFrame {
         PassButton.setVisible(true);
         TextInput.setVisible(true);
         jLabel2.setVisible(true);
-
     }
 
     public void setAuctionWindowNotCurr(){
@@ -421,7 +389,6 @@ public class AuctionFrame extends javax.swing.JFrame {
         PassButton.setVisible(false);
         TextInput.setVisible(false);
         jLabel2.setVisible(false);
-
     }
 
     public void resetBid(){
@@ -441,7 +408,6 @@ public class AuctionFrame extends javax.swing.JFrame {
         } catch (NumberFormatException e) {
             System.out.println("String cannot be converted to integer.");
         }
-
     }
     
 
