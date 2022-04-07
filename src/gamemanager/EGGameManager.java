@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 
-//TODO: modify everything for Elfengold
+
 public class EGGameManager extends GameManager {
 
     private final static Logger LOGGER = Logger.getLogger("Game Manager");

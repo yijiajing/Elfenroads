@@ -38,7 +38,7 @@ public abstract class GameManager {
 
     // manages choosing a boot colour
     protected ArrayList<Colour> availableColours = new ArrayList<>();
-    protected HashMap<Colour, String> bootColours = new HashMap<>(); // <boot colour, player IP> TODO change to Player
+
 
     GameManager(Optional<GameState> loadedState, String pSessionID, GameVariant variant) {
         MainFrame.mainPanel.add(GameScreen.init(MainFrame.getInstance(), variant), "gameScreen");
@@ -291,7 +291,6 @@ public abstract class GameManager {
 
     public void removeAvailableColour(Colour c, String playerIP) {
         availableColours.remove(c);
-        addPairToBootColours(c, playerIP);
 
         try {
             if (thisPlayer == null) { // I haven't chosen a boot colour yet
@@ -307,9 +306,6 @@ public abstract class GameManager {
         }
     }
 
-    public void addPairToBootColours(Colour c, String playerIP) {
-        bootColours.put(c, playerIP);
-    }
 
     public String getSessionID() {
         return sessionID;

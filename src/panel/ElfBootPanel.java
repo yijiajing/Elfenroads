@@ -110,7 +110,6 @@ public class ElfBootPanel extends JPanel implements ObserverPanel {
 
     }
 
-    // TODO: should we return a shallow copy instead of passing reference?
     public ArrayList<ElfBoot> getBootsOnPanel() {
         return bootsOnPanel;
     }

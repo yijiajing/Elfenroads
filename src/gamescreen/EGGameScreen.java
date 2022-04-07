@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-//TODO: modify everything for Elfengold.
+
 public class EGGameScreen extends GameScreen {
 
     protected final JPanel panelForDeckOfTravelCards = new JPanel();
