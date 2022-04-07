@@ -2,6 +2,7 @@ package commands;
 
 import gamemanager.EGGameManager;
 import gamemanager.GameManager;
+import networking.GameState;
 import windows.AuctionFrame;
 
 public class IncreaseBidCommand implements GameCommand {
@@ -14,6 +15,10 @@ public class IncreaseBidCommand implements GameCommand {
 
     @Override
     public void execute() {
-        ((EGGameManager) GameManager.getInstance()).getAuctionFrame().increaseCurrentBid(this.increaseAmount);
+        AuctionFrame auctionFrame = ((EGGameManager) GameManager.getInstance()).getAuctionFrame();
+        auctionFrame.increaseCurrentBid(this.increaseAmount);
+        GameState.instance().clearPassedPlayerCount();
+        auctionFrame.setCounterHasBid(true); // the current counter has at least one bid
+        auctionFrame.setCounterBidByLocalPlayer(false); // the highest bid is not from the local player now
     }
 }

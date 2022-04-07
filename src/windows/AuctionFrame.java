@@ -30,6 +30,8 @@ import enums.CounterType;
 public class AuctionFrame extends javax.swing.JFrame {
 
     private ArrayList<CounterUnit> listCounters = new ArrayList<CounterUnit>();
+    private boolean counterHasBid = false;
+    private boolean counterBidByLocalPlayer = false;
 
     /**
      * Creates new form AuctionFrame
@@ -251,6 +253,9 @@ public class AuctionFrame extends javax.swing.JFrame {
         try{
             increaseAmount = Integer.parseInt(TextInput.getText());
             increaseCurrentBid(increaseAmount);
+            // update bid status
+            counterHasBid = true;
+            counterBidByLocalPlayer = true;
 
             CommunicationsManager coms = GameManager.getInstance().getComs();
             IncreaseBidCommand bid = new IncreaseBidCommand(increaseAmount);
@@ -367,8 +372,10 @@ public class AuctionFrame extends javax.swing.JFrame {
         jScrollPane1.setVisible(true);
     }
 
-    public void removeFirstCounter(){
+    public void removeFirstCounter() {
+        assert listCounters.size() > 0;
         listCounters.remove(0);
+        //TODO: add to pile
         jPanel1 = new javax.swing.JPanel();
         
         jScrollPane1.setViewportView(jPanel1);
@@ -378,7 +385,6 @@ public class AuctionFrame extends javax.swing.JFrame {
         for (CounterUnit cu : listCounters){
             addCounter(cu);
         }
-
     }
 
     public void setAuctionWindowCurr(){
@@ -415,7 +421,22 @@ public class AuctionFrame extends javax.swing.JFrame {
             System.out.println("String cannot be converted to integer.");
         }
     }
-    
+
+    public boolean isCounterHasBid() {
+        return counterHasBid;
+    }
+
+    public void setCounterHasBid(boolean counterHasBid) {
+        this.counterHasBid = counterHasBid;
+    }
+
+    public boolean isCounterBidByLocalPlayer() {
+        return counterBidByLocalPlayer;
+    }
+
+    public void setCounterBidByLocalPlayer(boolean counterBidByLocalPlayer) {
+        this.counterBidByLocalPlayer = counterBidByLocalPlayer;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField CurrentBidOutput;
