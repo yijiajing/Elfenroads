@@ -268,7 +268,7 @@ public class AuctionFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_EnterButtonActionPerformed
 
     private void PassButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PassButtonActionPerformed
-        removeAllCounters();
+        removeFirstCounter();
         //IncreaseLabel.setVisible(false);
         //EnterButton.setVisible(false);
         //PassButton.setVisible(false);
@@ -337,6 +337,8 @@ public class AuctionFrame extends javax.swing.JFrame {
         //for (TransportationCounter )
         for (CounterUnit tc : listCounters){
             JLabel icon = counterUnit.getDisplay();
+            icon.setSize(70, 70);
+
             icon.setVisible(true);
             //icon.setBorder(BorderFactory.createBevelBorder(1));
             javax.swing.JPanel cardJPanel = new javax.swing.JPanel();
@@ -372,17 +374,17 @@ public class AuctionFrame extends javax.swing.JFrame {
 
     public void removeFirstCounter() {
         assert listCounters.size() > 0;
-        // add to pile
-    }
-
-    public void removeAllCounters(){
-        listCounters.clear();
+        listCounters.remove(0);
+        //TODO: add to pile
         jPanel1 = new javax.swing.JPanel();
         
         jScrollPane1.setViewportView(jPanel1);
         
         this.repaint();
         jPanel1.repaint();
+        for (CounterUnit cu : listCounters){
+            addCounter(cu);
+        }
     }
 
     public void setAuctionWindowCurr(){
