@@ -222,12 +222,17 @@ public abstract class GameManager {
             // display message
             if (gameState.getCurrentPhase() == ELRoundPhaseType.PLAN_ROUTES
                     || gameState.getCurrentPhase() == EGRoundPhaseType.PLAN_ROUTES) {
-                GameScreen.displayMessage("""
+
+                if (GameManager.getInstance().getThisPlayer().getHand().getCounters().size() > 0) {
+                    GameScreen.displayMessage("""
                         It is time to plan your travel routes! Begin by clicking the transportation counter in your hand that you want to use, then click on the road that you want to travel.
                         The chart in the bottom right corner indicates which transportation counters may be used on which road.
                         Alternatively, you may choose to place your Obstacle on a road that already has a counter. But be warned... you can only do this once!
                         When you are done placing one counter, click "End Turn". Alternatively, you can pass your turn by clicking "End Turn".
                         """);
+                } else {
+                    endTurn();
+                }
             }
         }
     }
