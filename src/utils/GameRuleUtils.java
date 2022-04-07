@@ -128,7 +128,10 @@ public final class GameRuleUtils {
                 // caravan cannot move on a lake/river or a road without transportation counter
                 continue;
             }
-            int requiredNumOfCards = road.hasObstacle()&&hasWitch ? 4 : 3;
+            int requiredNumOfCards = road.hasObstacle()? 4 : 3;
+            if (hasWitch) {
+                requiredNumOfCards--;
+            }
             if (cards.size() == requiredNumOfCards) {
                 LOGGER.info("Caravan triggered with " + requiredNumOfCards + " cards");
                 if (hasWitch) {
