@@ -110,7 +110,7 @@ public class Road {
             return false; // obstacle already exists on this road
         }
 
-        if (obstacle.getType() == ObstacleType.TREE) {
+        if (obstacle.getType() == ObstacleType.TREE || obstacle.getType() == ObstacleType.EGTREE) {
             if (numOfTransportationCounter() == 0) {
                 return false; // Tree obstacles can only be placed on roads that have a counter already
             }

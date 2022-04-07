@@ -1,5 +1,6 @@
 package domain;
 
+import enums.GameVariant;
 import utils.GameRuleUtils;
 import windows.MainFrame;
 import networking.ActionManager;
@@ -13,9 +14,9 @@ import savegames.SerializableObstacle;
 public class Obstacle extends CounterUnit {
 
     public Obstacle(ObstacleType type, int resizeWidth, int resizeHeight) {
-        super(type, resizeWidth, resizeHeight, Integer.toString(type == ObstacleType.TREE ? 9 : 10));
+        super(type, resizeWidth, resizeHeight, Integer.toString(type == ObstacleType.TREE || type == ObstacleType.EGTREE ? 9 : 10));
 
-        if (GameRuleUtils.isElfengoldVariant()) {
+        if (type == ObstacleType.EGTREE || type == ObstacleType.SEAMONSTER) {
             super.initializeMouseListener();
         } else {
             this.getDisplay().addMouseListener(new MouseAdapter() {
