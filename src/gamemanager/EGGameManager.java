@@ -10,6 +10,7 @@ import gamescreen.EGGameScreen;
 import gamescreen.GameScreen;
 import networking.GameState;
 import utils.GameRuleUtils;
+import windows.AuctionFrame;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -151,7 +152,15 @@ public class EGGameManager extends GameManager {
                 && isLocalPlayerTurn())) {
             return;
         }
-        //TODO: show auction window and display hints
+        
+        AuctionFrame auctionwindow = new AuctionFrame();
+
+        CounterUnitPile pile = GameState.instance().getCounterPile();
+        int numplayers = GameState.instance().getNumOfPlayers();
+        for (int i=0; i<numplayers;i++){
+            auctionwindow.addCounter(pile.draw());
+            auctionwindow.addCounter(pile.draw());
+        }
 
         endTurn();
     }

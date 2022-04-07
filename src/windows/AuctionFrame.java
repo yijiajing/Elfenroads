@@ -14,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.GroupLayout.ParallelGroup;
 import javax.swing.GroupLayout.SequentialGroup;
 
+import domain.CounterUnit;
 import domain.TransportationCounter;
 import enums.CounterType;
 
@@ -23,7 +24,7 @@ import enums.CounterType;
  */
 public class AuctionFrame extends javax.swing.JFrame {
 
-    private ArrayList<TransportationCounter> listCounters = new ArrayList<TransportationCounter>();
+    private ArrayList<CounterUnit> listCounters = new ArrayList<CounterUnit>();
 
     /**
      * Creates new form AuctionFrame
@@ -57,7 +58,7 @@ public class AuctionFrame extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        //setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         PassButton.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         PassButton.setText("PASS");
@@ -71,7 +72,7 @@ public class AuctionFrame extends javax.swing.JFrame {
         EnterButton.setText("ENTER");
         EnterButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addCounter(new TransportationCounter(CounterType.MAGICCLOUD, 70, 70));
+                EnterButtonActionPerformed(evt);
             }
         });
 
@@ -237,11 +238,56 @@ public class AuctionFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void EnterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EnterButtonActionPerformed
-        // TODO add your handling code here:
+        addCounter(new TransportationCounter(CounterType.MAGICCLOUD, 70, 70));
+        int intInput = 0;
+        try{String input = TextInput.getText();
+            intInput = Integer.parseInt(input);
+        } catch (NullPointerException e){}
+        
+        //PassButton.setVisible(true);
+        //PassButton.isShowing();
+        //TextInput.setVisible(true);
+        //IncreaseLabel.setVisible(true);
+        //jLabel2.setVisible(true);
+        //PassButton.repaint();
+        if (intInput > 0){
+            TextInput.setText("");
+            String currentbid = CurrentBidOutput.getText();
+            if (currentbid.isEmpty()) 
+            {
+                int newInt = 0 + intInput;
+                String newbid = Integer.toString(newInt);
+                CurrentBidOutput.setText(newbid);
+                return;
+            }
+            int curr = Integer.parseInt(currentbid);
+            int newInt = curr + intInput;
+            String newbid = Integer.toString(newInt);
+            CurrentBidOutput.setText(newbid);
+        }
+
     }//GEN-LAST:event_EnterButtonActionPerformed
 
     private void PassButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PassButtonActionPerformed
-        // TODO add your handling code here:
+        removeAllCounters();
+        //IncreaseLabel.setVisible(false);
+        //EnterButton.setVisible(false);
+        //PassButton.setVisible(false);
+        //TextInput.setVisible(false);
+        //jLabel2.setVisible(false);
+        //for (int i=0;i<50000;i++){
+        //    for (int j = 0;j<30000;j++){
+        //        for (int z = 0; z<100000;z++){
+        //            
+        //        }
+
+        //    }
+        //}
+        //IncreaseLabel.setVisible(true);
+        //EnterButton.setVisible(true);
+        //PassButton.setVisible(true);
+        //TextInput.setVisible(true);
+
     }//GEN-LAST:event_PassButtonActionPerformed
 
     /**
@@ -282,19 +328,19 @@ public class AuctionFrame extends javax.swing.JFrame {
     /**
      * Add a counter to the display of the auction window
      * ************* Important the size of the counter should be 70x70 **********
-     * @param counter
+     * @param counterUnit
      */
-    public void addCounter(TransportationCounter counter){
+    public void addCounter(CounterUnit counterUnit){
         
         
-        listCounters.add(counter);
+        listCounters.add((TransportationCounter) counterUnit);
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         SequentialGroup sequentHor = jPanel1Layout.createSequentialGroup();
         
         ParallelGroup vertLayout = jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING);
         //for (TransportationCounter )
-        for (TransportationCounter tc : listCounters){
-            JLabel icon = counter.getDisplay();
+        for (CounterUnit tc : listCounters){
+            JLabel icon = counterUnit.getDisplay();
             icon.setVisible(true);
             //icon.setBorder(BorderFactory.createBevelBorder(1));
             javax.swing.JPanel cardJPanel = new javax.swing.JPanel();
@@ -330,13 +376,45 @@ public class AuctionFrame extends javax.swing.JFrame {
 
     }
 
-    public void update(){
+    public void removeAllCounters(){
+        
+        
+        listCounters.clear();
+        jPanel1 = new javax.swing.JPanel();
+        
+        jScrollPane1.setViewportView(jPanel1);
+        
+        this.repaint();
+        jPanel1.repaint();
+        
 
     }
 
-    public void setAuction(int num){
+    public void setAuctionWindowCurr(){
+        IncreaseLabel.setVisible(true);
+        EnterButton.setVisible(true);
+        PassButton.setVisible(true);
+        TextInput.setVisible(true);
+        jLabel2.setVisible(true);
 
-        CurrentBidPanel.setText("Current ");
+    }
+
+    public void setAuctionWindowNotCurr(){
+        IncreaseLabel.setVisible(false);
+        EnterButton.setVisible(false);
+        PassButton.setVisible(false);
+        TextInput.setVisible(false);
+        jLabel2.setVisible(false);
+
+    }
+
+    public void resetBid(){
+        CurrentBidOutput.setText("");
+    }
+
+    public void setAuction(int num){
+        
+        //CurrentBidPanel.setText(this.);
 
     }
 
