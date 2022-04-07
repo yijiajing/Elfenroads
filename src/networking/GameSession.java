@@ -180,7 +180,7 @@ public class GameSession {
     }
 
     /**
-     * static method to check if a session has been lost
+     * static method to check if a session has been launched
      * @param sessionID the id of the session to check
      * @return
      */
