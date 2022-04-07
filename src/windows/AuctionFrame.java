@@ -263,7 +263,7 @@ public class AuctionFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_EnterButtonActionPerformed
 
     private void PassButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PassButtonActionPerformed
-        removeAllCounters();
+        removeFirstCounter();
         //IncreaseLabel.setVisible(false);
         //EnterButton.setVisible(false);
         //PassButton.setVisible(false);
@@ -365,14 +365,18 @@ public class AuctionFrame extends javax.swing.JFrame {
         jScrollPane1.setVisible(true);
     }
 
-    public void removeAllCounters(){
-        listCounters.clear();
+    public void removeFirstCounter(){
+        listCounters.remove(0);
         jPanel1 = new javax.swing.JPanel();
         
         jScrollPane1.setViewportView(jPanel1);
         
         this.repaint();
         jPanel1.repaint();
+        for (CounterUnit cu : listCounters){
+            addCounter(cu);
+        }
+
     }
 
     public void setAuctionWindowCurr(){
