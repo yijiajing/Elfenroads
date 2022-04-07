@@ -25,8 +25,8 @@ public class EGGameManager extends GameManager {
     private CounterUnit prevCounterKept;
     private AuctionFrame auctionFrame;
 
-    EGGameManager(Optional<GameState> loadedState, String sessionID, GameVariant variant) {
-        super(loadedState, sessionID, variant);
+    EGGameManager(Optional<GameState> loadedState, String sessionID, GameVariant variant, String pLocalAddress) {
+        super(loadedState, sessionID, variant, pLocalAddress);
         assert GameRuleUtils.isElfengoldVariant(variant);
     }
 

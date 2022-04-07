@@ -34,6 +34,7 @@ public class ActionManager {
 
     private Road selectedRoad;
     private boolean inExchange;
+    private boolean inExternalWindow;
     private CounterUnit selectedCounter;
     private final List<TravelCard> selectedCards = new ArrayList<>();
     private Town selectedTown;
@@ -70,6 +71,11 @@ public class ActionManager {
      */
     public void setSelectedRoad(Road road) {
         LOGGER.info("Road on " + road.getRegionType() + " selected");
+
+        if (inExternalWindow) {
+            LOGGER.info("In external window, cannot click on a road");
+            return;
+        }
 
         if (!((gameState.getCurrentPhase() == EGRoundPhaseType.PLAN_ROUTES || gameState.getCurrentPhase() == ELRoundPhaseType.PLAN_ROUTES)
                 && gameManager.isLocalPlayerTurn())) {
@@ -195,6 +201,7 @@ public class ActionManager {
                 }
             } else if (counter.getType() == MagicSpellType.DOUBLE) {
                 if (selectedRoad.placeDouble(counter)) {
+                    inExternalWindow = true;
                     ((EGGameScreen) GameScreen.getInstance()).showDoubleMagicSpellPopup();
                 } else {
                     GameScreen.displayMessage("You cannot place a Double here. Please try again.");
@@ -218,6 +225,11 @@ public class ActionManager {
 
         if (inExchange) {
             GameScreen.displayMessage("You just placed an Exchange Magic Spell. Please select another road instead.");
+            return;
+        }
+
+        if (inExternalWindow) {
+            LOGGER.info("In external window, cannot click on a counter");
             return;
         }
 
@@ -248,6 +260,16 @@ public class ActionManager {
      */
     public void addSelectedCard(TravelCard card) {
         LOGGER.info("Card " + card.getType() + " selected");
+
+        if (inExternalWindow) {
+            LOGGER.info("In external window, cannot click on a card");
+            return;
+        }
+
+        if (inExchange) {
+            LOGGER.info("In exchange, cannot click on a card");
+        }
+
         if (!(gameState.getCurrentPhase() == EGRoundPhaseType.MOVE || gameState.getCurrentPhase() == ELRoundPhaseType.MOVE)) {
             return;
         }
@@ -284,6 +306,15 @@ public class ActionManager {
     public void setSelectedTown(Town town) {
         LOGGER.info("Town " + town.getName() + " selected");
         selectedTown = town;
+
+        if (inExternalWindow) {
+            LOGGER.info("In external window, cannot click on a town");
+            return;
+        }
+
+        if (inExchange) {
+            LOGGER.info("In exchange, cannot click on a town");
+        }
 
         if ((!(gameState.getCurrentPhase() == EGRoundPhaseType.MOVE || gameState.getCurrentPhase() == ELRoundPhaseType.MOVE))
                 || selectedCards.isEmpty()
@@ -370,11 +401,16 @@ public class ActionManager {
         clearSelection();
     }
 
+    public void setInExternalWindow(boolean inExternalWindow) {
+        this.inExternalWindow = inExternalWindow;
+    }
+
     /**
      * Clears all selection states.
      * Whenever a new selection state is added to GameState, remember to clear it here.
      */
     public void clearSelection() {
+        LOGGER.info("Selection cleared");
         selectedRoad = null;
         selectedCounter = null;
         assert selectedCards.stream().allMatch(CardUnit::isSelected);

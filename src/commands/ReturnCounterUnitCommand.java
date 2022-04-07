@@ -5,7 +5,6 @@ import java.util.logging.Logger;
 
 import gamemanager.GameManager;
 import domain.CounterUnit;
-import domain.Hand;
 import enums.CounterUnitType;
 import networking.GameState;
 
@@ -44,10 +43,13 @@ public class ReturnCounterUnitCommand implements GameCommand{
                 toRemove = c;
             }
         }
-        assert toRemove != null;
-        toRemove.setOwned(false);
-        Logger.getGlobal().info("Counter " + toRemove.getType() + " is removed");
-        senderHand.remove(toRemove);
+        if (toRemove == null) {
+            Logger.getGlobal().severe("the counter to remove is not in the sending player's hand");
+        } else {
+            toRemove.setOwned(false);
+            Logger.getGlobal().info("Counter " + toRemove.getType() + " is removed");
+            senderHand.remove(toRemove);
+        }
     }
 
 }

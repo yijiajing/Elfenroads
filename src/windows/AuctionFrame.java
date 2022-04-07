@@ -30,6 +30,8 @@ import enums.CounterType;
 public class AuctionFrame extends javax.swing.JFrame {
 
     private ArrayList<CounterUnit> listCounters = new ArrayList<CounterUnit>();
+    private boolean counterHasBid = false;
+    private boolean counterBidByLocalPlayer = false;
 
     /**
      * Creates new form AuctionFrame
@@ -251,6 +253,9 @@ public class AuctionFrame extends javax.swing.JFrame {
         try{
             increaseAmount = Integer.parseInt(TextInput.getText());
             increaseCurrentBid(increaseAmount);
+            // update bid status
+            counterHasBid = true;
+            counterBidByLocalPlayer = true;
 
             CommunicationsManager coms = GameManager.getInstance().getComs();
             IncreaseBidCommand bid = new IncreaseBidCommand(increaseAmount);
@@ -263,7 +268,7 @@ public class AuctionFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_EnterButtonActionPerformed
 
     private void PassButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PassButtonActionPerformed
-        removeAllCounters();
+        removeFirstCounter();
         //IncreaseLabel.setVisible(false);
         //EnterButton.setVisible(false);
         //PassButton.setVisible(false);
@@ -332,6 +337,8 @@ public class AuctionFrame extends javax.swing.JFrame {
         //for (TransportationCounter )
         for (CounterUnit tc : listCounters){
             JLabel icon = counterUnit.getDisplay();
+            icon.setSize(70, 70);
+
             icon.setVisible(true);
             //icon.setBorder(BorderFactory.createBevelBorder(1));
             javax.swing.JPanel cardJPanel = new javax.swing.JPanel();
@@ -365,14 +372,19 @@ public class AuctionFrame extends javax.swing.JFrame {
         jScrollPane1.setVisible(true);
     }
 
-    public void removeAllCounters(){
-        listCounters.clear();
+    public void removeFirstCounter() {
+        assert listCounters.size() > 0;
+        listCounters.remove(0);
+        //TODO: add to pile
         jPanel1 = new javax.swing.JPanel();
         
         jScrollPane1.setViewportView(jPanel1);
         
         this.repaint();
         jPanel1.repaint();
+        for (CounterUnit cu : listCounters){
+            addCounter(cu);
+        }
     }
 
     public void setAuctionWindowCurr(){
@@ -409,7 +421,22 @@ public class AuctionFrame extends javax.swing.JFrame {
             System.out.println("String cannot be converted to integer.");
         }
     }
-    
+
+    public boolean isCounterHasBid() {
+        return counterHasBid;
+    }
+
+    public void setCounterHasBid(boolean counterHasBid) {
+        this.counterHasBid = counterHasBid;
+    }
+
+    public boolean isCounterBidByLocalPlayer() {
+        return counterBidByLocalPlayer;
+    }
+
+    public void setCounterBidByLocalPlayer(boolean counterBidByLocalPlayer) {
+        this.counterBidByLocalPlayer = counterBidByLocalPlayer;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField CurrentBidOutput;

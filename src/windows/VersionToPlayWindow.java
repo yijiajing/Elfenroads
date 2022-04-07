@@ -3,6 +3,7 @@ package windows;
 import gamemanager.GameManager;
 import enums.GameVariant;
 import networking.*;
+import utils.NetworkUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -66,8 +67,8 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
                 {
                     track1.play();
                     session = new GameSession(User.getInstance(), "Elfenland_Classic", "My Save Game Name");
-
-                    GameManager.init(Optional.empty(), session.getId(), GameVariant.ELFENLAND_CLASSIC);
+                    String localIP = NetworkUtils.getLocalIPAddPort();
+                    GameManager.init(Optional.empty(), session.getId(), GameVariant.ELFENLAND_CLASSIC, localIP);
 
                     // prompt user to choose a boot colour
                     // this calls the ChooseBootWindow once all players have responded
@@ -95,7 +96,8 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
                     track1.play();
                     session = new GameSession(User.getInstance(), "Elfenland_Long)", "My Save Game Name");
 
-                    GameManager.init(Optional.empty(), session.getId(), GameVariant.ELFENLAND_LONG);
+                    String localIP = NetworkUtils.getLocalIPAddPort();
+                    GameManager.init(Optional.empty(), session.getId(), GameVariant.ELFENLAND_LONG, localIP);
 
                     // prompt user to choose a boot colour
                     // this calls the ChooseBootWindow once all players have responded
@@ -124,7 +126,8 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
                     track1.play();
                     session = new GameSession(User.getInstance(), "ElfenlandDestination", "My Save Game Name");
 
-                    GameManager.init(Optional.empty(), session.getId(), GameVariant.ELFENLAND_DESTINATION);
+                    String localIP = NetworkUtils.getLocalIPAddPort();
+                    GameManager.init(Optional.empty(), session.getId(), GameVariant.ELFENLAND_DESTINATION, localIP);
 
                     // prompt user to choose a boot colour
                     // this calls the ChooseBootWindow once all players have responded
@@ -159,7 +162,8 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
                     track1.play();
                     session = new GameSession(User.getInstance(), "Elfengold_Classic", "My Save Game Name");
 
-                    GameManager.init(Optional.empty(), session.getId(), GameVariant.ELFENGOLD_CLASSIC);
+                    String localIP = NetworkUtils.getLocalIPAddPort();
+                    GameManager.init(Optional.empty(), session.getId(), GameVariant.ELFENGOLD_CLASSIC, localIP);
 
                     // prompt user to choose a boot colour
                     // this calls the ChooseBootWindow once all players have responded
@@ -187,7 +191,8 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
                     track1.play();
                     session = new GameSession(User.getInstance(), "Elfengold_TravelCards", "My Save Game Name");
 
-                    GameManager.init(Optional.empty(), session.getId(), GameVariant.ELFENGOLD_CLASSIC);
+                    String localIP = NetworkUtils.getLocalIPAddPort();
+                    GameManager.init(Optional.empty(), session.getId(), GameVariant.ELFENGOLD_CLASSIC, localIP);
 
                     // prompt user to choose a boot colour
                     // this calls the ChooseBootWindow once all players have responded
@@ -215,7 +220,8 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
                     track1.play();
                     session = new GameSession(User.getInstance(), "Elfengold_RandomGold", "My Save Game Name");
 
-                    GameManager.init(Optional.empty(), session.getId(), GameVariant.ELFENGOLD_CLASSIC);
+                    String localIP = NetworkUtils.getLocalIPAddPort();
+                    GameManager.init(Optional.empty(), session.getId(), GameVariant.ELFENGOLD_CLASSIC, localIP);
 
                     // prompt user to choose a boot colour
                     // this calls the ChooseBootWindow once all players have responded
@@ -243,7 +249,8 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
                     track1.play();
                     session = new GameSession(User.getInstance(), "Elfengold_Witch", "My Save Game Name");
 
-                    GameManager.init(Optional.empty(), session.getId(), GameVariant.ELFENGOLD_CLASSIC);
+                    String localIP = NetworkUtils.getLocalIPAddPort();
+                    GameManager.init(Optional.empty(), session.getId(), GameVariant.ELFENGOLD_CLASSIC, localIP);
 
                     // prompt user to choose a boot colour
                     // this calls the ChooseBootWindow once all players have responded
