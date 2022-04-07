@@ -8,6 +8,7 @@ import gamemanager.EGGameManager;
 import gamemanager.GameManager;
 import gamescreen.EGGameScreen;
 import gamescreen.GameScreen;
+import networking.ActionManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -96,6 +97,7 @@ public class ChooseCounterPopup extends JPanel {
                 counter.setSecret(false); // the user has chosen this counter to be face-up
                 ((EGGameScreen)GameScreen.getInstance()).hideCounterPopup();
                 ((EGGameManager)GameManager.getInstance()).sendCounters(counter1, counter2);
+                ActionManager.getInstance().setInExternalWindow(false);
             }
         });
     }
