@@ -40,7 +40,7 @@ public abstract class GameManager {
     protected ArrayList<Colour> availableColours = new ArrayList<>();
     protected HashMap<Colour, String> bootColours = new HashMap<>(); // <boot colour, player IP> TODO change to Player
 
-    GameManager(Optional<GameState> loadedState, String pSessionID, GameVariant variant) {
+    GameManager(Optional<GameState> loadedState, String pSessionID, GameVariant variant, String pLocalAddress) {
         MainFrame.mainPanel.add(GameScreen.init(MainFrame.getInstance(), variant), "gameScreen");
         sessionID = pSessionID;
         this.variant = variant;
@@ -62,16 +62,16 @@ public abstract class GameManager {
             //TODO implement
         }
 
-        coms = CommunicationsManager.init(this, sessionID);
+        coms = CommunicationsManager.init(this, sessionID, pLocalAddress);
     }
 
-    public static GameManager init(Optional<GameState> loadedState, String sessionID, GameVariant variant) {
+    public static GameManager init(Optional<GameState> loadedState, String sessionID, GameVariant variant, String pLocalAddress) {
         if (INSTANCE == null) {
             Logger.getGlobal().info("Initializing GameManager");
             if (GameRuleUtils.isElfengoldVariant(variant)) {
-                INSTANCE = new EGGameManager(loadedState, sessionID, variant);
+                INSTANCE = new EGGameManager(loadedState, sessionID, variant, pLocalAddress);
             } else {
-                INSTANCE = new ELGameManager(loadedState, sessionID, variant);
+                INSTANCE = new ELGameManager(loadedState, sessionID, variant, pLocalAddress);
             }
         }
         return INSTANCE;

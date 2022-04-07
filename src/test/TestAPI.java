@@ -134,12 +134,13 @@ public class TestAPI {
         return sesh.getId();
     }
 
+    @Deprecated
     public static void joinGameWithNick(String id) throws Exception
     {
         User.logout();
         User.init("nick", "abc123_ABC123");
         User nick = User.getInstance();
-        GameSession.joinSession(nick, id);
+        // GameSession.joinSession(nick, id);
     }
 
     public static void leaveGameWithNick(String id) throws Exception
