@@ -1,6 +1,5 @@
 package domain;
 
-import enums.GameVariant;
 import utils.GameRuleUtils;
 import windows.MainFrame;
 import networking.ActionManager;
@@ -13,13 +12,12 @@ import savegames.SerializableObstacle;
 
 public class Obstacle extends CounterUnit {
 
-    public Obstacle(ObstacleType type, int resizeWidth, int resizeHeight, GameVariant variant) {
+    public Obstacle(ObstacleType type, int resizeWidth, int resizeHeight) {
         super(type, resizeWidth, resizeHeight, Integer.toString(type == ObstacleType.TREE ? 9 : 10));
 
-        if (GameRuleUtils.isElfengoldVariant(variant)) {
+        if (GameRuleUtils.isElfengoldVariant()) {
             super.initializeMouseListener();
-        }
-        else {
+        } else {
             this.getDisplay().addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
@@ -33,9 +31,9 @@ public class Obstacle extends CounterUnit {
             });
         }
     }
-    public Obstacle (SerializableObstacle loaded)
-    {
-        super(loaded.getType(), MainFrame.instance.getWidth()*67/1440, MainFrame.getInstance().getHeight() *60/900, Integer.toString(9));
+
+    public Obstacle(SerializableObstacle loaded) {
+        super(loaded.getType(), MainFrame.instance.getWidth() * 67 / 1440, MainFrame.getInstance().getHeight() * 60 / 900, Integer.toString(9));
 
         // init mouse listener
         this.getDisplay().addMouseListener(new MouseAdapter() {
@@ -51,10 +49,8 @@ public class Obstacle extends CounterUnit {
         });
     }
 
-
-        public static CounterUnit getNew (ObstacleType type, GameVariant variant){
-            return new Obstacle(type, MainFrame.instance.getWidth() * 67 / 1440,
-                    MainFrame.instance.getHeight() * 60 / 900, variant);
-        }
-
+    public static CounterUnit getNew(ObstacleType type) {
+        return new Obstacle(type, MainFrame.instance.getWidth() * 67 / 1440,
+                MainFrame.instance.getHeight() * 60 / 900);
     }
+}
