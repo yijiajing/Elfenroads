@@ -61,7 +61,9 @@ public class ELGameManager extends GameManager {
         gameState.setCurrentPhase(ELRoundPhaseType.DEAL_CARDS);
         gameState.setToFirstPlayer();
         gameState.getTravelCardDeck().shuffle(); // only shuffle once at the beginning of each round
-
+        GameScreen.displayMessage("""
+                New Round Start!
+                """);
         // Triggered only on one instance (the first player)
         if (isLocalPlayerTurn()) {
             distributeTravelCards(); // distribute cards to each player (PHASE 1)
