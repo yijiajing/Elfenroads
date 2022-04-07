@@ -56,4 +56,6 @@ public class Hand {
 	public Obstacle getObstacle() {
 		return obstacle.orElse(null);
 	}
+
+	public boolean hasObstacle() { return obstacle.isPresent();}
 }

@@ -38,7 +38,7 @@ public class ELGameManager extends GameManager {
         }
 
         // give all players (each peer) an obstacle
-        thisPlayer.getHand().addUnit(new Obstacle(ObstacleType.TREE,MainFrame.instance.getWidth() * 67 / 1440, MainFrame.instance.getHeight() * 60 / 900, variant));
+        thisPlayer.getHand().addUnit(new Obstacle(ObstacleType.TREE,MainFrame.instance.getWidth() * 67 / 1440, MainFrame.instance.getHeight() * 60 / 900));
 
         // assign each player a destination town if applicable
         if (gameState.getGameVariant() == GameVariant.ELFENLAND_DESTINATION) {

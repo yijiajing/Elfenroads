@@ -1,7 +1,9 @@
 package networking;
 
 import commands.*;
+import enums.GameVariant;
 import gamemanager.GameManager;
+import utils.GameRuleUtils;
 import utils.NetworkUtils;
 
 import java.io.IOException;
@@ -242,6 +244,11 @@ public class CommunicationsManager {
                 getAndExecuteFirstAddPlayerCommand();
                 // get the next AddPlayerCommand from the queue
             }
+            else if (GameRuleUtils.isElfengoldVariant(GameState.instance().getGameVariant()) && GameState.instance().getCurrentRound() == 1)
+            {
+                GameCommand toExecute = listener.getCommands().poll();
+                toExecute.execute();
+            }
             else if (!drawCardsFinished()) // if we are done adding players but not drawing cards, we need to make sure to execute all of the drawCardCommands first
             {
                 getAndExecuteFirstDrawCardCommand();
@@ -282,10 +289,14 @@ public class CommunicationsManager {
      */
     private boolean drawCardsFinished()
     {
-        int numPlayers = GameState.instance().getNumOfPlayers(); // we can use this because of the precondition
-        // another option would be to check the number of players in the GameSession instead but here they should be the same number
-        int numCommandsToWaitFor = GameState.instance().getPlayers().indexOf(GameManager.getInstance().getThisPlayer());
+        int numPlayers = GameState.instance().getNumOfPlayers();
+        int thisPlayerIndex = GameState.instance().getPlayers().indexOf(GameManager.getInstance().getThisPlayer());
+        int numCommandsToWaitFor;
+
+
+        numCommandsToWaitFor = thisPlayerIndex;
         Logger.getGlobal().info("We need to receive " + numCommandsToWaitFor + " DrawCardCommands before we can proceed.");
+        
         return drawCardCommandsExecuted == numCommandsToWaitFor;
     }
 

@@ -1,12 +1,12 @@
 package commands;
 
+import domain.CounterUnit;
 import gamemanager.GameManager;
 import domain.TransportationCounter;
-import domain.Hand;
 import enums.CounterType;
-import windows.MainFrame;
 import networking.GameState;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 public class ReturnTransportationCounterCommand implements GameCommand {
@@ -27,14 +27,21 @@ public class ReturnTransportationCounterCommand implements GameCommand {
     @Override
     public void execute() {
         Logger.getGlobal().info("Executing ReturnTransportationCounterCommand, keep " + type);
-        TransportationCounter counter = new TransportationCounter(type, MainFrame.instance.getWidth() * 67 / 1440, MainFrame.instance.getHeight() * 60 / 900);
+        TransportationCounter counter = (TransportationCounter) TransportationCounter.getNew(type);
+        // put counter back to the pile
         GameState.instance().getCounterPile().addDrawable(counter);
 
         // update the sending player's hand
-        TransportationCounter newCounter = (TransportationCounter)TransportationCounter.getNew(type);
-        newCounter.setSecret(isSecret);
-        Hand senderHand = GameState.instance().getPlayerByName(senderName).getHand();
-        senderHand.clearCounters();
-        senderHand.addUnit(newCounter);
+        List<CounterUnit> senderHand = GameState.instance().getPlayerByName(senderName).getHand().getCounters();
+        CounterUnit toRemove = null;
+        for (CounterUnit c: senderHand) {
+            if (c.getType() == type && c.isSecret() == isSecret) {
+                toRemove = c;
+            }
+        }
+        assert toRemove != null;
+        senderHand.remove(toRemove);
+        toRemove.setOwned(false);
+
     }
 }
