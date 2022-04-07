@@ -23,12 +23,7 @@ public class TestAPI {
 
     {
         // deleteAllSessions();
-        // Thread.sleep(5000);
-        String id = createGameWithOtherUserReturnID();
-        Thread.sleep(5000);
-        joinGameWithNick(id);
-        Thread.sleep(5000);
-        leaveGameWithNick(id);
+        createASession("Elfenland_Classic");
 
         /**
         initializeGameServiceWithStandardSettings("Elfenland_Classic", "Elfenland (Classic)" );

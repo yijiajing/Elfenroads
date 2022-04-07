@@ -266,8 +266,10 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
             public void actionPerformed(ActionEvent e) {
                 track1.play();
                 remove(background_elvenroads);
-                MainFrame.mainPanel.add(new LobbyWindow(), "lobby");
-                MainFrame.cardLayout.show(MainFrame.mainPanel,"lobby");
+                LobbyWindow reinitialized = new LobbyWindow();
+                MainFrame.setLobbyWindow(reinitialized);
+                MainFrame.mainPanel.add(reinitialized, "lobby");
+                MainFrame.cardLayout.show(MainFrame.mainPanel, "lobby");
             }
         });
 

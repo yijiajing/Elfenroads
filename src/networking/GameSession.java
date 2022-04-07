@@ -146,7 +146,7 @@ public class GameSession {
         {
             // if a session has been launched already, it must be deleted by the game service admin
             Logger.getGlobal().info("I see you are calling GameSession.delete(). This method is not well-adapted to be used in the actual game code.");
-            token = User.getAccessTokenUsingCreds("Elfenland_Classic", "abc123_ABC123");
+            token = User.getAccessTokenUsingCreds("Elfengold_Classic", "abc123_ABC123");
         }
         else
         {
@@ -393,6 +393,44 @@ public class GameSession {
         // if we get a timeout, just resend the request
         if (status == 408)
         {
+            Logger.getGlobal().info("GetSessions request timed out. Resending it.");
+            getSessions(prevPayload);
+        }
+
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer content = new StringBuffer();
+        while((inputLine = in.readLine()) != null) {
+            content.append(inputLine);
+        }
+        in.close();
+        con.disconnect();
+        System.out.println("Response status: " + status);
+        return content.toString();
+    }
+
+    /**
+     * designed to avoid hanging when leaving LobbyWindow
+     * @param prevPayload
+     * @return
+     * @throws IOException
+     */
+    public static String getSessions(String prevPayload, Thread longPollThread) throws IOException, InterruptedException {
+        String prevPayloadHashed = NetworkUtils.md5Hash(prevPayload);
+
+        URL url = new URL("http://35.182.122.111:4242/api/sessions" + "?hash=" + prevPayloadHashed);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("GET");
+
+        int status = con.getResponseCode();
+        // if we get a timeout, just resend the request
+        if (status == 408)
+        {
+            // check if we have left the lobby window
+            if (longPollThread.isInterrupted())
+            {
+                throw new InterruptedException();
+            }
             Logger.getGlobal().info("GetSessions request timed out. Resending it.");
             getSessions(prevPayload);
         }

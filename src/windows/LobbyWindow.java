@@ -44,6 +44,8 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
     LobbyWindow()
     {
         initThread();
+        prevPayload = "";
+        flag = 0;
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setSize((int) screenSize.getWidth(), (int) screenSize.getHeight());
 
@@ -77,6 +79,7 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
                 //t.stop();
                 track1.play();
                 flag = 1;
+                t.interrupt(); // kill the thread
                 remove(background_elvenroads);
                 MainFrame.mainPanel.add(new VersionToPlayWindow(), "version");
                 MainFrame.cardLayout.show(MainFrame.mainPanel,"version");
@@ -87,6 +90,8 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
             @Override
             public void actionPerformed(ActionEvent e) {
                 track1.play();
+                flag = 1;
+                t.interrupt(); // kill the thread
                 remove(background_elvenroads);
                 MainFrame.mainPanel.add(new LoadGameWindow(), "load");
                 MainFrame.cardLayout.show(MainFrame.mainPanel,"load");
@@ -150,11 +155,19 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
         else // if it is not our first request
         {// get a list of game sessions by ID
             try {
-                getSessionsResponse = GameSession.getSessions(prevPayload);
+                getSessionsResponse = GameSession.getSessions(prevPayload, t);
                 Logger.getGlobal().info("Sending another long poll request...");
-            } catch (IOException e) {
-                // we can assume that the exception is because of long polling timeout, so we'll just resend it
-                getSessionsResponse = GameSession.getSessions(prevPayload);
+            } catch (Exception e) {
+                // if interruptedException, return.
+                if (e instanceof InterruptedException)
+                {
+                    return;
+                }
+                // else, re-call the long polling method (it was probably a timeout)
+                else
+                {
+                    getSessionsResponse = GameSession.getSessions(prevPayload);
+                }
             }
 
             if (getSessionsResponse == null) {
@@ -233,6 +246,7 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
                         //t.stop();
                         track1.play();
                         flag = 1;
+                        t.interrupt();
                         GameSession.joinSession(MainFrame.loggedIn, id);
                         GameManager.init(Optional.empty(), id, interpretVariant(gameName));
 
@@ -295,13 +309,14 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
             try 
             {
                 initializeGameInfo(sessions);
-            } 
-            catch (IOException e) 
+            }
+            catch (IOException e)
             {
-                Logger.getGlobal().info("Caught an IOException in the LobbyWindow. The long polling request probably timed out. Sending a new one.");
                 e.printStackTrace();
             }
-        } 
+
+        }
+        Logger.getGlobal().info("Ended the thread while loop.");
     }
 
     /**
