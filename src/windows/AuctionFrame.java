@@ -333,7 +333,7 @@ public class AuctionFrame extends javax.swing.JFrame {
     public void addCounter(CounterUnit counterUnit){
         
         
-        listCounters.add((TransportationCounter) counterUnit);
+        listCounters.add(counterUnit);
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         SequentialGroup sequentHor = jPanel1Layout.createSequentialGroup();
         
