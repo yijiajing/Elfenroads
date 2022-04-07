@@ -38,7 +38,7 @@ public abstract class GameManager {
 
     // manages choosing a boot colour
     protected ArrayList<Colour> availableColours = new ArrayList<>();
-    protected HashMap<Colour, String> bootColours = new HashMap<>(); // <boot colour, player IP> TODO change to Player
+
 
     GameManager(Optional<GameState> loadedState, String pSessionID, GameVariant variant, String pLocalAddress) {
         MainFrame.mainPanel.add(GameScreen.init(MainFrame.getInstance(), variant), "gameScreen");
@@ -222,12 +222,17 @@ public abstract class GameManager {
             // display message
             if (gameState.getCurrentPhase() == ELRoundPhaseType.PLAN_ROUTES
                     || gameState.getCurrentPhase() == EGRoundPhaseType.PLAN_ROUTES) {
-                GameScreen.displayMessage("""
+
+                if (GameManager.getInstance().getThisPlayer().getHand().getCounters().size() > 0) {
+                    GameScreen.displayMessage("""
                         It is time to plan your travel routes! Begin by clicking the transportation counter in your hand that you want to use, then click on the road that you want to travel.
                         The chart in the bottom right corner indicates which transportation counters may be used on which road.
                         Alternatively, you may choose to place your Obstacle on a road that already has a counter. But be warned... you can only do this once!
                         When you are done placing one counter, click "End Turn". Alternatively, you can pass your turn by clicking "End Turn".
                         """);
+                } else {
+                    endTurn();
+                }
             }
         }
     }
@@ -291,7 +296,6 @@ public abstract class GameManager {
 
     public void removeAvailableColour(Colour c, String playerIP) {
         availableColours.remove(c);
-        addPairToBootColours(c, playerIP);
 
         try {
             if (thisPlayer == null) { // I haven't chosen a boot colour yet
@@ -307,9 +311,6 @@ public abstract class GameManager {
         }
     }
 
-    public void addPairToBootColours(Colour c, String playerIP) {
-        bootColours.put(c, playerIP);
-    }
 
     public String getSessionID() {
         return sessionID;
