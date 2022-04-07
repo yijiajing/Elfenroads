@@ -15,6 +15,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 
+import java.util.logging.*;
+
 public class TravelCardDeck extends Deck <CardUnit> {
 
     private GameVariant variant;
@@ -90,18 +92,25 @@ public class TravelCardDeck extends Deck <CardUnit> {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (GameRuleUtils.isDrawCardsPhase() && GameManager.getInstance().isLocalPlayerTurn()) {
-                    CardUnit drawn = GameState.instance().getTravelCardDeck().draw(); // draw a card
-                    GameManager.getInstance().getThisPlayer().getHand().addUnit(drawn); // add to player's hand
-                    GameScreen.getInstance().updateAll(); // update GUI
-
+                	CardUnit drawn = GameState.instance().getTravelCardDeck().draw(); // draw a card
                     // tell the other peers to remove the card from the pile
                     try {
                         GameManager.getInstance().getComs().sendGameCommandToAllPlayers(new DrawCardCommand(1, null));
                     } catch (IOException err) {
                         System.out.println("Error: there was a problem sending the DrawCardCommand to the other peers.");
                     }
+                	// if the card drawn is a gold card, the current player's turn does not end
+                    if (drawn instanceof GoldCard) {
+                    		//if drawn is a gold card, add to Gold deck and draw another one 
+                    		GameState.instance().incrementGoldCardDeckCount();
+                    		GameScreen.displayMessage("You drew a gold card! Choose another card or take the Gold Card Deck");
+                            GameScreen.getInstance().updateAll(); // update GUI
 
-                    GameManager.getInstance().endTurn();
+                	}else {
+                        GameManager.getInstance().getThisPlayer().getHand().addUnit(drawn); // add to player's hand
+                        GameScreen.getInstance().updateAll(); // update GUI
+                        GameManager.getInstance().endTurn();
+                	}                  
                 }
             }
         });
