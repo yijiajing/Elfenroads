@@ -332,6 +332,8 @@ public class AuctionFrame extends javax.swing.JFrame {
         //for (TransportationCounter )
         for (CounterUnit tc : listCounters){
             JLabel icon = counterUnit.getDisplay();
+            icon.setSize(70, 70);
+
             icon.setVisible(true);
             //icon.setBorder(BorderFactory.createBevelBorder(1));
             javax.swing.JPanel cardJPanel = new javax.swing.JPanel();
