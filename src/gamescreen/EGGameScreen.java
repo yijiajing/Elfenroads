@@ -37,6 +37,7 @@ public class EGGameScreen extends GameScreen {
         updateFaceUpTravelCards(); // updates the face-up transportation counters
         notifyObservers(); // updates elf boots and town pieces
         updateLeaderboard();
+        updateGoldCardDeck();
     }
 
     @Override
@@ -124,14 +125,6 @@ public class EGGameScreen extends GameScreen {
         //panel4.setBorder(whiteLine);
         panelForFaceUpTravelCards[2] = panel4;
         boardGame_Layers.add(panel4, 0);
-
-        //panel for num of gold card deck
-        JPanel panel5 = panelForGoldCardDeck;
-        panel5.setBounds(width*1200/1440, height*410/900, width*250/1440, height*20/900);
-        panel5.setLayout(new GridBagLayout());
-        JLabel goldCardDeck = new JLabel("Gold Cards: " + GameState.instance().getGoldCardDeckCount());
-        panel5.add(goldCardDeck);
-
     }
 
     public void initializeTransportationCounters()
@@ -220,15 +213,12 @@ public class EGGameScreen extends GameScreen {
             }
         }
         
-        //update goldcard deck
-        panelForGoldCardDeck.removeAll();
-        panelForGoldCardDeck.repaint();
-        panelForGoldCardDeck.revalidate();
-        panelForGoldCardDeck.setLayout(new GridBagLayout());
-        JLabel goldCardDeck = new JLabel("Gold Cards: " + GameState.instance().getGoldCardDeckCount());
-        panelForGoldCardDeck.add(goldCardDeck); 
-        panelForGoldCardDeck.repaint();
-        panelForGoldCardDeck.revalidate();
+    }
+    
+    
+    //TODO: update the DrawGoldDeckButton
+    public void updateGoldCardDeck() {
+    	
     }
 
     public void updateTransportationCounters()
