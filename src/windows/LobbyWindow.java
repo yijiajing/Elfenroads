@@ -206,10 +206,6 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
 
         // iterate through the IDs and get info for each game & add it to the display
         // if there are no sessions, just clear everything
-        if (gameIDs.size() == 0)
-        {
-            // return;
-        }
         for (String id : gameIDs)
         {
             // get game info

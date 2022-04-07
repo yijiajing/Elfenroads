@@ -46,9 +46,8 @@ public class TestAPI {
     public static void createASession(String variant)
     {
         try {
-            User alex = User.init("dontforget", "abc123_ABC123");
+            User alex = User.init("alex", "abc123_ABC123");
             GameSession sesh1 = new GameSession(alex, variant, "savegame1234");
-            GameSession sesh2 = new GameSession(alex, "elfenlands", "savegame1234");
         }
         catch (Exception e)
         {
