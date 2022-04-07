@@ -18,7 +18,7 @@ public class Hand {
 	public void addUnit(Drawable pUnit) {
 		if (pUnit instanceof CardUnit) {
 			cardList.add((CardUnit)pUnit);
-		} else if (pUnit instanceof Obstacle) {
+		} else if (pUnit instanceof Obstacle && ((Obstacle) pUnit).getType() == ObstacleType.TREE) {
 			obstacle = Optional.of((Obstacle) pUnit);
 		} else if (pUnit instanceof CounterUnit) {
 			counterList.add((CounterUnit) pUnit);
