@@ -148,6 +148,7 @@ public class PlayerWaitWindow extends JPanel implements Runnable
                     MainFrame.mainPanel.remove(toDelete);
                 }
                 // initialize and show a new LobbyWindow
+                remove(background_elvenroads);
                 LobbyWindow reinitialized = new LobbyWindow();
                 MainFrame.setLobbyWindow(reinitialized);
                 MainFrame.mainPanel.add(reinitialized, "lobby");
