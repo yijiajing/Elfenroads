@@ -29,7 +29,7 @@ public abstract class GameManager {
 
     protected GameState gameState;
     protected ActionManager actionManager;
-    protected Player thisPlayer; // represents the Player who is using this GUI, set by ChooseBootWindow
+    protected Player thisPlayer = null; // represents the Player who is using this GUI, set by ChooseBootWindow
     protected boolean loaded;
     protected GameVariant variant;
 
@@ -64,8 +64,8 @@ public abstract class GameManager {
             Savegame loadedGame = savegame.get();
             this.variant = loadedGame.getGameVariant();
             MainFrame.mainPanel.add(GameScreen.init(MainFrame.getInstance(), variant), "gameScreen");
-            gameState = GameState.initFromSave(loadedGame, this);
-            // setThisPlayer(gameState.getThisPlayerFromLoaded());
+            gameState = GameState.initFromSave(loadedGame);
+            setThisPlayer(gameState.getThisPlayerFromLoaded());
             loaded = true;
             actionManager = ActionManager.init(gameState, this);
         }
@@ -128,6 +128,7 @@ public abstract class GameManager {
         if (!loaded) setUpNewGame();
         else // if we are loading a game, set the thisPlayer field.
         {
+            setThisPlayer(gameState.getThisPlayerFromLoaded());
             gameState.sortPlayers(); // re-sort since setThisPlayer adds another player to the list
         }
 

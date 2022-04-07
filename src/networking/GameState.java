@@ -83,7 +83,7 @@ public class GameState implements Serializable{
      * will read in game info from a save
      * @param pLoadedState the savegame, read from a file
      */
-    private GameState (Savegame pLoadedState, GameManager pGameManager)
+    private GameState (Savegame pLoadedState)
     {
         loadedState = pLoadedState;
         // load directly saved fields first
@@ -96,7 +96,7 @@ public class GameState implements Serializable{
         // load the counters and cards
 
         // load all of the players from the savegame
-        loadPlayers(pGameManager);
+        loadPlayers();
 
         // load the travel card deck and counter pile
         loadTravelCardDeck();
@@ -139,9 +139,9 @@ public class GameState implements Serializable{
     }
 
     // clears the singleton field, and sets the loaded GameState as the singleton field
-    public static GameState initFromSave(Savegame loadedState, GameManager pGameManager)
+    public static GameState initFromSave(Savegame loadedState)
     {
-        instance = new GameState(loadedState, pGameManager);
+        instance = new GameState(loadedState);
         return instance;
     }
 
@@ -372,23 +372,21 @@ public class GameState implements Serializable{
 
     // METHODS USED TO READ IN A LOADED GAME
     // TODO: implement these and implement constructors
-    private void loadPlayers(GameManager pGameManager)
+    private void loadPlayers()
     {
-        Logger.getGlobal().info("Loading players...");
         for (SerializablePlayer toLoad : loadedState.getPlayers())
         {
-            Logger.getGlobal().info("Loading player " + toLoad.getName());
             Player loaded = new Player(toLoad);
-            if (loadedState.getCurrentPlayer().getName().equals(equals(toLoad)))
+            if (loadedState.getCurrentPlayer().equals(toLoad))
             {
                 addPlayer(loaded);
                 setCurrentPlayer(loaded);
             }
-            else if (loadedState.getThisPlayer().getName().equals(toLoad.getName()))
+            else if (loadedState.getThisPlayer().equals(toLoad))
             {
-                Logger.getGlobal().info("Setting " + toLoad.getName() + " as thisPlayer.");
                 thisPlayerFromLoaded = loaded;
-                pGameManager.setThisPlayer(thisPlayerFromLoaded);
+                // we don't need to call addPlayer in this one, since GameManager.launch() will call setThisPlayer on its own.
+                // that method will automatically add thisPlayerFromLoaded to the list of players.
             }
         }
     }
