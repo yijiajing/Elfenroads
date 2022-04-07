@@ -12,6 +12,8 @@ import java.util.logging.Logger;
 
 public class PlaceTransportationCounterCommand implements GameCommand {
 
+    private static final long serialVersionUID = 6529685098267757690L;
+
     private final String start;
     private final String destination;
     private final RegionType regionType;
