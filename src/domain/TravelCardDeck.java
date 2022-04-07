@@ -24,9 +24,9 @@ public class TravelCardDeck extends Deck <CardUnit> {
         super(sessionID);
 
         // initialize the deck image
-        ImageIcon imageIcon = new ImageIcon("./assets/sprites/grey.png");
+        ImageIcon imageIcon = new ImageIcon("./assets/sprites/grey_deck.png");
         Image image = imageIcon.getImage();
-        Image imageResized = image.getScaledInstance(GameScreen.getInstance().getWidth()*130/1440-40, GameScreen.getInstance().getHeight()/5-50, java.awt.Image.SCALE_SMOOTH);
+        Image imageResized = image.getScaledInstance(GameScreen.getInstance().getWidth()*130/1440-35, GameScreen.getInstance().getHeight()/5-40, java.awt.Image.SCALE_SMOOTH);
         this.deckImage = new JLabel(new ImageIcon(imageResized));
 
         this.variant = variant;
