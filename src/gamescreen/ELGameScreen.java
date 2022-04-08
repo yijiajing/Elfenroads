@@ -25,7 +25,6 @@ public class ELGameScreen extends GameScreen
 	protected final JPanel panelForDeckOfTransportationCounters = new JPanel();
 	protected final JPanel panelForObstacle = new JPanel();
 	protected final JPanel backgroundPanel_ForFaceUpTransportationCounters = new JPanel();
-	protected final JPanel backgroundPanel_ForObstacle = new JPanel();
 
 
 	ELGameScreen(JFrame frame, GameVariant variant) {
@@ -54,9 +53,7 @@ public class ELGameScreen extends GameScreen
 		initializeFaceUpTransportationCounters();
 		initializeDeckOfTransportationCounters();
 		initializeLeaderboard();
-		initializeEndTurnButton();
-
-		initializeMenuButton();
+		initializeButtons();
 		initializeMenu();
 		initializeChat();
 
@@ -66,34 +63,30 @@ public class ELGameScreen extends GameScreen
 
 	public void initializeBackgroundPanels() {
 		// Set Bounds for background Player's Transportation Counter zone
-		backgroundPanel_ForTransportationCounters.setBounds(width * 0 / 1440, height * 623 / 900, width * 900 / 1440, height * 70 / 900);
+		backgroundPanel_ForTransportationCounters.setBounds(0, height * 624 / 900, width *  1150 / 1440, height * 69 / 900);
 		backgroundPanel_ForTransportationCounters.setBackground(Color.DARK_GRAY);
 
-		// Set Bounds for background Obstacle zone
-		backgroundPanel_ForObstacle.setBackground(Color.RED);
-		backgroundPanel_ForObstacle.setBounds(width * 900 / 1440, height * 623 / 900, width * 80 / 1440, height * 70 / 900);
-
 		// Set Bounds for background Image zone
-		backgroundPanel_ForMap.setBounds(width * 0 / 1440, height * 0 / 900, width * 1150 / 1440, height * 625 / 900);
+		backgroundPanel_ForMap.setBounds(0, 0, width * 1150 / 1440, height * 625 / 900);
 		backgroundPanel_ForMap.setBackground(Color.BLUE);
 
 		// Set Bounds for background Round zone
-		backgroundPanel_ForRound.setBounds(width * 1005 / 1440, height * 34 / 900, width * 86 / 1440, height * 130 / 900);
+		backgroundPanel_ForRound.setBounds(width * 990 / 1440, height * 15 / 900, width * 105 / 1440, height * 195 / 900);
 		backgroundPanel_ForRound.setOpaque(false);
 
 		// Set Bounds for background Cards zone
-		backgroundPanel_ForCards.setBounds(width * 0 / 1440, height * 690 / 900, width * 1150 / 1440, height * 3 / 9);
+		backgroundPanel_ForCards.setBounds(0, height * 690 / 900, width * 1150 / 1440, height * 3 / 9);
 		backgroundPanel_ForCards.setBackground(Color.WHITE);
 
 		// Set Bounds for background Information zone
 		backgroundPanel_ForInformationCard.setBounds(width * 1150 / 1440, height * 565 / 900, width * 290 / 1440, height * 330 / 900);
-		backgroundPanel_ForInformationCard.setBackground(Color.WHITE);
+		backgroundPanel_ForInformationCard.setBackground(Color.DARK_GRAY);
 
 		// Set Bounds for background Face Up Transportation Counter zone
-		backgroundPanel_ForFaceUpTransportationCounters.setBounds(width * 1150 / 1440, height * 275 / 900, width * 290 / 1440, height * 289 / 900);
+		backgroundPanel_ForFaceUpTransportationCounters.setBounds(width * 1150 / 1440, height * 270 / 900, width * 290 / 1440, height * 300 / 900);
 		backgroundPanel_ForFaceUpTransportationCounters.setBackground(Color.DARK_GRAY);
 
-		backgroundPanel_ForLeaderboard.setBounds(width * 1150 / 1440, height * 0 / 900, width * 290 / 1440, height * 274 / 900);
+		backgroundPanel_ForLeaderboard.setBounds(width * 1150 / 1440, 0, width * 290 / 1440, height * 274 / 900);
 		backgroundPanel_ForLeaderboard.setBackground(Color.DARK_GRAY);
 	}
 	
@@ -103,7 +96,7 @@ public class ELGameScreen extends GameScreen
 		Border whiteLine = BorderFactory.createLineBorder(Color.WHITE);
 		
 		JPanel panel = panelForDeckOfTransportationCounters;
-		panel.setBounds(width*1210/1440, height*290/900, width*70/1440, height*65/900);
+		panel.setBounds(width*1205/1440, height*285/900, width*80/1440, height*75/900);
 		panel.setOpaque(false);
 		//panel.setBorder(whiteLine);
 		boardGame_Layers.add(panel, 0);
@@ -166,10 +159,10 @@ public class ELGameScreen extends GameScreen
 		}
 		
 		// Obstacle
-		panelForObstacle.setOpaque(false);
-		//panelForObstacle.setBorder(whiteLine);
-		panelForObstacle.setBounds(width*900/1440, height*625/900, width*70/1440, height*65/900);
-		boardGame_Layers.add(panelForObstacle,0);
+		panelForObstacle.setOpaque(true);
+		panelForObstacle.setBackground(Color.RED);
+		panelForObstacle.setBounds(width*950/1440, height*624/900, width*80/1440, height*69/900);
+		boardGame_Layers.add(panelForObstacle,-1);
 	}
 
 	@Override
@@ -202,7 +195,6 @@ public class ELGameScreen extends GameScreen
 		boardGame_Layers.add(panelForDeckOfTransportationCounters,0);
 		boardGame_Layers.add(backgroundPanel_ForTransportationCounters, -1);
 		boardGame_Layers.add(backgroundPanel_ForMap, -1);
-		boardGame_Layers.add(backgroundPanel_ForObstacle,-1);
 		boardGame_Layers.add(backgroundPanel_ForCards, -1);
 		boardGame_Layers.add(backgroundPanel_ForInformationCard, -1);
 		boardGame_Layers.add(backgroundPanel_ForFaceUpTransportationCounters, -1);

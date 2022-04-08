@@ -130,14 +130,14 @@ public abstract class CounterUnit extends Drawable{
                     GameManager.getInstance().endTurn();
 
                 }
-                // RETURN COUNTERS PHASE
+                // RETURN COUNTERS PHASE - Elfengold
                 else if (GameState.instance().getCurrentPhase() == EGRoundPhaseType.RETURN_COUNTERS ||
                         GameState.instance().getCurrentPhase() == ELRoundPhaseType.RETURN_COUNTERS) {
                     GameManager.getInstance().returnCounter(CounterUnit.this);
                     track1.play();
                 }
 
-                // PLAN TRAVEL ROUTES PHASE
+                // PLAN TRAVEL ROUTES PHASE - both
                 else if (GameState.instance().getCurrentPhase() == EGRoundPhaseType.PLAN_ROUTES ||
                         GameState.instance().getCurrentPhase() == ELRoundPhaseType.PLAN_ROUTES) {
                     if (getPlacedOn() == null) {
@@ -158,17 +158,17 @@ public abstract class CounterUnit extends Drawable{
     protected void setType(CounterUnitType pType) {
     	aType = pType;
     }
-    
+
     //getNew should be hidden by all subclasses.
     public static CounterUnit getNew(CounterUnitType pType) {
-    	if (Arrays.asList(enums.CounterType.values()).contains(pType)) {
-    		return new TransportationCounter((CounterType)pType, MainFrame.instance.getWidth() * 67 / 1440, MainFrame.instance.getHeight() * 60 / 900);
-    	}else if (Arrays.asList(enums.GoldPieceType.values()).contains(pType)) {
-    		return new GoldPiece((GoldPieceType)pType, MainFrame.instance.getWidth() * 67 / 1440, MainFrame.instance.getHeight() * 60 / 900);
-    	}else if (Arrays.asList(enums.MagicSpellType.values()).contains(pType)) {
-        	return new MagicSpell((MagicSpellType)pType, MainFrame.instance.getWidth() * 67 / 1440, MainFrame.instance.getHeight() * 60 / 900);
-    	}else {
-    		return new EGObstacle((ObstacleType)pType ,MainFrame.instance.getWidth()*67/1440, MainFrame.instance.getHeight()*60/900);
-    	}
+        if (Arrays.asList(enums.CounterType.values()).contains(pType)) {
+            return new TransportationCounter((CounterType) pType, MainFrame.instance.getWidth() * 67 / 1440, MainFrame.instance.getHeight() * 60 / 900);
+        } else if (Arrays.asList(enums.GoldPieceType.values()).contains(pType)) {
+            return new GoldPiece((GoldPieceType) pType, MainFrame.instance.getWidth() * 67 / 1440, MainFrame.instance.getHeight() * 60 / 900);
+        } else if (Arrays.asList(enums.MagicSpellType.values()).contains(pType)) {
+            return new MagicSpell((MagicSpellType) pType, MainFrame.instance.getWidth() * 67 / 1440, MainFrame.instance.getHeight() * 60 / 900);
+        } else {
+            return new Obstacle((ObstacleType) pType, MainFrame.instance.getWidth() * 67 / 1440, MainFrame.instance.getHeight() * 60 / 900);
+        }
     }
 }

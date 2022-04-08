@@ -163,7 +163,7 @@ public class NetworkUtils {
 
     // as of 03-02-2022, ngrok public address changes (at least the DNS -> IP mapping does) too often to work with
     // this method exists to get the local (only usable on the local network) IP to pass to the LS for the local-multiplayer-only implementation
-    public static String getLocalIP(int callCounter) throws Exception {
+    private static String getLocalIP(int callCounter) throws Exception {
         // need to get the local IP address
         // InetAddress.getLocalHost() returns the loopback address sometimes, so we have to do this a different way
 
@@ -173,7 +173,7 @@ public class NetworkUtils {
 
         for (InetAddress address : allAddresses)
         {
-            if (address.isLoopbackAddress() || !isValidIP(address.getHostAddress()) || !beginsWithTen(address.getHostAddress())) // we don't want the loopback address or an invalid one, like a MAC address
+            if (address.isLoopbackAddress() || !isValidIP(address.getHostAddress()) || !address.isReachable(5000)) // we don't want the loopback address or an invalid one, like a MAC address
             {
                 // do nothing and keep going
                 continue;
@@ -186,8 +186,9 @@ public class NetworkUtils {
         }
 
         callCounter ++;
-        if (callCounter < 5)
+        if (callCounter < 10)
         {
+            Thread.sleep(500);
             return getLocalIP(callCounter); // exhibits some weird behavior, so we will retry up to 5 times
         }
 

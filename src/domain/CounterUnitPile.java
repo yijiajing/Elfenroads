@@ -33,9 +33,9 @@ public class CounterUnitPile extends Deck<CounterUnit> {
         addCountersToDeck(variant);
 
         // initialize the deck image
-        ImageIcon imageIcon = new ImageIcon("./assets/sprites/M08.png");
+        ImageIcon imageIcon = new ImageIcon("./assets/sprites/counter_deck.png");
         Image image = imageIcon.getImage();
-        Image imageResized = image.getScaledInstance(GameScreen.getInstance().getWidth() * 67 / 1440, GameScreen.getInstance().getHeight() * 60 / 900, java.awt.Image.SCALE_SMOOTH);
+        Image imageResized = image.getScaledInstance(GameScreen.getInstance().getWidth() * 70 / 1440, GameScreen.getInstance().getHeight() * 70 / 900, java.awt.Image.SCALE_SMOOTH);
         this.deckImage = new JLabel(new ImageIcon(imageResized));
 
         initializeMouseListener();
@@ -75,8 +75,8 @@ public class CounterUnitPile extends Deck<CounterUnit> {
             for(int i = 0; i < 9; i++) {
                 if (i < 2) {
                     components.add(new GoldPiece(GoldPieceType.GOLDPIECE, width, height));
-                    components.add(new Obstacle(ObstacleType.TREE, width, height, variant));
-                    components.add(new Obstacle(ObstacleType.SEAMONSTER, width, height, variant));
+                    components.add(new Obstacle(ObstacleType.EGTREE, width, height));
+                    components.add(new Obstacle(ObstacleType.SEAMONSTER, width, height));
                     components.add(new MagicSpell(MagicSpellType.DOUBLE, width, height));
                     components.add(new MagicSpell(MagicSpellType.EXCHANGE, width, height));
                 }

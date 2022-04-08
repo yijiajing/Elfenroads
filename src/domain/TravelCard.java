@@ -29,7 +29,7 @@ public class TravelCard extends CardUnit {
     public TravelCard(TravelCardType type, int resizeWidth, int resizeHeight) {
         super(resizeWidth, resizeHeight, "T0" + (type.ordinal() + 1));
         this.type = type;
-        this.getDisplay().addMouseListener(new MouseAdapter() {
+        this.getMiniDisplay().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 track1.play();
@@ -52,9 +52,13 @@ public class TravelCard extends CardUnit {
                     }
 
                     GameManager.getInstance().endTurn();
-                } else {
-                    ActionManager.getInstance().addSelectedCard(TravelCard.this);
                 }
+            }
+        });
+        this.getDisplay().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                ActionManager.getInstance().addSelectedCard(TravelCard.this);
             }
         });
     }

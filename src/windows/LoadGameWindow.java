@@ -10,6 +10,8 @@ public class LoadGameWindow extends JPanel {
     private Box gameInfo;
     private JPanel gamesPanel;
     private JPanel gamePanel;
+    private JScrollPane scrollPane;
+    private JList<String> list;
     private JButton loadButton;
     private JButton backButton;
     private JLabel fileName;
@@ -25,19 +27,43 @@ public class LoadGameWindow extends JPanel {
         gamePanel = new JPanel(new BorderLayout());
         loadButton = new JButton("Load");
         backButton = new JButton("Back");
+        scrollPane = new JScrollPane();
+        list = new JList<>();
+        list.setModel(new AbstractListModel<String>() {
+            String[] elements = {"game1", "game2", "game3", "game4"};
+        
+
+            @Override
+            public int getSize() {
+                
+                return elements.length;
+            }
+
+            @Override
+            public String getElementAt(int index) {
+                
+                return elements[index];
+            }});
+
+        scrollPane.setViewportView(list);
+
 
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 track1.play();
                 remove(background_elvenroads);
-                MainFrame.mainPanel.add(new LobbyWindow(), "lobby");
+                LobbyWindow reinitialized = new LobbyWindow();
+                MainFrame.setLobbyWindow(reinitialized);
+                MainFrame.mainPanel.add(reinitialized, "lobby");
                 MainFrame.cardLayout.show(MainFrame.mainPanel, "lobby");
             }
         });
 
         gamePanel.add(loadButton, BorderLayout.LINE_START);
         gameInfo = Box.createVerticalBox();
+        //add(scrollPane, BorderLayout.CENTER);
+        gamePanel.add(scrollPane, BorderLayout.LINE_END);
         
         //gameInfo
         fileName = new JLabel();

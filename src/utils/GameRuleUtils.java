@@ -8,6 +8,7 @@ import networking.GameState;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
+import java.util.Optional;
 
 public final class GameRuleUtils {
 
@@ -38,6 +39,17 @@ public final class GameRuleUtils {
 
         //TODO: implement elven witch and special transportation counters for Elfengold (seamonster done, magic spell done)
         
+        boolean hasWitch = false;
+        TravelCard witch = null;
+        //check if the player has choose a witch card and has at lease one gold coin.
+        for(TravelCard card: cards) {
+        	if(card.getType() == TravelCardType.WITCH && GameState.instance().getCurrentPlayer().getGoldCoins() >= 1) {
+        		hasWitch = true;
+        		witch = card;
+        		cards.remove(card);
+        	}
+        }
+        
         for (Road road : roads) {
             // cannot move on a non-river and non-lake road without transportation counter
             if (road.getRegionType() != RegionType.LAKE && road.getRegionType() != RegionType.RIVER
@@ -47,17 +59,21 @@ public final class GameRuleUtils {
             if (road.getRegionType() == RegionType.LAKE) {
                 // lake - two raft cards (three with seamonster)
                 int requiredCards = 2;
-                if (road.hasObstacle()) {
+                if (road.hasObstacle() && !hasWitch) {
                     requiredCards++;
                 }
 
                 if (cards.size() == requiredCards && cards.stream().allMatch(card -> card.getType() == TravelCardType.RAFT)) {
                     LOGGER.info("[Lake] Can travel with " + Integer.toString(requiredCards) + " raft cards");
+                    if (hasWitch) {
+                    	LOGGER.info("Current Player use a witch card to go over obstacle.");
+                    	GameState.instance().getCurrentPlayer().removeGoldCoins(1);
+                    }
                     return road;
                 }
             } else if (road.getRegionType() == RegionType.RIVER) {
                 int extraCard = 0;
-                if (road.hasObstacle()) {
+                if (road.hasObstacle() && !hasWitch) {
                     extraCard = 1;
                 }
 
@@ -65,12 +81,20 @@ public final class GameRuleUtils {
                     // upriver - two raft cards (three with seamonster)
                     if (cards.size() == 2 + extraCard && cards.stream().allMatch(card -> card.getType() == TravelCardType.RAFT)) {
                         LOGGER.info("[Upriver] Can travel with " + Integer.toString(2 + extraCard) + " raft cards");
+                        if (hasWitch) {
+                        	LOGGER.info("Current Player use a witch card to go over obstacle.");
+                        	GameState.instance().getCurrentPlayer().removeGoldCoins(1);
+                        }
                         return road;
                     }
                 } else {
                     // downriver - one raft card (two with seamonster)
                     if (cards.size() == 1 + extraCard && cards.get(0).getType() == TravelCardType.RAFT) {
                         LOGGER.info("[Downriver] Can travel with " + Integer.toString(1 + extraCard) + " raft card");
+                        if (hasWitch) {
+                        	LOGGER.info("Current Player use a witch card to go over obstacle.");
+                        	GameState.instance().getCurrentPlayer().removeGoldCoins(1);
+                        }
                         return road;
                     }
                 }
@@ -82,11 +106,15 @@ public final class GameRuleUtils {
                     // convert transportation counter type to corresponding card type
                     TravelCardType requiredType = TravelCardType.valueOf(t.getType().name());
                     int requiredNumOfCards = t.getRequiredNumOfUnitsOn(road);
-                    if (road.hasObstacle()) {
+                    if (road.hasObstacle() && !hasWitch) {
                         requiredNumOfCards++;
                     }
                     if (cards.size() == requiredNumOfCards && cards.stream().allMatch(card -> card.getType() == requiredType)) {
-                        return road;
+                        if (hasWitch) {
+                        	LOGGER.info("Current Player use a witch card to go over obstacle.");
+                        	GameState.instance().getCurrentPlayer().removeGoldCoins(1);
+                        }
+                    	return road;
                     }
                 }
             }
@@ -100,11 +128,21 @@ public final class GameRuleUtils {
                 // caravan cannot move on a lake/river or a road without transportation counter
                 continue;
             }
-            int requiredNumOfCards = road.hasObstacle() ? 4 : 3;
+            int requiredNumOfCards = road.hasObstacle()? 4 : 3;
+            if (hasWitch) {
+                requiredNumOfCards--;
+            }
             if (cards.size() == requiredNumOfCards) {
                 LOGGER.info("Caravan triggered with " + requiredNumOfCards + " cards");
+                if (hasWitch) {
+                	LOGGER.info("Current Player use a witch card to go over obstacle.");
+                	GameState.instance().getCurrentPlayer().removeGoldCoins(1);
+                }
                 return road;
             }
+        }
+        if(witch != null && hasWitch) {
+        	cards.add(witch);
         }
         return null;
     }
@@ -112,6 +150,12 @@ public final class GameRuleUtils {
     public static boolean isDrawCountersPhase() {
         return List.of(ELRoundPhaseType.DRAW_COUNTER_ONE,
                 ELRoundPhaseType.DRAW_COUNTER_TWO, ELRoundPhaseType.DRAW_COUNTER_THREE)
+                .contains(GameState.instance().getCurrentPhase());
+    }
+
+    public static boolean isDrawCardsPhase() {
+        return List.of(EGRoundPhaseType.DRAW_CARD_ONE,
+                EGRoundPhaseType.DRAW_CARD_TWO, EGRoundPhaseType.DRAW_CARD_THREE)
                 .contains(GameState.instance().getCurrentPhase());
     }
 

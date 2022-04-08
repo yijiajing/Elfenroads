@@ -9,7 +9,7 @@ import savegames.SerializableTransportationCounter;
 import windows.MainFrame;
 import java.util.Objects;
 
-public class TransportationCounter extends CounterUnit implements Comparable<TransportationCounter> {
+public class TransportationCounter extends CounterUnit {
 
     private CounterType aType;
     
@@ -79,28 +79,6 @@ public class TransportationCounter extends CounterUnit implements Comparable<Tra
         }
         return -1; // not applicable
     }
-    
-
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        TransportationCounter that = (TransportationCounter) o;
-        return getType() == that.getType();
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getType());
-    }
-
-    @Override
-    public int compareTo(TransportationCounter o) {
-        return aType.compareTo(o.aType);
-    }
-
-
 
     @Override
     public String toString() {

@@ -8,11 +8,13 @@ import gamemanager.EGGameManager;
 import gamemanager.GameManager;
 import gamescreen.EGGameScreen;
 import gamescreen.GameScreen;
+import networking.ActionManager;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.logging.Logger;
 
 public class ChooseCounterPopup extends JPanel {
 
@@ -23,8 +25,7 @@ public class ChooseCounterPopup extends JPanel {
         setLayout(new FlowLayout(FlowLayout.CENTER, 0, 40));
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setBounds((int) screenSize.getWidth()/4, (int) screenSize.getHeight()/6, (int) screenSize.getWidth()/2, (int) screenSize.getHeight()/2);
-        setOpaque(false);
-        setBorder(BorderFactory.createLineBorder(Color.BLUE));
+        setOpaque(true);
 
         JPanel textPanel = new JPanel();
         JLabel text = new JLabel();
@@ -68,6 +69,8 @@ public class ChooseCounterPopup extends JPanel {
 
         add(textPanel);
         add(counterPanel);
+
+        Logger.getGlobal().info("Counter popup should be showing.");
     }
 
 
@@ -94,6 +97,7 @@ public class ChooseCounterPopup extends JPanel {
                 counter.setSecret(false); // the user has chosen this counter to be face-up
                 ((EGGameScreen)GameScreen.getInstance()).hideCounterPopup();
                 ((EGGameManager)GameManager.getInstance()).sendCounters(counter1, counter2);
+                ActionManager.getInstance().setInExternalWindow(false);
             }
         });
     }

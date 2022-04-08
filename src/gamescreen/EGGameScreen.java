@@ -6,6 +6,7 @@ import gamemanager.GameManager;
 import networking.GameState;
 import panel.ScoreBoardPanel;
 import windows.ChooseCounterPopup;
+import windows.DoubleMagicSpellPopup;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -15,14 +16,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-//TODO: modify everything for Elfengold.
+
 public class EGGameScreen extends GameScreen {
 
     protected final JPanel panelForDeckOfTravelCards = new JPanel();
     protected final JPanel backgroundPanel_ForFaceUpTravelCards = new JPanel();
     protected final JPanel panelForGoldCardDeck = new JPanel();
     protected final JPanel[] panelForFaceUpTravelCards = new JPanel[3];
-
+    protected ChooseCounterPopup counterPopup;
+    protected DoubleMagicSpellPopup spellPopup;
 
     EGGameScreen(JFrame frame, GameVariant variant) {
         super(frame, variant);
@@ -35,6 +37,7 @@ public class EGGameScreen extends GameScreen {
         updateFaceUpTravelCards(); // updates the face-up transportation counters
         notifyObservers(); // updates elf boots and town pieces
         updateLeaderboard();
+        updateGoldCardDeck();
     }
 
     @Override
@@ -50,9 +53,7 @@ public class EGGameScreen extends GameScreen {
         initializeFaceUpTravelCards();
         initializeDeckOfTravelCards();
         initializeLeaderboard();
-        initializeEndTurnButton();
-
-        initializeMenuButton();
+        initializeButtons();
         initializeMenu();
         initializeChat();
 
@@ -62,30 +63,30 @@ public class EGGameScreen extends GameScreen {
 
     public void initializeBackgroundPanels() {
         // Set Bounds for background Player's Transportation Counter zone
-        backgroundPanel_ForTransportationCounters.setBounds(width * 0 / 1440, height * 623 / 900, width * 900 / 1440, height * 70 / 900);
+        backgroundPanel_ForTransportationCounters.setBounds(0, height * 623 / 900, width * 1150 / 1440, height * 70 / 900);
         backgroundPanel_ForTransportationCounters.setBackground(Color.DARK_GRAY);
 
         // Set Bounds for background Image zone
-        backgroundPanel_ForMap.setBounds(width * 0 / 1440, height * 0 / 900, width * 1150 / 1440, height * 625 / 900);
+        backgroundPanel_ForMap.setBounds(0, 0, width * 1150 / 1440, height * 625 / 900);
         backgroundPanel_ForMap.setBackground(Color.BLUE);
 
         // Set Bounds for background Round zone
-        backgroundPanel_ForRound.setBounds(width * 1005 / 1440, height * 34 / 900, width * 86 / 1440, height * 130 / 900);
+        backgroundPanel_ForRound.setBounds(width * 995 / 1440, height * 34 / 900, width * 105 / 1440, height * 145 / 900);
         backgroundPanel_ForRound.setOpaque(false);
 
         // Set Bounds for background Cards zone
-        backgroundPanel_ForCards.setBounds(width * 0 / 1440, height * 690 / 900, width * 1150 / 1440, height * 3 / 9);
+        backgroundPanel_ForCards.setBounds(0, height * 690 / 900, width * 1150 / 1440, height * 3 / 9);
         backgroundPanel_ForCards.setBackground(Color.WHITE);
 
         // Set Bounds for background Information zone
         backgroundPanel_ForInformationCard.setBounds(width * 1150 / 1440, height * 565 / 900, width * 290 / 1440, height * 330 / 900);
-        backgroundPanel_ForInformationCard.setBackground(Color.WHITE);
+        backgroundPanel_ForInformationCard.setBackground(Color.DARK_GRAY);
 
         // Set Bounds for background Face Up Travel Card zone
-        backgroundPanel_ForFaceUpTravelCards.setBounds(width * 1150 / 1440, height * 251 / 900, width * 290 / 1440, height * 311 / 900);
+        backgroundPanel_ForFaceUpTravelCards.setBounds(width * 1150 / 1440, height * 250 / 900, width * 290 / 1440, height * 500 / 900);
         backgroundPanel_ForFaceUpTravelCards.setBackground(Color.DARK_GRAY);
 
-        backgroundPanel_ForLeaderboard.setBounds(width * 1150 / 1440, height * 0 / 900, width * 290 / 1440, height * 250 / 900);
+        backgroundPanel_ForLeaderboard.setBounds(width * 1150 / 1440, 0, width * 290 / 1440, height * 250 / 900);
         backgroundPanel_ForLeaderboard.setBackground(Color.DARK_GRAY);
     }
 
@@ -94,7 +95,7 @@ public class EGGameScreen extends GameScreen {
         Border whiteLine = BorderFactory.createLineBorder(Color.WHITE);
 
         JPanel panel = panelForDeckOfTravelCards;
-        panel.setBounds(width*1185/1440, height*257/900, width*100/1440, height/6);
+        panel.setBounds(width*1175/1440, height*255/900, width*110/1440, height/6);
         panel.setOpaque(false);
         //panel.setBorder(whiteLine);
         boardGame_Layers.add(panel, 0);
@@ -105,33 +106,25 @@ public class EGGameScreen extends GameScreen {
         Logger.getGlobal().info("Initializing face up travel cards");
         Border whiteLine = BorderFactory.createLineBorder(Color.WHITE);
         JPanel panel2 = new JPanel();
-        panel2.setBounds(width*1307/1440, height*257/900, width*100/1440, height/6);
+        panel2.setBounds(width*1307/1440, height*265/900, width*100/1440, height/6);
         panel2.setOpaque(false);
         //panel2.setBorder(whiteLine);
         panelForFaceUpTravelCards[0] = panel2;
         boardGame_Layers.add(panel2, 0);
 
         JPanel panel3 = new JPanel();
-        panel3.setBounds(width*1185/1440, height*392/900, width*100/1440, height/6);
+        panel3.setBounds(width*1185/1440, height*420/900, width*100/1440, height/6);
         panel3.setOpaque(false);
         //panel3.setBorder(whiteLine);
         panelForFaceUpTravelCards[1] = panel3;
         boardGame_Layers.add(panel3, 0);
 
         JPanel panel4 = new JPanel();
-        panel4.setBounds(width*1307/1440, height*392/900, width*100/1440, height/6);
+        panel4.setBounds(width*1307/1440, height*420/900, width*100/1440, height/6);
         panel4.setOpaque(false);
         //panel4.setBorder(whiteLine);
         panelForFaceUpTravelCards[2] = panel4;
         boardGame_Layers.add(panel4, 0);
-        
-        //panel for num of gold card deck
-        JPanel panel5 = panelForGoldCardDeck;
-        panel5.setBounds(width*1200/1440, height*20/900, width*250/1440, height*20/900);
-        panel5.setLayout(new GridBagLayout());
-        JLabel goldCardDeck = new JLabel("Gold Cards: " + GameState.instance().getGoldCardDeckCount());
-        panel5.add(goldCardDeck);
-
     }
 
     public void initializeTransportationCounters()
@@ -218,21 +211,20 @@ public class EGGameScreen extends GameScreen {
 
         for (int i = 0; i < 3; i++) {
             JPanel panel = panelForFaceUpTravelCards[i];
-            CardUnit card = faceUpCards.get(i);
-            panel.add(card.getMiniDisplay());
-            panel.repaint();
-            panel.revalidate();
+            if (panel != null && faceUpCards.size() > i) {
+                CardUnit card = faceUpCards.get(i);
+                panel.add(card.getMiniDisplay());
+                panel.repaint();
+                panel.revalidate();
+            }
         }
         
-        //update goldcard deck
-        panelForGoldCardDeck.removeAll();
-        panelForGoldCardDeck.repaint();
-        panelForGoldCardDeck.revalidate();
-        panelForGoldCardDeck.setLayout(new GridBagLayout());
-        JLabel goldCardDeck = new JLabel("Gold Cards: " + GameState.instance().getGoldCardDeckCount());
-        panelForGoldCardDeck.add(goldCardDeck); 
-        panelForGoldCardDeck.repaint();
-        panelForGoldCardDeck.revalidate();
+    }
+    
+    
+    //TODO: update the DrawGoldDeckButton
+    public void updateGoldCardDeck() {
+    	
     }
 
     public void updateTransportationCounters()
@@ -267,7 +259,25 @@ public class EGGameScreen extends GameScreen {
         }
     }
 
+    public void showCounterPopup(CounterUnit counter1, CounterUnit counter2) {
+        counterPopup = new ChooseCounterPopup(counter1, counter2);
+        boardGame_Layers.add(counterPopup, 0);
+    }
+
     public void hideCounterPopup() {
         boardGame_Layers.remove(counterPopup);
+        boardGame_Layers.repaint();
+        boardGame_Layers.revalidate();
+    }
+
+    public void showDoubleMagicSpellPopup() {
+        spellPopup = new DoubleMagicSpellPopup();
+        boardGame_Layers.add(spellPopup, 0);
+    }
+
+    public void hideMagicSpellPopup() {
+        boardGame_Layers.remove(spellPopup);
+        boardGame_Layers.repaint();
+        boardGame_Layers.revalidate();
     }
 }

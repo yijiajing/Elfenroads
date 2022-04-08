@@ -146,7 +146,7 @@ public class GameSession {
         {
             // if a session has been launched already, it must be deleted by the game service admin
             Logger.getGlobal().info("I see you are calling GameSession.delete(). This method is not well-adapted to be used in the actual game code.");
-            token = User.getAccessTokenUsingCreds("Elfenland_Classic", "abc123_ABC123");
+            token = User.getAccessTokenUsingCreds("Elfengold_Classic", "abc123_ABC123");
         }
         else
         {
@@ -409,6 +409,44 @@ public class GameSession {
         return content.toString();
     }
 
+    /**
+     * designed to avoid hanging when leaving LobbyWindow
+     * @param prevPayload
+     * @return
+     * @throws IOException
+     */
+    public static String getSessions(String prevPayload, Thread longPollThread) throws IOException, InterruptedException {
+        String prevPayloadHashed = NetworkUtils.md5Hash(prevPayload);
+
+        URL url = new URL("http://35.182.122.111:4242/api/sessions" + "?hash=" + prevPayloadHashed);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("GET");
+
+        int status = con.getResponseCode();
+        // if we get a timeout, just resend the request
+        if (status == 408)
+        {
+            // check if we have left the lobby window
+            if (longPollThread.isInterrupted())
+            {
+                throw new InterruptedException();
+            }
+            Logger.getGlobal().info("GetSessions request timed out. Resending it.");
+            getSessions(prevPayload);
+        }
+
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer content = new StringBuffer();
+        while((inputLine = in.readLine()) != null) {
+            content.append(inputLine);
+        }
+        in.close();
+        con.disconnect();
+        System.out.println("Response status: " + status);
+        return content.toString();
+    }
+
     public static JSONObject getGameParameters(String id) throws IOException
     {
         JSONObject gameDetails = getSessionDetails(id);
@@ -526,7 +564,7 @@ public class GameSession {
      *
      * @param joiner
      */
-    public static void joinSession(User joiner, String sessionID) throws Exception
+    public static void joinSession(User joiner, String sessionID, String pLocalIP) throws Exception
     {
 
         if (!joiner.getRole().equals(User.Role.PLAYER))
@@ -539,7 +577,7 @@ public class GameSession {
         // get ip to pass
         //String ip = NetworkUtils.ngrokAddrToPassToLS();
         // 03/02 changing to pass local address to ls instead
-        String ip = NetworkUtils.getLocalIPAddPort();
+        String ip = pLocalIP;
 
         URL url = new URL("http://35.182.122.111:4242/api/sessions/" + sessionID + "/players/" + joiner.getUsername() + "?location=" + ip + "&access_token=" + token);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();

@@ -1,10 +1,10 @@
 package commands;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 import gamemanager.GameManager;
 import domain.CounterUnit;
-import domain.Hand;
 import enums.CounterUnitType;
 import networking.GameState;
 
@@ -18,14 +18,11 @@ public class ReturnCounterUnitCommand implements GameCommand{
     private final CounterUnitType type;
     private final boolean isSecret;
     private final String senderName;
-    
-    CounterUnit pCounter;
 
     public ReturnCounterUnitCommand(CounterUnit returnedCounter) {
         this.type = returnedCounter.getType();
         this.isSecret = returnedCounter.isSecret();
         this.senderName = GameManager.getInstance().getThisPlayer().getName();
-        pCounter = returnedCounter;
     }
 
     /**
@@ -33,16 +30,26 @@ public class ReturnCounterUnitCommand implements GameCommand{
      */
     @Override
     public void execute() {
-        Logger.getGlobal().info("Executing ReturnCounterCommand, keep " + type);
-        CounterUnit counter = pCounter.getNew(type);
+        Logger.getGlobal().info("Executing ReturnCounterCommand, returning " + type);
+        CounterUnit counter = CounterUnit.getNew(type);
+        // put counter back to the pile
         GameState.instance().getCounterPile().addDrawable(counter);
 
         // update the sending player's hand
-        CounterUnit newCounter = CounterUnit.getNew(type);
-        newCounter.setSecret(isSecret);
-        Hand senderHand = GameState.instance().getPlayerByName(senderName).getHand();
-        senderHand.clearCounters();
-        senderHand.addUnit(newCounter);
+        List<CounterUnit> senderHand = GameState.instance().getPlayerByName(senderName).getHand().getCounters();
+        CounterUnit toRemove = null;
+        for (CounterUnit c: senderHand) {
+            if (c.getType() == type && c.isSecret() == isSecret) {
+                toRemove = c;
+            }
+        }
+        if (toRemove == null) {
+            Logger.getGlobal().severe("the counter to remove is not in the sending player's hand");
+        } else {
+            toRemove.setOwned(false);
+            Logger.getGlobal().info("Counter " + toRemove.getType() + " is removed");
+            senderHand.remove(toRemove);
+        }
     }
 
 }

@@ -3,7 +3,6 @@ package gamemanager;
 import commands.DrawCounterCommand;
 import commands.NotifyTurnCommand;
 import commands.ReturnCounterUnitCommand;
-import commands.ReturnTransportationCounterCommand;
 import domain.*;
 import enums.EGRoundPhaseType;
 import enums.GameVariant;
@@ -12,20 +11,24 @@ import gamescreen.GameScreen;
 import networking.GameState;
 import savegames.Savegame;
 import utils.GameRuleUtils;
+import windows.AuctionFrame;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 
-//TODO: modify everything for Elfengold
+
 public class EGGameManager extends GameManager {
 
     private final static Logger LOGGER = Logger.getLogger("Game Manager");
     private CounterUnit prevCounterKept;
+    private AuctionFrame auctionFrame;
 
-    EGGameManager(Optional<Savegame> savegame, String sessionID, GameVariant variant) {
-        super(savegame, sessionID, variant);
+
+    EGGameManager(Optional<GameState> loadedState, String sessionID, GameVariant variant, String pLocalAddress) {
+        super(loadedState, sessionID, variant, pLocalAddress);
         assert GameRuleUtils.isElfengoldVariant(variant);
     }
 
@@ -39,12 +42,13 @@ public class EGGameManager extends GameManager {
             p.addGoldCoins(7);
         }
 
+        // add gold cards later so that the initially assigned cards are all travel cards
+        gameState.getTravelCardDeck().addGoldCards();
+
         // put 3 cards face up, these are shared across peers
         for (int j = 0; j < 3; j++) {
             this.gameState.addFaceUpCardFromDeck();
         }
-
-
     }
 
     @Override
@@ -61,7 +65,10 @@ public class EGGameManager extends GameManager {
                 GameScreen.getInstance().updateAll();
             }
         } else {
-            LOGGER.info("In round " + gameState.getCurrentRound() + ", go directly to choose face-up counter");
+            LOGGER.info("In round " + gameState.getCurrentRound() + ", go to draw card phase");
+            GameScreen.displayMessage("""
+                    New Round Start!
+                    """);
             gameState.setCurrentPhase(EGRoundPhaseType.DRAW_CARD_ONE);
             // Triggered only on one instance (the first player)
             if (isLocalPlayerTurn()) {
@@ -74,13 +81,13 @@ public class EGGameManager extends GameManager {
 
     public void drawTravelCard() {
         if (!(gameState.getCurrentRound() <= gameState.getTotalRounds()
-                && GameRuleUtils.isDrawCountersPhase()
+                && GameRuleUtils.isDrawCardsPhase()
                 && isLocalPlayerTurn())) {
             return;
         }
         updateGameState();
         GameScreen.displayMessage("""
-                Please select a transportation counter to add to your hand. You may choose one of the face-up cards, 
+                Please select a card to add to your hand. You may choose one of the face-up cards, 
                 a card from the deck or take the entire gold card deck, shown on the right side of the screen.
                 """);
         // all logic is implemented in the mouse listeners of the cards
@@ -90,11 +97,17 @@ public class EGGameManager extends GameManager {
      * PHASE 4
      */
     public void chooseFaceUpCounter() {
+        Logger.getGlobal().info(Integer.toString(gameState.getCurrentRound()));
+        Logger.getGlobal().info(gameState.getCurrentPhase().toString());
+        Logger.getGlobal().info(Boolean.toString(gameState.getCurrentPhase() == EGRoundPhaseType.CHOOSE_FACE_UP));
+
         if (!(gameState.getCurrentRound() <= gameState.getTotalRounds()
                 && gameState.getCurrentPhase() == EGRoundPhaseType.CHOOSE_FACE_UP
                 && isLocalPlayerTurn())) {
             return;
         }
+
+        Logger.getGlobal().info("Preparing to show the counter popup window.");
 
         // distribute gold coins (beginning with the second round)
         if (gameState.getCurrentRound() > 1) {
@@ -114,7 +127,7 @@ public class EGGameManager extends GameManager {
         counter2.setSecret(true);
 
         // let the player choose which counter to place face-up (hence the other one is face-down)
-        GameScreen.getInstance().showCounterPopup(counter1, counter2);
+        ((EGGameScreen) GameScreen.getInstance()).showCounterPopup(counter1, counter2);
     }
 
     /**
@@ -122,8 +135,8 @@ public class EGGameManager extends GameManager {
      */
     public void sendCounters(CounterUnit counter1, CounterUnit counter2) {
         Logger.getGlobal().info("Sending two DrawCounterCommands");
-        DrawCounterCommand cmd1 = new DrawCounterCommand(counter1, !counter1.isSecret());
-        DrawCounterCommand cmd2 = new DrawCounterCommand(counter2, !counter2.isSecret());
+        DrawCounterCommand cmd1 = new DrawCounterCommand(counter1, false);
+        DrawCounterCommand cmd2 = new DrawCounterCommand(counter2, false);
         try {
             coms.sendGameCommandToAllPlayers(cmd1);
             coms.sendGameCommandToAllPlayers(cmd2);
@@ -141,7 +154,18 @@ public class EGGameManager extends GameManager {
                 && isLocalPlayerTurn())) {
             return;
         }
-        //TODO: show auction window and display hints
+        
+        AuctionFrame auctionwindow = new AuctionFrame();
+        this.auctionFrame = auctionwindow;
+
+        CounterUnitPile pile = GameState.instance().getCounterPile();
+        int numplayers = GameState.instance().getNumOfPlayers();
+        for (int i=0; i<numplayers;i++){
+            auctionwindow.addCounter(pile.draw());
+            auctionwindow.addCounter(pile.draw());
+        }
+
+        endTurn();
     }
 
     @Override
@@ -178,32 +202,40 @@ public class EGGameManager extends GameManager {
 
         if (prevCounterKept == null) {
             prevCounterKept = toKeep;
+            prevCounterKept.setSelected(true);
         } else {
+            if (toKeep == prevCounterKept) {
+                toKeep.setSelected(false);
+                prevCounterKept = null;
+                return;
+            }
             // the player has selected all two counters to keep, return all counters except these two
+            LOGGER.info("The player chose to keep " + prevCounterKept.getType() + " and " + toKeep.getType());
             for (CounterUnit c : myCounters) {
-                if (c.equals(toKeep) || c.equals(prevCounterKept)) {
+                if (c == toKeep || c == prevCounterKept) {
                     continue;
                 }
 
                 GameState.instance().getCounterPile().addDrawable(c); // put counter back in the deck
 
                 try {
-                    LOGGER.info("Sending ReturnCounterUnitCommand to all players");
+                    LOGGER.info("Sending ReturnCounterUnitCommand to all players, returning a " + c.getType());
                     coms.sendGameCommandToAllPlayers(new ReturnCounterUnitCommand(c));
                 } catch (IOException e) {
                     System.out.println("There was a problem sending the ReturnCounterUnitCommand to all players.");
                     e.printStackTrace();
                 }
             }
+            // clear all counters and then add toKeep and prevCounterKept back, otherwise we get concurrent modification exception
+            thisPlayer.getHand().getCounters().clear();
+            toKeep.setSelected(false);
+            prevCounterKept.setSelected(false);
+            thisPlayer.getHand().addUnit(toKeep);
+            thisPlayer.getHand().addUnit(prevCounterKept);
+            prevCounterKept = null;
+
+            endTurn();
         }
-
-        // clear all counters and then add toKeep back, otherwise we get concurrent modification exception
-        thisPlayer.getHand().getCounters().clear();
-        thisPlayer.getHand().addUnit(toKeep);
-        thisPlayer.getHand().addUnit(prevCounterKept);
-        prevCounterKept = null;
-
-        endTurn();
     }
 
     @Override
@@ -271,5 +303,9 @@ public class EGGameManager extends GameManager {
             }
             GameScreen.displayMessage("There is a tie. " + winnersNames + " are the winners!");
         }
+    }
+
+    public AuctionFrame getAuctionFrame() {
+        return this.auctionFrame;
     }
 }

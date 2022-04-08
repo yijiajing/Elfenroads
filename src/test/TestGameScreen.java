@@ -1,13 +1,17 @@
 package test;
 
 import domain.Player;
+import domain.TransportationCounter;
 import enums.Colour;
+import enums.CounterType;
 import enums.GameVariant;
 import gamemanager.GameManager;
+import gamescreen.EGGameScreen;
 import gamescreen.GameScreen;
 import networking.GameSession;
 import networking.GameState;
 import networking.User;
+import utils.NetworkUtils;
 import windows.MainFrame;
 
 import javax.swing.*;
@@ -31,7 +35,8 @@ public class TestGameScreen {
         MainFrame mainFrame = MainFrame.getInstance();
 
         try {
-            GameManager.init(Optional.empty(), "123", GameVariant.ELFENGOLD_CLASSIC); // set the variant here
+            String localIP = NetworkUtils.getLocalIPAddPort();
+            GameManager.init(Optional.empty(), "123", GameVariant.ELFENLAND_CLASSIC, localIP); // set the variant here
 
             Player p = new Player(Colour.BLACK, "chloe");
             GameManager.getInstance().setThisPlayer(p);

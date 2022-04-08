@@ -4,6 +4,7 @@ import gamemanager.GameManager;
 import enums.GameVariant;
 import org.json.JSONObject;
 import networking.*;
+import utils.NetworkUtils;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -32,18 +33,39 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
     private static String prevPayload = ""; // used for long polling requests
 
     private static Thread t;
+    private static Thread stopper; // use to forcefully stop the other thread when we need to
     private static int flag = 0;
 
     static MP3Player track1 = new MP3Player("./assets/Music/JLEX5AW-ui-medieval-click-heavy-positive-01.mp3");
 
-    private void initThread()
+    private void initThreads()
     {
         t = new Thread(this);
+        stopper = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true)
+                {
+                    try{Thread.sleep(500);}
+                    catch (InterruptedException e3) {e3.printStackTrace();}
+                    if (flag == 1)
+                    {
+                        Logger.getGlobal().info("Attempting to stop the main update thread.");
+                        t.stop();
+                        break;
+                    }
+
+                }
+
+            }
+        });
     }
 
     LobbyWindow()
     {
-        initThread();
+        initThreads();
+        prevPayload = "";
+        flag = 0;
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setSize((int) screenSize.getWidth(), (int) screenSize.getHeight());
 
@@ -77,6 +99,7 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
                 //t.stop();
                 track1.play();
                 flag = 1;
+                t.interrupt(); // kill the thread
                 remove(background_elvenroads);
                 MainFrame.mainPanel.add(new VersionToPlayWindow(), "version");
                 MainFrame.cardLayout.show(MainFrame.mainPanel,"version");
@@ -87,6 +110,8 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
             @Override
             public void actionPerformed(ActionEvent e) {
                 track1.play();
+                flag = 1;
+                t.interrupt(); // kill the thread
                 remove(background_elvenroads);
                 MainFrame.mainPanel.add(new LoadGameWindow(), "load");
                 MainFrame.cardLayout.show(MainFrame.mainPanel,"load");
@@ -123,6 +148,7 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
         add(background_elvenroads);
 
         t.start();
+        stopper.start();
 
     }
 
@@ -150,11 +176,19 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
         else // if it is not our first request
         {// get a list of game sessions by ID
             try {
-                getSessionsResponse = GameSession.getSessions(prevPayload);
+                getSessionsResponse = GameSession.getSessions(prevPayload, t);
                 Logger.getGlobal().info("Sending another long poll request...");
-            } catch (IOException e) {
-                // we can assume that the exception is because of long polling timeout, so we'll just resend it
-                getSessionsResponse = GameSession.getSessions(prevPayload);
+            } catch (Exception e) {
+                // if interruptedException, return.
+                if (e instanceof InterruptedException)
+                {
+                    return;
+                }
+                // else, re-call the long polling method (it was probably a timeout)
+                else
+                {
+                    getSessionsResponse = GameSession.getSessions(prevPayload);
+                }
             }
 
             if (getSessionsResponse == null) {
@@ -172,6 +206,7 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
         int counter = 0;
 
         // iterate through the IDs and get info for each game & add it to the display
+        // if there are no sessions, just clear everything
         for (String id : gameIDs)
         {
             // get game info
@@ -233,8 +268,10 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
                         //t.stop();
                         track1.play();
                         flag = 1;
-                        GameSession.joinSession(MainFrame.loggedIn, id);
-                        GameManager.init(Optional.empty(), id, interpretVariant(gameName));
+                        t.interrupt();
+                        String localIP = NetworkUtils.getLocalIPAddPort();
+                        GameSession.joinSession(MainFrame.loggedIn, id, localIP);
+                        GameManager.init(Optional.empty(), id, interpretVariant(gameName), localIP);
 
                         // prompt user to choose a boot colour
                         // this calls the ChooseBootWindow once all players have responded
@@ -295,13 +332,14 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
             try 
             {
                 initializeGameInfo(sessions);
-            } 
-            catch (IOException e) 
+            }
+            catch (IOException e)
             {
-                Logger.getGlobal().info("Caught an IOException in the LobbyWindow. The long polling request probably timed out. Sending a new one.");
                 e.printStackTrace();
             }
-        } 
+
+        }
+        Logger.getGlobal().info("Ended the thread while loop.");
     }
 
     /**

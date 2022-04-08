@@ -3,6 +3,7 @@ package test;
 import utils.NetworkUtils;
 
 import java.net.InetAddress;
+import java.util.logging.Logger;
 
 public class TestIP {
 
@@ -10,7 +11,15 @@ public class TestIP {
     public static void main (String [] args) throws Exception
     {
 
-        System.out.println(NetworkUtils.getLocalIP(0));
+        InetAddress local = InetAddress.getLocalHost();
+        String localHostname = local.getHostName();
+        InetAddress [] allAddresses = InetAddress.getAllByName(localHostname);
+
+        for (InetAddress address : allAddresses)
+        {
+            Logger.getGlobal().info(address.getHostAddress());
+        }
+
 
 
         /* InetAddress add = InetAddress.getLocalHost();

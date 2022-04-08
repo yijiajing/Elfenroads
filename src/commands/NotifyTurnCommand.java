@@ -37,7 +37,6 @@ public class NotifyTurnCommand implements GameCommand {
             Logger.getGlobal().info("Phase is " + phase);
             GameState.instance().setCurrentPhase(phase);
 
-            // TODO: implement all phases
             switch ((EGRoundPhaseType) phase) {
                 case DRAW_CARD_ONE: case DRAW_CARD_TWO: case DRAW_CARD_THREE:
                     gameManager.drawTravelCard();

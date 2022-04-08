@@ -5,6 +5,7 @@ import enums.GameVariant;
 import gamemanager.GameManager;
 import utils.GameRuleUtils;
 import utils.NetworkUtils;
+import windows.MainFrame;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -29,15 +30,19 @@ public class CommunicationsManager {
     private ArrayList<String> playerAddresses; // this will store the addresses of players. It will be used only at initialization
     private HashMap<String, String> namesAndAddresses;
 
+    private static String localAddress; // stores the local IP
+
     // private GameCommand lastCommandReceived; // this will be used to update the GameState/GameScreen with whatever command we just received
     // private Queue<GameCommand> toExecute;
     private static int drawCardCommandsExecuted; // used to help ensure the proper order of command execution
 
 
-    private CommunicationsManager(GameManager pManagedBy, String gameSessionID)
+    private CommunicationsManager(GameManager pManagedBy, String gameSessionID, String pLocalAddress)
     {
         sessionID = gameSessionID;
         managedBy = pManagedBy;
+
+        localAddress = pLocalAddress;
 
         // toExecute = new LinkedList<GameCommand>();
 
@@ -47,11 +52,11 @@ public class CommunicationsManager {
         setUpListener();
     }
 
-    public static CommunicationsManager init(GameManager pManagedBy, String gameSessionID)
+    public static CommunicationsManager init(GameManager pManagedBy, String gameSessionID, String pLocalAddress)
     {
         if (INSTANCE == null)
         {
-            INSTANCE = new CommunicationsManager(pManagedBy, gameSessionID);
+            INSTANCE = new CommunicationsManager(pManagedBy, gameSessionID, pLocalAddress);
         }
         return INSTANCE;
     }
@@ -91,8 +96,6 @@ public class CommunicationsManager {
         recordPlayerAddresses();
         ArrayList <Socket> senders = new ArrayList<Socket>();
         try {
-            // String localAddress = NetworkUtils.ngrokAddrToPassToLS();
-            String localAddress = NetworkUtils.getLocalIPAddPort();
             for (String otherPlayerIP : playerAddresses) {
                 // if we are looking at our own address, do nothing
                 if (otherPlayerIP.equals(localAddress)) {
@@ -172,7 +175,6 @@ public class CommunicationsManager {
         recordPlayerNamesAndAddresses();
 
         try {
-            String localAddress = NetworkUtils.getLocalIPAddPort();
             if (otherPlayerIP.equals(localAddress)) {
                 return; // don't send a command to ourself
             }
@@ -296,7 +298,6 @@ public class CommunicationsManager {
 
         numCommandsToWaitFor = thisPlayerIndex;
         Logger.getGlobal().info("We need to receive " + numCommandsToWaitFor + " DrawCardCommands before we can proceed.");
-
         return drawCardCommandsExecuted == numCommandsToWaitFor;
     }
 

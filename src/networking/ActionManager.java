@@ -5,8 +5,10 @@ import domain.*;
 import enums.EGRoundPhaseType;
 import enums.ELRoundPhaseType;
 import enums.ObstacleType;
-import enums.RoundPhaseType;
+import enums.TravelCardType;
+import enums.*;
 import gamemanager.GameManager;
+import gamescreen.EGGameScreen;
 import panel.ElfBootPanel;
 import gamescreen.GameScreen;
 import utils.GameRuleUtils;
@@ -31,6 +33,8 @@ public class ActionManager {
     private GameManager gameManager;
 
     private Road selectedRoad;
+    private boolean inExchange;
+    private boolean inExternalWindow;
     private CounterUnit selectedCounter;
     private final List<TravelCard> selectedCards = new ArrayList<>();
     private Town selectedTown;
@@ -60,7 +64,7 @@ public class ActionManager {
      * If the player selects a transportation counter before selecting the road, a place transportation counter
      * command is triggered.
      * If the player selects an obstacle before selecting the road, a place obstacle command is triggered.
-     * <p>
+     *
      * Preconditions: the current phase is PLAN ROUTES and the requested player is the current player
      *
      * @param road the road that the player clicks on
@@ -68,12 +72,46 @@ public class ActionManager {
     public void setSelectedRoad(Road road) {
         LOGGER.info("Road on " + road.getRegionType() + " selected");
 
+        if (inExternalWindow) {
+            LOGGER.info("In external window, cannot click on a road");
+            return;
+        }
+
         if (!((gameState.getCurrentPhase() == EGRoundPhaseType.PLAN_ROUTES || gameState.getCurrentPhase() == ELRoundPhaseType.PLAN_ROUTES)
                 && gameManager.isLocalPlayerTurn())) {
             return;
         }
         LOGGER.info("Before removing the counter, counters in hand: " +
                 GameManager.getInstance().getThisPlayer().getHand().getCounters().toString());
+
+        // the player wish to exchange the transportation counters on the previously selected
+        // road and the newly selected road
+        if (inExchange) {
+            assert selectedCounter != null;
+            assert selectedCounter.getType() == MagicSpellType.EXCHANGE;
+            LOGGER.info("In exchange");
+            if (selectedRoad.exchangeWith(road)) {
+                gameManager.getThisPlayer().getHand().removeUnit(selectedCounter);
+                selectedCounter.setOwned(false);
+                gameState.getCounterPile().addDrawable(selectedCounter);
+                GameCommand toSendOverNetwork = new ExchangeCommand(selectedRoad, road, selectedCounter.isSecret());
+                try {
+                    gameManager.getComs().sendGameCommandToAllPlayers(toSendOverNetwork);
+                    GameScreen.getInstance().updateAll();
+                } catch (IOException e) {
+                    LOGGER.info("There was a problem sending the command to exchange two transportation counters!");
+                    e.printStackTrace();
+                }
+                gameManager.endTurn();
+            } else {
+                clearSelection();
+                GameScreen.displayMessage("The exchanged transportation counters are not legal on the roads they are " +
+                        "exchanged to. Please try again. ");
+            }
+            inExchange = false;
+            return;
+        }
+
         selectedRoad = road;
 
         // Player intends to place an obstacle
@@ -144,7 +182,36 @@ public class ActionManager {
                 GameScreen.displayMessage("You cannot place a gold piece here. Please try again.");
             }
         }
-        clearSelection();
+
+        // Player intends to place a magic spell
+        else if (selectedCounter instanceof MagicSpell) {
+            MagicSpell counter = (MagicSpell) selectedCounter;
+            if (counter.getType() == MagicSpellType.EXCHANGE) {
+                if (road.getRegionType() == RegionType.RIVER || road.getRegionType() == RegionType.LAKE
+                        || road.hasDouble() || road.numOfTransportationCounter() == 0) {
+                    GameScreen.displayMessage("You cannot place an Exchange here. Please try again.");
+                } else {
+                    LOGGER.info("Started an exchange, just selected a road on " + selectedRoad.getRegionType());
+                    inExchange = true;
+                    GameScreen.displayMessage("""
+                            You just started an Exchange! Please click on another road with which you would like to 
+                            exchange the transportation counter on the road you just selected. You must make certain 
+                            that the exchanged transportation counters are legal on the roads they are exchanged to.
+                            """);
+                }
+            } else if (counter.getType() == MagicSpellType.DOUBLE) {
+                if (selectedRoad.placeDouble(counter)) {
+                    inExternalWindow = true;
+                    ((EGGameScreen) GameScreen.getInstance()).showDoubleMagicSpellPopup();
+                } else {
+                    GameScreen.displayMessage("You cannot place a Double here. Please try again.");
+                }
+            }
+        }
+
+        if (!(selectedCounter instanceof MagicSpell)) {
+            clearSelection();
+        }
     }
 
     public CounterUnit getSelectedCounter() {
@@ -152,7 +219,20 @@ public class ActionManager {
     }
 
     public void setSelectedCounter(CounterUnit pCounter) {
-        if (!(gameState.getCurrentPhase() == ELRoundPhaseType.PLAN_ROUTES || gameState.getCurrentPhase() == EGRoundPhaseType.PLAN_ROUTES)) {
+        if (!(gameState.getCurrentPhase() == ELRoundPhaseType.PLAN_ROUTES
+                || gameState.getCurrentPhase() == EGRoundPhaseType.PLAN_ROUTES)) {
+            return;
+        }
+
+        LOGGER.info("Counter of type " + pCounter.getType() + " selected");
+
+        if (inExchange) {
+            GameScreen.displayMessage("You just placed an Exchange Magic Spell. Please select another road instead.");
+            return;
+        }
+
+        if (inExternalWindow) {
+            LOGGER.info("In external window, cannot click on a counter");
             return;
         }
 
@@ -183,6 +263,16 @@ public class ActionManager {
      */
     public void addSelectedCard(TravelCard card) {
         LOGGER.info("Card " + card.getType() + " selected");
+
+        if (inExternalWindow) {
+            LOGGER.info("In external window, cannot click on a card");
+            return;
+        }
+
+        if (inExchange) {
+            LOGGER.info("In exchange, cannot click on a card");
+        }
+
         if (!(gameState.getCurrentPhase() == EGRoundPhaseType.MOVE || gameState.getCurrentPhase() == ELRoundPhaseType.MOVE)) {
             return;
         }
@@ -220,19 +310,40 @@ public class ActionManager {
         LOGGER.info("Town " + town.getName() + " selected");
         selectedTown = town;
 
+        if (inExternalWindow) {
+            LOGGER.info("In external window, cannot click on a town");
+            return;
+        }
+
+        if (inExchange) {
+            LOGGER.info("In exchange, cannot click on a town");
+        }
+
         if ((!(gameState.getCurrentPhase() == EGRoundPhaseType.MOVE || gameState.getCurrentPhase() == ELRoundPhaseType.MOVE))
                 || selectedCards.isEmpty()
                 || !gameManager.isLocalPlayerTurn()) {
             return;
         }
 
+        //if the player only choose one travel card and it's an elven witch, the player intends to make a magic flight
+        boolean magicFlightSuccess = false;
+        if (selectedCards.size() == 1 && selectedCards.get(0).getType() == TravelCardType.WITCH) {
+            if (gameState.getCurrentPlayer().getGoldCoins() >= 3) {
+                magicFlightSuccess = true;
+                gameState.getCurrentPlayer().removeGoldCoins(3);
+                LOGGER.info("The current player intends to make a magic flight. Take away 3 coins");
+            } else {
+                LOGGER.info("The current player intends to make a magic flight but does not have enough coins.");
+            }
+        }
+
         Road road = GameRuleUtils.validateMove(GameMap.getInstance(), gameState.getCurrentPlayer().getCurrentTown(), selectedTown, selectedCards);
-        if (road != null) {
+        if (road != null || magicFlightSuccess) {
             //TODO: 1. let the player choose whether they wish to draw two cards or take the gold coins
             // 2. Update other players of this player's gold coins
 
-            // update gold coins of the player
-            if (GameRuleUtils.isElfengoldVariant()) {
+            // update gold coins of the player. The player does not collect coins if he makes a magic flight
+            if (GameRuleUtils.isElfengoldVariant() && !magicFlightSuccess) {
                 int goldEarned = selectedTown.getGoldValue();
                 if (road.hasGoldPiece()) {
                     goldEarned *= 2;
@@ -293,11 +404,16 @@ public class ActionManager {
         clearSelection();
     }
 
+    public void setInExternalWindow(boolean inExternalWindow) {
+        this.inExternalWindow = inExternalWindow;
+    }
+
     /**
      * Clears all selection states.
      * Whenever a new selection state is added to GameState, remember to clear it here.
      */
     public void clearSelection() {
+        LOGGER.info("Selection cleared");
         selectedRoad = null;
         selectedCounter = null;
         assert selectedCards.stream().allMatch(CardUnit::isSelected);

@@ -39,9 +39,10 @@ public abstract class GameManager {
 
     // manages choosing a boot colour
     protected ArrayList<Colour> availableColours = new ArrayList<>();
-    protected HashMap<Colour, String> bootColours = new HashMap<>(); // <boot colour, player IP> TODO change to Player
 
-    GameManager(Optional<Savegame> savegame, String pSessionID, GameVariant pVariant) {
+
+    GameManager(Optional<GameState> loadedState, String pSessionID, GameVariant variant, String pLocalAddress) {
+        MainFrame.mainPanel.add(GameScreen.init(MainFrame.getInstance(), variant), "gameScreen");
         sessionID = pSessionID;
         // TODO: I will decide whether to move this inside the conditional:
         // need to see if loaded games start with a different session ID than when they were saved
@@ -71,16 +72,17 @@ public abstract class GameManager {
             actionManager = ActionManager.init(gameState, this);
         }
 
-        coms = CommunicationsManager.init(this, sessionID);
+        coms = CommunicationsManager.init(this, sessionID, pLocalAddress);
     }
 
-    public static GameManager init(Optional<Savegame> savegame, String sessionID, GameVariant variant) {
+
+    public static GameManager init(Optional<GameState> loadedState, String sessionID, GameVariant variant, String pLocalAddress) {
         if (INSTANCE == null) {
             Logger.getGlobal().info("Initializing GameManager");
             if (GameRuleUtils.isElfengoldVariant(variant)) {
-                INSTANCE = new EGGameManager(savegame, sessionID, variant);
+                INSTANCE = new EGGameManager(loadedState, sessionID, variant, pLocalAddress);
             } else {
-                INSTANCE = new ELGameManager(savegame, sessionID, variant);
+                INSTANCE = new ELGameManager(loadedState, sessionID, variant, pLocalAddress);
             }
         }
         return INSTANCE;
@@ -238,7 +240,8 @@ public abstract class GameManager {
 
     public void planTravelRoutes() {
         if (gameState.getCurrentRound() <= gameState.getTotalRounds()
-                && gameState.getCurrentPhase() == ELRoundPhaseType.PLAN_ROUTES
+                && (gameState.getCurrentPhase() == ELRoundPhaseType.PLAN_ROUTES
+                || gameState.getCurrentPhase() == EGRoundPhaseType.PLAN_ROUTES)
                 && isLocalPlayerTurn()) {
 
             updateGameState();
@@ -247,19 +250,25 @@ public abstract class GameManager {
             // display message
             if (gameState.getCurrentPhase() == ELRoundPhaseType.PLAN_ROUTES
                     || gameState.getCurrentPhase() == EGRoundPhaseType.PLAN_ROUTES) {
-                GameScreen.displayMessage("""
+
+                if (GameManager.getInstance().getThisPlayer().getHand().getCounters().size() > 0) {
+                    GameScreen.displayMessage("""
                         It is time to plan your travel routes! Begin by clicking the transportation counter in your hand that you want to use, then click on the road that you want to travel.
                         The chart in the bottom right corner indicates which transportation counters may be used on which road.
                         Alternatively, you may choose to place your Obstacle on a road that already has a counter. But be warned... you can only do this once!
                         When you are done placing one counter, click "End Turn". Alternatively, you can pass your turn by clicking "End Turn".
                         """);
+                } else {
+                    endTurn();
+                }
             }
         }
     }
 
     public void moveOnMap() {
         if (gameState.getCurrentRound() <= gameState.getTotalRounds()
-                && gameState.getCurrentPhase() == ELRoundPhaseType.MOVE
+                && (gameState.getCurrentPhase() == ELRoundPhaseType.MOVE
+                || gameState.getCurrentPhase() == EGRoundPhaseType.MOVE)
                 && gameState.getCurrentPlayer().equals(thisPlayer)) {
 
             updateGameState();
@@ -315,7 +324,6 @@ public abstract class GameManager {
 
     public void removeAvailableColour(Colour c, String playerIP) {
         availableColours.remove(c);
-        addPairToBootColours(c, playerIP);
 
         try {
             if (thisPlayer == null) { // I haven't chosen a boot colour yet
@@ -331,9 +339,6 @@ public abstract class GameManager {
         }
     }
 
-    public void addPairToBootColours(Colour c, String playerIP) {
-        bootColours.put(c, playerIP);
-    }
 
     public String getSessionID() {
         return sessionID;

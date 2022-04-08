@@ -1,18 +1,19 @@
 package gamescreen;
 
 import domain.*;
+import enums.CounterType;
 import enums.GameVariant;
 import gamemanager.GameManager;
+import panel.ShowHintButton;
 import windows.ChatBoxGUI;
 import windows.ChatBoxGUI;
 import networking.GameState;
 import savegames.Savegame;
 import panel.EndTurnButton;
-import panel.MenuButton;
+import panel.ShowHintButton;
 import panel.ObserverPanel;
 import panel.ScoreBoardPanel;
 import utils.GameRuleUtils;
-import windows.ChooseCounterPopup;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -50,9 +51,9 @@ public abstract class GameScreen extends JPanel implements Serializable {
 
     protected final JPanel[] panelForPlayerTransportationCounters = new JPanel[5];
     protected final JPanel[] panelForPlayerCards = new JPanel[8];
+    //protected final ArrayList<JPanel> playerCardPanels = new ArrayList<>();
 
     protected ArrayList<ObserverPanel> observerPanels = new ArrayList<>();
-    protected ChooseCounterPopup counterPopup;
 
     protected GameMap gameMap;
 
@@ -194,7 +195,7 @@ public abstract class GameScreen extends JPanel implements Serializable {
     {
         ImageIcon roundImage = new ImageIcon("./assets/sprites/R" + round + ".png");
         Image Round = roundImage.getImage();
-        Image RoundResized = Round.getScaledInstance(width*90/1440, height*130/900,  java.awt.Image.SCALE_SMOOTH);
+        Image RoundResized = Round.getScaledInstance(width*110/1440, height*140/900,  java.awt.Image.SCALE_SMOOTH);
         roundImage = new ImageIcon(RoundResized);
         roundImage_TopLayer = new JLabel(roundImage);
         backgroundPanel_ForRound.removeAll();
@@ -210,26 +211,14 @@ public abstract class GameScreen extends JPanel implements Serializable {
         informationCardImage_TopLayer = new JLabel(gridImage);
     }
 
-    public void initializeEndTurnButton() {
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setBounds(width*1000/1440, height*625/900, width*100/1440, height*65/900);
-        buttonPanel.setOpaque(false);
-        boardGame_Layers.add(buttonPanel);
+    public void initializeButtons() {
+        JPanel buttons = new JPanel( new GridLayout(2, 1) );
+        buttons.setBounds(width*1040/1440, height*627/900, width*110/1440, height*10/140);
+        buttons.setOpaque(false);
+        buttons.add(new EndTurnButton());
+        buttons.add(new ShowHintButton());
 
-        JButton endTurn = new EndTurnButton();
-        endTurn.setBounds(width*1000/1440, height*625/900, width*100/1440, height*65/900);
-        buttonPanel.add(endTurn);
-    }
-
-    public void initializeMenuButton() {
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setBounds(width*1000/1440, height*625/900+30, width*100/1440, height*65/900);
-        buttonPanel.setOpaque(false);
-        boardGame_Layers.add(buttonPanel);
-
-        JButton menu = new MenuButton();
-        menu.setBounds(width*1000/1440, height*625/900+30, width*100/1440, height*65/900);
-        buttonPanel.add(menu);
+        boardGame_Layers.add(buttons);
     }
 
     public void initializeMenu(){
@@ -373,10 +362,4 @@ public abstract class GameScreen extends JPanel implements Serializable {
     {
         return prevMessage;
     }
-
-    public void showCounterPopup(CounterUnit counter1, CounterUnit counter2) {
-        counterPopup = new ChooseCounterPopup(counter1, counter2);
-        boardGame_Layers.add(counterPopup);
-    }
-
 }
