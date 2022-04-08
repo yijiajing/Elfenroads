@@ -50,8 +50,6 @@ public abstract class GameScreen extends JPanel implements Serializable {
     protected final JPanel backgroundPanel_ForLeaderboard = new JPanel();
 
     protected final JPanel[] panelForPlayerTransportationCounters = new JPanel[10];
-    protected final JPanel[] panelForPlayerCards = new JPanel[8];
-    //protected final ArrayList<JPanel> playerCardPanels = new ArrayList<>();
 
     protected ArrayList<ObserverPanel> observerPanels = new ArrayList<>();
 
@@ -142,19 +140,7 @@ public abstract class GameScreen extends JPanel implements Serializable {
         mapImage_BottomLayer = new JLabel(mapImage);
     }
 
-    public void initializeCardPanels() {
-        int xCoordinate = width * 2 / 1440;
-
-        for (int i = 0; i < 8; i++) {
-            JPanel panel = new JPanel();
-            panel.setOpaque(false);
-            //panel.setBorder(whiteLine);
-            panel.setBounds(xCoordinate, height * 690 / 900, width * 144 / 1440, height * 3 / 9);
-            panelForPlayerCards[i] = panel;
-            xCoordinate += width * 144 / 1440;
-            boardGame_Layers.add(panel, 0);
-        }
-    }
+    public abstract void initializeCardPanels();
 
     //delete and re-initialize scoreboards
     public void updateLeaderboard() {
@@ -164,29 +150,7 @@ public abstract class GameScreen extends JPanel implements Serializable {
         backgroundPanel_ForLeaderboard.repaint();
     }
 
-    public void updateCards() {
-        // clear the previous cards from the screen
-        for (JPanel panel : panelForPlayerCards) {
-            if (panel != null) {
-                panel.removeAll();
-                panel.repaint();
-                panel.revalidate();
-            }
-        }
-
-        List<CardUnit> myCards = GameManager.getInstance().getThisPlayer().getHand().getCards();
-
-        // draw the cards to the screen
-        for (int p = 0; p < myCards.size(); p++) {
-            JPanel panel = panelForPlayerCards[p];
-            if (panel != null) {
-                CardUnit card = myCards.get(p);
-                panel.add(card.getDisplay());
-                panel.repaint();
-                panel.revalidate();
-            }
-        }
-    }
+    public abstract void updateCards();
 
     public abstract void initializeLeaderboard();
 

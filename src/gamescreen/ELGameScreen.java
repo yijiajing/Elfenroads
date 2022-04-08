@@ -25,7 +25,7 @@ public class ELGameScreen extends GameScreen
 	protected final JPanel panelForDeckOfTransportationCounters = new JPanel();
 	protected final JPanel panelForObstacle = new JPanel();
 	protected final JPanel backgroundPanel_ForFaceUpTransportationCounters = new JPanel();
-
+	protected final JPanel[] panelsForPlayerCards = new JPanel[8];
 
 	ELGameScreen(JFrame frame, GameVariant variant) {
 		super(frame, variant);
@@ -165,6 +165,20 @@ public class ELGameScreen extends GameScreen
 		boardGame_Layers.add(panelForObstacle,-1);
 	}
 
+	public void initializeCardPanels() {
+		int xCoordinate = width * 2 / 1440;
+
+		for (int i = 0; i < 8; i++) {
+			JPanel panel = new JPanel();
+			panel.setOpaque(false);
+			//panel.setBorder(whiteLine);
+			panel.setBounds(xCoordinate, height * 690 / 900, width * 144 / 1440, height * 3 / 9);
+			panelsForPlayerCards[i] = panel;
+			xCoordinate += width * 144 / 1440;
+			boardGame_Layers.add(panel, 0);
+		}
+	}
+
 	@Override
 	public void initializeLeaderboard() {
 		List<Player> aPlayers = GameState.instance().getPlayers();
@@ -261,5 +275,29 @@ public class ELGameScreen extends GameScreen
 
 		panelForObstacle.repaint();
 		panelForObstacle.revalidate();
+	}
+
+	public void updateCards() {
+		// clear the previous cards from the screen
+		for (JPanel panel : panelsForPlayerCards) {
+			if (panel != null) {
+				panel.removeAll();
+				panel.repaint();
+				panel.revalidate();
+			}
+		}
+
+		List<CardUnit> myCards = GameManager.getInstance().getThisPlayer().getHand().getCards();
+
+		// draw the cards to the screen
+		for (int p = 0; p < myCards.size(); p++) {
+			JPanel panel = panelsForPlayerCards[p];
+			if (panel != null) {
+				CardUnit card = myCards.get(p);
+				panel.add(card.getDisplay());
+				panel.repaint();
+				panel.revalidate();
+			}
+		}
 	}
 }
