@@ -11,6 +11,7 @@ import networking.GameSession;
 import networking.GameState;
 import networking.User;
 import savegames.Savegame;
+import utils.NetworkUtils;
 import windows.MainFrame;
 
 import javax.swing.*;
@@ -38,7 +39,8 @@ public class TestLoadedGame {
             Logger.getGlobal().info("Attempting to read in the savegame from a file.");
             Savegame testSaveGame = Savegame.read("123_ROUND1.elf");
             Logger.getGlobal().info("Successfully read in the savegame from a file.");
-            GameManager.init(Optional.of(testSaveGame), "123", GameVariant.ELFENGOLD_CLASSIC); // set the variant here
+            String localIP = NetworkUtils.getLocalIPAddPort();
+            GameManager.init(Optional.of(testSaveGame), "123", GameVariant.ELFENGOLD_CLASSIC, localIP); // set the variant here
             Logger.getGlobal().info("Successfully initialized the GameManager with the saved game.");
 
             GameScreen.init(MainFrame.instance, GameState.instance().getGameVariant());
