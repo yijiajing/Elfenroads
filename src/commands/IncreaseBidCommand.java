@@ -5,20 +5,26 @@ import gamemanager.GameManager;
 import networking.GameState;
 import windows.AuctionFrame;
 
+import java.util.logging.Logger;
+
 public class IncreaseBidCommand implements GameCommand {
 
     private final int increaseAmount;
+    private final String senderName;
 
     public IncreaseBidCommand(int amount) {
-        this.increaseAmount = amount;
+        increaseAmount = amount;
+        senderName = GameManager.getInstance().getThisPlayer().getName();
     }
 
     @Override
     public void execute() {
+        Logger.getGlobal().info("Executing IncreaseBidCommand, " + senderName + " increases the bid by " + increaseAmount);
         AuctionFrame auctionFrame = ((EGGameManager) GameManager.getInstance()).getAuctionFrame();
-        auctionFrame.increaseCurrentBid(this.increaseAmount);
+        auctionFrame.increaseCurrentBid(increaseAmount);
+        auctionFrame.setHighestBidPlayer(senderName);
+        // reset the passed player count to 1
         GameState.instance().clearPassedPlayerCount();
-        auctionFrame.setCounterHasBid(true); // the current counter has at least one bid
-        auctionFrame.setCounterBidByLocalPlayer(false); // the highest bid is not from the local player now
+        GameState.instance().incrementPassedPlayerCount();
     }
 }
