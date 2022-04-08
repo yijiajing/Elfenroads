@@ -19,7 +19,7 @@ import windows.MP3Player;
 public class DrawGoldDeckButton extends JButton {
 
 	public DrawGoldDeckButton(GameState pState) {
-		super("Gold Cards: " + Integer.toString(pState.getGoldCardDeckCount()));
+		setText("Gold Cards: " + Integer.toString(pState.getGoldCardDeckCount()));
 		this.addActionListener(new ActionListener() {
 			@Override
 			 public void actionPerformed(ActionEvent e)
