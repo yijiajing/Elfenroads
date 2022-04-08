@@ -16,12 +16,15 @@ import javax.swing.GroupLayout.ParallelGroup;
 import javax.swing.GroupLayout.SequentialGroup;
 
 import commands.IncreaseBidCommand;
+import commands.PassTurnCommand;
+import domain.Player;
 import domain.TransportationCounter;
 import gamemanager.GameManager;
+import gamescreen.GameScreen;
 import networking.CommunicationsManager;
 import domain.CounterUnit;
-import domain.TransportationCounter;
 import enums.CounterType;
+import networking.GameState;
 
 /**
  *
@@ -30,8 +33,9 @@ import enums.CounterType;
 public class AuctionFrame extends javax.swing.JFrame {
 
     private ArrayList<CounterUnit> listCounters = new ArrayList<CounterUnit>();
-    private boolean counterHasBid = false;
-    private boolean counterBidByLocalPlayer = false;
+    private int currentBid = 0;
+    private Player highestBidPlayer = null;
+    private boolean localPlayerHasPassed = false;
 
     /**
      * Creates new form AuctionFrame
@@ -246,29 +250,55 @@ public class AuctionFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void EnterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EnterButtonActionPerformed
+        //TODO: delete this
         addCounter(new TransportationCounter(CounterType.MAGICCLOUD, 70, 70));
+
+        if (!GameManager.getInstance().isLocalPlayerTurn()) {
+            GameScreen.displayMessage("You can only make a bid when it is your turn!"); //TODO: not sure how to display a message in this frame
+            return;
+        }
+        if (localPlayerHasPassed) {
+            GameScreen.displayMessage("You cannot make further bids for this item as you have already passed once");
+        }
 
         int increaseAmount = 0;
 
-        try{
+        try {
             increaseAmount = Integer.parseInt(TextInput.getText());
-            increaseCurrentBid(increaseAmount);
-            // update bid status
-            counterHasBid = true;
-            counterBidByLocalPlayer = true;
+
+            if (currentBid + increaseAmount > GameManager.getInstance().getThisPlayer().getGoldCoins()) {
+                //TODO: notify the player that it is not possible. Can we GameScreen.displayMessage here?
+                GameScreen.displayMessage("You do not have enough gold coins to bid. Please lower your bid increase or pass the turn.");
+                return;
+            }
 
             CommunicationsManager coms = GameManager.getInstance().getComs();
             IncreaseBidCommand bid = new IncreaseBidCommand(increaseAmount);
+            bid.execute(); // update bid status locally
             coms.sendGameCommandToAllPlayers(bid);
         } catch (NumberFormatException e) {
             System.out.println("String cannot be converted to integer.");
         } catch (IOException e) {
             System.out.println("There was a problem sending the IncreaseBidCommand to all players.");
         }
+        GameManager.getInstance().endTurn();
     }//GEN-LAST:event_EnterButtonActionPerformed
 
     private void PassButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PassButtonActionPerformed
-        removeFirstCounter();
+        if (!GameManager.getInstance().isLocalPlayerTurn()) {
+            GameScreen.displayMessage("You cannot end someone else's turn!"); //TODO: not sure how to display a message in this frame
+        }
+
+        localPlayerHasPassed = true;
+        PassTurnCommand command = new PassTurnCommand();
+        command.execute();
+        try {
+            GameManager.getInstance().getComs().sendGameCommandToAllPlayers(command);
+        } catch (IOException e) {
+            System.out.println("There was a problem sending the PassTurnCommand to all players.");
+            e.printStackTrace();
+        }
+        GameManager.getInstance().endTurn();
         //IncreaseLabel.setVisible(false);
         //EnterButton.setVisible(false);
         //PassButton.setVisible(false);
@@ -334,25 +364,24 @@ public class AuctionFrame extends javax.swing.JFrame {
         SequentialGroup sequentHor = jPanel1Layout.createSequentialGroup();
         
         ParallelGroup vertLayout = jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING);
-        //for (TransportationCounter )
-        for (CounterUnit tc : listCounters){
-            JLabel icon = counterUnit.getDisplay();
-            icon.setSize(70, 70);
 
-            icon.setVisible(true);
-            //icon.setBorder(BorderFactory.createBevelBorder(1));
-            javax.swing.JPanel cardJPanel = new javax.swing.JPanel();
-            //javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(cardJPanel);
-            //cardJPanel.setLayout(jPanel2Layout);
-            cardJPanel.setBorder(BorderFactory.createBevelBorder(1));
-            
-            cardJPanel.add(icon);
-            cardJPanel.setVisible(true);
-            sequentHor.addComponent(cardJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            //.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED);
-            .addGap(75, 75,75);
-            vertLayout.addComponent(cardJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE);
-        }
+        JLabel icon = counterUnit.getDisplay();
+        icon.setSize(70, 70);
+
+        icon.setVisible(true);
+        //icon.setBorder(BorderFactory.createBevelBorder(1));
+        javax.swing.JPanel cardJPanel = new javax.swing.JPanel();
+        //javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(cardJPanel);
+        //cardJPanel.setLayout(jPanel2Layout);
+        cardJPanel.setBorder(BorderFactory.createBevelBorder(1));
+
+        cardJPanel.add(icon);
+        cardJPanel.setVisible(true);
+        sequentHor.addComponent(cardJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        //.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED);
+        .addGap(75, 75,75);
+        vertLayout.addComponent(cardJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE);
+
         
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -372,10 +401,9 @@ public class AuctionFrame extends javax.swing.JFrame {
         jScrollPane1.setVisible(true);
     }
 
-    public void removeFirstCounter() {
+    public CounterUnit removeFirstCounter() {
         assert listCounters.size() > 0;
-        listCounters.remove(0);
-        //TODO: add to pile
+        CounterUnit counter = listCounters.remove(0);
         jPanel1 = new javax.swing.JPanel();
         
         jScrollPane1.setViewportView(jPanel1);
@@ -385,6 +413,7 @@ public class AuctionFrame extends javax.swing.JFrame {
         for (CounterUnit cu : listCounters){
             addCounter(cu);
         }
+        return counter;
     }
 
     public void setAuctionWindowCurr(){
@@ -403,8 +432,11 @@ public class AuctionFrame extends javax.swing.JFrame {
         jLabel2.setVisible(false);
     }
 
-    public void resetBid(){
+    public void resetBidStatus(){
+        currentBid = 0;
         CurrentBidOutput.setText("");
+        highestBidPlayer = null;
+        localPlayerHasPassed = false;
     }
 
     public void setAuction(int num){
@@ -415,27 +447,27 @@ public class AuctionFrame extends javax.swing.JFrame {
 
     public void increaseCurrentBid(int increaseAmount) {
         try {
-            int currentBid = Integer.parseInt(CurrentBidOutput.getText());
-            CurrentBidOutput.setText(Integer.toString(currentBid + increaseAmount));
+            currentBid += increaseAmount;
+            CurrentBidOutput.setText(Integer.toString(currentBid));
         } catch (NumberFormatException e) {
             System.out.println("String cannot be converted to integer.");
         }
     }
 
-    public boolean isCounterHasBid() {
-        return counterHasBid;
+    public Player getHighestBidPlayer() {
+        return highestBidPlayer;
     }
 
-    public void setCounterHasBid(boolean counterHasBid) {
-        this.counterHasBid = counterHasBid;
+    public void setHighestBidPlayer(String highestBidPlayerName) {
+        this.highestBidPlayer = GameState.instance().getPlayerByName(highestBidPlayerName);
     }
 
-    public boolean isCounterBidByLocalPlayer() {
-        return counterBidByLocalPlayer;
+    public int getCurrentBid() {
+        return currentBid;
     }
 
-    public void setCounterBidByLocalPlayer(boolean counterBidByLocalPlayer) {
-        this.counterBidByLocalPlayer = counterBidByLocalPlayer;
+    public int getNumCountersInAuction() {
+        return listCounters.size();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
