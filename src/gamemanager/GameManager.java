@@ -231,6 +231,14 @@ public abstract class GameManager {
                         When you are done placing one counter, click "End Turn". Alternatively, you can pass your turn by clicking "End Turn".
                         """);
                 } else {
+                    PassTurnCommand command = new PassTurnCommand();
+                    command.execute();
+                    try {
+                        GameManager.getInstance().getComs().sendGameCommandToAllPlayers(command);
+                    } catch (IOException e) {
+                        System.out.println("There was a problem sending the PassTurnCommand to all players.");
+                        e.printStackTrace();
+                    }
                     endTurn();
                 }
             }
