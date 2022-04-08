@@ -25,6 +25,11 @@ public class EGGameScreen extends GameScreen {
     protected final JPanel backgroundPanel_ForFaceUpTravelCards = new JPanel();
     protected final JPanel panelForGoldCardDeck = new JPanel();
     protected final JPanel[] panelForFaceUpTravelCards = new JPanel[3];
+
+    protected final ArrayList<JPanel> panelsForPlayerCards = new ArrayList<>();
+    protected JScrollPane scrollPanelForPlayerCards;
+    protected JPanel contentPanelForPlayerCards;
+
     protected ChooseCounterPopup counterPopup;
     protected DoubleMagicSpellPopup spellPopup;
 
@@ -97,7 +102,7 @@ public class EGGameScreen extends GameScreen {
         Border whiteLine = BorderFactory.createLineBorder(Color.WHITE);
 
         JPanel panel = panelForDeckOfTravelCards;
-        panel.setBounds(width*1175/1440, height*255/900, width*110/1440, height/6);
+        panel.setBounds(width*1180/1440, height*250/900, width*110/1440, height/6);
         panel.setOpaque(false);
         //panel.setBorder(whiteLine);
         boardGame_Layers.add(panel, 0);
@@ -108,21 +113,21 @@ public class EGGameScreen extends GameScreen {
         Logger.getGlobal().info("Initializing face up travel cards");
         Border whiteLine = BorderFactory.createLineBorder(Color.WHITE);
         JPanel panel2 = new JPanel();
-        panel2.setBounds(width*1307/1440, height*265/900, width*100/1440, height/6);
+        panel2.setBounds(width*1307/1440, height*260/900, width*100/1440, height/6);
         panel2.setOpaque(false);
         //panel2.setBorder(whiteLine);
         panelForFaceUpTravelCards[0] = panel2;
         boardGame_Layers.add(panel2, 0);
 
         JPanel panel3 = new JPanel();
-        panel3.setBounds(width*1185/1440, height*420/900, width*100/1440, height/6);
+        panel3.setBounds(width*1185/1440, height*400/900, width*100/1440, height/6);
         panel3.setOpaque(false);
         //panel3.setBorder(whiteLine);
         panelForFaceUpTravelCards[1] = panel3;
         boardGame_Layers.add(panel3, 0);
 
         JPanel panel4 = new JPanel();
-        panel4.setBounds(width*1307/1440, height*420/900, width*100/1440, height/6);
+        panel4.setBounds(width*1307/1440, height*400/900, width*100/1440, height/6);
         panel4.setOpaque(false);
         //panel4.setBorder(whiteLine);
         panelForFaceUpTravelCards[2] = panel4;
@@ -131,8 +136,9 @@ public class EGGameScreen extends GameScreen {
     }
     
     public void initializeGoldCardDeck() {
-    	panelForGoldCardDeck.setBounds(width * 1150 / 1440, height * 545 / 900, width * 290 / 1440, height * 20 / 900);
-    	Logger.getGlobal().info("Inifializing gold card deck");
+    	panelForGoldCardDeck.setBounds(width * 1150 / 1440, height * 535 / 900, width * 290 / 1440, height * 35 / 900);
+    	panelForGoldCardDeck.setBackground(Color.DARK_GRAY);
+    	Logger.getGlobal().info("Initializing gold card deck");
     	JButton goldCardDeck = new DrawGoldDeckButton(GameState.instance());
     	panelForGoldCardDeck.add(goldCardDeck);
     	boardGame_Layers.add(panelForGoldCardDeck);
@@ -168,6 +174,24 @@ public class EGGameScreen extends GameScreen {
     }
 
     @Override
+    public void initializeCardPanels() {
+        contentPanelForPlayerCards = new JPanel();
+        contentPanelForPlayerCards.setBounds(0, height * 690 / 900, width * 1150 / 1440, height * 3 / 9);
+
+        for (int i = 0; i < 8; i++) {
+            JPanel panel = new JPanel();
+            panel.setOpaque(false);
+            panelsForPlayerCards.add(panel);
+            contentPanelForPlayerCards.add(panel);
+        }
+
+        scrollPanelForPlayerCards = new JScrollPane(contentPanelForPlayerCards);
+        scrollPanelForPlayerCards.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        scrollPanelForPlayerCards.setBounds(0, height * 690 / 900, width * 1150 / 1440, height * 3 / 9);
+        boardGame_Layers.add(scrollPanelForPlayerCards);
+    }
+
+    @Override
     public void addImages()
     {
         backgroundPanel_ForMap.add(mapImage_BottomLayer);
@@ -200,6 +224,40 @@ public class EGGameScreen extends GameScreen {
             }
         }
     }
+
+    @Override
+    public void updateCards() {
+        List<CardUnit> myCards = GameManager.getInstance().getThisPlayer().getHand().getCards();
+
+        // add more jpanels to fit all our cards
+        if (myCards.size() > panelsForPlayerCards.size()) {
+            int numToAdd = myCards.size() - panelsForPlayerCards.size();
+            for (int i=0; i<numToAdd; i++) {
+                JPanel panel = new JPanel();
+                panel.setOpaque(false);
+                panelsForPlayerCards.add(panel);
+            }
+        }
+
+        // clear the old cards
+        contentPanelForPlayerCards.removeAll();
+
+        for (int j=0; j<panelsForPlayerCards.size(); j++) {
+            // clear the content of a single card panel
+            JPanel panel = panelsForPlayerCards.get(j);
+            panel.removeAll();
+
+            // add the image back to the panel
+            if (j < myCards.size()) {
+                panel.add(myCards.get(j).getDisplay());
+                panel.repaint();
+                panel.revalidate();
+            }
+
+            contentPanelForPlayerCards.add(panel);
+        }
+    }
+
 
     public void updateFaceUpTravelCards()
     {

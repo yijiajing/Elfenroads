@@ -393,9 +393,9 @@ public class GameState implements Serializable{
      */
     private void loadTravelCardDeck()
     {
-       for (SerializableTravelCard crd : loadedState.getTravelCardDeck())
+       for (SerializableCardUnit crd : loadedState.getTravelCardDeck())
        {
-           travelCardDeck.addDrawable(new TravelCard(crd));
+           travelCardDeck.addDrawable(new TravelCard((SerializableTravelCard) crd));
        }
     }
 

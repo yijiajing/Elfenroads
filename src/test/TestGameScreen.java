@@ -2,13 +2,16 @@ package test;
 
 import domain.Player;
 import domain.TransportationCounter;
+import domain.TravelCard;
 import enums.Colour;
 import enums.CounterType;
 import enums.GameVariant;
+import enums.TravelCardType;
 import gamemanager.GameManager;
 import gamescreen.EGGameScreen;
 import gamescreen.GameScreen;
 import networking.GameSession;
+import networking.GameState;
 import networking.User;
 import utils.NetworkUtils;
 import windows.MainFrame;
@@ -39,6 +42,11 @@ public class TestGameScreen {
 
             Player p = new Player(Colour.BLACK, "chloe");
             GameManager.getInstance().setThisPlayer(p);
+
+//            for (int i=0; i<10; i++) {
+//                GameManager.getInstance().getThisPlayer().getHand().addUnit(new TravelCard(TravelCardType.DRAGON, GameScreen.getInstance().getWidth()*130/1440, GameScreen.getInstance().getHeight()/5));
+//            }
+
             GameManager.getInstance().setUpNewGame();
             GameScreen.getInstance().draw();
 
