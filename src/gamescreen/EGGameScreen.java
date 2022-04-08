@@ -5,8 +5,10 @@ import enums.GameVariant;
 import gamemanager.GameManager;
 import networking.GameState;
 import panel.ScoreBoardPanel;
+import panel.DrawGoldDeckButton;
 import windows.ChooseCounterPopup;
 import windows.DoubleMagicSpellPopup;
+
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -125,6 +127,15 @@ public class EGGameScreen extends GameScreen {
         //panel4.setBorder(whiteLine);
         panelForFaceUpTravelCards[2] = panel4;
         boardGame_Layers.add(panel4, 0);
+        
+    }
+    
+    public void initializeGoldCardDeck() {
+    	panelForGoldCardDeck.setBounds(width * 1150 / 1440, height * 545 / 900, width * 290 / 1440, height * 20 / 900);
+    	Logger.getGlobal().info("Inifializing gold card deck");
+    	JButton goldCardDeck = new DrawGoldDeckButton(GameState.instance());
+    	panelForGoldCardDeck.add(goldCardDeck);
+    	boardGame_Layers.add(panelForGoldCardDeck);
     }
 
     public void initializeTransportationCounters()
@@ -132,7 +143,7 @@ public class EGGameScreen extends GameScreen {
         int xCoordinate = width*10/1440;
 
         // Transportation Counters
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 10; i++)
         {
             JPanel panel = new JPanel();
             panel.setOpaque(false);
@@ -216,9 +227,11 @@ public class EGGameScreen extends GameScreen {
     }
     
     
-    //TODO: update the DrawGoldDeckButton
     public void updateGoldCardDeck() {
-    	
+    	panelForGoldCardDeck.removeAll();
+    	this.initializeGoldCardDeck();
+    	panelForGoldCardDeck.repaint();
+    	panelForGoldCardDeck.revalidate();
     }
 
     public void updateTransportationCounters()
