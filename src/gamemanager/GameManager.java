@@ -6,6 +6,7 @@ import enums.Colour;
 import enums.EGRoundPhaseType;
 import enums.ELRoundPhaseType;
 import enums.GameVariant;
+import savegames.Savegame;
 import windows.ChooseBootWindow;
 import windows.MainFrame;
 import networking.*;
@@ -28,7 +29,7 @@ public abstract class GameManager {
 
     protected GameState gameState;
     protected ActionManager actionManager;
-    protected Player thisPlayer = null; // represents the Player who is using this GUI, set by ChooseBootWindow
+    protected Player thisPlayer; // represents the Player who is using this GUI, set by ChooseBootWindow
     protected boolean loaded;
     protected GameVariant variant;
 
@@ -43,10 +44,14 @@ public abstract class GameManager {
     GameManager(Optional<GameState> loadedState, String pSessionID, GameVariant variant, String pLocalAddress) {
         MainFrame.mainPanel.add(GameScreen.init(MainFrame.getInstance(), variant), "gameScreen");
         sessionID = pSessionID;
-        this.variant = variant;
+        // TODO: I will decide whether to move this inside the conditional:
+        // need to see if loaded games start with a different session ID than when they were saved
+
 
         // start a new game if there is no state to be loaded
-        if (loadedState.isEmpty()) {
+        if (savegame.isEmpty()) {
+            this.variant = pVariant;
+            MainFrame.mainPanel.add(GameScreen.init(MainFrame.getInstance(), variant), "gameScreen");
             gameState = GameState.init(pSessionID, variant);
             actionManager = ActionManager.init(gameState, this);
 
@@ -57,13 +62,19 @@ public abstract class GameManager {
 
         // load state
         else {
-            gameState = loadedState.get();
+            Savegame loadedGame = savegame.get();
+            this.variant = loadedGame.getGameVariant();
+            MainFrame.mainPanel.add(GameScreen.init(MainFrame.getInstance(), variant), "gameScreen");
+            gameState = GameState.initFromSave(loadedGame, this);
+            Logger.getGlobal().info("thisPlayer in the loaded game was " + loadedGame.getThisPlayer().getName());
+            // setThisPlayer(gameState.getThisPlayerFromLoaded());
             loaded = true;
-            //TODO implement
+            actionManager = ActionManager.init(gameState, this);
         }
 
         coms = CommunicationsManager.init(this, sessionID, pLocalAddress);
     }
+
 
     public static GameManager init(Optional<GameState> loadedState, String sessionID, GameVariant variant, String pLocalAddress) {
         if (INSTANCE == null) {
@@ -118,6 +129,11 @@ public abstract class GameManager {
         System.out.print(gameState.getPlayers());
 
         if (!loaded) setUpNewGame();
+        else // if we are loading a game, set the thisPlayer field.
+        {
+            setThisPlayer(gameState.getThisPlayerFromLoaded());
+            gameState.sortPlayers(); // re-sort since setThisPlayer adds another player to the list
+        }
 
         GameScreen.getInstance().draw();
         MainFrame.cardLayout.show(MainFrame.mainPanel, "gameScreen");
@@ -133,6 +149,18 @@ public abstract class GameManager {
     public void setThisPlayer(Player p) {
         thisPlayer = p;
         gameState.addPlayer(p);
+    }
+
+    /**
+     * to use in loading games, when the GameState has not yet been initialized during
+     * GameManager initialization
+     * @param p
+     * @param pGameState
+     */
+    public void setThisPlayer(Player p, GameState pGameState)
+    {
+        thisPlayer = p;
+        pGameState.addPlayer(p);
     }
 
     public abstract void setUpNewGame();

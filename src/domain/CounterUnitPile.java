@@ -25,14 +25,12 @@ import utils.GameRuleUtils;
 public class CounterUnitPile extends Deck<CounterUnit> {
 
     private JLabel deckImage;
-    private GameVariant variant;
 
     public CounterUnitPile(String sessionID, GameVariant variant) {
 
         super(sessionID);
 
-        this.variant = variant;
-        addCountersToDeck();
+        addCountersToDeck(variant);
 
         // initialize the deck image
         ImageIcon imageIcon = new ImageIcon("./assets/sprites/counter_deck.png");
@@ -44,13 +42,36 @@ public class CounterUnitPile extends Deck<CounterUnit> {
 
         shuffle();
     }
+
+    /**
+     * creates an empty CounterUnitPile
+     * should only ever be used in getEmpty(), which we call when we are loading a savegame.
+     * @param sessionID
+     */
+    private CounterUnitPile(String sessionID)
+    {
+        super(sessionID);
+
+        // initialize the deck image
+        ImageIcon imageIcon = new ImageIcon("./assets/sprites/M08.png");
+        Image image = imageIcon.getImage();
+        Image imageResized = image.getScaledInstance(GameScreen.getInstance().getWidth() * 67 / 1440, GameScreen.getInstance().getHeight() * 60 / 900, java.awt.Image.SCALE_SMOOTH);
+        this.deckImage = new JLabel(new ImageIcon(imageResized));
+
+        initializeMouseListener();
+    }
+
+    public static CounterUnitPile getEmpty(String sessionID)
+    {
+        return new CounterUnitPile(sessionID);
+    }
     
-    private void addCountersToDeck() {
+    private void addCountersToDeck(GameVariant variant) {
     	int width = MainFrame.instance.getWidth() * 67 / 1440;
     	int height = MainFrame.instance.getHeight() * 60 / 900;
 
 
-        if (GameRuleUtils.isElfengoldVariant(this.variant)) {
+        if (GameRuleUtils.isElfengoldVariant(variant)) {
             for(int i = 0; i < 9; i++) {
                 if (i < 2) {
                     components.add(new GoldPiece(GoldPieceType.GOLDPIECE, width, height));

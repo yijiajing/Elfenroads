@@ -5,15 +5,20 @@ package savegames;
 
 import domain.*;
 import enums.GameVariant;
+import enums.MagicSpellType;
 import enums.RoundPhaseType;
 import enums.TravelCardType;
 import gamemanager.GameManager;
 import networking.GameState;
+import utils.GameRuleUtils;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 public class Savegame implements Serializable {
+
+    private static final long serialVersionUID = 1234567890;
 
     // serializable fields from GameState
     private int totalRounds;
@@ -25,10 +30,13 @@ public class Savegame implements Serializable {
 
     private int goldCardDeckCount;
 
+    private String sessionID; // TODO: for now we are using this to determine seeds in the loaded GameState, but we might need to remove this
+
     // fields turned into serializable version
     private ArrayList<SerializablePlayer> players;
     private SerializablePlayer currentPlayer;
-    private ArrayList<SerializableTravelCard> travelCardDeck;
+    private SerializablePlayer thisPlayer;
+    private ArrayList<SerializableCardUnit> travelCardDeck; // can contain both gold cards and travel cards
     private ArrayList<SerializableCounterUnit> counterPile;
     private ArrayList<SerializableTransportationCounter> faceUpCounters; // for elfenland classic games
     private ArrayList<SerializableTravelCard> faceUpCards; // for elfengold games
@@ -46,15 +54,45 @@ public class Savegame implements Serializable {
         currentRound = pState.getCurrentRound();
         currentPhase = pState.getCurrentPhase();
         passedPlayerCount = pState.getPassedPlayerCount();
+        sessionID = GameManager.getInstance().getSessionID();
 
         // now, handle the non-serializable fields
         savePlayers(pState);
         saveTravelCardPile(pState);
         saveTransportationCounterPile(pState);
 
-        // TODO: save faceupcards for elfengold and faceupcounters for elfenland
+        // save faceupcards for elfengold and faceupcounters for elfenland
+        if (GameRuleUtils.isElfengoldVariant(gameVariant))
+        {
+            saveFaceUpCards(pState);
+        }
+        else // if elfenland, save face up counters
+        {
+            saveFaceUpCounters(pState);
+        }
 
         // we will omit elf boots, since we can figure that out upon load by looking at each player, his current town, and his color
+    }
+
+    /**
+     * reads a savegame in from a file
+     * @param filename the filename of the savegame file (will depend on what I use as savegame filenames)
+     * @return the savegame stored in that file
+     * @throws FileNotFoundException if the file we try to read doesn't exist
+     * @throws IOException if the file exists, but it contains something other than a Savegame object
+     */
+    public static Savegame read(String filename) throws Exception
+    {
+        FileInputStream reading = new FileInputStream("./out/saves/" + filename);
+        ObjectInputStream readingObject = new ObjectInputStream(reading);
+        Savegame save = (Savegame) readingObject.readObject();
+
+        // close the streams
+        readingObject.close();
+        reading.close();
+
+        // return the read savegame
+        return save;
     }
 
     /**
@@ -74,7 +112,7 @@ public class Savegame implements Serializable {
         }
 
         // now, we can write the game to a file
-        String saveGameFilepath = dirPath + "/" + GameManager.getInstance().getSessionID();
+        String saveGameFilepath = dirPath + "/" + GameManager.getInstance().getSessionID() + "_ROUND" + save.getCurrentRound() + ".elf";
         // first, we need to create the file itself so that we can write to it
         File saved = new File(saveGameFilepath);
         if (saved.exists()) // should be triggered every time
@@ -90,6 +128,7 @@ public class Savegame implements Serializable {
 
     private void savePlayers (GameState pGameState)
     {
+        players = new ArrayList<>();
         // get all the players from the GameState and turn them into serializable objects to be saved
         for (Player cur : pGameState.getPlayers())
         {
@@ -98,7 +137,10 @@ public class Savegame implements Serializable {
             {
                 currentPlayer = toAdd;
             }
-
+            if (GameManager.getInstance().getThisPlayer().equals(cur))
+            {
+                thisPlayer = toAdd;
+            }
             players.add(toAdd);
         }
     }
@@ -106,22 +148,43 @@ public class Savegame implements Serializable {
     private void saveTravelCardPile(GameState pGameState)
     {
         TravelCardDeck origDeck = pGameState.getTravelCardDeck();
+        travelCardDeck = new ArrayList<>();
         for (CardUnit cur : origDeck.getComponents()) // I think we can safely downcast this to a TravelCard
         {
-            TravelCard tc = (TravelCard) cur;
-            travelCardDeck.add(new SerializableTravelCard(tc));
+            if (cur instanceof TravelCard)
+            {
+                TravelCard tc = (TravelCard) cur;
+                travelCardDeck.add(new SerializableTravelCard(tc));
+            }
+            else // if cur is a gold card
+            {
+                GoldCard gc = (GoldCard) cur;
+                travelCardDeck.add(new SerializableGoldCard(gc));
+            }
+
         }
     }
 
     private void saveTransportationCounterPile (GameState pGameState)
     {
         CounterUnitPile origPile = pGameState.getCounterPile();
+        counterPile = new ArrayList<>();
         for (CounterUnit cur : origPile.getComponents())
         {
             if (cur instanceof TransportationCounter)
             {
                 TransportationCounter curDowncasted = (TransportationCounter) cur;
                 counterPile.add(new SerializableTransportationCounter(curDowncasted));
+            }
+            else if (cur instanceof MagicSpell)
+            {
+                MagicSpell curDowncasted = (MagicSpell) cur;
+                counterPile.add(new SerializableMagicSpell(curDowncasted));
+            }
+            else if (cur instanceof GoldPiece)
+            {
+                GoldPiece curDowncasted = (GoldPiece) cur;
+                counterPile.add(new SerializableGoldPiece(curDowncasted));
             }
             else // if cur is an obstacle
             {
@@ -133,6 +196,7 @@ public class Savegame implements Serializable {
 
     private void saveFaceUpCounters (GameState pGameState)
     {
+        faceUpCounters = new ArrayList<>();
         // save the list of face up counters for Elfenland classic games
         for (TransportationCounter ctr : pGameState.getFaceUpCounters())
         {
@@ -142,10 +206,94 @@ public class Savegame implements Serializable {
 
     private void saveFaceUpCards (GameState pGameState)
     {
+        faceUpCards = new ArrayList<>();
         for (TravelCard crd : pGameState.getFaceUpCards())
         {
             faceUpCards.add(new SerializableTravelCard(crd));
         }
+    }
+
+    /**
+     * get each player's hand from a savegame
+     * @param playerName
+     * @return
+     */
+    public Hand getHandByPlayer(String playerName)
+    {
+        // iterate through all of the player's cards, counters, and obstacle
+        SerializablePlayer thatOne = getPlayerByName(playerName);
+        // cards
+        // counters
+        // obstacle
+        ArrayList<SerializableCardUnit> cards = thatOne.getCards();
+        ArrayList<SerializableCounterUnit> counters = thatOne.getCounters();
+        SerializableObstacle obstacle = thatOne.getObstacle();
+
+        Hand out = new Hand();
+
+        for (SerializableCardUnit cur : cards)
+        {
+            // could be a travelCard or a gold card
+            if (cur instanceof SerializableTravelCard)
+            {
+                SerializableTravelCard curDowncasted = (SerializableTravelCard) cur;
+                out.addUnit(new TravelCard(curDowncasted));
+            }
+            else // if cur is a gold card
+            {
+                SerializableGoldCard curDowncasted = (SerializableGoldCard) cur;
+                out.addUnit(new GoldCard(curDowncasted));
+            }
+        }
+
+        for (SerializableCounterUnit cur : counters)
+        {
+            // could be an Obstacle, a GoldPiece, a TransportationCounter, or a MagicSpell
+            if (cur instanceof SerializableObstacle)
+            {
+                SerializableObstacle curDowncasted = (SerializableObstacle) cur;
+                out.addUnit(new Obstacle(curDowncasted));
+            }
+            else if (cur instanceof SerializableGoldPiece)
+            {
+                SerializableGoldPiece curDowncasted = (SerializableGoldPiece) cur;
+                out.addUnit(new GoldPiece(curDowncasted));
+            }
+            else if (cur instanceof SerializableTransportationCounter)
+            {
+                SerializableTransportationCounter curDowncasted = (SerializableTransportationCounter) cur;
+                out.addUnit(new TransportationCounter(curDowncasted));
+            }
+            else if (cur instanceof SerializableMagicSpell)
+            {
+                SerializableMagicSpell curDowncasted = (SerializableMagicSpell) cur;
+                out.addUnit(new MagicSpell(curDowncasted));
+            }
+        }
+
+        if (obstacle != null)
+        {
+            out.addUnit(new Obstacle(obstacle));
+        }
+
+        return out;
+
+    }
+
+    /**
+     * @pre players have been saved already
+     */
+    public SerializablePlayer getPlayerByName(String name)
+    {
+        for (SerializablePlayer cur : players)
+        {
+            if (cur.getName().equalsIgnoreCase(name))
+            {
+                return cur;
+            }
+        }
+        Logger.getGlobal().info("Could not find a player from the savegame with the name " + name);
+        return null;
     }
 
     public int getTotalRounds() {
@@ -180,7 +328,7 @@ public class Savegame implements Serializable {
         return currentPlayer;
     }
 
-    public ArrayList<SerializableTravelCard> getTravelCardDeck() {
+    public ArrayList<SerializableCardUnit> getTravelCardDeck() {
         return travelCardDeck;
     }
 
@@ -194,5 +342,13 @@ public class Savegame implements Serializable {
 
     public ArrayList<SerializableTravelCard> getFaceUpCards() {
         return faceUpCards;
+    }
+
+    public String getSessionID() {
+        return sessionID;
+    }
+
+    public SerializablePlayer getThisPlayer() {
+        return thisPlayer;
     }
 }

@@ -166,6 +166,8 @@ public class Player implements Comparable<Player> {
         ArrayList<SerializableCardUnit> cards = loaded.getCards();
         SerializableObstacle loadedObstacle = loaded.getObstacle();
 
+        hand = new Hand();
+
         // load each part of the hand
         // load counters
         for (SerializableCounterUnit ctr : counters)
@@ -206,7 +208,10 @@ public class Player implements Comparable<Player> {
         }
 
         // done loading in the player's hand
+    }
 
-
+    public void setHand(Hand pHand)
+    {
+        hand = hand;
     }
 }

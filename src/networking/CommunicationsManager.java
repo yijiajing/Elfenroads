@@ -298,7 +298,6 @@ public class CommunicationsManager {
 
         numCommandsToWaitFor = thisPlayerIndex;
         Logger.getGlobal().info("We need to receive " + numCommandsToWaitFor + " DrawCardCommands before we can proceed.");
-        
         return drawCardCommandsExecuted == numCommandsToWaitFor;
     }
 
