@@ -9,6 +9,8 @@ import gamescreen.GameScreen;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
+
 import static utils.GameRuleUtils.isElfengoldVariant;
 
 public class Road {
@@ -150,6 +152,7 @@ public class Road {
         counters.add(magicSpell);
         magicSpell.setPlacedOn(this);
         magicSpell.setOwned(false);
+        Logger.getGlobal().info("Adding a magic spell to counter panel");
         counterPanel.addCounterUnit(magicSpell);
         return true;
     }

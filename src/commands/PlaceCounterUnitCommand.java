@@ -56,6 +56,7 @@ public class PlaceCounterUnitCommand implements GameCommand {
 			} else if (counter instanceof GoldPiece) {
 				road.placeGoldPiece((GoldPiece) counter);
 			} else if (counter instanceof MagicSpell && counter.getType() == MagicSpellType.DOUBLE) {
+				Logger.getGlobal().info("Calling placeDouble inside PlaceTransportationCounterCommand");
 				road.placeDouble((MagicSpell) counter);
 			}
 
@@ -70,8 +71,8 @@ public class PlaceCounterUnitCommand implements GameCommand {
 		            }
 		        }
 		        assert toRemoveIdx >= 0; // The counter should be in the sending player's hand
-		        senderHand.remove(toRemoveIdx);
 				senderHand.get(toRemoveIdx).setOwned(false);
+		        senderHand.remove(toRemoveIdx);
 		        GameScreen.getInstance().updateAll();
 	        }
 	        
