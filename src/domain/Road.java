@@ -111,7 +111,7 @@ public class Road {
     }
 
     public boolean placeObstacle(Obstacle obstacle) {
-        if (hasObstacle()) {
+        if (hasObstacle() || hasDouble()) {
             return false; // obstacle already exists on this road
         }
 
