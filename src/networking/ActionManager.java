@@ -94,15 +94,16 @@ public class ActionManager {
                 gameManager.getThisPlayer().getHand().removeUnit(selectedCounter);
                 selectedCounter.setOwned(false);
                 gameState.getCounterPile().addDrawable(selectedCounter);
-                GameCommand toSendOverNetwork = new ExchangeCommand(selectedRoad, road, selectedCounter.isSecret());
+                GameCommand exchangeCommand = new ExchangeCommand(selectedRoad, road, selectedCounter.isSecret());
+                GameCommand placeCounterUnitCommand = new PlaceCounterUnitCommand(selectedRoad, selectedCounter);
                 try {
-                    gameManager.getComs().sendGameCommandToAllPlayers(toSendOverNetwork);
+                    gameManager.getComs().sendGameCommandToAllPlayers(exchangeCommand);
+                    gameManager.getComs().sendGameCommandToAllPlayers(placeCounterUnitCommand);
                     GameScreen.getInstance().updateAll();
                 } catch (IOException e) {
-                    LOGGER.info("There was a problem sending the command to exchange two transportation counters!");
+                    LOGGER.info("There was a problem sending the command to place the exchange magic spell!");
                     e.printStackTrace();
                 }
-                gameManager.endTurn();
             } else {
                 clearSelection();
                 GameScreen.displayMessage("The exchanged transportation counters are not legal on the roads they are " +
@@ -201,6 +202,14 @@ public class ActionManager {
                 }
             } else if (counter.getType() == MagicSpellType.DOUBLE) {
                 if (selectedRoad.placeDouble(counter)) {
+                    GameCommand toSendOverNetwork = new PlaceCounterUnitCommand(selectedRoad, counter);
+                    try {
+                        gameManager.getComs().sendGameCommandToAllPlayers(toSendOverNetwork);
+                        GameScreen.getInstance().updateAll();
+                    } catch (IOException e) {
+                        LOGGER.info("There was a problem sending the command to place the double magic spell!");
+                        e.printStackTrace();
+                    }
                     inExternalWindow = true;
                     ((EGGameScreen) GameScreen.getInstance()).showDoubleMagicSpellPopup();
                 } else {

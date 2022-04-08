@@ -2,6 +2,7 @@ package commands;
 
 import domain.*;
 import enums.CounterUnitType;
+import enums.MagicSpellType;
 import enums.ObstacleType;
 import enums.RegionType;
 import gamemanager.GameManager;
@@ -54,9 +55,9 @@ public class PlaceCounterUnitCommand implements GameCommand {
 				road.placeObstacle(obstacle);
 			} else if (counter instanceof GoldPiece) {
 				road.placeGoldPiece((GoldPiece) counter);
+			} else if (counter instanceof MagicSpell && counter.getType() == MagicSpellType.DOUBLE) {
+				road.placeDouble((MagicSpell) counter);
 			}
-	        
-	        
 
 	        // remove the counter from the sending player's hand if counter is not an obstacle
 	        if (!(counter instanceof Obstacle && counter.getType() == ObstacleType.TREE)) {
