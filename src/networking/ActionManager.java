@@ -209,7 +209,7 @@ public class ActionManager {
             }
         }
 
-        if (!(selectedCounter.getType() == MagicSpellType.EXCHANGE)) {
+        if (!(selectedCounter instanceof MagicSpell)) {
             clearSelection();
         }
     }
