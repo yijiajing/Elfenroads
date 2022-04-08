@@ -152,18 +152,18 @@ public class EGGameManager extends GameManager {
                 && isLocalPlayerTurn())) {
             return;
         }
-        
+
         AuctionFrame auctionwindow = new AuctionFrame();
         this.auctionFrame = auctionwindow;
 
         CounterUnitPile pile = GameState.instance().getCounterPile();
-        int numplayers = GameState.instance().getNumOfPlayers();
-        for (int i=0; i<numplayers;i++){
+        int numPlayers = GameState.instance().getNumOfPlayers();
+        for (int i = 0; i < numPlayers; i++) {
             auctionwindow.addCounter(pile.draw());
             auctionwindow.addCounter(pile.draw());
         }
 
-        endTurn();
+//        endTurn();
     }
 
     @Override
@@ -243,6 +243,7 @@ public class EGGameManager extends GameManager {
         if (nextOrdinal == EGRoundPhaseType.values().length) {
             // all phases are done, go to the next round
             endRound();
+            gameState.clearPassedPlayerCount();
         } else if (gameState.getCurrentPhase() == EGRoundPhaseType.PLAN_ROUTES
                 && gameState.getPassedPlayerCount() < gameState.getNumOfPlayers()) {
             LOGGER.info("Pass turn ct: " + gameState.getPassedPlayerCount() + ", staying at the PLAN ROUTES phase");
@@ -253,6 +254,12 @@ public class EGGameManager extends GameManager {
                 NotifyTurnCommand notifyTurnCommand = new NotifyTurnCommand(EGRoundPhaseType.PLAN_ROUTES);
                 notifyTurnCommand.execute(); // notify themself to take action
             }
+            gameState.clearPassedPlayerCount();
+        } else if (gameState.getCurrentPhase() == EGRoundPhaseType.AUCTION && auctionFrame.getNumCountersInAuction() > 0) {
+            LOGGER.info("Number of counters not auctioned: " + auctionFrame.getNumCountersInAuction() + ", staying at the AUCTION phase");
+            // continue with auction phase if not all counters have been auctioned
+            gameState.setToFirstPlayer();
+            //TODO: display a message in auction frame, notify the first player to take action
         } else { // go to the next phase within the same round
             gameState.setCurrentPhase(EGRoundPhaseType.values()[nextOrdinal]);
             LOGGER.info("...Going to the next phase : " + gameState.getCurrentPhase());
@@ -262,8 +269,8 @@ public class EGGameManager extends GameManager {
                 NotifyTurnCommand notifyTurnCommand = new NotifyTurnCommand(gameState.getCurrentPhase());
                 notifyTurnCommand.execute(); // notify themself to take action
             }
+            gameState.clearPassedPlayerCount();
         }
-        gameState.clearPassedPlayerCount();
     }
 
     @Override

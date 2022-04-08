@@ -364,25 +364,24 @@ public class AuctionFrame extends javax.swing.JFrame {
         SequentialGroup sequentHor = jPanel1Layout.createSequentialGroup();
         
         ParallelGroup vertLayout = jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING);
-        //for (TransportationCounter )
-        for (CounterUnit tc : listCounters){
-            JLabel icon = counterUnit.getDisplay();
-            icon.setSize(70, 70);
 
-            icon.setVisible(true);
-            //icon.setBorder(BorderFactory.createBevelBorder(1));
-            javax.swing.JPanel cardJPanel = new javax.swing.JPanel();
-            //javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(cardJPanel);
-            //cardJPanel.setLayout(jPanel2Layout);
-            cardJPanel.setBorder(BorderFactory.createBevelBorder(1));
-            
-            cardJPanel.add(icon);
-            cardJPanel.setVisible(true);
-            sequentHor.addComponent(cardJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            //.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED);
-            .addGap(75, 75,75);
-            vertLayout.addComponent(cardJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE);
-        }
+        JLabel icon = counterUnit.getDisplay();
+        icon.setSize(70, 70);
+
+        icon.setVisible(true);
+        //icon.setBorder(BorderFactory.createBevelBorder(1));
+        javax.swing.JPanel cardJPanel = new javax.swing.JPanel();
+        //javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(cardJPanel);
+        //cardJPanel.setLayout(jPanel2Layout);
+        cardJPanel.setBorder(BorderFactory.createBevelBorder(1));
+
+        cardJPanel.add(icon);
+        cardJPanel.setVisible(true);
+        sequentHor.addComponent(cardJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        //.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED);
+        .addGap(75, 75,75);
+        vertLayout.addComponent(cardJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE);
+
         
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -465,6 +464,10 @@ public class AuctionFrame extends javax.swing.JFrame {
 
     public int getCurrentBid() {
         return currentBid;
+    }
+
+    public int getNumCountersInAuction() {
+        return listCounters.size();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
