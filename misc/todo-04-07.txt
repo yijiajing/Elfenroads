@@ -1,0 +1,4 @@
+1. run through and make sure all aspects of the GameState are loaded in properly
+
+
+2. IMPORTANT: load state of GameMap if haven't done already
