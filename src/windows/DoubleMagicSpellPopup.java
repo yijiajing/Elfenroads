@@ -84,7 +84,7 @@ public class DoubleMagicSpellPopup extends JPanel {
                     // remove this transportation counter from hand
                     gameManager.getThisPlayer().getHand().removeUnit(counter);
                     counter.setOwned(false);
-
+                    Logger.getGlobal().info("Sending PlaceTransportationCounterCommand for double magic spell");
                     PlaceTransportationCounterCommand toSendOverNetwork = new PlaceTransportationCounterCommand(road, counter);
                     try {
                         gameManager.getComs().sendGameCommandToAllPlayers(toSendOverNetwork);
