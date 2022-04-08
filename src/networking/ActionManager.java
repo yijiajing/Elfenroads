@@ -101,7 +101,7 @@ public class ActionManager {
                     gameManager.getComs().sendGameCommandToAllPlayers(placeCounterUnitCommand);
                     GameScreen.getInstance().updateAll();
                 } catch (IOException e) {
-                    LOGGER.info("There was a problem sending the command to place the exchange magic spell!");
+                    LOGGER.severe("The was a problem sending the command to place the exchange magic spell!");
                     e.printStackTrace();
                 }
             } else {
@@ -127,7 +127,7 @@ public class ActionManager {
                     gameManager.getComs().sendGameCommandToAllPlayers(toSendOverNetwork);
                     GameScreen.getInstance().updateAll();
                 } catch (IOException e) {
-                    LOGGER.info("There was a problem sending the command to place the obstacle!");
+                    LOGGER.severe("The was a problem sending the command to place the obstacle!");
                     e.printStackTrace();
                 }
                 gameManager.endTurn();
@@ -153,7 +153,7 @@ public class ActionManager {
                     gameManager.getComs().sendGameCommandToAllPlayers(toSendOverNetwork);
                     GameScreen.getInstance().updateAll();
                 } catch (IOException e) {
-                    LOGGER.info("There was a problem sending the command to place the transportation counter!");
+                    LOGGER.severe("The was a problem sending the command to place the transportation counter!");
                     e.printStackTrace();
                 }
                 gameManager.endTurn();
@@ -175,7 +175,7 @@ public class ActionManager {
                     gameManager.getComs().sendGameCommandToAllPlayers(toSendOverNetwork);
                     GameScreen.getInstance().updateAll();
                 } catch (IOException e) {
-                    LOGGER.info("There was a problem sending the command to place the gold piece!");
+                    LOGGER.severe("The was a problem sending the command to place the gold piece!");
                     e.printStackTrace();
                 }
                 gameManager.endTurn();
@@ -209,7 +209,7 @@ public class ActionManager {
                         gameManager.getComs().sendGameCommandToAllPlayers(toSendOverNetwork);
                         GameScreen.getInstance().updateAll();
                     } catch (IOException e) {
-                        LOGGER.info("There was a problem sending the command to place the double magic spell!");
+                        LOGGER.severe("The was a problem sending the command to place the double magic spell!");
                         e.printStackTrace();
                     }
                     inExternalWindow = true;
@@ -342,6 +342,7 @@ public class ActionManager {
             if (gameState.getCurrentPlayer().getGoldCoins() >= 3) {
                 magicFlightSuccess = true;
                 gameState.getCurrentPlayer().removeGoldCoins(3);
+                GameRuleUtils.updateRemoteGoldCoins(-3);
                 LOGGER.info("The current player intends to make a magic flight. Take away 3 coins");
             } else {
                 LOGGER.info("The current player intends to make a magic flight but does not have enough coins.");
@@ -360,6 +361,7 @@ public class ActionManager {
                     goldEarned *= 2;
                 }
                 gameState.getCurrentPlayer().addGoldCoins(goldEarned);
+                GameRuleUtils.updateRemoteGoldCoins(goldEarned);
             }
 
             // remove cards from the local player's hand
@@ -371,7 +373,7 @@ public class ActionManager {
             try {
                 gameManager.getComs().sendGameCommandToAllPlayers(new ReturnTravelCardsCommand(selectedCards));
             } catch (IOException e) {
-                LOGGER.info("There was a problem sending the ReturnTravelCardsCommand!");
+                LOGGER.severe("The was a problem sending the ReturnTravelCardsCommand!");
                 e.printStackTrace();
             }
 
@@ -405,7 +407,7 @@ public class ActionManager {
             try {
                 gameManager.getComs().sendGameCommandToAllPlayers(cmd);
             } catch (IOException e) {
-                LOGGER.info("There was a problem sending the command to move the boot!");
+                LOGGER.severe("The was a problem sending the command to move the boot!");
                 e.printStackTrace();
             }
         } else { // Move Boot fails

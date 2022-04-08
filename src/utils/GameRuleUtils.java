@@ -1,10 +1,12 @@
 package utils;
 
+import commands.AddGoldCoinsCommand;
 import domain.*;
 import enums.*;
 import gamemanager.GameManager;
 import networking.GameState;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -68,6 +70,7 @@ public final class GameRuleUtils {
                     if (hasWitch) {
                     	LOGGER.info("Current Player use a witch card to go over obstacle.");
                     	GameState.instance().getCurrentPlayer().removeGoldCoins(1);
+                        GameRuleUtils.updateRemoteGoldCoins(-1);
                     }
                     return road;
                 }
@@ -84,6 +87,7 @@ public final class GameRuleUtils {
                         if (hasWitch) {
                         	LOGGER.info("Current Player use a witch card to go over obstacle.");
                         	GameState.instance().getCurrentPlayer().removeGoldCoins(1);
+                            GameRuleUtils.updateRemoteGoldCoins(-1);
                         }
                         return road;
                     }
@@ -94,6 +98,7 @@ public final class GameRuleUtils {
                         if (hasWitch) {
                         	LOGGER.info("Current Player use a witch card to go over obstacle.");
                         	GameState.instance().getCurrentPlayer().removeGoldCoins(1);
+                            GameRuleUtils.updateRemoteGoldCoins(-1);
                         }
                         return road;
                     }
@@ -113,6 +118,7 @@ public final class GameRuleUtils {
                         if (hasWitch) {
                         	LOGGER.info("Current Player use a witch card to go over obstacle.");
                         	GameState.instance().getCurrentPlayer().removeGoldCoins(1);
+                            GameRuleUtils.updateRemoteGoldCoins(-1);
                         }
                     	return road;
                     }
@@ -137,6 +143,7 @@ public final class GameRuleUtils {
                 if (hasWitch) {
                 	LOGGER.info("Current Player use a witch card to go over obstacle.");
                 	GameState.instance().getCurrentPlayer().removeGoldCoins(1);
+                    GameRuleUtils.updateRemoteGoldCoins(-1);
                 }
                 return road;
             }
@@ -178,5 +185,14 @@ public final class GameRuleUtils {
         return List.of(EGRoundPhaseType.DRAW_CARD_ONE,
                 EGRoundPhaseType.DRAW_CARD_TWO, EGRoundPhaseType.DRAW_CARD_THREE)
                 .contains(GameState.instance().getCurrentPhase());
+    }
+
+    public static void updateRemoteGoldCoins(int value) {
+        try {
+            GameManager.getInstance().getComs().sendGameCommandToAllPlayers(new AddGoldCoinsCommand(value));
+        } catch (IOException e) {
+            LOGGER.severe("There was a problem sending the AddGoldCoinsCommand!");
+            e.printStackTrace();
+        }
     }
 }

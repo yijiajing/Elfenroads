@@ -5,7 +5,7 @@ import enums.Colour;
 import networking.GameState;
 import panel.ElfBootPanel;
 import gamescreen.GameScreen;
-import utils.GameRuleUtils;
+
 
 import java.io.Serializable;
 import java.util.logging.Logger;
@@ -53,11 +53,6 @@ public class MoveBootCommand implements GameCommand, Serializable {
 
         startPanel.updateView();
         destinationPanel.updateView();
-
-        // add gold coins for the player that just moved
-        if (GameRuleUtils.isElfengoldVariant()) {
-            sender.addGoldCoins(destinationTown.getGoldValue());
-        }
 
         GameScreen.getInstance().notifyObservers();
         GameScreen.getInstance().updateLeaderboard();
