@@ -22,29 +22,28 @@ public class DrawGoldDeckButton extends JButton {
 		setText("Gold Cards: " + Integer.toString(pState.getGoldCardDeckCount()));
 		this.addActionListener(new ActionListener() {
 			@Override
-			 public void actionPerformed(ActionEvent e)
-			{
+			public void actionPerformed(ActionEvent e) {
 				MP3Player track = new MP3Player("./assets/Music/JLEX5AW-ui-medieval-click-heavy-positive-01.mp3");
 				track.play();
 				if (GameRuleUtils.isDrawCardsPhase() && GameManager.getInstance().isLocalPlayerTurn()) {
-					if (! (pState.getGoldCardDeckCount() > 0)) {
+					if (!(pState.getGoldCardDeckCount() > 0)) {
 						GameScreen.displayMessage("There is nothing in the Gold Card Deck.");
-					}else {
+					} else {
 						// The player intends to take the gold card deck. 
-						pState.getCurrentPlayer().addGoldCoins(pState.getGoldCardDeckCount());
+						pState.getCurrentPlayer().addGoldCoins(3 * pState.getGoldCardDeckCount()); // earn 3 coins for each card
 						pState.clearGoldCardDeck();
 						// Update with other players
-						 try {
-		                        GameManager.getInstance().getComs().sendGameCommandToAllPlayers(new DrawGoldDeckCommand());
-		                    } catch (IOException err) {
-		                        System.out.println("There was a problem sending the PassTurnCommand to all players.");
-		                        err.printStackTrace();
-		                    }
-						 //end turn
-						 GameManager.getInstance().endTurn();
+						try {
+							GameManager.getInstance().getComs().sendGameCommandToAllPlayers(new DrawGoldDeckCommand());
+						} catch (IOException err) {
+							System.out.println("There was a problem sending the PassTurnCommand to all players.");
+							err.printStackTrace();
+						}
+						//end turn
+						GameManager.getInstance().endTurn();
 					}
 				}
-		    }
+			}
 		});
 	}
 	

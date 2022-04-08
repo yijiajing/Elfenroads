@@ -3,7 +3,6 @@ package networking;
 import domain.*;
 import enums.*;
 import windows.MainFrame;
-import org.json.JSONObject;
 import gamescreen.GameScreen;
 import panel.ElfBootPanel;
 import savegames.*;
@@ -353,6 +352,7 @@ public class GameState implements Serializable{
     }
 
     public void clearGoldCardDeck() {
+        travelCardDeck.returnGoldCards();
         goldCardDeckCount = 0;
     }
 

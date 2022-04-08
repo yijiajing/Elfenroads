@@ -41,7 +41,7 @@ public class EGGameManager extends GameManager {
         }
 
         // add gold cards later so that the initially assigned cards are all travel cards
-        gameState.getTravelCardDeck().addGoldCards();
+        gameState.getTravelCardDeck().initGoldCards();
 
         // put 3 cards face up, these are shared across peers
         for (int j = 0; j < 3; j++) {
