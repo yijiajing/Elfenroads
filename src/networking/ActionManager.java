@@ -202,6 +202,8 @@ public class ActionManager {
                 }
             } else if (counter.getType() == MagicSpellType.DOUBLE) {
                 if (selectedRoad.placeDouble(counter)) {
+                    gameManager.getThisPlayer().getHand().removeUnit(selectedCounter);
+                    selectedCounter.setOwned(false);
                     GameCommand toSendOverNetwork = new PlaceCounterUnitCommand(selectedRoad, counter);
                     try {
                         gameManager.getComs().sendGameCommandToAllPlayers(toSendOverNetwork);
