@@ -13,7 +13,7 @@ crash.log
 # Nick's IDE-specific files and misc
 .idea/
 *.iml
-/misc/
+misc/
 
 # Phillipe's vscode files
 .vscode/
