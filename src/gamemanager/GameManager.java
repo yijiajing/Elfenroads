@@ -170,7 +170,7 @@ public abstract class GameManager {
                 LOGGER.info("Notifying " + gameState.getCurrentPlayer().getName() + " to take action.");
                 coms.sendCommandToIndividual(notifyTurnCommand, gameState.getCurrentPlayer().getName());
             } catch (IOException e) {
-                LOGGER.info("There was a problem sending the command to take turns!");
+                LOGGER.severe("There was a problem sending the command to take turns!");
                 e.printStackTrace();
             }
         }

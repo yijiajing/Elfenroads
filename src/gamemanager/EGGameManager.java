@@ -139,7 +139,7 @@ public class EGGameManager extends GameManager {
             coms.sendGameCommandToAllPlayers(cmd1);
             coms.sendGameCommandToAllPlayers(cmd2);
         } catch (IOException e) {
-            LOGGER.info("There was a problem sending the command to draw counters!");
+            LOGGER.severe("There was a problem sending the command to draw counters!");
             e.printStackTrace();
         }
 

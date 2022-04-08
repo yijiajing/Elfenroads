@@ -95,7 +95,7 @@ public class ELGameManager extends GameManager {
         try {
             coms.sendGameCommandToAllPlayers(drawCardCommand);
         } catch (IOException e) {
-            LOGGER.info("There was a problem sending the command to draw cards!");
+            LOGGER.severe("There was a problem sending the command to draw cards!");
             e.printStackTrace();
         }
         endTurn();
