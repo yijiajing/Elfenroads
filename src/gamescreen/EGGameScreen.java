@@ -147,12 +147,6 @@ public class EGGameScreen extends GameScreen {
     @Override
     public void initializeLeaderboard() {
         List<Player> aPlayers = GameState.instance().getPlayers();
-        // for debugging. feel free to delete
-        Logger.getGlobal().info("Player list size in leaderboard init: " + aPlayers.size());
-        for (Player cur : aPlayers)
-        {
-            Logger.getGlobal().info("In leaderboard initialization: " + cur.getName());
-        }
 
         backgroundPanel_ForLeaderboard.setLayout(new BoxLayout(backgroundPanel_ForLeaderboard, BoxLayout.Y_AXIS));
         backgroundPanel_ForLeaderboard.setAlignmentX(CENTER_ALIGNMENT);
