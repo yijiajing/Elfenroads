@@ -29,7 +29,7 @@ public abstract class GameManager {
 
     protected GameState gameState;
     protected ActionManager actionManager;
-    protected Player thisPlayer = null; // represents the Player who is using this GUI, set by ChooseBootWindow
+    protected Player thisPlayer; // represents the Player who is using this GUI, set by ChooseBootWindow
     protected boolean loaded;
     protected GameVariant variant;
 
@@ -64,8 +64,9 @@ public abstract class GameManager {
             Savegame loadedGame = savegame.get();
             this.variant = loadedGame.getGameVariant();
             MainFrame.mainPanel.add(GameScreen.init(MainFrame.getInstance(), variant), "gameScreen");
-            gameState = GameState.initFromSave(loadedGame);
-            setThisPlayer(gameState.getThisPlayerFromLoaded());
+            gameState = GameState.initFromSave(loadedGame, this);
+            Logger.getGlobal().info("thisPlayer in the loaded game was " + loadedGame.getThisPlayer().getName());
+            // setThisPlayer(gameState.getThisPlayerFromLoaded());
             loaded = true;
             actionManager = ActionManager.init(gameState, this);
         }
@@ -146,6 +147,18 @@ public abstract class GameManager {
     public void setThisPlayer(Player p) {
         thisPlayer = p;
         gameState.addPlayer(p);
+    }
+
+    /**
+     * to use in loading games, when the GameState has not yet been initialized during
+     * GameManager initialization
+     * @param p
+     * @param pGameState
+     */
+    public void setThisPlayer(Player p, GameState pGameState)
+    {
+        thisPlayer = p;
+        pGameState.addPlayer(p);
     }
 
     public abstract void setUpNewGame();

@@ -174,7 +174,7 @@ public abstract class GameScreen extends JPanel implements Serializable {
         }
 
         List<CardUnit> myCards = GameManager.getInstance().getThisPlayer().getHand().getCards();
-
+        System.out.println(myCards.size());
         // draw the cards to the screen
         for (int p = 0; p < myCards.size(); p++) {
             JPanel panel = panelForPlayerCards[p];
@@ -183,6 +183,7 @@ public abstract class GameScreen extends JPanel implements Serializable {
                 panel.add(card.getDisplay());
                 panel.repaint();
                 panel.revalidate();
+                System.out.println(card.toString());
             }
         }
     }

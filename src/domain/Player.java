@@ -208,7 +208,10 @@ public class Player implements Comparable<Player> {
         }
 
         // done loading in the player's hand
+    }
 
-
+    public void setHand(Hand pHand)
+    {
+        hand = hand;
     }
 }

@@ -1,5 +1,7 @@
 package test;
 
+import domain.CardUnit;
+import domain.CounterUnit;
 import domain.Player;
 import enums.Colour;
 import enums.GameVariant;
@@ -50,6 +52,27 @@ public class TestLoadedGame {
             // feel free to delete this if I forget to
             Logger.getGlobal().info("The actual savegame has " + testSaveGame.getPlayers().size() + " players in it.");
             Logger.getGlobal().info("There are " + GameState.instance().getNumOfPlayers() + " players in the game after loading.");
+
+            // print hand info. just for debugging
+            for (Player inGame : GameState.instance().getPlayers())
+            {
+                for (CounterUnit ctr : inGame.getHand().getCounters())
+                {
+                    Logger.getGlobal().info("In hand: " + ctr);
+                }
+                for (CardUnit crd : inGame.getHand().getCards())
+                {
+                    Logger.getGlobal().info("In hand: " + crd);
+                }
+                if (inGame.hasObstacle())
+                {
+                    Logger.getGlobal().info(inGame.getHand().getObstacle().toString());
+                }
+
+            }
+
+
+
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -14,6 +14,7 @@ import utils.GameRuleUtils;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 public class Savegame implements Serializable {
 
@@ -140,8 +141,6 @@ public class Savegame implements Serializable {
             {
                 thisPlayer = toAdd;
             }
-
-
             players.add(toAdd);
         }
     }
@@ -212,6 +211,89 @@ public class Savegame implements Serializable {
         {
             faceUpCards.add(new SerializableTravelCard(crd));
         }
+    }
+
+    /**
+     * get each player's hand from a savegame
+     * @param playerName
+     * @return
+     */
+    public Hand getHandByPlayer(String playerName)
+    {
+        // iterate through all of the player's cards, counters, and obstacle
+        SerializablePlayer thatOne = getPlayerByName(playerName);
+        // cards
+        // counters
+        // obstacle
+        ArrayList<SerializableCardUnit> cards = thatOne.getCards();
+        ArrayList<SerializableCounterUnit> counters = thatOne.getCounters();
+        SerializableObstacle obstacle = thatOne.getObstacle();
+
+        Hand out = new Hand();
+
+        for (SerializableCardUnit cur : cards)
+        {
+            // could be a travelCard or a gold card
+            if (cur instanceof SerializableTravelCard)
+            {
+                SerializableTravelCard curDowncasted = (SerializableTravelCard) cur;
+                out.addUnit(new TravelCard(curDowncasted));
+            }
+            else // if cur is a gold card
+            {
+                SerializableGoldCard curDowncasted = (SerializableGoldCard) cur;
+                out.addUnit(new GoldCard(curDowncasted));
+            }
+        }
+
+        for (SerializableCounterUnit cur : counters)
+        {
+            // could be an Obstacle, a GoldPiece, a TransportationCounter, or a MagicSpell
+            if (cur instanceof SerializableObstacle)
+            {
+                SerializableObstacle curDowncasted = (SerializableObstacle) cur;
+                out.addUnit(new Obstacle(curDowncasted));
+            }
+            else if (cur instanceof SerializableGoldPiece)
+            {
+                SerializableGoldPiece curDowncasted = (SerializableGoldPiece) cur;
+                out.addUnit(new GoldPiece(curDowncasted));
+            }
+            else if (cur instanceof SerializableTransportationCounter)
+            {
+                SerializableTransportationCounter curDowncasted = (SerializableTransportationCounter) cur;
+                out.addUnit(new TransportationCounter(curDowncasted));
+            }
+            else if (cur instanceof SerializableMagicSpell)
+            {
+                SerializableMagicSpell curDowncasted = (SerializableMagicSpell) cur;
+                out.addUnit(new MagicSpell(curDowncasted));
+            }
+        }
+
+        if (obstacle != null)
+        {
+            out.addUnit(new Obstacle(obstacle));
+        }
+
+        return out;
+
+    }
+
+    /**
+     * @pre players have been saved already
+     */
+    public SerializablePlayer getPlayerByName(String name)
+    {
+        for (SerializablePlayer cur : players)
+        {
+            if (cur.getName().equalsIgnoreCase(name))
+            {
+                return cur;
+            }
+        }
+        Logger.getGlobal().info("Could not find a player from the savegame with the name " + name);
+        return null;
     }
 
     public int getTotalRounds() {
