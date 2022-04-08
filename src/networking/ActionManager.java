@@ -208,7 +208,10 @@ public class ActionManager {
                 }
             }
         }
-        clearSelection();
+
+        if (!(selectedCounter.getType() == MagicSpellType.EXCHANGE)) {
+            clearSelection();
+        }
     }
 
     public CounterUnit getSelectedCounter() {
