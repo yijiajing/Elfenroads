@@ -65,7 +65,7 @@ public class TravelCard extends CardUnit {
 
     public TravelCard (SerializableTravelCard loaded)
     {
-        super(MainFrame.getInstance().getWidth() * 130 / 1440, MainFrame.getInstance().getHeight() * 2 / 10, "T0" + loaded.getFilepathNumber());
+        super(MainFrame.getInstance().getWidth() * 130 / 1440, MainFrame.getInstance().getHeight() * 2 / 10, "T0" + loaded.getType());
         owned = false;
         type = loaded.getType();
 

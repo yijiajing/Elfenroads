@@ -2,7 +2,6 @@ package networking;
 
 import domain.*;
 import enums.*;
-import gamemanager.GameManager;
 import windows.MainFrame;
 import org.json.JSONObject;
 import gamescreen.GameScreen;
@@ -55,8 +54,6 @@ public class GameState implements Serializable{
 
     // for loading games
     private Savegame loadedState;
-    private Player thisPlayerFromLoaded; // this field will allow us to store the thisPlayer field
-                                            // we need to store it because we cannot set that field in GameManager until the GameManager instance has been initialized
 
     private GameState (String sessionID, GameVariant gameVariant)
     {
@@ -79,11 +76,13 @@ public class GameState implements Serializable{
         this.counterPile = new CounterUnitPile(sessionID, gameVariant);
     }
 
+    // TODO: how to mediate this constructor with a singleton feature
+
     /**
      * will read in game info from a save
      * @param pLoadedState the savegame, read from a file
      */
-    private GameState (Savegame pLoadedState, GameManager pGameManager)
+    public GameState (Savegame pLoadedState)
     {
         loadedState = pLoadedState;
         // load directly saved fields first
@@ -96,23 +95,15 @@ public class GameState implements Serializable{
         // load the counters and cards
 
         // load all of the players from the savegame
-        loadPlayers(pGameManager);
+        loadPlayers();
 
-        // load player hands
         // load the travel card deck and counter pile
         loadTravelCardDeck();
         loadCounterPile();
 
         // load face up cards or counters
-        // load face up cards if Elfengold, otherwise load face up counters
-        if (GameRuleUtils.isElfengoldVariant(gameVariant))
-        {
-            loadFaceUpCards();
-        }
-       else
-        {
-            loadFaceUpCounters();
-        }
+        loadFaceUpCards();
+        loadFaceUpCounters();
 
         // init elf boots and their locations based on player colors
         loadBoots();
@@ -136,13 +127,6 @@ public class GameState implements Serializable{
     }
 
     public static GameState instance() {
-        return instance;
-    }
-
-    // clears the singleton field, and sets the loaded GameState as the singleton field
-    public static GameState initFromSave(Savegame loadedState, GameManager pGameManager)
-    {
-        instance = new GameState(loadedState, pGameManager);
         return instance;
     }
 
@@ -373,36 +357,14 @@ public class GameState implements Serializable{
     }
 
     // METHODS USED TO READ IN A LOADED GAME
-    private void loadPlayers(GameManager pGameManager)
+    // TODO: implement these and implement constructors
+    private void loadPlayers()
     {
         for (SerializablePlayer toLoad : loadedState.getPlayers())
         {
-            Player loaded = new Player(toLoad);
-            if (loadedState.getThisPlayer().getName().equals(toLoad.getName()))
-            {
-                if (loadedState.getCurrentPlayer().getName().equals(toLoad.getName()))
-                {
-                    Logger.getGlobal().info("Setting " + loaded.getName() + " as currentPlayer.");
-                    setCurrentPlayer(loaded);
-                }
-                thisPlayerFromLoaded = loaded;
-                Logger.getGlobal().info("Setting " + toLoad.getName() + " as thisPlayer.");
-                pGameManager.setThisPlayer(loaded, this);
-                Logger.getGlobal().info("thisPlayer was supposed to be set as " + toLoad.getName() + ". It was actually " +
-                        "set as " + pGameManager.getThisPlayer().getName());
-                // we don't need to call addPlayer in this one, since GameManager.launch() will call setThisPlayer on its own.
-                // that method will automatically add thisPlayerFromLoaded to the list of players.
-            }
-
-            else if (loadedState.getCurrentPlayer().getName().equals(toLoad.getName()))
-            {
-                Logger.getGlobal().info("Setting " + toLoad.getName() + " as currentPlayer.");
-                addPlayer(loaded);
-                setCurrentPlayer(loaded);
-            }
+            addPlayer(new Player(toLoad));
         }
     }
-
 
     /**
      * @pre the gamescreen has been initialized
@@ -410,6 +372,8 @@ public class GameState implements Serializable{
     private void loadBoots()
     {
         elfBoots = new ArrayList<ElfBoot>();
+        int bootWidth = MainFrame.instance.getWidth() * 15 / 1440;
+        int bootHeight = MainFrame.instance.getHeight() * 15/900;
 
         for (Player cur : players)
         {
@@ -418,7 +382,7 @@ public class GameState implements Serializable{
             Town playerCurrentTown = cur.getCurrentTown();
             ElfBootPanel curPanel = playerCurrentTown.getElfBootPanel();
             Colour playerColor = cur.getColour();
-            ElfBoot thatPlayer = new ElfBoot(playerColor, GameScreen.getInstance().getWidth(), GameScreen.getInstance().getHeight(), curPanel, GameScreen.getInstance());
+            ElfBoot thatPlayer = new ElfBoot(playerColor, bootWidth, bootHeight, curPanel, GameScreen.getInstance());
             elfBoots.add(thatPlayer);
             // TODO: do we need to call a method in Player class to assign the boot?
         }
@@ -429,20 +393,9 @@ public class GameState implements Serializable{
      */
     private void loadTravelCardDeck()
     {
-        travelCardDeck = TravelCardDeck.getEmpty(loadedState.getSessionID());
-       for (SerializableCardUnit crd : loadedState.getTravelCardDeck())
+       for (SerializableTravelCard crd : loadedState.getTravelCardDeck())
        {
-           if (crd instanceof SerializableGoldCard)
-           {
-               SerializableGoldCard crdDowncasted = (SerializableGoldCard) crd;
-               travelCardDeck.addDrawable(new GoldCard(crdDowncasted));
-           }
-
-           else // if crd is a SerializableTravelCard
-           {
-               SerializableTravelCard crdDowncasted = (SerializableTravelCard) crd;
-               travelCardDeck.addDrawable(new TravelCard(crdDowncasted));
-           }
+           travelCardDeck.addDrawable(new TravelCard(crd));
        }
     }
 
@@ -451,7 +404,6 @@ public class GameState implements Serializable{
      */
     private void loadCounterPile()
     {
-        counterPile = CounterUnitPile.getEmpty(loadedState.getSessionID());
         for (SerializableCounterUnit ctr : loadedState.getCounterPile())
         {
             // load each counter from the savegame
@@ -459,18 +411,6 @@ public class GameState implements Serializable{
             {
                 SerializableTransportationCounter ctrDowncasted = (SerializableTransportationCounter) ctr;
                 counterPile.addDrawable(new TransportationCounter(ctrDowncasted));
-            }
-
-            else if (ctr instanceof SerializableMagicSpell)
-            {
-                SerializableMagicSpell ctrDowncasted = (SerializableMagicSpell) ctr;
-                counterPile.addDrawable(new MagicSpell(ctrDowncasted));
-            }
-
-            else if (ctr instanceof SerializableGoldPiece)
-            {
-                SerializableGoldPiece ctrDowncasted = (SerializableGoldPiece) ctr;
-                counterPile.addDrawable(new GoldPiece(ctrDowncasted));
             }
             else // if ctr is an obstacle
             {
@@ -482,7 +422,6 @@ public class GameState implements Serializable{
 
     /**
      * loads the face up travel cards from a saved Elfengold game
-     * @pre the game variant is Elfengold
      */
     private void loadFaceUpCards()
     {
@@ -494,7 +433,6 @@ public class GameState implements Serializable{
 
     /**
      * loads the face up transportation counters from a saved Elfenland game
-     * @pre the game variant is Elfenland
      */
     private void loadFaceUpCounters()
     {
@@ -506,9 +444,5 @@ public class GameState implements Serializable{
     
     public int getGoldCardDeckCount() {
     	return goldCardDeckCount;
-    }
-
-    public Player getThisPlayerFromLoaded() {
-        return thisPlayerFromLoaded;
     }
 }

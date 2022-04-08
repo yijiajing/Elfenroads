@@ -3,8 +3,6 @@ package savegames;
 import com.sun.jdi.connect.Transport;
 import domain.*;
 import enums.Colour;
-import enums.GameVariant;
-import networking.GameState;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -31,11 +29,7 @@ public class SerializablePlayer implements Serializable {
         // will turn a Player object into a serializable version which can be saved to a file
         currentTownName = original.getCurrentTownName();
         visitedTownNames = getVisitedTownNames(original);
-        // save destination town name if that is the variant we are playing
-        if (GameState.instance().getGameVariant() == GameVariant.ELFENLAND_DESTINATION)
-        {
-            destinationTownName = original.getDestinationTown().getName();
-        }
+        destinationTownName = original.getDestinationTown().getName();
         color = original.getColour();
 
         // add the counters, cards, and obstacles
@@ -61,7 +55,7 @@ public class SerializablePlayer implements Serializable {
     private void addCounters(Player original)
     {
         List<CounterUnit> origCounters = original.getHand().getCounters();
-        counters = new ArrayList<>();
+        ArrayList<SerializableCounterUnit> out = new ArrayList<SerializableCounterUnit>();
 
         for (CounterUnit cur : origCounters)
         {
@@ -93,7 +87,7 @@ public class SerializablePlayer implements Serializable {
     private void addCards(Player original)
     {
         List <CardUnit> origCards = original.getHand().getCards();
-        cards = new ArrayList<>();
+        List <SerializableCardUnit> out = new ArrayList<SerializableCardUnit>();
 
         for (CardUnit cur : origCards)
         {

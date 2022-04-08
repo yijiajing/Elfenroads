@@ -19,6 +19,7 @@ import java.util.logging.*;
 
 public class TravelCardDeck extends Deck <CardUnit> {
 
+    private GameVariant variant;
     private JLabel deckImage;
 
     public TravelCardDeck (String sessionID, GameVariant variant) {
@@ -29,6 +30,8 @@ public class TravelCardDeck extends Deck <CardUnit> {
         Image image = imageIcon.getImage();
         Image imageResized = image.getScaledInstance(GameScreen.getInstance().getWidth()*130/1440-35, GameScreen.getInstance().getHeight()/5-40, java.awt.Image.SCALE_SMOOTH);
         this.deckImage = new JLabel(new ImageIcon(imageResized));
+
+        this.variant = variant;
 
         // the number of each card to add to the pile, depends on the variant
         int numRafts;
@@ -78,33 +81,6 @@ public class TravelCardDeck extends Deck <CardUnit> {
             }
         }
         shuffle();
-    }
-
-    /**
-     * construct an empty travel card deck
-     * private for safety--we only want to use this when we are loading games
-     */
-    private TravelCardDeck(String sessionID)
-    {
-
-        super(sessionID);
-        // initialize the deck image
-        ImageIcon imageIcon = new ImageIcon("./assets/sprites/grey.png");
-        Image image = imageIcon.getImage();
-        Image imageResized = image.getScaledInstance(GameScreen.getInstance().getWidth()*130/1440-40, GameScreen.getInstance().getHeight()/5-50, java.awt.Image.SCALE_SMOOTH);
-        this.deckImage = new JLabel(new ImageIcon(imageResized));
-
-        // has no cards
-    }
-
-    /**
-     * A special case constructor to get an empty TravelCardDeck
-     * this is necessary for loading games, since we need to initialize the TravelCardDeck without all of the cards in it
-     * @return a TravelCardDeck with no components
-     */
-    public static TravelCardDeck getEmpty(String pSessionID)
-    {
-        return new TravelCardDeck(pSessionID);
     }
 
     public JLabel getImage() {

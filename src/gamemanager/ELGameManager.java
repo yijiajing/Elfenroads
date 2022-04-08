@@ -5,7 +5,6 @@ import domain.*;
 import enums.ELRoundPhaseType;
 import enums.GameVariant;
 import enums.ObstacleType;
-import savegames.Savegame;
 import windows.*;
 import networking.*;
 import gamescreen.GameScreen;
@@ -27,7 +26,6 @@ public class ELGameManager extends GameManager {
      * If the User is starting a new game, then loadedState == null
      * If the User is loading a previous game, then loadedState != null
      */
-
     ELGameManager(Optional<GameState> loadedState, String pSessionID, GameVariant variant, String pLocalAddress) {
         super(loadedState, pSessionID, variant, pLocalAddress);
     }

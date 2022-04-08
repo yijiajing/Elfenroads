@@ -35,7 +35,7 @@ public class ElfBoot extends JLabel {
 //        this.bootImage.addMouseListener(new ElfBootController(pGameScreen, this));
     }
 
-    public boolean isSelected() {return this.selected;}
+    public boolean isSelected() { return this.selected; }
 
     public void setSelected(boolean pSelected) {
         this.selected = pSelected;
