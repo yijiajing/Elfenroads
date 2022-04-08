@@ -49,7 +49,10 @@ public class Road {
     }
 
     public boolean setTransportationCounter(TransportationCounter transportationCounter) {
-        if (regionType == RegionType.LAKE || regionType == RegionType.RIVER || numOfTransportationCounter() > 0) {
+        if (regionType == RegionType.LAKE || regionType == RegionType.RIVER ||
+                (numOfTransportationCounter() > 0 && !hasDouble())) {
+            return false;
+        } else if (hasDouble() && numOfTransportationCounter() != 1) {
             return false;
         }
 
