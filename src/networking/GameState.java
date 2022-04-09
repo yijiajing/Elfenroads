@@ -84,6 +84,9 @@ public class GameState implements Serializable{
      */
     public GameState (Savegame pLoadedState)
     {
+        // for a loaded game, we will init the GameScreen and map here instead of in the GameManager
+        GameMap.init(GameScreen.init(MainFrame.getInstance(), pLoadedState.getGameVariant()), pLoadedState.getGameVariant());
+
         loadedState = pLoadedState;
         // load directly saved fields first
         totalRounds = loadedState.getTotalRounds();

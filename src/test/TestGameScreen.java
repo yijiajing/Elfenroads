@@ -42,6 +42,7 @@ public class TestGameScreen {
 
             Player p = new Player(Colour.BLACK, "chloe");
             GameManager.getInstance().setThisPlayer(p);
+            GameManager.getInstance().getGameState().setCurrentPlayer(p);
 
 //            for (int i=0; i<10; i++) {
                 GameManager.getInstance().getThisPlayer().getHand().addUnit(new TravelCard(TravelCardType.DRAGON, GameScreen.getInstance().getWidth()*130/1440, GameScreen.getInstance().getHeight()/5));
