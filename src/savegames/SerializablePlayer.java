@@ -28,8 +28,14 @@ public class SerializablePlayer implements Serializable {
         name = original.getName();
         // will turn a Player object into a serializable version which can be saved to a file
         currentTownName = original.getCurrentTownName();
-        visitedTownNames = getVisitedTownNames(original);
-        destinationTownName = original.getDestinationTown().getName();
+        saveVisitedTownNames(original);
+
+        if (original.getDestinationTown() != null) // we are saving a destination town game
+        {
+            destinationTownName = original.getDestinationTown().getName();
+        }
+
+
         color = original.getColour();
 
         // add the counters, cards, and obstacles
@@ -39,23 +45,22 @@ public class SerializablePlayer implements Serializable {
 
     }
 
-    private static ArrayList<String> getVisitedTownNames (Player original)
+    private void saveVisitedTownNames (Player original)
     {
         Set<Town> visited = original.getTownsVisited();
         ArrayList<String> visitedNames = new ArrayList<String>();
+        visitedTownNames = new ArrayList<>();
 
         for (Town cur : visited)
         {
-            visitedNames.add(cur.getName());
+            visitedTownNames.add(cur.getName());
         }
-
-        return visitedNames;
     }
 
-    private void addCounters(Player original)
+    private void saveCounters(Player original)
     {
         List<CounterUnit> origCounters = original.getHand().getCounters();
-        ArrayList<SerializableCounterUnit> out = new ArrayList<SerializableCounterUnit>();
+        counters = new ArrayList<>();
 
         for (CounterUnit cur : origCounters)
         {
@@ -73,7 +78,7 @@ public class SerializablePlayer implements Serializable {
 
     }
 
-    private void addObstacle(Player original)
+    private void saveObstacle(Player original)
     {
         // for Elfenland, check if the player has an obstacle
 
@@ -84,10 +89,10 @@ public class SerializablePlayer implements Serializable {
 
     }
 
-    private void addCards(Player original)
+    private void saveCards(Player original)
     {
         List <CardUnit> origCards = original.getHand().getCards();
-        List <SerializableCardUnit> out = new ArrayList<SerializableCardUnit>();
+        cards = new ArrayList<>();
 
         for (CardUnit cur : origCards)
         {
@@ -96,6 +101,12 @@ public class SerializablePlayer implements Serializable {
                 TravelCard curDowncasted = (TravelCard) cur;
                 cards.add(new SerializableTravelCard(curDowncasted));
             }
+            else // cur is a gold card
+            {
+                GoldCard curDowncasted = (GoldCard) cur;
+                cards.add(new SerializableGoldCard(curDowncasted));
+            }
+
             // do we do anything with gold cards?
         }
     }

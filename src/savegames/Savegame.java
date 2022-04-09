@@ -56,6 +56,7 @@ public class Savegame implements Serializable {
         passedPlayerCount = pState.getPassedPlayerCount();
         sessionID = GameManager.getInstance().getSessionID();
 
+
         // now, handle the non-serializable fields
         savePlayers(pState);
         saveTravelCardDeck(pState);
@@ -65,6 +66,7 @@ public class Savegame implements Serializable {
         if (GameRuleUtils.isElfengoldVariant(gameVariant))
         {
             saveFaceUpCards(pState);
+            goldCardDeckCount = pState.getGoldCardDeckCount();
         }
         else // if elfenland, save face up counters
         {
@@ -149,7 +151,7 @@ public class Savegame implements Serializable {
     {
         TravelCardDeck origDeck = pGameState.getTravelCardDeck();
         travelCardDeck = new ArrayList<>();
-        for (CardUnit cur : origDeck.getComponents()) // I think we can safely downcast this to a TravelCard
+        for (CardUnit cur : origDeck.getComponents())
         {
             if (cur instanceof TravelCard)
             {
