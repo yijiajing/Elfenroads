@@ -9,11 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
-import javax.swing.BorderFactory;
-import javax.swing.GroupLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.GroupLayout.ParallelGroup;
 import javax.swing.GroupLayout.SequentialGroup;
@@ -45,6 +41,7 @@ public class AuctionFrame extends javax.swing.JFrame {
     private int currentBid = 0;
     private Player highestBidPlayer = null;
     private boolean localPlayerHasPassed = false;
+    private JPanel cardJPanel = new JPanel();
 
     /**
      * Creates new form AuctionFrame
@@ -403,7 +400,7 @@ public class AuctionFrame extends javax.swing.JFrame {
 
         icon.setVisible(true);
         //icon.setBorder(BorderFactory.createBevelBorder(1));
-        javax.swing.JPanel cardJPanel = new javax.swing.JPanel();
+
         //javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(cardJPanel);
         //cardJPanel.setLayout(jPanel2Layout);
         cardJPanel.setBorder(BorderFactory.createBevelBorder(1));
@@ -417,9 +414,8 @@ public class AuctionFrame extends javax.swing.JFrame {
 
 
         jPanel1Layout.setHorizontalGroup(
-                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(sequentHor)
-
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(sequentHor)
         );
         jPanel1Layout.setVerticalGroup(
                 jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

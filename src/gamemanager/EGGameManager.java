@@ -156,17 +156,19 @@ public class EGGameManager extends GameManager {
             return;
         }
 
-        auctionFrame = new AuctionFrame();
+        Logger.getGlobal().info("Showing the auction frame.");
+        this.auctionFrame = new AuctionFrame();;
 
         CounterUnitPile pile = GameState.instance().getCounterPile();
         int numPlayers = GameState.instance().getNumOfPlayers();
+        Logger.getGlobal().info("Num of players is " + numPlayers);
         for (int i = 0; i < numPlayers; i++) {
             auctionFrame.addCounter(pile.draw());
             auctionFrame.addCounter(pile.draw());
         }
         auctionFrame.setVisible(true);
 
-//        endTurn();
+        auctionFrame.setVisible(true);
     }
 
     @Override
