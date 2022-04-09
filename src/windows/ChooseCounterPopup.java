@@ -71,6 +71,7 @@ public class ChooseCounterPopup extends JPanel {
         add(counterPanel);
 
         Logger.getGlobal().info("Counter popup should be showing.");
+        ActionManager.getInstance().setInExternalWindow(true);
     }
 
 
