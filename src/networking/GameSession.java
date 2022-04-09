@@ -131,7 +131,6 @@ public class GameSession {
         System.out.println(content.toString());
     }
 
-    // TODO: change to a method only to delete unlaunched sessions from the creator's computer
     /**
      * deletes the session from the LS
      * should work for both launched and unlaunched sessions
@@ -661,5 +660,11 @@ public class GameSession {
             prob.printStackTrace();
         }
         return false;
+    }
+
+    public static String getCreatorName(String sessionID) throws IOException
+    {
+        JSONObject details = getSessionDetails(sessionID);
+        return details.getString("creator");
     }
 }

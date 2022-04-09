@@ -14,6 +14,8 @@ import utils.GameRuleUtils;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Logger;
 
 public class Savegame implements Serializable {
@@ -30,7 +32,7 @@ public class Savegame implements Serializable {
 
     private int goldCardDeckCount;
 
-    private String sessionID; // TODO: for now we are using this to determine seeds in the loaded GameState, but we might need to remove this
+    private String sessionID; // saves session ID (will be different once we load, but we can use this one to set up the decks and piles anyway)
 
     // fields turned into serializable version
     private ArrayList<SerializablePlayer> players;
@@ -40,6 +42,9 @@ public class Savegame implements Serializable {
     private ArrayList<SerializableCounterUnit> counterPile;
     private ArrayList<SerializableTransportationCounter> faceUpCounters; // for elfenland classic games
     private ArrayList<SerializableTravelCard> faceUpCards; // for elfengold games
+
+    // GameMap info
+    private HashMap<Integer, ArrayList<SerializableCounterUnit>> stuffOnRoads;
 
     /**
      * creates a savegame from a GameState
@@ -56,20 +61,24 @@ public class Savegame implements Serializable {
         passedPlayerCount = pState.getPassedPlayerCount();
         sessionID = GameManager.getInstance().getSessionID();
 
+
         // now, handle the non-serializable fields
         savePlayers(pState);
-        saveTravelCardPile(pState);
+        saveTravelCardDeck(pState);
         saveTransportationCounterPile(pState);
 
         // save faceupcards for elfengold and faceupcounters for elfenland
         if (GameRuleUtils.isElfengoldVariant(gameVariant))
         {
             saveFaceUpCards(pState);
+            goldCardDeckCount = pState.getGoldCardDeckCount();
         }
         else // if elfenland, save face up counters
         {
             saveFaceUpCounters(pState);
         }
+
+        saveStuffOnRoads();
 
         // we will omit elf boots, since we can figure that out upon load by looking at each player, his current town, and his color
     }
@@ -98,7 +107,6 @@ public class Savegame implements Serializable {
     /**
      * @pre GameState instance is not null
      */
-    // TODO: add extension to filename
     public static void saveGameToFile() throws IOException
     {
         // create a savegame object and write it to a file
@@ -145,11 +153,11 @@ public class Savegame implements Serializable {
         }
     }
 
-    private void saveTravelCardPile(GameState pGameState)
+    private void saveTravelCardDeck(GameState pGameState)
     {
         TravelCardDeck origDeck = pGameState.getTravelCardDeck();
         travelCardDeck = new ArrayList<>();
-        for (CardUnit cur : origDeck.getComponents()) // I think we can safely downcast this to a TravelCard
+        for (CardUnit cur : origDeck.getComponents())
         {
             if (cur instanceof TravelCard)
             {
@@ -210,6 +218,47 @@ public class Savegame implements Serializable {
         for (TravelCard crd : pGameState.getFaceUpCards())
         {
             faceUpCards.add(new SerializableTravelCard(crd));
+        }
+    }
+
+    private void saveStuffOnRoads()
+    {
+        stuffOnRoads = new HashMap<>();
+        GameMap map = GameMap.getInstance();
+        List<Road> roads = map.getRoadList();
+
+        for (Road cur : roads)
+        {
+            Integer indexOfRoad = roads.indexOf(cur);
+            stuffOnRoads.put(indexOfRoad, new ArrayList<>()); // put the list in the map
+
+            for (CounterUnit ctr : cur.getCounters())
+            {
+                if (ctr instanceof Obstacle)
+                {
+                    Obstacle ctrDowncasted = (Obstacle) ctr;
+                    stuffOnRoads.get(indexOfRoad).add(new SerializableObstacle(ctrDowncasted));
+                }
+                else if (ctr instanceof TransportationCounter) // if transportation counter
+                {
+                    TransportationCounter ctrDowncasted = (TransportationCounter) ctr;
+                    stuffOnRoads.get(indexOfRoad).add(new SerializableTransportationCounter(ctrDowncasted));
+                }
+                else if (ctr instanceof GoldPiece)
+                {
+                    GoldPiece ctrDowncasted = (GoldPiece) ctr;
+                    stuffOnRoads.get(indexOfRoad).add(new SerializableGoldPiece(ctrDowncasted));
+                }
+                else if (ctr instanceof MagicSpell)
+                {
+                    MagicSpell ctrDowncasted = (MagicSpell) ctr;
+                    stuffOnRoads.get(indexOfRoad).add(new SerializableMagicSpell(ctrDowncasted));
+                }
+                else // this should never be the case
+                {
+                    Logger.getGlobal().info("Unexpected result in saveStuffOnRoads.");
+                }
+            }
         }
     }
 
@@ -350,5 +399,9 @@ public class Savegame implements Serializable {
 
     public SerializablePlayer getThisPlayer() {
         return thisPlayer;
+    }
+
+    public HashMap<Integer, ArrayList<SerializableCounterUnit>> getStuffOnRoads() {
+        return stuffOnRoads;
     }
 }

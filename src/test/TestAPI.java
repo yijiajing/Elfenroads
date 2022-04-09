@@ -23,7 +23,7 @@ public class TestAPI {
 
     {
         // deleteAllSessions();
-        testCreateUser("user_test", "abc123_ABC123");
+        // testCreateUser("user_test", "abc123_ABC123");
 
         initializeGameServiceWithStandardSettings("Elfenland_Classic", "Elfenland (Classic)" );
         initializeGameServiceWithStandardSettings("Elfenland_Long", "Elfenland (Long)");

@@ -96,6 +96,7 @@ public class DoubleMagicSpellPopup extends JPanel {
                     gameManager.endTurn();
                     ActionManager.getInstance().clearSelection();
                     ((EGGameScreen) GameScreen.getInstance()).hideMagicSpellPopup();
+                    ActionManager.getInstance().setInExternalWindow(false);
                 } else {
                     // Invalid move
                     // Should not occur bcs we check if the counter can be placed here before showing it in the popup window

@@ -42,7 +42,7 @@ public class GameService {
         // first, check if the service user already exists. if we try to create a user that already exists, we will get an exception
         boolean usernameTaken = User.doesUsernameExist(gameServiceName);
         String adminToken = User.getAccessTokenUsingCreds("maex", "abc123_ABC123");
-        if (usernameTaken) // TODO: handle the case in which the username is taken already, which probably won't happen in our implementation
+        if (usernameTaken)
         {
             User.logout();
             System.out.println("Username was taken.");
