@@ -3,9 +3,11 @@ package gamescreen;
 import domain.*;
 import enums.GameVariant;
 import gamemanager.GameManager;
+import networking.ActionManager;
 import networking.GameState;
 import panel.ScoreBoardPanel;
 import panel.DrawGoldDeckButton;
+import utils.GameRuleUtils;
 import windows.ChooseCounterPopup;
 import windows.DoubleMagicSpellPopup;
 
@@ -343,5 +345,42 @@ public class EGGameScreen extends GameScreen {
         boardGame_Layers.remove(spellPopup);
         boardGame_Layers.repaint();
         boardGame_Layers.revalidate();
+    }
+
+    /**
+     * Displayed to the user after every boot movement
+     * Allows them to choose between taking gold coins or 2 travel cards
+     */
+    public void showTravelOptionPopup(Town selectedTown, Road selectedRoad) {
+        String takeCards = "Take travel cards";
+        String takeCoins = "Take gold coins";
+
+        String[] options = {takeCoins, takeCards};
+        String message = "As a reward for your move, you can choose to redeem gold coins or take 2 travel cards. Please select you choice below.";
+
+        int choice = JOptionPane.showOptionDialog(null, message, null, JOptionPane.DEFAULT_OPTION,
+                0, null, options, options[0]);
+
+        if (choice == 0) { // take gold coins
+            Logger.getGlobal().info("Player has chosen to take gold coins");
+            Logger.getGlobal().info("Coins before adding: " + GameState.instance().getCurrentPlayer().getGoldCoins());
+
+            int goldEarned = selectedTown.getGoldValue();
+            if (selectedRoad.hasGoldPiece()) {
+                goldEarned *= 2;
+            }
+
+            Logger.getGlobal().info("Adding " + goldEarned + " coins");
+
+            GameState.instance().getCurrentPlayer().addGoldCoins(goldEarned);
+            GameRuleUtils.updateRemoteGoldCoins(goldEarned);
+            updateLeaderboard();
+
+            Logger.getGlobal().info("Number of coins is now " + GameState.instance().getCurrentPlayer().getGoldCoins());
+        } else { // take travel cards
+            Logger.getGlobal().info("Player has chosen to take travel cards");
+            ActionManager.getInstance().setCardsToBeDrawn(2);
+            displayMessage("Please take 2 travel cards from the deck or from the available face-up cards.");
+        }
     }
 }
