@@ -39,8 +39,6 @@ public final class GameRuleUtils {
         }
         Set<Road> roads = gameMap.getRoadsBetween(srcTown, destTown);
 
-        //TODO: implement elven witch and special transportation counters for Elfengold (seamonster done, magic spell done)
-        
         boolean hasWitch = false;
         TravelCard witch = null;
         //check if the player has choose a witch card and has at lease one gold coin.

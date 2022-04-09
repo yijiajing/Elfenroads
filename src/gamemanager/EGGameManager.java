@@ -148,19 +148,18 @@ public class EGGameManager extends GameManager {
 
     public void auction() {
         if (!(gameState.getCurrentRound() <= gameState.getTotalRounds()
-                && gameState.getCurrentPhase() == EGRoundPhaseType.AUCTION
-                && isLocalPlayerTurn())) {
+                && gameState.getCurrentPhase() == EGRoundPhaseType.AUCTION)) {
+            // does not need to be local player's turn as the auction frame is displayed for everyone at the start of auction phase
             return;
         }
 
-        AuctionFrame auctionwindow = new AuctionFrame();
-        this.auctionFrame = auctionwindow;
+        this.auctionFrame = new AuctionFrame();;
 
         CounterUnitPile pile = GameState.instance().getCounterPile();
         int numPlayers = GameState.instance().getNumOfPlayers();
         for (int i = 0; i < numPlayers; i++) {
-            auctionwindow.addCounter(pile.draw());
-            auctionwindow.addCounter(pile.draw());
+            auctionFrame.addCounter(pile.draw());
+            auctionFrame.addCounter(pile.draw());
         }
 
 //        endTurn();
@@ -240,14 +239,17 @@ public class EGGameManager extends GameManager {
     public void endPhase() {
         actionManager.clearSelection();
         int nextOrdinal = ((EGRoundPhaseType) gameState.getCurrentPhase()).ordinal() + 1;
+
+        // all phases are done, go to the next round
         if (nextOrdinal == EGRoundPhaseType.values().length) {
-            // all phases are done, go to the next round
             endRound();
             gameState.clearPassedPlayerCount();
-        } else if (gameState.getCurrentPhase() == EGRoundPhaseType.PLAN_ROUTES
+        }
+
+        // continue with plan routes phase if not all players have passed their turn
+        else if (gameState.getCurrentPhase() == EGRoundPhaseType.PLAN_ROUTES
                 && gameState.getPassedPlayerCount() < gameState.getNumOfPlayers()) {
             LOGGER.info("Pass turn ct: " + gameState.getPassedPlayerCount() + ", staying at the PLAN ROUTES phase");
-            // continue with plan routes phase if not all players have passed their turn
             gameState.setToFirstPlayer();
             // the first player will take action
             if (isLocalPlayerTurn()) {
@@ -255,12 +257,39 @@ public class EGGameManager extends GameManager {
                 notifyTurnCommand.execute(); // notify themself to take action
             }
             gameState.clearPassedPlayerCount();
-        } else if (gameState.getCurrentPhase() == EGRoundPhaseType.AUCTION && auctionFrame.getNumCountersInAuction() > 0) {
-            LOGGER.info("Number of counters not auctioned: " + auctionFrame.getNumCountersInAuction() + ", staying at the AUCTION phase");
-            // continue with auction phase if not all counters have been auctioned
+        }
+
+        // just enter the auction phase, display auction frame for everyone
+        else if (gameState.getCurrentPhase() == EGRoundPhaseType.CHOOSE_FACE_UP
+                && EGRoundPhaseType.values()[nextOrdinal] == EGRoundPhaseType.AUCTION) {
+            gameState.setCurrentPhase(EGRoundPhaseType.AUCTION);
+            LOGGER.info("...Going to the auction phase");
             gameState.setToFirstPlayer();
-            //TODO: display a message in auction frame, notify the first player to take action
-        } else { // go to the next phase within the same round
+            auction(); // display auction window for everyone
+            if (isLocalPlayerTurn()) {
+                NotifyTurnCommand notifyTurnCommand = new NotifyTurnCommand(EGRoundPhaseType.AUCTION);
+                notifyTurnCommand.execute(); // notify themself to take action
+            } else {
+                auctionFrame.displayMessage("It is not your turn. Waiting for other players to bid...");
+            }
+            gameState.clearPassedPlayerCount();
+        }
+
+        // continue with auction phase if not all counters have been auctioned
+        else if (gameState.getCurrentPhase() == EGRoundPhaseType.AUCTION && auctionFrame.getNumCountersInAuction() > 0) {
+            LOGGER.info("Number of counters not auctioned: " + auctionFrame.getNumCountersInAuction() + ", staying at the AUCTION phase");
+            gameState.setToFirstPlayer();
+            // the first player will take action
+            if (isLocalPlayerTurn()) {
+                NotifyTurnCommand notifyTurnCommand = new NotifyTurnCommand(EGRoundPhaseType.AUCTION);
+                notifyTurnCommand.execute(); // notify themself to take action
+            } else {
+                auctionFrame.displayMessage("It is not your turn. Waiting for other players to bid...");
+            }
+        }
+
+        // go to the next phase within the same round
+        else {
             gameState.setCurrentPhase(EGRoundPhaseType.values()[nextOrdinal]);
             LOGGER.info("...Going to the next phase : " + gameState.getCurrentPhase());
             gameState.setToFirstPlayer();
