@@ -467,6 +467,7 @@ public class AuctionFrame extends javax.swing.JFrame {
         CurrentBidOutput.setText("");
         highestBidPlayer = null;
         localPlayerHasPassed = false;
+        GameState.instance().clearPassedPlayerCount();
     }
 
     public void setAuction(int num){
