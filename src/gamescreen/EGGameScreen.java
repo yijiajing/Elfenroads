@@ -141,7 +141,7 @@ public class EGGameScreen extends GameScreen {
     	Logger.getGlobal().info("Initializing gold card deck");
     	JButton goldCardDeck = new DrawGoldDeckButton(GameState.instance());
     	panelForGoldCardDeck.add(goldCardDeck);
-    	boardGame_Layers.add(panelForGoldCardDeck);
+    	boardGame_Layers.add(panelForGoldCardDeck, 0);
     }
 
     public void initializeTransportationCounters()
