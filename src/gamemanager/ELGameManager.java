@@ -294,12 +294,14 @@ public class ELGameManager extends GameManager {
         String destinations = "\n";
         if (gameState.getGameVariant() == GameVariant.ELFENLAND_DESTINATION) {
             for (int i = 0; i < gameState.getNumOfPlayers(); i++) {
-                String dest = gameState.getPlayers().get(i).getDestinationTown().getName();
-                String name = gameState.getPlayers().get(i).getName();
-                destinations += name + "'s destination is " + dest + ".\n";
+                Player player = gameState.getPlayers().get(i);
+            	String dest = player.getDestinationTown().getName();
+                String name = player.getName();
+                int townsAway = GameMap.getInstance().getDistanceBetween(player.getCurrentTown(), player.getDestinationTown()) - 1;
+                destinations += name + "'s destination is " + dest + "[Distance :" + townsAway + "].\n";
             }
         }
-
+        
         assert winners.size() >= 1;
         if (winners.size() == 1) {
             GameScreen.displayMessage(winners.get(0).getName() + " is the winner!" + destinations);
