@@ -296,7 +296,7 @@ public class EGGameManager extends GameManager {
             LOGGER.info("...Going to the next phase : " + gameState.getCurrentPhase());
             //if just enter Plan_Routes, close the auction window automatically
             if(gameState.getCurrentPhase() == EGRoundPhaseType.PLAN_ROUTES) {
-            	auctionFrame.setVisible(false);
+            	auctionFrame.closeAuctionFrame();
             }
             gameState.setToFirstPlayer();
             // the first player will take action
