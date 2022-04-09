@@ -3,10 +3,12 @@ package gamescreen;
 import domain.*;
 import enums.CounterType;
 import enums.GameVariant;
+import enums.EGRoundPhaseType;
 import gamemanager.GameManager;
 import panel.ShowHintButton;
 import windows.ChatBoxGUI;
 import windows.ChatBoxGUI;
+import networking.ActionManager;
 import networking.GameState;
 import savegames.Savegame;
 import panel.EndTurnButton;
@@ -202,11 +204,14 @@ public abstract class GameScreen extends JPanel implements Serializable {
         i1.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-
-                GameState gamestateToSave = GameState.instance();
-                try {Savegame.saveGameToFile();}
-                catch (IOException e3) {e3.printStackTrace();}
-
+            	//disable saving game when there is a external popup window (for auction or for double )or it's in the middle of an exchange
+            	if(GameState.instance().getCurrentPhase() == EGRoundPhaseType.AUCTION || ActionManager.getInstance().getInExchange() || ActionManager.getInstance().getInExternalWindow()) {
+            		GameScreen.this.displayMessage("You cannot save at this point.");
+            	}else {
+            		GameState gamestateToSave = GameState.instance();
+            		try {Savegame.saveGameToFile();}
+            		catch (IOException e3) {e3.printStackTrace();}
+            	}
                 // TODO: decide what to do after the game has been saved
 
             }
