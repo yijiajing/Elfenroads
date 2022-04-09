@@ -9,11 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
-import javax.swing.BorderFactory;
-import javax.swing.GroupLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.GroupLayout.ParallelGroup;
 import javax.swing.GroupLayout.SequentialGroup;
@@ -34,6 +30,11 @@ import networking.GameState;
  * @author philb
  */
 public class AuctionFrame extends javax.swing.JFrame {
+
+    private JPanel cardJPanel = new JPanel();
+    private GroupLayout jPanel1Layout;
+    private SequentialGroup sequentHor;
+    private ParallelGroup vertLayout;
 
     private ArrayList<CounterUnit> listCounters = new ArrayList<CounterUnit>();
     private final Logger LOGGER = Logger.getLogger("Auction Frame");
@@ -73,6 +74,30 @@ public class AuctionFrame extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         displayText = new JTextField();
+        jPanel1Layout = new GroupLayout(jPanel1);
+
+        cardJPanel.setBorder(BorderFactory.createBevelBorder(1));
+        sequentHor = jPanel1Layout.createSequentialGroup();
+        vertLayout = jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING);
+        sequentHor.addComponent(cardJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                //.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED);
+                .addGap(75, 75,75);
+        vertLayout.addComponent(cardJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE);
+
+        jPanel1Layout.setHorizontalGroup(
+                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(sequentHor
+                        )
+
+        );
+        jPanel1Layout.setVerticalGroup(
+                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(vertLayout)
+                                .addGap(0, 24, Short.MAX_VALUE))
+        );
+        jPanel1.setLayout(jPanel1Layout);
+        jScrollPane1.setViewportView(jPanel1);
 
         displayText.setText("");
         displayText.setFont(new java.awt.Font("Segoe UI", 0, 14));
@@ -383,45 +408,21 @@ public class AuctionFrame extends javax.swing.JFrame {
      * @param counterUnit
      */
     public void addCounter(CounterUnit counterUnit){
+        LOGGER.info("Adding a " + counterUnit.getType() + " tp auction frame, existing counters: " + listCounters);
         listCounters.add(counterUnit);
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        SequentialGroup sequentHor = jPanel1Layout.createSequentialGroup();
-        
-        ParallelGroup vertLayout = jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING);
 
         JLabel icon = counterUnit.getDisplay();
         icon.setSize(70, 70);
 
         icon.setVisible(true);
         //icon.setBorder(BorderFactory.createBevelBorder(1));
-        javax.swing.JPanel cardJPanel = new javax.swing.JPanel();
         //javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(cardJPanel);
         //cardJPanel.setLayout(jPanel2Layout);
-        cardJPanel.setBorder(BorderFactory.createBevelBorder(1));
 
         cardJPanel.add(icon);
         cardJPanel.setVisible(true);
-        sequentHor.addComponent(cardJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-        //.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED);
-        .addGap(75, 75,75);
-        vertLayout.addComponent(cardJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE);
 
-        
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(sequentHor
-            )
-                
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(vertLayout)
-                .addGap(0, 24, Short.MAX_VALUE))
-        );
-        jPanel1.setLayout(jPanel1Layout);
         jPanel1.setVisible(true);
-        jScrollPane1.setViewportView(jPanel1);
         jScrollPane1.setVisible(true);
     }
 
