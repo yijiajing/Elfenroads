@@ -77,8 +77,6 @@ public class GameState implements Serializable{
         this.counterPile = new CounterUnitPile(sessionID, gameVariant);
     }
 
-    // TODO: how to mediate this constructor with a singleton feature
-
     /**
      * will read in game info from a save
      * @param pLoadedState the savegame, read from a file
@@ -357,7 +355,7 @@ public class GameState implements Serializable{
             }
         }
         System.out.println("Could not find a player named " + name);
-        return null; // TODO: if we want, we could throw an Exception instead of returning null.
+        return null;
     }
 
     /**
@@ -492,7 +490,6 @@ public class GameState implements Serializable{
             ArrayList<SerializableCounterUnit> counters = stuffOnRoads.get(roadNum);
             for (SerializableCounterUnit ctr : counters)
             {
-                // TODO: write out all of the cases and add these
                 if (ctr instanceof SerializableTransportationCounter)
                 {
                     SerializableTransportationCounter ctrDowncasted = (SerializableTransportationCounter) ctr;
