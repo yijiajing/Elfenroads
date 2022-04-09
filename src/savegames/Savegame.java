@@ -45,7 +45,6 @@ public class Savegame implements Serializable {
 
     // GameMap info
     private HashMap<Integer, ArrayList<SerializableCounterUnit>> stuffOnRoads;
-    // private HashMap<String, > // TODO: figure out how to save the town pieces. probably just save by color
 
     /**
      * creates a savegame from a GameState
@@ -108,7 +107,6 @@ public class Savegame implements Serializable {
     /**
      * @pre GameState instance is not null
      */
-    // TODO: add extension to filename
     public static void saveGameToFile() throws IOException
     {
         // create a savegame object and write it to a file

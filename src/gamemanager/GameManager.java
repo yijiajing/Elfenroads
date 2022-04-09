@@ -60,7 +60,6 @@ public abstract class GameManager {
         else {
             gameState = GameState.initFromSave(savegame.get(), this);
             loaded = true;
-            //TODO implement
         }
 
         coms = CommunicationsManager.init(this, sessionID, pLocalAddress);

@@ -220,7 +220,6 @@ public class Player implements Comparable<Player> {
             }
         }
 
-        // TODO: make sure this is the right check
         if (loadedObstacle != null)
         {
             hand.addUnit(new Obstacle(loadedObstacle));
