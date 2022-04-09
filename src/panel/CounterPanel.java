@@ -24,11 +24,11 @@ public class CounterPanel extends JPanel {
 
         gameScreen.addElement(this);
 
-        this.setBounds(this.x, this.y, gameScreen.getWidth() * 40 / 1440, gameScreen.getHeight() * 65 / 900);
+        this.setBounds(this.x, this.y, gameScreen.getWidth() * 80 / 1440, gameScreen.getHeight() * 80 / 900);
         this.setOpaque(false);
         
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		this.setAlignmentX(CENTER_ALIGNMENT);
+        this.setLayout(new GridLayout(0,2));
+        
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {

@@ -57,7 +57,6 @@ public class User {
      * @throws IOException
      */
 
-    // TODO: read in role from the API
     private User(String pUsername, String pPassword) throws IOException, Exception
     {
         username = pUsername;
@@ -100,7 +99,6 @@ public class User {
         instance = null;
     }
 
-    // TODO: removed hardcoded color and allow the user to decide?
     public static void registerNewPlayer(String newUsername, String newPassword) throws Exception
     {
 
@@ -349,7 +347,6 @@ public class User {
         return returnVal;
     }
 
-    // TODO: need to implement this method
     public static boolean doesUsernameExist(String username) throws IOException, Exception
     {
         String adminToken = getAccessTokenUsingCreds("maex", "abc123_ABC123");
@@ -466,7 +463,6 @@ public class User {
     }
 
 
-    // TODO: make sure this method still works once the token is expired
     /**
      * a method to get access token without having to call the User constructor
      * designed to avoid the infinite loop of User constructor called by getUserInfo

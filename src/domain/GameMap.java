@@ -194,4 +194,14 @@ public class GameMap {
         return r;
     }
 
+    /**
+     * used when loading games
+     * @param index the index at which the road we want is stored
+     * @return the road at that index in the list
+     */
+    public Road getRoadByIndex (int index)
+    {
+        return roadList.get(index);
+    }
+
 }

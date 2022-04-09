@@ -73,7 +73,7 @@ public class CommunicationsManager {
     private void recordPlayerAddresses()
     {
         try{playerAddresses = GameSession.getPlayerAddresses(sessionID);}
-        catch (IOException e) {System.out.println("There was a problem getting player addresses for this server from the LS. PLease check the session ID and make sure it corresponds to a real session.");}
+        catch (IOException e) {Logger.getGlobal().info("There was a problem getting player addresses for this server from the LS. PLease check the session ID and make sure it corresponds to a real session.");}
     }
 
     /**
@@ -101,18 +101,18 @@ public class CommunicationsManager {
                 if (otherPlayerIP.equals(localAddress)) {
                     continue;
                 } else {
-                    System.out.println("Now connecting to... " + otherPlayerIP);
+                    Logger.getGlobal().info("Now connecting to... " + otherPlayerIP);
                     String ip = NetworkUtils.getAddress(otherPlayerIP);
                     int port = NetworkUtils.getPort(otherPlayerIP); // the port should always be 999. we will leave this just in case
                     Socket toThatPlayer = new Socket(ip, port);
                     senders.add(toThatPlayer);
-                    System.out.println("Successfully initialized the connection to " + otherPlayerIP + "!");
+                    Logger.getGlobal().info("Successfully initialized the connection to " + otherPlayerIP + "!");
                 }
             }
         }
         catch (Exception e)
         {
-            System.out.println("There was a problem setting up the senders.");
+            Logger.getGlobal().info("There was a problem setting up the senders.");
             e.printStackTrace();
         }
 
@@ -151,17 +151,15 @@ public class CommunicationsManager {
     {
         ArrayList<Socket> senders = setUpSenders();
 
-        System.out.println("Sending the game command to the other users!");
+        Logger.getGlobal().info("Sending the game command to the other users!");
         for (Socket otherPlayer : senders)
         {
             OutputStream out = otherPlayer.getOutputStream();
             ObjectOutputStream payload = new ObjectOutputStream(out);
             payload.writeObject(command);
-            System.out.println("Wrote the command to the payload.");
-            payload.flush(); // TODO: do we need to actually flush for the receiver to get the info?
-            System.out.println("Flushed the payload.");
-            otherPlayer.close(); // TODO: do we want to close the connection? do we leave it open? do we have to reinitialize next time?
-            System.out.println("Closed the socket.");
+            Logger.getGlobal().info("Wrote the command to the payload.");
+            Logger.getGlobal().info("Flushed the payload.");
+            Logger.getGlobal().info("Closed the socket.");
         }
     }
 
@@ -179,24 +177,22 @@ public class CommunicationsManager {
                 return; // don't send a command to ourself
             }
         } catch (Exception e) {
-            System.out.println("There was a problem retrieving the local address.");
+            Logger.getGlobal().info("There was a problem retrieving the local address.");
         }
 
-        System.out.println("Now connecting to... " + otherPlayerIP);
+        Logger.getGlobal().info("Now connecting to... " + otherPlayerIP);
         String ip = NetworkUtils.getAddress(otherPlayerIP);
         int port = NetworkUtils.getPort(otherPlayerIP); // the port should always be 999. we will leave this just in case
         Socket thatPlayer = new Socket(ip, port);
-        System.out.println("Successfully initialized the connection to " + otherPlayerIP + "!");
+        Logger.getGlobal().info("Successfully initialized the connection to " + otherPlayerIP + "!");
 
-        System.out.println("Sending the game command to the other user!");
+        Logger.getGlobal().info("Sending the game command to the other user!");
         OutputStream out = thatPlayer.getOutputStream();
         ObjectOutputStream payload = new ObjectOutputStream(out);
         payload.writeObject(command);
-        System.out.println("Wrote the command to the payload.");
-        payload.flush(); // TODO: do we need to actually flush for the receiver to get the info?
-        System.out.println("Flushed the payload.");
-        thatPlayer.close(); // TODO: do we want to close the connection? do we leave it open? do we have to reinitialize next time?
-        System.out.println("Closed the socket.");
+        Logger.getGlobal().info("Wrote the command to the payload.");
+        Logger.getGlobal().info("Flushed the payload.");
+        Logger.getGlobal().info("Closed the socket.");
     }
 
 

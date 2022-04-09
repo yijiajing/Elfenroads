@@ -9,6 +9,7 @@ import enums.GameVariant;
 import gamescreen.EGGameScreen;
 import gamescreen.GameScreen;
 import networking.GameState;
+import savegames.Savegame;
 import utils.GameRuleUtils;
 import windows.AuctionFrame;
 
@@ -25,8 +26,10 @@ public class EGGameManager extends GameManager {
     private CounterUnit prevCounterKept;
     private AuctionFrame auctionFrame;
 
-    EGGameManager(Optional<GameState> loadedState, String sessionID, GameVariant variant, String pLocalAddress) {
-        super(loadedState, sessionID, variant, pLocalAddress);
+
+    EGGameManager(Optional<Savegame> savegame, String sessionID, GameVariant variant, String pLocalAddress) {
+        super(savegame, sessionID, variant, pLocalAddress);
+
         assert GameRuleUtils.isElfengoldVariant(variant);
     }
 
@@ -295,6 +298,10 @@ public class EGGameManager extends GameManager {
         else {
             gameState.setCurrentPhase(EGRoundPhaseType.values()[nextOrdinal]);
             LOGGER.info("...Going to the next phase : " + gameState.getCurrentPhase());
+            //if just enter Plan_Routes, close the auction window automatically
+            if(gameState.getCurrentPhase() == EGRoundPhaseType.PLAN_ROUTES) {
+            	auctionFrame.closeAuctionFrame();
+            }
             gameState.setToFirstPlayer();
             // the first player will take action
             if (isLocalPlayerTurn()) {

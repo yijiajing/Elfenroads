@@ -5,6 +5,7 @@ import domain.*;
 import enums.ELRoundPhaseType;
 import enums.GameVariant;
 import enums.ObstacleType;
+import savegames.Savegame;
 import windows.*;
 import networking.*;
 import gamescreen.GameScreen;
@@ -26,8 +27,8 @@ public class ELGameManager extends GameManager {
      * If the User is starting a new game, then loadedState == null
      * If the User is loading a previous game, then loadedState != null
      */
-    ELGameManager(Optional<GameState> loadedState, String pSessionID, GameVariant variant, String pLocalAddress) {
-        super(loadedState, pSessionID, variant, pLocalAddress);
+    ELGameManager(Optional<Savegame> savegame, String pSessionID, GameVariant variant, String pLocalAddress) {
+        super(savegame, pSessionID, variant, pLocalAddress);
     }
 
     @Override
@@ -294,12 +295,14 @@ public class ELGameManager extends GameManager {
         String destinations = "\n";
         if (gameState.getGameVariant() == GameVariant.ELFENLAND_DESTINATION) {
             for (int i = 0; i < gameState.getNumOfPlayers(); i++) {
-                String dest = gameState.getPlayers().get(i).getDestinationTown().getName();
-                String name = gameState.getPlayers().get(i).getName();
-                destinations += name + "'s destination is " + dest + ".\n";
+                Player player = gameState.getPlayers().get(i);
+            	String dest = player.getDestinationTown().getName();
+                String name = player.getName();
+                int townsAway = GameMap.getInstance().getDistanceBetween(player.getCurrentTown(), player.getDestinationTown()) - 1;
+                destinations += name + "'s destination is " + dest + "[Distance :" + townsAway + "].\n";
             }
         }
-
+        
         assert winners.size() >= 1;
         if (winners.size() == 1) {
             GameScreen.displayMessage(winners.get(0).getName() + " is the winner!" + destinations);

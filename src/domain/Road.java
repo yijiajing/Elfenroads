@@ -4,6 +4,7 @@ import enums.GameVariant;
 import enums.MagicSpellType;
 import enums.ObstacleType;
 import enums.RegionType;
+import org.w3c.dom.css.Counter;
 import panel.CounterPanel;
 import gamescreen.GameScreen;
 
@@ -225,5 +226,17 @@ public class Road {
             }
         }
         return false;
+    }
+
+    /**
+     * do not use this method
+     * needs to exist for loading games, so that we can add stuff to the road without validating it first
+     */
+    public void forceAddCounter(CounterUnit ctr)
+    {
+        // we need to add to list and add to the panel
+        Logger.getGlobal().info("WARNING. A COUNTER IS BEING FORCE-ADDED. IF YOU ARE LOADING A GAME, THIS IS INTENDED BEHAVIOR. OTHERWISE, SOMETHING WENT WRONG.");
+        counters.add(ctr);
+        counterPanel.addCounterUnit(ctr);
     }
 }
