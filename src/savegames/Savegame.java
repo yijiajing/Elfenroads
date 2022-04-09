@@ -14,6 +14,8 @@ import utils.GameRuleUtils;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Logger;
 
 public class Savegame implements Serializable {
@@ -40,6 +42,10 @@ public class Savegame implements Serializable {
     private ArrayList<SerializableCounterUnit> counterPile;
     private ArrayList<SerializableTransportationCounter> faceUpCounters; // for elfenland classic games
     private ArrayList<SerializableTravelCard> faceUpCards; // for elfengold games
+
+    // GameMap info
+    private HashMap<Integer, ArrayList<SerializableCounterUnit>> stuffOnRoads;
+    // private HashMap<String, > // TODO: figure out how to save the town pieces. probably just save by color
 
     /**
      * creates a savegame from a GameState
@@ -72,6 +78,8 @@ public class Savegame implements Serializable {
         {
             saveFaceUpCounters(pState);
         }
+
+        saveStuffOnRoads();
 
         // we will omit elf boots, since we can figure that out upon load by looking at each player, his current town, and his color
     }
@@ -215,6 +223,47 @@ public class Savegame implements Serializable {
         }
     }
 
+    private void saveStuffOnRoads()
+    {
+        stuffOnRoads = new HashMap<>();
+        GameMap map = GameMap.getInstance();
+        List<Road> roads = map.getRoadList();
+
+        for (Road cur : roads)
+        {
+            Integer indexOfRoad = roads.indexOf(cur);
+            stuffOnRoads.put(indexOfRoad, new ArrayList<>()); // put the list in the map
+
+            for (CounterUnit ctr : cur.getCounters())
+            {
+                if (ctr instanceof Obstacle)
+                {
+                    Obstacle ctrDowncasted = (Obstacle) ctr;
+                    stuffOnRoads.get(indexOfRoad).add(new SerializableObstacle(ctrDowncasted));
+                }
+                else if (ctr instanceof TransportationCounter) // if transportation counter
+                {
+                    TransportationCounter ctrDowncasted = (TransportationCounter) ctr;
+                    stuffOnRoads.get(indexOfRoad).add(new SerializableTransportationCounter(ctrDowncasted));
+                }
+                else if (ctr instanceof GoldPiece)
+                {
+                    GoldPiece ctrDowncasted = (GoldPiece) ctr;
+                    stuffOnRoads.get(indexOfRoad).add(new SerializableGoldPiece(ctrDowncasted));
+                }
+                else if (ctr instanceof MagicSpell)
+                {
+                    MagicSpell ctrDowncasted = (MagicSpell) ctr;
+                    stuffOnRoads.get(indexOfRoad).add(new SerializableMagicSpell(ctrDowncasted));
+                }
+                else // this should never be the case
+                {
+                    Logger.getGlobal().info("Unexpected result in saveStuffOnRoads.");
+                }
+            }
+        }
+    }
+
     /**
      * get each player's hand from a savegame
      * @param playerName
@@ -352,5 +401,9 @@ public class Savegame implements Serializable {
 
     public SerializablePlayer getThisPlayer() {
         return thisPlayer;
+    }
+
+    public HashMap<Integer, ArrayList<SerializableCounterUnit>> getStuffOnRoads() {
+        return stuffOnRoads;
     }
 }

@@ -55,6 +55,7 @@ public class GameState implements Serializable{
     // for loading games
     private Savegame loadedState;
 
+
     private GameState (String sessionID, GameVariant gameVariant)
     {
         this.elfBoots = new ArrayList<>();
@@ -117,6 +118,9 @@ public class GameState implements Serializable{
 
         // init elf boots and their locations based on player colors
         loadBoots();
+
+        // load the counters and obstacles on the map
+        loadStuffOnRoads();
     }
 
     
@@ -468,6 +472,56 @@ public class GameState implements Serializable{
             faceUpCounters.add(new TransportationCounter(ctr));
             Logger.getGlobal().info("Loading face-up counter " + new TransportationCounter(ctr));
         }
+    }
+
+    /**
+     * load counters and obstacles from the saved game's GameMap
+     */
+    private void loadStuffOnRoads()
+    {
+        HashMap<Integer, ArrayList<SerializableCounterUnit>> stuffOnRoads = loadedState.getStuffOnRoads();
+
+        for (Integer roadNum : stuffOnRoads.keySet())
+        {
+            // get the road based on its index
+            Road road = GameMap.getInstance().getRoadByIndex(roadNum);
+
+            // now add all of its counters from the list
+            ArrayList<SerializableCounterUnit> counters = stuffOnRoads.get(roadNum);
+            for (SerializableCounterUnit ctr : counters)
+            {
+                // TODO: write out all of the cases and add these
+                if (ctr instanceof SerializableTransportationCounter)
+                {
+                    SerializableTransportationCounter ctrDowncasted = (SerializableTransportationCounter) ctr;
+                    TransportationCounter toAdd = new TransportationCounter(ctrDowncasted);
+                    road.forceAddCounter(toAdd);
+                }
+                else if (ctr instanceof SerializableObstacle)
+                {
+                    SerializableObstacle ctrDowncasted = (SerializableObstacle) ctr;
+                    Obstacle toAdd = new Obstacle(ctrDowncasted);
+                    road.forceAddCounter(toAdd);
+                }
+                else if (ctr instanceof SerializableMagicSpell)
+                {
+                    SerializableMagicSpell ctrDowncasted = (SerializableMagicSpell) ctr;
+                    MagicSpell toAdd = new MagicSpell(ctrDowncasted);
+                    road.forceAddCounter(toAdd);
+                }
+                else if (ctr instanceof SerializableGoldPiece)
+                {
+                    SerializableGoldPiece ctrDowncasted = (SerializableGoldPiece) ctr;
+                    GoldPiece toAdd = new GoldPiece(ctrDowncasted);
+                    road.forceAddCounter(toAdd);
+                }
+                else
+                {
+                    Logger.getGlobal().info("Unexpected type of counter found in loading roads. The counter was: " + ctr);
+                }
+            }
+        }
+
     }
     
     public int getGoldCardDeckCount() {
