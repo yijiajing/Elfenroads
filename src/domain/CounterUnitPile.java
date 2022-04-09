@@ -69,6 +69,7 @@ public class CounterUnitPile extends Deck<CounterUnit> {
     }
 
 
+
     private void addCountersToDeck() {
     	int width = MainFrame.instance.getWidth() * 67 / 1440;
     	int height = MainFrame.instance.getHeight() * 60 / 900;

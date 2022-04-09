@@ -30,7 +30,7 @@ public class Savegame implements Serializable {
 
     private int goldCardDeckCount;
 
-    private String sessionID; // TODO: for now we are using this to determine seeds in the loaded GameState, but we might need to remove this
+    private String sessionID; // saves session ID (will be different once we load, but we can use this one to set up the decks and piles anyway)
 
     // fields turned into serializable version
     private ArrayList<SerializablePlayer> players;
