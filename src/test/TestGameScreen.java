@@ -44,7 +44,7 @@ public class TestGameScreen {
             GameManager.getInstance().setThisPlayer(p);
 
 //            for (int i=0; i<10; i++) {
-//                GameManager.getInstance().getThisPlayer().getHand().addUnit(new TravelCard(TravelCardType.DRAGON, GameScreen.getInstance().getWidth()*130/1440, GameScreen.getInstance().getHeight()/5));
+                GameManager.getInstance().getThisPlayer().getHand().addUnit(new TravelCard(TravelCardType.DRAGON, GameScreen.getInstance().getWidth()*130/1440, GameScreen.getInstance().getHeight()/5));
 //            }
 
             GameManager.getInstance().setUpNewGame();

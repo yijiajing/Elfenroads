@@ -176,6 +176,7 @@ public class NetworkUtils {
             if (address.isLoopbackAddress() || !isValidIP(address.getHostAddress()) || !address.isReachable(2000)) // we don't want the loopback address or an invalid one, like a MAC address
             {
                 // do nothing and keep going
+                Logger.getGlobal().info("Address " + address.toString() + " was determined to be invalid.");
                 continue;
             }
 
