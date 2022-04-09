@@ -104,9 +104,16 @@ public class GameState implements Serializable{
         loadTravelCardDeck();
         loadCounterPile();
 
-        // load face up cards or counters
-        loadFaceUpCards();
-        loadFaceUpCounters();
+        // load face up cards or counters, depending on variant
+
+        if (GameRuleUtils.isElfengoldVariant(gameVariant))
+        {
+            loadFaceUpCards();
+        }
+        else // elfenland
+        {
+            loadFaceUpCounters();
+        }
 
         // init elf boots and their locations based on player colors
         loadBoots();
@@ -414,6 +421,7 @@ public class GameState implements Serializable{
      */
     private void loadTravelCardDeck()
     {
+        travelCardDeck = TravelCardDeck.getEmpty(loadedState.getSessionID());
        for (SerializableCardUnit crd : loadedState.getTravelCardDeck())
        {
            travelCardDeck.addDrawable(new TravelCard((SerializableTravelCard) crd));
