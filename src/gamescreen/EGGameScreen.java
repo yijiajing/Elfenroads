@@ -374,6 +374,7 @@ public class EGGameScreen extends GameScreen {
 
             GameState.instance().getCurrentPlayer().addGoldCoins(goldEarned);
             GameRuleUtils.updateRemoteGoldCoins(goldEarned);
+            updateLeaderboard();
 
             Logger.getGlobal().info("Number of coins is now " + GameState.instance().getCurrentPlayer().getGoldCoins());
         } else { // take travel cards
