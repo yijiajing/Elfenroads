@@ -394,7 +394,10 @@ public class AuctionFrame extends javax.swing.JFrame {
     public void addCounter(CounterUnit counterUnit){
         LOGGER.info("Adding a " + counterUnit.getType() + " to auction frame, existing counters: " + listCounters);
         listCounters.add(counterUnit);
+        addCounterUIComponent(counterUnit);
+    }
 
+    private void addCounterUIComponent(CounterUnit counterUnit) {
         JLabel icon = counterUnit.getDisplay();
         icon.setSize(70, 70);
 
@@ -435,15 +438,14 @@ public class AuctionFrame extends javax.swing.JFrame {
         assert listCounters.size() > 0;
         CounterUnit counter = listCounters.remove(0);
         jPanel1 = new javax.swing.JPanel();
-
-        jScrollPane1.setViewportView(jPanel1);
-
-        this.repaint();
-        jPanel1.repaint();
-        //TODO: fix
-//        for (CounterUnit cu : listCounters){
-//            addCounter(cu);
-//        }
+//
+//        jScrollPane1.setViewportView(jPanel1);
+//
+//        this.repaint();
+//        jPanel1.repaint();
+        for (CounterUnit cu : listCounters){
+            addCounterUIComponent(cu);
+        }
         LOGGER.info("Removed the first counter " + counter);
         return counter;
     }
