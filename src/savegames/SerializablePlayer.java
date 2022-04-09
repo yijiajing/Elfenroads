@@ -12,12 +12,13 @@ import java.util.Set;
 public class SerializablePlayer implements Serializable {
 
     private String name;
+    private Colour color;
 
     private String currentTownName;
     private ArrayList<String> visitedTownNames;
     private String destinationTownName;
 
-    private Colour color;
+    private int goldCoins;
 
     private ArrayList<SerializableCardUnit> cards;
     private ArrayList<SerializableCounterUnit> counters; // in Elfengold, the obstacles will be in here
@@ -35,13 +36,15 @@ public class SerializablePlayer implements Serializable {
             destinationTownName = original.getDestinationTown().getName();
         }
 
+        goldCoins = original.getGoldCoins(); // TODO: make sure this doesn't give us a nullpointer for Elfenland versions
+
 
         color = original.getColour();
 
         // add the counters, cards, and obstacles
-        addCounters(original);
-        addCards(original);
-        addObstacle(original);
+        saveCounters(original);
+        saveCards(original);
+        saveObstacle(original);
 
     }
 

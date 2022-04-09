@@ -404,6 +404,7 @@ public class GameState implements Serializable{
      */
     private void loadCounterPile()
     {
+        counterPile = new CounterUnitPile;
         for (SerializableCounterUnit ctr : loadedState.getCounterPile())
         {
             // load each counter from the savegame
