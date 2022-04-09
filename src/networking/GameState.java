@@ -466,6 +466,7 @@ public class GameState implements Serializable{
         for (SerializableTransportationCounter ctr : loadedState.getFaceUpCounters())
         {
             faceUpCounters.add(new TransportationCounter(ctr));
+            Logger.getGlobal().info("Loading face-up counter " + new TransportationCounter(ctr));
         }
     }
     
