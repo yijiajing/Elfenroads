@@ -31,7 +31,7 @@ import networking.GameState;
  */
 public class AuctionFrame extends javax.swing.JFrame {
 
-    private JPanel cardJPanel = new JPanel();
+    private JPanel cardJPanel;
     private GroupLayout jPanel1Layout;
     private SequentialGroup sequentHor;
     private ParallelGroup vertLayout;
@@ -74,6 +74,7 @@ public class AuctionFrame extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         displayText = new JTextField();
+        cardJPanel = new JPanel();
         jPanel1Layout = new GroupLayout(jPanel1);
 
         cardJPanel.setBorder(BorderFactory.createBevelBorder(1));
