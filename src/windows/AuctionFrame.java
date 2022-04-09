@@ -35,6 +35,11 @@ import networking.GameState;
  */
 public class AuctionFrame extends javax.swing.JFrame {
 
+    private javax.swing.GroupLayout jPanel1Layout;
+    private SequentialGroup sequentHor;
+    private ParallelGroup vertLayout;
+
+
     private ArrayList<CounterUnit> listCounters = new ArrayList<CounterUnit>();
     private final Logger LOGGER = Logger.getLogger("Auction Frame");
     private int currentBid = 0;
@@ -112,6 +117,11 @@ public class AuctionFrame extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel1.setText("gold coins");
+
+        jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        sequentHor = jPanel1Layout.createSequentialGroup();
+        vertLayout = jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING);
+
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel2.setText("gold coins");
@@ -273,8 +283,6 @@ public class AuctionFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void EnterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EnterButtonActionPerformed
-//        //TODO: delete this
-//        addCounter(new TransportationCounter(CounterType.MAGICCLOUD, 70, 70));
 
         if (!GameManager.getInstance().isLocalPlayerTurn()) {
             displayMessage("You can only make a bid when it is your turn!");
@@ -386,10 +394,6 @@ public class AuctionFrame extends javax.swing.JFrame {
     public void addCounter(CounterUnit counterUnit){
         LOGGER.info("Adding a " + counterUnit.getType() + " to auction frame, existing counters: " + listCounters);
         listCounters.add(counterUnit);
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        SequentialGroup sequentHor = jPanel1Layout.createSequentialGroup();
-
-        ParallelGroup vertLayout = jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING);
 
         JLabel icon = counterUnit.getDisplay();
         icon.setSize(70, 70);
