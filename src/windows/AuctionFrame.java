@@ -435,8 +435,24 @@ public class AuctionFrame extends javax.swing.JFrame {
 
     public CounterUnit removeFirstCounter() {
         assert listCounters.size() > 0;
-        CounterUnit counter = listCounters.remove(0);
         jPanel1.removeAll();
+        CounterUnit counter = listCounters.remove(0);
+
+        jScrollPane1.setViewportView(jPanel1);
+        
+        this.repaint();
+        jPanel1.repaint();
+
+//        jPanel1 = new javax.swing.JPanel();
+//
+//        jScrollPane1.setViewportView(jPanel1);
+//
+//        this.repaint();
+//        jPanel1.repaint();
+
+
+        jPanel1.removeAll();
+
         for (CounterUnit cu : listCounters){
             addCounterUIComponent(cu);
         }
