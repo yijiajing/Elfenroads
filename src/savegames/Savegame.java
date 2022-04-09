@@ -58,7 +58,7 @@ public class Savegame implements Serializable {
 
         // now, handle the non-serializable fields
         savePlayers(pState);
-        saveTravelCardPile(pState);
+        saveTravelCardDeck(pState);
         saveTransportationCounterPile(pState);
 
         // save faceupcards for elfengold and faceupcounters for elfenland
@@ -145,7 +145,7 @@ public class Savegame implements Serializable {
         }
     }
 
-    private void saveTravelCardPile(GameState pGameState)
+    private void saveTravelCardDeck(GameState pGameState)
     {
         TravelCardDeck origDeck = pGameState.getTravelCardDeck();
         travelCardDeck = new ArrayList<>();
