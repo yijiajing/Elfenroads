@@ -35,6 +35,11 @@ import networking.GameState;
  */
 public class AuctionFrame extends javax.swing.JFrame {
 
+    private javax.swing.GroupLayout jPanel1Layout;
+    private SequentialGroup sequentHor;
+    private ParallelGroup vertLayout;
+
+
     private ArrayList<CounterUnit> listCounters = new ArrayList<CounterUnit>();
     private final Logger LOGGER = Logger.getLogger("Auction Frame");
     private int currentBid = 0;
@@ -112,6 +117,11 @@ public class AuctionFrame extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel1.setText("gold coins");
+
+        jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        sequentHor = jPanel1Layout.createSequentialGroup();
+        vertLayout = jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING);
+
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel2.setText("gold coins");
@@ -234,9 +244,9 @@ public class AuctionFrame extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(EnterButton, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(37, 37, 37))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 372, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(22, 22, 22))
             /*.addGroup(Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -273,8 +283,6 @@ public class AuctionFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void EnterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EnterButtonActionPerformed
-//        //TODO: delete this
-//        addCounter(new TransportationCounter(CounterType.MAGICCLOUD, 70, 70));
 
         if (!GameManager.getInstance().isLocalPlayerTurn()) {
             displayMessage("You can only make a bid when it is your turn!");
@@ -386,11 +394,10 @@ public class AuctionFrame extends javax.swing.JFrame {
     public void addCounter(CounterUnit counterUnit){
         LOGGER.info("Adding a " + counterUnit.getType() + " to auction frame, existing counters: " + listCounters);
         listCounters.add(counterUnit);
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        SequentialGroup sequentHor = jPanel1Layout.createSequentialGroup();
+        addCounterUIComponent(counterUnit);
+    }
 
-        ParallelGroup vertLayout = jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING);
-
+    private void addCounterUIComponent(CounterUnit counterUnit) {
         JLabel icon = counterUnit.getDisplay();
         icon.setSize(70, 70);
 
@@ -411,8 +418,7 @@ public class AuctionFrame extends javax.swing.JFrame {
 
         jPanel1Layout.setHorizontalGroup(
                 jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(sequentHor
-                        )
+                        .addGroup(sequentHor)
 
         );
         jPanel1Layout.setVerticalGroup(
@@ -430,16 +436,10 @@ public class AuctionFrame extends javax.swing.JFrame {
     public CounterUnit removeFirstCounter() {
         assert listCounters.size() > 0;
         CounterUnit counter = listCounters.remove(0);
-        jPanel1 = new javax.swing.JPanel();
-
-        jScrollPane1.setViewportView(jPanel1);
-
-        this.repaint();
-        jPanel1.repaint();
-        //TODO: fix
-//        for (CounterUnit cu : listCounters){
-//            addCounter(cu);
-//        }
+        jPanel1.removeAll();
+        for (CounterUnit cu : listCounters){
+            addCounterUIComponent(cu);
+        }
         LOGGER.info("Removed the first counter " + counter);
         return counter;
     }
