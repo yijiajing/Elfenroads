@@ -6,6 +6,7 @@ import enums.Colour;
 import enums.EGRoundPhaseType;
 import enums.ELRoundPhaseType;
 import enums.GameVariant;
+import savegames.Savegame;
 import windows.ChooseBootWindow;
 import windows.MainFrame;
 import networking.*;
@@ -40,13 +41,13 @@ public abstract class GameManager {
     protected ArrayList<Colour> availableColours = new ArrayList<>();
 
 
-    GameManager(Optional<GameState> loadedState, String pSessionID, GameVariant variant, String pLocalAddress) {
+    GameManager(Optional<Savegame> savegame, String pSessionID, GameVariant variant, String pLocalAddress) {
         MainFrame.mainPanel.add(GameScreen.init(MainFrame.getInstance(), variant), "gameScreen");
         sessionID = pSessionID;
         this.variant = variant;
 
         // start a new game if there is no state to be loaded
-        if (loadedState.isEmpty()) {
+        if (savegame.isEmpty()) {
             gameState = GameState.init(pSessionID, variant);
             actionManager = ActionManager.init(gameState, this);
 
@@ -57,7 +58,7 @@ public abstract class GameManager {
 
         // load state
         else {
-            gameState = loadedState.get();
+            gameState = GameState.initFromSave(savegame.get(), this);
             loaded = true;
             //TODO implement
         }
@@ -65,13 +66,13 @@ public abstract class GameManager {
         coms = CommunicationsManager.init(this, sessionID, pLocalAddress);
     }
 
-    public static GameManager init(Optional<GameState> loadedState, String sessionID, GameVariant variant, String pLocalAddress) {
+    public static GameManager init(Optional<Savegame> savegame, String sessionID, GameVariant variant, String pLocalAddress) {
         if (INSTANCE == null) {
             Logger.getGlobal().info("Initializing GameManager");
             if (GameRuleUtils.isElfengoldVariant(variant)) {
-                INSTANCE = new EGGameManager(loadedState, sessionID, variant, pLocalAddress);
+                INSTANCE = new EGGameManager(savegame, sessionID, variant, pLocalAddress);
             } else {
-                INSTANCE = new ELGameManager(loadedState, sessionID, variant, pLocalAddress);
+                INSTANCE = new ELGameManager(savegame, sessionID, variant, pLocalAddress);
             }
         }
         return INSTANCE;
@@ -133,6 +134,17 @@ public abstract class GameManager {
     public void setThisPlayer(Player p) {
         thisPlayer = p;
         gameState.addPlayer(p);
+    }
+
+    /**
+     * special method to get around some weirdness with singleton intialization orders
+     * will take a GameState as parameter
+     * @param p
+     */
+    public void setThisPlayerLoaded(Player p, GameState pGameState)
+    {
+        thisPlayer = p;
+        pGameState.addPlayer(p);
     }
 
     public abstract void setUpNewGame();

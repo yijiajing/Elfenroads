@@ -2,6 +2,7 @@ package networking;
 
 import domain.*;
 import enums.*;
+import gamemanager.GameManager;
 import windows.MainFrame;
 import gamescreen.GameScreen;
 import panel.ElfBootPanel;
@@ -54,6 +55,7 @@ public class GameState implements Serializable{
     // for loading games
     private Savegame loadedState;
 
+
     private GameState (String sessionID, GameVariant gameVariant)
     {
         this.elfBoots = new ArrayList<>();
@@ -81,8 +83,11 @@ public class GameState implements Serializable{
      * will read in game info from a save
      * @param pLoadedState the savegame, read from a file
      */
-    public GameState (Savegame pLoadedState)
+    public GameState (Savegame pLoadedState, GameManager pGameManager)
     {
+        // for a loaded game, we will init the GameScreen and map here instead of in the GameManager
+        GameMap.init(GameScreen.init(MainFrame.getInstance(), pLoadedState.getGameVariant()), pLoadedState.getGameVariant());
+
         loadedState = pLoadedState;
         // load directly saved fields first
         totalRounds = loadedState.getTotalRounds();
@@ -94,19 +99,30 @@ public class GameState implements Serializable{
         // load the counters and cards
 
         // load all of the players from the savegame
-        loadPlayers();
+        loadPlayers(pGameManager);
 
         // load the travel card deck and counter pile
         loadTravelCardDeck();
         loadCounterPile();
 
-        // load face up cards or counters
-        loadFaceUpCards();
-        loadFaceUpCounters();
+        // load face up cards or counters, depending on variant
+
+        if (GameRuleUtils.isElfengoldVariant(gameVariant))
+        {
+            loadFaceUpCards();
+        }
+        else // elfenland
+        {
+            loadFaceUpCounters();
+        }
 
         // init elf boots and their locations based on player colors
         loadBoots();
 
+        // load the counters and obstacles on the map
+        loadStuffOnRoads();
+        // remove town pieces for towns visited
+        loadTownPieces();
     }
 
     
@@ -123,6 +139,12 @@ public class GameState implements Serializable{
             instance = new GameState(sessionID, gameVariant);
         }
     	return instance;
+    }
+
+    public static GameState initFromSave(Savegame loadedState, GameManager pGameManager)
+    {
+        instance = new GameState(loadedState, pGameManager);
+        return instance;
     }
 
     public static GameState instance() {
@@ -357,12 +379,24 @@ public class GameState implements Serializable{
     }
 
     // METHODS USED TO READ IN A LOADED GAME
-    // TODO: implement these and implement constructors
-    private void loadPlayers()
+    private void loadPlayers(GameManager pGameManager)
     {
         for (SerializablePlayer toLoad : loadedState.getPlayers())
         {
-            addPlayer(new Player(toLoad));
+            Player loaded = new Player(toLoad);
+
+            if (toLoad.equals(loadedState.getCurrentPlayer()))
+            {
+                setCurrentPlayer(loaded);
+            }
+
+            if (toLoad.equals(loadedState.getThisPlayer()))
+            {
+                pGameManager.setThisPlayerLoaded(loaded, this);
+                // we continue since setThisPlayer adds the player to the list automatically
+                continue;
+            }
+            addPlayer(loaded);
         }
     }
 
@@ -372,19 +406,15 @@ public class GameState implements Serializable{
     private void loadBoots()
     {
         elfBoots = new ArrayList<ElfBoot>();
-        int bootWidth = MainFrame.instance.getWidth() * 15 / 1440;
-        int bootHeight = MainFrame.instance.getHeight() * 15/900;
 
         for (Player cur : players)
         {
             // add each player's elf boot to his current location
-            // TODO: the gamescreen needs to already exist when we set up the boots, somehow...
             Town playerCurrentTown = cur.getCurrentTown();
             ElfBootPanel curPanel = playerCurrentTown.getElfBootPanel();
             Colour playerColor = cur.getColour();
-            ElfBoot thatPlayer = new ElfBoot(playerColor, bootWidth, bootHeight, curPanel, GameScreen.getInstance());
+            ElfBoot thatPlayer = new ElfBoot(playerColor, GameScreen.getInstance().getWidth(), GameScreen.getInstance().getHeight(), curPanel, GameScreen.getInstance());
             elfBoots.add(thatPlayer);
-            // TODO: do we need to call a method in Player class to assign the boot?
         }
     }
 
@@ -393,6 +423,7 @@ public class GameState implements Serializable{
      */
     private void loadTravelCardDeck()
     {
+        travelCardDeck = TravelCardDeck.getEmpty(loadedState.getSessionID());
        for (SerializableCardUnit crd : loadedState.getTravelCardDeck())
        {
            travelCardDeck.addDrawable(new TravelCard((SerializableTravelCard) crd));
@@ -404,6 +435,7 @@ public class GameState implements Serializable{
      */
     private void loadCounterPile()
     {
+        counterPile = CounterUnitPile.getEmpty(loadedState.getSessionID()); // TODO: decide whether to use the old or new session ID for this. this is the old one.
         for (SerializableCounterUnit ctr : loadedState.getCounterPile())
         {
             // load each counter from the savegame
@@ -436,9 +468,77 @@ public class GameState implements Serializable{
      */
     private void loadFaceUpCounters()
     {
+        faceUpCounters = new ArrayList<>();
         for (SerializableTransportationCounter ctr : loadedState.getFaceUpCounters())
         {
             faceUpCounters.add(new TransportationCounter(ctr));
+            Logger.getGlobal().info("Loading face-up counter " + new TransportationCounter(ctr));
+        }
+    }
+
+    /**
+     * load counters and obstacles from the saved game's GameMap
+     */
+    private void loadStuffOnRoads()
+    {
+        HashMap<Integer, ArrayList<SerializableCounterUnit>> stuffOnRoads = loadedState.getStuffOnRoads();
+
+        for (Integer roadNum : stuffOnRoads.keySet())
+        {
+            // get the road based on its index
+            Road road = GameMap.getInstance().getRoadByIndex(roadNum);
+
+            // now add all of its counters from the list
+            ArrayList<SerializableCounterUnit> counters = stuffOnRoads.get(roadNum);
+            for (SerializableCounterUnit ctr : counters)
+            {
+                // TODO: write out all of the cases and add these
+                if (ctr instanceof SerializableTransportationCounter)
+                {
+                    SerializableTransportationCounter ctrDowncasted = (SerializableTransportationCounter) ctr;
+                    TransportationCounter toAdd = new TransportationCounter(ctrDowncasted);
+                    road.forceAddCounter(toAdd);
+                }
+                else if (ctr instanceof SerializableObstacle)
+                {
+                    SerializableObstacle ctrDowncasted = (SerializableObstacle) ctr;
+                    Obstacle toAdd = new Obstacle(ctrDowncasted);
+                    road.forceAddCounter(toAdd);
+                }
+                else if (ctr instanceof SerializableMagicSpell)
+                {
+                    SerializableMagicSpell ctrDowncasted = (SerializableMagicSpell) ctr;
+                    MagicSpell toAdd = new MagicSpell(ctrDowncasted);
+                    road.forceAddCounter(toAdd);
+                }
+                else if (ctr instanceof SerializableGoldPiece)
+                {
+                    SerializableGoldPiece ctrDowncasted = (SerializableGoldPiece) ctr;
+                    GoldPiece toAdd = new GoldPiece(ctrDowncasted);
+                    road.forceAddCounter(toAdd);
+                }
+                else
+                {
+                    Logger.getGlobal().info("Unexpected type of counter found in loading roads. The counter was: " + ctr);
+                }
+            }
+        }
+    }
+
+    /**
+     * remove town pieces to reflect each player's towns visited so far
+     * @return
+     */
+
+    public void loadTownPieces()
+    {
+        for (Player cur : players)
+        {
+            // remove this player's town piece from each of the towns he has already visited
+            for (Town visited : cur.getTownsVisited())
+            {
+                visited.removeTownPieceByColour(cur.getColour());
+            }
         }
     }
     
