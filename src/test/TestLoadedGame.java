@@ -40,7 +40,7 @@ public class TestLoadedGame {
             Savegame testSaveGame = Savegame.read("123_ROUND1.elf");
             Logger.getGlobal().info("Successfully read in the savegame from a file.");
             String localIP = NetworkUtils.getLocalIPAddPort();
-            GameManager.init(Optional.of(new GameState(testSaveGame)), "123", GameVariant.ELFENGOLD_CLASSIC, localIP); // set the variant here
+            GameManager.init(Optional.of(testSaveGame), "123", GameVariant.ELFENGOLD_CLASSIC, localIP); // set the variant here
             Logger.getGlobal().info("Successfully initialized the GameManager with the saved game.");
 
             // GameScreen.init(MainFrame.instance, GameState.instance().getGameVariant());

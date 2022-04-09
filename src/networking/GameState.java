@@ -82,7 +82,7 @@ public class GameState implements Serializable{
      * will read in game info from a save
      * @param pLoadedState the savegame, read from a file
      */
-    public GameState (Savegame pLoadedState)
+    public GameState (Savegame pLoadedState, GameManager pGameManager)
     {
         // for a loaded game, we will init the GameScreen and map here instead of in the GameManager
         GameMap.init(GameScreen.init(MainFrame.getInstance(), pLoadedState.getGameVariant()), pLoadedState.getGameVariant());
@@ -98,7 +98,7 @@ public class GameState implements Serializable{
         // load the counters and cards
 
         // load all of the players from the savegame
-        loadPlayers();
+        loadPlayers(pGameManager);
 
         // load the travel card deck and counter pile
         loadTravelCardDeck();
@@ -110,7 +110,6 @@ public class GameState implements Serializable{
 
         // init elf boots and their locations based on player colors
         loadBoots();
-
     }
 
     
@@ -127,6 +126,12 @@ public class GameState implements Serializable{
             instance = new GameState(sessionID, gameVariant);
         }
     	return instance;
+    }
+
+    public static GameState initFromSave(Savegame loadedState, GameManager pGameManager)
+    {
+        instance = new GameState(loadedState, pGameManager);
+        return instance;
     }
 
     public static GameState instance() {
@@ -361,8 +366,7 @@ public class GameState implements Serializable{
     }
 
     // METHODS USED TO READ IN A LOADED GAME
-    // TODO: implement these and implement constructors
-    private void loadPlayers()
+    private void loadPlayers(GameManager pGameManager)
     {
         for (SerializablePlayer toLoad : loadedState.getPlayers())
         {
@@ -375,7 +379,7 @@ public class GameState implements Serializable{
 
             if (toLoad.equals(loadedState.getThisPlayer()))
             {
-                GameManager.getInstance().setThisPlayer(loaded);
+                pGameManager.setThisPlayerLoaded(loaded, this);
                 // we continue since setThisPlayer adds the player to the list automatically
                 continue;
             }
