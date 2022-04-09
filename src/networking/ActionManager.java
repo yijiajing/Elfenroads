@@ -418,6 +418,14 @@ public class ActionManager {
     public void setInExternalWindow(boolean inExternalWindow) {
         this.inExternalWindow = inExternalWindow;
     }
+    
+    public boolean getInExternalWindow() {
+    	return this.inExternalWindow;
+    }
+    
+    public boolean getInExchange() {
+    	return this.inExchange;
+    }
 
     /**
      * Clears all selection states.
