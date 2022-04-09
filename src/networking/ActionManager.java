@@ -38,6 +38,7 @@ public class ActionManager {
     private CounterUnit selectedCounter;
     private final List<TravelCard> selectedCards = new ArrayList<>();
     private Town selectedTown;
+    private int cardsToBeDrawn = 0; // used when a player chooses to take 2 cards after moving to a new town in elfengold
 
     public static ActionManager init(GameState gameState, GameManager gameManager) {
         if (INSTANCE == null) {
@@ -354,18 +355,6 @@ public class ActionManager {
             //TODO: 1. let the player choose whether they wish to draw two cards or take the gold coins
             // 2. Update other players of this player's gold coins
 
-
-
-            // update gold coins of the player. The player does not collect coins if he makes a magic flight
-            if (GameRuleUtils.isElfengoldVariant() && !magicFlightSuccess) {
-                int goldEarned = selectedTown.getGoldValue();
-                if (road.hasGoldPiece()) {
-                    goldEarned *= 2;
-                }
-                gameState.getCurrentPlayer().addGoldCoins(goldEarned);
-                GameRuleUtils.updateRemoteGoldCoins(goldEarned);
-            }
-
             // remove cards from the local player's hand
             gameState.getCurrentPlayer().getHand().removeUnits(selectedCards);
             // add cards back to local deck
@@ -387,11 +376,6 @@ public class ActionManager {
             ElfBoot bootForCommand = boot;
             ElfBootPanel destinationForCommand = selectedTown.getElfBootPanel();
 
-            // TODO: remove this. just for testing
-            if (startForCommand == null || destinationForCommand == null || bootForCommand == null) {
-                System.out.println("Something went wrong! The fields in the command to send were not determined correctly!");
-            }
-
             // boot has been successfully moved and is no longer selected
             boot.setSelected(false);
 
@@ -408,6 +392,12 @@ public class ActionManager {
                 LOGGER.severe("The was a problem sending the command to move the boot!");
                 e.printStackTrace();
             }
+
+            // let the player choose whether they wish to draw cards or take coins for their movement
+            if (GameRuleUtils.isElfengoldVariant() && !magicFlightSuccess) {
+                ((EGGameScreen) GameScreen.getInstance()).showTravelOptionPopup(selectedTown, road);
+            }
+
         } else { // Move Boot fails
             GameScreen.displayMessage("You cannot move to the destination town with the selected cards. Please try again.");
         }
@@ -447,5 +437,22 @@ public class ActionManager {
 
     public GameState getGameState() {
         return gameState;
+    }
+
+    public void setCardsToBeDrawn(int numToDraw) {
+        cardsToBeDrawn = numToDraw;
+    }
+
+    public void decrementCardsToBeDrawn() {
+        cardsToBeDrawn--;
+
+        // cant be negative
+        if (cardsToBeDrawn < 0) {
+            cardsToBeDrawn = 0;
+        }
+    }
+
+    public int getCardsToBeDrawn() {
+        return cardsToBeDrawn;
     }
 }

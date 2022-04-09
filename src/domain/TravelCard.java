@@ -33,7 +33,7 @@ public class TravelCard extends CardUnit {
             @Override
             public void mouseClicked(MouseEvent e) {
                 track1.play();
-                if (!isOwned() && GameRuleUtils.isElfengoldDrawCardsPhase()) {
+                if (!isOwned() && (GameRuleUtils.isElfengoldDrawCardsPhase() || ActionManager.getInstance().getCardsToBeDrawn() > 0)) {
                     GameState.instance().getFaceUpCards().remove(TravelCard.this);
                     GameManager.getInstance().getThisPlayer().getHand().addUnit(TravelCard.this);
                     GameState.instance().addFaceUpCardFromDeck();
@@ -51,7 +51,13 @@ public class TravelCard extends CardUnit {
                         System.out.println("Error: there was a problem sending the DrawCardCommand to the other peers.");
                     }
 
-                    GameManager.getInstance().endTurn();
+                    if (ActionManager.getInstance().getCardsToBeDrawn() > 0) {
+                        ActionManager.getInstance().decrementCardsToBeDrawn();
+                    }
+
+                    if (ActionManager.getInstance().getCardsToBeDrawn() == 0) {
+                        GameManager.getInstance().endTurn();
+                    }
                 }
             }
         });

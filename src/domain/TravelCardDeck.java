@@ -6,6 +6,7 @@ import enums.GameVariant;
 import enums.TravelCardType;
 import gamemanager.GameManager;
 import gamescreen.GameScreen;
+import networking.ActionManager;
 import networking.GameState;
 import utils.GameRuleUtils;
 
@@ -100,7 +101,9 @@ public class TravelCardDeck extends Deck <CardUnit> {
         this.deckImage.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (GameRuleUtils.isDrawCardsPhase() && GameManager.getInstance().isLocalPlayerTurn()) {
+                if ((GameRuleUtils.isDrawCardsPhase() || ActionManager.getInstance().getCardsToBeDrawn() > 0)
+                        && GameManager.getInstance().isLocalPlayerTurn()) {
+
                 	CardUnit drawn = GameState.instance().getTravelCardDeck().draw(); // draw a card
                     // tell the other peers to remove the card from the pile
                     try {
@@ -108,18 +111,30 @@ public class TravelCardDeck extends Deck <CardUnit> {
                     } catch (IOException err) {
                         System.out.println("Error: there was a problem sending the DrawCardCommand to the other peers.");
                     }
-                	// if the card drawn is a gold card, the current player's turn does not end
-                    if (drawn instanceof GoldCard) {
-                    		//if drawn is a gold card, add to Gold deck and draw another one 
-                    		GameState.instance().incrementGoldCardDeckCount();
-                    		GameScreen.displayMessage("You drew a gold card! Choose another card or take the Gold Card Deck");
+
+                    if (GameRuleUtils.isDrawCardsPhase()) {
+                        if (drawn instanceof GoldCard) { // if the card drawn is a gold card, the current player's turn does not end
+                            //if drawn is a gold card, add to Gold deck and draw another one
+                            GameState.instance().incrementGoldCardDeckCount();
+                            GameScreen.displayMessage("You drew a gold card! Choose another card or take the Gold Card Deck");
                             GameScreen.getInstance().updateAll(); // update GUI
 
-                	}else {
+                        } else {
+                            GameManager.getInstance().getThisPlayer().getHand().addUnit(drawn); // add to player's hand
+                            GameScreen.getInstance().updateAll(); // update GUI
+                            GameManager.getInstance().endTurn();
+                        }
+                    } else if (ActionManager.getInstance().getCardsToBeDrawn() > 0) { // player is taking travel cards after moving their boot in EG
                         GameManager.getInstance().getThisPlayer().getHand().addUnit(drawn); // add to player's hand
                         GameScreen.getInstance().updateAll(); // update GUI
-                        GameManager.getInstance().endTurn();
-                	}                  
+
+                        ActionManager.getInstance().decrementCardsToBeDrawn();
+
+                        if (ActionManager.getInstance().getCardsToBeDrawn() == 0) {
+                            GameManager.getInstance().endTurn();
+                        }
+                    }
+
                 }
             }
         });
