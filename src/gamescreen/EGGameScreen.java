@@ -28,7 +28,7 @@ public class EGGameScreen extends GameScreen {
 
     protected final ArrayList<JPanel> panelsForPlayerCards = new ArrayList<>();
     protected JScrollPane scrollPanelForPlayerCards;
-    protected JPanel contentPanelForPlayerCards;
+    protected JPanel contentPanelForPlayerCards = new JPanel();
 
     protected ChooseCounterPopup counterPopup;
     protected DoubleMagicSpellPopup spellPopup;
@@ -141,7 +141,7 @@ public class EGGameScreen extends GameScreen {
     	Logger.getGlobal().info("Initializing gold card deck");
     	JButton goldCardDeck = new DrawGoldDeckButton(GameState.instance());
     	panelForGoldCardDeck.add(goldCardDeck);
-    	boardGame_Layers.add(panelForGoldCardDeck);
+    	boardGame_Layers.add(panelForGoldCardDeck, 0);
     }
 
     public void initializeTransportationCounters()
@@ -175,7 +175,6 @@ public class EGGameScreen extends GameScreen {
 
     @Override
     public void initializeCardPanels() {
-        contentPanelForPlayerCards = new JPanel();
         contentPanelForPlayerCards.setBounds(0, height * 690 / 900, width * 1150 / 1440, height * 3 / 9);
 
         for (int i = 0; i < 8; i++) {
@@ -344,5 +343,16 @@ public class EGGameScreen extends GameScreen {
         boardGame_Layers.remove(spellPopup);
         boardGame_Layers.repaint();
         boardGame_Layers.revalidate();
+    }
+
+    /**
+     * Displayed to the user after every boot movement
+     * Allows them to choose between taking gold coins or 2 travel cards
+     */
+    public void showTravelOptionPopup() {
+        JButton takeCards = new JButton("Take travel cards");
+        JButton takeCoins = new JButton("Take gold coins");
+
+        //JButton[] buttons = {}
     }
 }
