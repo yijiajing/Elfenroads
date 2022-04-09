@@ -384,7 +384,7 @@ public class AuctionFrame extends javax.swing.JFrame {
      * @param counterUnit
      */
     public void addCounter(CounterUnit counterUnit){
-        LOGGER.info("Adding a " + counterUnit.getType() + " tp auction frame, existing counters: " + listCounters);
+        LOGGER.info("Adding a " + counterUnit.getType() + " to auction frame, existing counters: " + listCounters);
         listCounters.add(counterUnit);
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         SequentialGroup sequentHor = jPanel1Layout.createSequentialGroup();
