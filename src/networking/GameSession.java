@@ -661,4 +661,10 @@ public class GameSession {
         }
         return false;
     }
+
+    public static String getCreatorName(String sessionID) throws IOException
+    {
+        JSONObject details = getSessionDetails(sessionID);
+        return details.getString("creator");
+    }
 }
