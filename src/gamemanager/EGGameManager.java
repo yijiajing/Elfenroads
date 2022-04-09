@@ -153,7 +153,7 @@ public class EGGameManager extends GameManager {
             return;
         }
 
-        this.auctionFrame = new AuctionFrame();;
+        auctionFrame = new AuctionFrame();
 
         CounterUnitPile pile = GameState.instance().getCounterPile();
         int numPlayers = GameState.instance().getNumOfPlayers();
@@ -161,6 +161,7 @@ public class EGGameManager extends GameManager {
             auctionFrame.addCounter(pile.draw());
             auctionFrame.addCounter(pile.draw());
         }
+        auctionFrame.setVisible(true);
 
 //        endTurn();
     }
