@@ -514,6 +514,11 @@ public class AuctionFrame extends javax.swing.JFrame {
     public void displayMessage(String message){
         displayText.setText(message);
     }
+    
+    public void closeAuctionFrame() {
+    	this.setVisible(false);
+    	this.dispose();
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField CurrentBidOutput;

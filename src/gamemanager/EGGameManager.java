@@ -26,8 +26,10 @@ public class EGGameManager extends GameManager {
     private CounterUnit prevCounterKept;
     private AuctionFrame auctionFrame;
 
+
     EGGameManager(Optional<Savegame> savegame, String sessionID, GameVariant variant, String pLocalAddress) {
         super(savegame, sessionID, variant, pLocalAddress);
+
         assert GameRuleUtils.isElfengoldVariant(variant);
     }
 
@@ -294,6 +296,10 @@ public class EGGameManager extends GameManager {
         else {
             gameState.setCurrentPhase(EGRoundPhaseType.values()[nextOrdinal]);
             LOGGER.info("...Going to the next phase : " + gameState.getCurrentPhase());
+            //if just enter Plan_Routes, close the auction window automatically
+            if(gameState.getCurrentPhase() == EGRoundPhaseType.PLAN_ROUTES) {
+            	auctionFrame.closeAuctionFrame();
+            }
             gameState.setToFirstPlayer();
             // the first player will take action
             if (isLocalPlayerTurn()) {
