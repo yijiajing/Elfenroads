@@ -400,19 +400,15 @@ public class GameState implements Serializable{
     private void loadBoots()
     {
         elfBoots = new ArrayList<ElfBoot>();
-        int bootWidth = MainFrame.instance.getWidth() * 15 / 1440;
-        int bootHeight = MainFrame.instance.getHeight() * 15/900;
 
         for (Player cur : players)
         {
             // add each player's elf boot to his current location
-            // TODO: the gamescreen needs to already exist when we set up the boots, somehow...
             Town playerCurrentTown = cur.getCurrentTown();
             ElfBootPanel curPanel = playerCurrentTown.getElfBootPanel();
             Colour playerColor = cur.getColour();
-            ElfBoot thatPlayer = new ElfBoot(playerColor, bootWidth, bootHeight, curPanel, GameScreen.getInstance());
+            ElfBoot thatPlayer = new ElfBoot(playerColor, GameScreen.getInstance().getWidth(), GameScreen.getInstance().getHeight(), curPanel, GameScreen.getInstance());
             elfBoots.add(thatPlayer);
-            // TODO: do we need to call a method in Player class to assign the boot?
         }
     }
 
