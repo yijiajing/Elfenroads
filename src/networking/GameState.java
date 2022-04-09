@@ -121,6 +121,8 @@ public class GameState implements Serializable{
 
         // load the counters and obstacles on the map
         loadStuffOnRoads();
+        // remove town pieces for towns visited
+        loadTownPieces();
     }
 
     
@@ -521,7 +523,23 @@ public class GameState implements Serializable{
                 }
             }
         }
+    }
 
+    /**
+     * remove town pieces to reflect each player's towns visited so far
+     * @return
+     */
+
+    public void loadTownPieces()
+    {
+        for (Player cur : players)
+        {
+            // remove this player's town piece from each of the towns he has already visited
+            for (Town visited : cur.getTownsVisited())
+            {
+                visited.removeTownPieceByColour(cur.getColour());
+            }
+        }
     }
     
     public int getGoldCardDeckCount() {
