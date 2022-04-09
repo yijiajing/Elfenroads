@@ -163,6 +163,7 @@ public class EGGameManager extends GameManager {
             auctionFrame.addCounter(pile.draw());
             auctionFrame.addCounter(pile.draw());
         }
+        auctionFrame.setVisible(true);
 
         auctionFrame.setVisible(true);
     }
