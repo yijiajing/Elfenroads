@@ -244,9 +244,9 @@ public class AuctionFrame extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(EnterButton, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(37, 37, 37))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 372, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(22, 22, 22))
             /*.addGroup(Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -418,8 +418,7 @@ public class AuctionFrame extends javax.swing.JFrame {
 
         jPanel1Layout.setHorizontalGroup(
                 jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(sequentHor
-                        )
+                        .addGroup(sequentHor)
 
         );
         jPanel1Layout.setVerticalGroup(
@@ -437,12 +436,7 @@ public class AuctionFrame extends javax.swing.JFrame {
     public CounterUnit removeFirstCounter() {
         assert listCounters.size() > 0;
         CounterUnit counter = listCounters.remove(0);
-        jPanel1 = new javax.swing.JPanel();
-//
-//        jScrollPane1.setViewportView(jPanel1);
-//
-//        this.repaint();
-//        jPanel1.repaint();
+        jPanel1.removeAll();
         for (CounterUnit cu : listCounters){
             addCounterUIComponent(cu);
         }
