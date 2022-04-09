@@ -2,6 +2,7 @@ package networking;
 
 import domain.*;
 import enums.*;
+import gamemanager.GameManager;
 import windows.MainFrame;
 import gamescreen.GameScreen;
 import panel.ElfBootPanel;
@@ -362,7 +363,20 @@ public class GameState implements Serializable{
     {
         for (SerializablePlayer toLoad : loadedState.getPlayers())
         {
-            addPlayer(new Player(toLoad));
+            Player loaded = new Player(toLoad);
+
+            if (toLoad.equals(loadedState.getCurrentPlayer()))
+            {
+                setCurrentPlayer(loaded);
+            }
+
+            if (toLoad.equals(loadedState.getThisPlayer()))
+            {
+                GameManager.getInstance().setThisPlayer(loaded);
+                // we continue since setThisPlayer adds the player to the list automatically
+                continue;
+            }
+            addPlayer(loaded);
         }
     }
 
@@ -404,7 +418,7 @@ public class GameState implements Serializable{
      */
     private void loadCounterPile()
     {
-        counterPile = new CounterUnitPile;
+        counterPile = CounterUnitPile.getEmpty(); // TODO: get the session ID to pass as a parameter here
         for (SerializableCounterUnit ctr : loadedState.getCounterPile())
         {
             // load each counter from the savegame
@@ -437,6 +451,7 @@ public class GameState implements Serializable{
      */
     private void loadFaceUpCounters()
     {
+        faceUpCounters = new ArrayList<>();
         for (SerializableTransportationCounter ctr : loadedState.getFaceUpCounters())
         {
             faceUpCounters.add(new TransportationCounter(ctr));

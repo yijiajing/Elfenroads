@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.awt.*;
+import java.util.logging.Logger;
 
 public class Player implements Comparable<Player> {
 
@@ -48,6 +49,8 @@ public class Player implements Comparable<Player> {
         destinationTown = GameMap.getInstance().getTownByName(loaded.getDestinationTownName());
         colour = loaded.getColor();
         name = loaded.getName();
+        score = loaded.getScore();
+        goldCoins = loaded.getGoldCoins();
 
         loadTownsVisited(loaded);
         loadHand(loaded);
@@ -154,6 +157,8 @@ public class Player implements Comparable<Player> {
     // METHODS USED FOR READING IN A PLAYER FROM A SAVEGAME
     private void loadTownsVisited(SerializablePlayer loaded)
     {
+        // townsVisited already initialized before the constructor, so we don't need the declaration in this method
+
         for (String townName : loaded.getVisitedTownNames())
         {
             townsVisited.add(GameMap.getInstance().getTownByName(townName));
@@ -165,6 +170,8 @@ public class Player implements Comparable<Player> {
         ArrayList<SerializableCounterUnit> counters = loaded.getCounters();
         ArrayList<SerializableCardUnit> cards = loaded.getCards();
         SerializableObstacle loadedObstacle = loaded.getObstacle();
+
+        hand = new Hand();
 
         // load each part of the hand
         // load counters
@@ -181,6 +188,12 @@ public class Player implements Comparable<Player> {
                 SerializableMagicSpell counterDowncasted = (SerializableMagicSpell) ctr;
                 hand.addUnit(new MagicSpell(counterDowncasted));
             }
+
+            else if (ctr instanceof SerializableGoldPiece)
+            {
+                SerializableGoldPiece counterDowncasted = (SerializableGoldPiece) ctr;
+                hand.addUnit(new GoldPiece(counterDowncasted));
+            }
             else // if ctr is a transportation counter
             {
                 SerializableTransportationCounter counterDowncasted = (SerializableTransportationCounter) ctr;
@@ -189,13 +202,21 @@ public class Player implements Comparable<Player> {
         }
 
         // load cards
-        // TODO: are there any CardUnits other than TravelCards in the player's hand?
         for (SerializableCardUnit crd : cards)
         {
             if (crd instanceof SerializableTravelCard)
             {
                 SerializableTravelCard crdDowncasted = (SerializableTravelCard) crd;
                 hand.addUnit(new TravelCard(crdDowncasted));
+            }
+            else if (crd instanceof SerializableGoldCard)
+            {
+                SerializableGoldCard crdDowncasted = (SerializableGoldCard) crd;
+                hand.addUnit(new GoldCard(crdDowncasted));
+            }
+            else // was not a gold card or a travel card
+            {
+                Logger.getGlobal().info("The card we are trying to load from the player's hand is a " + crd.getClass());
             }
         }
 
@@ -206,7 +227,6 @@ public class Player implements Comparable<Player> {
         }
 
         // done loading in the player's hand
-
 
     }
 }

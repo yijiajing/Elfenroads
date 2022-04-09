@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class SerializablePlayer implements Serializable {
+public class SerializablePlayer implements Serializable, Comparable<Player> {
 
     private String name;
     private Colour color;
@@ -19,6 +19,7 @@ public class SerializablePlayer implements Serializable {
     private String destinationTownName;
 
     private int goldCoins;
+    private int score;
 
     private ArrayList<SerializableCardUnit> cards;
     private ArrayList<SerializableCounterUnit> counters; // in Elfengold, the obstacles will be in here
@@ -40,6 +41,7 @@ public class SerializablePlayer implements Serializable {
 
 
         color = original.getColour();
+        score = original.getScore();
 
         // add the counters, cards, and obstacles
         saveCounters(original);
@@ -144,5 +146,18 @@ public class SerializablePlayer implements Serializable {
 
     public String getName() {
         return name;
+    }
+
+    public int getGoldCoins() {
+        return goldCoins;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    @Override
+    public int compareTo(Player o) {
+        return name.compareTo(o.getName());
     }
 }
