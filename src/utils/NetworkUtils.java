@@ -173,9 +173,10 @@ public class NetworkUtils {
 
         for (InetAddress address : allAddresses)
         {
-            if (address.isLoopbackAddress() || !isValidIP(address.getHostAddress()) || !address.isReachable(5000)) // we don't want the loopback address or an invalid one, like a MAC address
+            if (address.isLoopbackAddress() || !isValidIP(address.getHostAddress()) || !address.isReachable(2000)) // we don't want the loopback address or an invalid one, like a MAC address
             {
                 // do nothing and keep going
+                Logger.getGlobal().info("Address " + address.toString() + " was determined to be invalid.");
                 continue;
             }
 
@@ -186,7 +187,7 @@ public class NetworkUtils {
         }
 
         callCounter ++;
-        if (callCounter < 10)
+        if (callCounter < 5)
         {
             Thread.sleep(500);
             return getLocalIP(callCounter); // exhibits some weird behavior, so we will retry up to 5 times

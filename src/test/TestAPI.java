@@ -23,24 +23,25 @@ public class TestAPI {
 
     {
         // deleteAllSessions();
-        createASession("Elfenland_Classic");
+        testCreateUser("user_test", "abc123_ABC123");
 
-        /**
         initializeGameServiceWithStandardSettings("Elfenland_Classic", "Elfenland (Classic)" );
         initializeGameServiceWithStandardSettings("Elfenland_Long", "Elfenland (Long)");
-        initializeGameServiceWithStandardSettings("ElfenlandDestination", "Elfenland (Destination)");
+        initializeGameServiceWithStandardSettings("Elfenland_Destination", "Elfenland (Destination)");
         initializeGameServiceWithStandardSettings("Elfengold_Classic", "Elfengold (Classic)");
         initializeGameServiceWithStandardSettings("Elfengold_TravelCards", "Elfengold (Travel Cards)");
         initializeGameServiceWithStandardSettings("Elfengold_RandomGold", "Elfengold (Random Gold)");
         initializeGameServiceWithStandardSettings("Elfengold_Witch", "Elfengold (Witch)");
-         **/
+
 
     }
 
     public static void testCreateUser(String username, String password) throws IOException, Exception {
 
-        //User createNew = User.createNewUser(username, password, User.Role.PLAYER);
-        //createNew.printTokenRelatedFields();
+        User.registerNewPlayer(username, password);
+        User.logout();
+        User createNew = User.init(username, password);
+        createNew.printTokenRelatedFields();
     }
 
     public static void createASession(String variant)

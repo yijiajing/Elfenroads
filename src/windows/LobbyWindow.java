@@ -353,7 +353,7 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
         {
             case "Elfenland_Classic": return GameVariant.ELFENLAND_CLASSIC;
             case "Elfenland_Long": return GameVariant.ELFENLAND_LONG;
-            case "ElfenlandDestination": return GameVariant.ELFENLAND_DESTINATION; // I know this one is different. It is different in the LS.
+            case "Elfenland_Destination": return GameVariant.ELFENLAND_DESTINATION; // I know this one is different. It is different in the LS.
             case "Elfengold_Classic": return GameVariant.ELFENGOLD_CLASSIC;
             case "Elfengold_TravelCards": return GameVariant.ELFENGOLD_TRAVEL_CARDS;
             case "Elfengold_RandomGold": return GameVariant.ELFENGOLD_RANDOM_GOLD;
@@ -373,7 +373,7 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
         {
             case "Elfenland_Classic": return "Elfenland (Classic)";
             case "Elfenland_Long": return "Elfenland (Long)";
-            case "ElfenlandDestination": return "Elfenland (Destination)";
+            case "Elfenland_Destination": return "Elfenland (Destination)";
             case "Elfengold_Classic": return "Elfengold (Classic)";
             case "Elfengold_TravelCards": return "Elfengold (Travel Cards)";
             case "Elfengold_RandomGold": return "Elfengold (Random Gold)";

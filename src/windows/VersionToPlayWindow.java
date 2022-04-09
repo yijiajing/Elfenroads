@@ -124,7 +124,7 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
                 try 
                 {
                     track1.play();
-                    session = new GameSession(User.getInstance(), "ElfenlandDestination", "My Save Game Name");
+                    session = new GameSession(User.getInstance(), "Elfenland_Destination", "My Save Game Name");
 
                     String localIP = NetworkUtils.getLocalIPAddPort();
                     GameManager.init(Optional.empty(), session.getId(), GameVariant.ELFENLAND_DESTINATION, localIP);
