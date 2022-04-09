@@ -336,6 +336,7 @@ public class AuctionFrame extends javax.swing.JFrame {
     private void PassButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PassButtonActionPerformed
         if (!GameManager.getInstance().isLocalPlayerTurn()) {
             displayMessage("You cannot end someone else's turn!");
+            return;
         }
 
         localPlayerHasPassed = true;
