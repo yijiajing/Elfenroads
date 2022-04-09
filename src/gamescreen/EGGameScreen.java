@@ -362,13 +362,22 @@ public class EGGameScreen extends GameScreen {
                 0, null, options, options[0]);
 
         if (choice == 0) { // take gold coins
+            Logger.getGlobal().info("Player has chosen to take gold coins");
+            Logger.getGlobal().info("Coins before adding: " + GameState.instance().getCurrentPlayer().getGoldCoins());
+
             int goldEarned = selectedTown.getGoldValue();
             if (selectedRoad.hasGoldPiece()) {
                 goldEarned *= 2;
             }
+
+            Logger.getGlobal().info("Adding " + goldEarned + " coins");
+
             GameState.instance().getCurrentPlayer().addGoldCoins(goldEarned);
             GameRuleUtils.updateRemoteGoldCoins(goldEarned);
+
+            Logger.getGlobal().info("Number of coins is now " + GameState.instance().getCurrentPlayer().getGoldCoins());
         } else { // take travel cards
+            Logger.getGlobal().info("Player has chosen to take travel cards");
             ActionManager.getInstance().setCardsToBeDrawn(2);
             displayMessage("Please take 2 travel cards from the deck or from the available face-up cards.");
         }
