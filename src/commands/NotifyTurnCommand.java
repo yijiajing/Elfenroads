@@ -45,7 +45,7 @@ public class NotifyTurnCommand implements GameCommand {
                     gameManager.chooseFaceUpCounter();
                     break;
                 case AUCTION:
-                    gameManager.auction();
+                    gameManager.getAuctionFrame().displayMessage("It is your turn. Please bid or pass your turn.");
                     break;
                 case PLAN_ROUTES:
                     gameManager.planTravelRoutes();

@@ -7,6 +7,7 @@ package windows;
 import java.awt.Component;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
@@ -35,6 +36,7 @@ import networking.GameState;
 public class AuctionFrame extends javax.swing.JFrame {
 
     private ArrayList<CounterUnit> listCounters = new ArrayList<CounterUnit>();
+    private final Logger LOGGER = Logger.getLogger("Auction Frame");
     private int currentBid = 0;
     private Player highestBidPlayer = null;
     private boolean localPlayerHasPassed = false;
@@ -271,25 +273,23 @@ public class AuctionFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void EnterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EnterButtonActionPerformed
-        //TODO: delete this
-        addCounter(new TransportationCounter(CounterType.MAGICCLOUD, 70, 70));
+//        //TODO: delete this
+//        addCounter(new TransportationCounter(CounterType.MAGICCLOUD, 70, 70));
 
         if (!GameManager.getInstance().isLocalPlayerTurn()) {
-            GameScreen.displayMessage("You can only make a bid when it is your turn!"); //TODO: not sure how to display a message in this frame
+            displayMessage("You can only make a bid when it is your turn!");
             return;
         }
         if (localPlayerHasPassed) {
-            GameScreen.displayMessage("You cannot make further bids for this item as you have already passed once");
+            displayMessage("You cannot make further bids for this item as you have already passed once");
+            return;
         }
 
-        int increaseAmount = 0;
-
         try {
-            increaseAmount = Integer.parseInt(TextInput.getText());
+            int increaseAmount = Integer.parseInt(TextInput.getText());
 
             if (currentBid + increaseAmount > GameManager.getInstance().getThisPlayer().getGoldCoins()) {
-                //TODO: notify the player that it is not possible. Can we GameScreen.displayMessage here?
-                GameScreen.displayMessage("You do not have enough gold coins to bid. Please lower your bid increase or pass the turn.");
+                displayMessage("You do not have enough gold coins to bid. Please lower your bid increase or pass the turn.");
                 return;
             }
 
@@ -297,17 +297,19 @@ public class AuctionFrame extends javax.swing.JFrame {
             IncreaseBidCommand bid = new IncreaseBidCommand(increaseAmount);
             bid.execute(); // update bid status locally
             coms.sendGameCommandToAllPlayers(bid);
+            displayMessage("Waiting for other players to bid...");
+            GameManager.getInstance().endTurn();
         } catch (NumberFormatException e) {
-            System.out.println("String cannot be converted to integer.");
+            displayMessage("You must enter a valid number!");
+            LOGGER.warning("String cannot be converted to integer.");
         } catch (IOException e) {
-            System.out.println("There was a problem sending the IncreaseBidCommand to all players.");
+            LOGGER.severe("There was a problem sending the IncreaseBidCommand to all players.");
         }
-        GameManager.getInstance().endTurn();
     }//GEN-LAST:event_EnterButtonActionPerformed
 
     private void PassButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PassButtonActionPerformed
         if (!GameManager.getInstance().isLocalPlayerTurn()) {
-            GameScreen.displayMessage("You cannot end someone else's turn!"); //TODO: not sure how to display a message in this frame
+            displayMessage("You cannot end someone else's turn!");
         }
 
         localPlayerHasPassed = true;
@@ -315,11 +317,12 @@ public class AuctionFrame extends javax.swing.JFrame {
         command.execute();
         try {
             GameManager.getInstance().getComs().sendGameCommandToAllPlayers(command);
+            GameManager.getInstance().endTurn();
+            displayMessage("You passed your turn. Waiting for other players to bid...");
         } catch (IOException e) {
-            System.out.println("There was a problem sending the PassTurnCommand to all players.");
+            LOGGER.severe("There was a problem sending the PassTurnCommand to all players.");
             e.printStackTrace();
         }
-        GameManager.getInstance().endTurn();
         //IncreaseLabel.setVisible(false);
         //EnterButton.setVisible(false);
         //PassButton.setVisible(false);
@@ -434,6 +437,7 @@ public class AuctionFrame extends javax.swing.JFrame {
         for (CounterUnit cu : listCounters){
             addCounter(cu);
         }
+        LOGGER.info("Removed the first counter " + counter);
         return counter;
     }
 
@@ -467,12 +471,8 @@ public class AuctionFrame extends javax.swing.JFrame {
     }
 
     public void increaseCurrentBid(int increaseAmount) {
-        try {
-            currentBid += increaseAmount;
-            CurrentBidOutput.setText(Integer.toString(currentBid));
-        } catch (NumberFormatException e) {
-            System.out.println("String cannot be converted to integer.");
-        }
+        currentBid += increaseAmount;
+        CurrentBidOutput.setText(Integer.toString(currentBid));
     }
 
     public Player getHighestBidPlayer() {
