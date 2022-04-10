@@ -99,7 +99,7 @@ public class EGGameManager extends GameManager {
             }
         } else {
             LOGGER.info("In round " + gameState.getCurrentRound() + ", go to draw card phase");
-            GameScreen.displayMessage("New Round Start! You can get 2 coins.");
+            GameScreen.displayMessage("New Round Start!");
             
             gameState.setCurrentPhase(EGRoundPhaseType.DRAW_CARD_ONE);
             // Triggered only on one instance (the first player)
@@ -148,6 +148,7 @@ public class EGGameManager extends GameManager {
 
         // distribute gold coins (beginning with the second round)
         if (gameState.getCurrentRound() > 1) {
+            GameScreen.displayMessage("You got 2 coins for the new round");
             for (Player p: gameState.getPlayers()) {
                 p.addGoldCoins(2);
             }
