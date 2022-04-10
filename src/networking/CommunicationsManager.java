@@ -243,7 +243,7 @@ public class CommunicationsManager {
                 getAndExecuteFirstAddPlayerCommand();
                 // get the next AddPlayerCommand from the queue
             }
-            else if (GameRuleUtils.isElfengoldVariant(GameState.instance().getGameVariant()) && GameState.instance().getCurrentRound() == 1)
+            else if (GameRuleUtils.isElfengoldVariant(GameState.instance().getGameVariant()) && GameState.instance().getCurrentRound() == 1 || listener.getCommands().peekFirst() instanceof AddGoldCoinsCommand)
             {
                 GameCommand toExecute = listener.getCommands().poll();
                 toExecute.execute();

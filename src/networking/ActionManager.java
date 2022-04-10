@@ -110,6 +110,8 @@ public class ActionManager {
                         "exchanged to. Please try again. ");
             }
             inExchange = false;
+            clearSelection();
+            gameManager.endTurn();
             return;
         }
 

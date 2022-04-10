@@ -290,7 +290,7 @@ public class AuctionFrame extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         DisplayText = new javax.swing.JTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        //setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         PassButton.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         PassButton.setLabel("PASS");
