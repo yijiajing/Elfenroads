@@ -11,7 +11,7 @@ import enums.ELRoundPhaseType;
 import gamemanager.GameManager;
 import gamescreen.GameScreen;
 import windows.MP3Player;
-import networking.ActionManager;
+import gamemanager.ActionManager;
 import networking.GameState;
 import utils.GameRuleUtils;
 

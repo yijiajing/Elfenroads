@@ -4,7 +4,7 @@ import domain.ElfBoot;
 import domain.Town;
 import domain.TownPiece;
 import gamescreen.GameScreen;
-import networking.ActionManager;
+import gamemanager.ActionManager;
 
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
