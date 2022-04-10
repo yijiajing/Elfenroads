@@ -134,7 +134,7 @@ public class ELGameManager extends GameManager {
                 && GameRuleUtils.isDrawCountersPhase()
                 && isLocalPlayerTurn()) {
 
-            updateGameState();
+            updateGameScreen();
             System.out.println("Current phase: DRAW COUNTERS");
 
             if (gameState.getGameVariant() == GameVariant.ELFENLAND_LONG) {
@@ -157,11 +157,12 @@ public class ELGameManager extends GameManager {
 
     /**
      * PHASE 4
+     * Plan travel routes (inside GameManager superclass)
      */
 
     /**
      * PHASE 5
-     * Travel on the map (inside GameManager superclass)
+     * Move on the map (inside GameManager superclass)
      */
 
 
@@ -268,7 +269,7 @@ public class ELGameManager extends GameManager {
         List<Player> winners = new ArrayList<>();
         winners.add(players.get(0));
 
-        // calculate final score of each player according to the destination town variant rule
+        // adjust final score of each player according to the destination town variant rule
         if (gameState.getGameVariant() == GameVariant.ELFENLAND_DESTINATION) {
             for (Player p : players) {
                 int townsAway = GameMap.getInstance().getDistanceBetween(p.getCurrentTown(), p.getDestinationTown()) - 1;
@@ -276,8 +277,11 @@ public class ELGameManager extends GameManager {
                 p.setScore(newScore);
             }
         }
-        //update scoreboard
+
+        // update scoreboard
         GameScreen.getInstance().updateAll();
+
+        // calculate the winner
         for (Player p : players) {
             if (p.getScore() > winners.get(0).getScore()) {
                 winners.clear();
