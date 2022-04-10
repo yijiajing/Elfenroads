@@ -9,6 +9,7 @@ import enums.GameVariant;
 import gamescreen.EGGameScreen;
 import gamescreen.GameScreen;
 import networking.GameState;
+import networking.ActionManager;
 import savegames.Savegame;
 import utils.GameRuleUtils;
 import windows.AuctionFrame;
@@ -304,6 +305,11 @@ public class EGGameManager extends GameManager {
             if(gameState.getCurrentPhase() == EGRoundPhaseType.PLAN_ROUTES) {
             	auctionFrame.closeAuctionFrame();
             }
+            //if just enter the Move Phase, reset the hasMoved parameter to false.
+            if(gameState.getCurrentPhase() == EGRoundPhaseType.MOVE) {
+                ActionManager.getInstance().setBootMoved(false);
+            }
+            
             gameState.setToFirstPlayer();
             // the first player will take action
             if (isLocalPlayerTurn()) {

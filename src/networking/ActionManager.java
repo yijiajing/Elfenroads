@@ -38,8 +38,9 @@ public class ActionManager {
     private CounterUnit selectedCounter;
     private final List<TravelCard> selectedCards = new ArrayList<>();
     private Town selectedTown;
-    private int cardsToBeDrawn = 0; // used when a player chooses to take 2 cards after moving to a new town in elfengold
-
+    private int cardsToBeDrawn = 0; // used when a player chooses to take 2 cards after moving to a new town in elfengold, or when Player choose not to make a move and draw 2 cards
+    private boolean bootMoved = false; //identify whether a player has made a move in current Move phase.
+    
     public static ActionManager init(GameState gameState, GameManager gameManager) {
         if (INSTANCE == null) {
             INSTANCE = new ActionManager(gameState, gameManager);
@@ -351,10 +352,12 @@ public class ActionManager {
         }
 
         Road road = null;
+        //only need to validate the move if a magic flight is not applied.
         if (!magicFlightSuccess) {
             road = GameRuleUtils.validateMove(GameMap.getInstance(), gameState.getCurrentPlayer().getCurrentTown(), selectedTown, selectedCards);
         }
-
+        
+        //the move is validated if either the road is not null, or magicFlightSuccess
         if (road != null || magicFlightSuccess) {
             // remove cards from the local player's hand
             gameState.getCurrentPlayer().getHand().removeUnits(selectedCards);
@@ -398,6 +401,8 @@ public class ActionManager {
             if (GameRuleUtils.isElfengoldVariant() && !magicFlightSuccess) {
                 ((EGGameScreen) GameScreen.getInstance()).showTravelOptionPopup(selectedTown, road);
             }
+            
+            bootMoved = true;
 
         } else { // Move Boot fails
             GameScreen.displayMessage("You cannot move to the destination town with the selected cards. Please try again.");
@@ -455,5 +460,13 @@ public class ActionManager {
 
     public int getCardsToBeDrawn() {
         return cardsToBeDrawn;
+    }
+    
+    public boolean getBootMoved() {
+    	return bootMoved; 
+    }
+    
+    public void setBootMoved(boolean pBootMoved) {
+    	bootMoved = pBootMoved;
     }
 }
