@@ -39,6 +39,7 @@ public abstract class GameManager {
 
     // manages choosing a boot colour
     protected ArrayList<Colour> availableColours = new ArrayList<>();
+    private int bootNotifsReceived;
 
 
     GameManager(Optional<Savegame> savegame, String pSessionID, GameVariant variant, String pLocalAddress) {
@@ -353,4 +354,12 @@ public abstract class GameManager {
         return this.variant;
     }
 
+    public int getBootNotifsReceived() {
+        return bootNotifsReceived;
+    }
+
+    public void receivedBootNotif()
+    {
+        bootNotifsReceived++;
+    }
 }
