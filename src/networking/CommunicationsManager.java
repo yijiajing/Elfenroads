@@ -151,15 +151,15 @@ public class CommunicationsManager {
     {
         ArrayList<Socket> senders = setUpSenders();
 
-        Logger.getGlobal().info("Sending the game command to the other users!");
+        Logger.getGlobal().info("Sending the game command " + command.getClass().getName() + " to the other users!");
         for (Socket otherPlayer : senders)
         {
             OutputStream out = otherPlayer.getOutputStream();
             ObjectOutputStream payload = new ObjectOutputStream(out);
             payload.writeObject(command);
-            Logger.getGlobal().info("Wrote the command to the payload.");
-            Logger.getGlobal().info("Flushed the payload.");
-            Logger.getGlobal().info("Closed the socket.");
+//            Logger.getGlobal().info("Wrote the command to the payload.");
+//            Logger.getGlobal().info("Flushed the payload.");
+//            Logger.getGlobal().info("Closed the socket.");
         }
     }
 
@@ -223,7 +223,7 @@ public class CommunicationsManager {
      */
     public void updateFromListener()
     {
-        Logger.getGlobal().info("Received an update from the listener. Updating the game.");
+//        Logger.getGlobal().info("Received an update from the listener. Updating the game.");
 
         while (listener.getCommands().size() > 0)
         {
