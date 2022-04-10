@@ -35,6 +35,13 @@ public class EGGameManager extends GameManager {
 
     @Override
     public void setUpNewGame() {
+        // randomly assign gold value tokens to towns
+        if (gameState.getGameVariant() == GameVariant.ELFENGOLD_RANDOM_GOLD) {
+            GoldTokenDeck goldTokenDeck = new GoldTokenDeck(sessionID);
+            for (Town town : GameMap.getInstance().getTownList()) {
+                town.setGoldValueToken(goldTokenDeck.draw());
+            }
+        }
         // initial preparation: deal five cards to each player; give each player 7 gold coins
         for (Player p: gameState.getPlayers()) {
             for (int i = 0; i < 5; i++) {
