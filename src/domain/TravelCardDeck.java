@@ -157,7 +157,7 @@ public class TravelCardDeck extends Deck <CardUnit> {
 
                         ActionManager.getInstance().decrementCardsToBeDrawn();
 
-                        if (ActionManager.getInstance().getCardsToBeDrawn() == 0) {
+                        if (ActionManager.getInstance().getCardsToBeDrawn() == 0 && !ActionManager.getInstance().getBootMoved()) {
                             GameManager.getInstance().endTurn();
                         }
                     }

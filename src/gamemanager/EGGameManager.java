@@ -315,6 +315,7 @@ public class EGGameManager extends GameManager {
             LOGGER.info("Pass turn ct: " + gameState.getPassedPlayerCount() + ", staying at the PLAN ROUTES phase");
             gameState.setToFirstPlayer();
             gameState.clearPassedPlayerCount();
+
             // the first player will take action
             if (isLocalPlayerTurn()) {
                 NotifyTurnCommand notifyTurnCommand = new NotifyTurnCommand(EGRoundPhaseType.PLAN_ROUTES);
@@ -329,7 +330,9 @@ public class EGGameManager extends GameManager {
             LOGGER.info("...Going to the auction phase");
             gameState.setToFirstPlayer();
             gameState.clearPassedPlayerCount();
-            auction(); // display auction window for everyone
+
+            auction(); // display auction window for everyonexs
+
             if (isLocalPlayerTurn()) {
                 NotifyTurnCommand notifyTurnCommand = new NotifyTurnCommand(EGRoundPhaseType.AUCTION);
                 notifyTurnCommand.execute(); // notify themself to take action
@@ -366,6 +369,7 @@ public class EGGameManager extends GameManager {
             
             gameState.setToFirstPlayer();
             gameState.clearPassedPlayerCount();
+
             // the first player will take action
             if (isLocalPlayerTurn()) {
                 NotifyTurnCommand notifyTurnCommand = new NotifyTurnCommand(gameState.getCurrentPhase());
