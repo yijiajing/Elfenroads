@@ -160,7 +160,7 @@ public class Savegame implements Serializable {
             saved.createNewFile();
             saved = new File(saveGameFilepath);
         }
-        FileOutputStream write = new FileOutputStream(saveGameFilepath);
+        FileOutputStream write = new FileOutputStream(saved);
         ObjectOutputStream stuff = new ObjectOutputStream(write);
         stuff.writeObject(save);
         stuff.close();
