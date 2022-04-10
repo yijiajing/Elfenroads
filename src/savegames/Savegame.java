@@ -158,6 +158,7 @@ public class Savegame implements Serializable {
         if (saved.exists()) // should be triggered every time
         {
             saved.createNewFile();
+            saved = new File(saveGameFilepath);
         }
         FileOutputStream write = new FileOutputStream(saveGameFilepath);
         ObjectOutputStream stuff = new ObjectOutputStream(write);
