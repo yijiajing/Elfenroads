@@ -28,8 +28,17 @@ public class GetBootColourCommand implements GameCommand {
 
         try {
             String localAddress = NetworkUtils.getLocalIPAddPort();
+
+            // if we have not picked our color yet, we can tell the asker that
+            if (GameManager.getInstance().getThisPlayer() == null)
+            {
+                // we haven't chosen a boot yet
+                SendBootColourCommand response = new SendBootColourCommand(null);
+                return;
+            }
+
             Colour myColour = GameManager.getInstance().getThisPlayer().getColour();
-            coms.sendGameCommandToPlayer(new SendBootColourCommand(myColour, localAddress), senderIP);
+            coms.sendGameCommandToPlayer(new SendBootColourCommand(myColour), senderIP);
         } catch (IOException e) {
             System.out.println("There was a problem sending the SendBootColourCommand.");
             e.printStackTrace();

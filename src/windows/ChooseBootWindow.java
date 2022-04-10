@@ -82,9 +82,8 @@ public class ChooseBootWindow extends JPanel {
 
                         GameManager.getInstance().setThisPlayer(new Player(c, localPlayerName));
                         GameManager.getInstance().removeAvailableColour(c); // this line might be unecessary, but I'm just going to leave it
-                        String localIP = GameManager.getInstance().getComs().getLocalAddress();
                         try {
-                            GameManager.getInstance().getComs().sendGameCommandToAllPlayers(new SendBootColourCommand(c, localIP));
+                            GameManager.getInstance().getComs().sendGameCommandToAllPlayers(new SendBootColourCommand(c));
                         } catch (IOException e2) {
                             e2.printStackTrace();
                         }

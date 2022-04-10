@@ -294,6 +294,7 @@ public abstract class GameManager {
                 // ask the existing players for their colours
                 String localAddress = NetworkUtils.getLocalIPAddPort();
                 coms.sendGameCommandToAllPlayers(new GetBootColourCommand(localAddress));
+                // for players who are not the host, we should check the colors available at this time
             }
         } catch (IOException e) {
             System.out.println("There was a problem sending the command to get players' boot colours!");

@@ -10,11 +10,8 @@ import enums.Colour;
 public class SendBootColourCommand implements GameCommand {
 
     private Colour bootColour;
-    private String senderIP;
-
-    public SendBootColourCommand(Colour pBootColour, String senderIP) {
+    public SendBootColourCommand(Colour pBootColour) {
         this.bootColour = pBootColour;
-        this.senderIP = senderIP;
     }
 
     /**
@@ -22,7 +19,18 @@ public class SendBootColourCommand implements GameCommand {
      */
     @Override
     public void execute() {
-        GameManager.getInstance().removeAvailableColour(bootColour);
+
+        // if the response bootColour is null, then we can do nothing
+        if (bootColour == null)
+        {
+            // do nothing
+            return;
+        }
+        // else remove the color
+        else
+        {
+            GameManager.getInstance().removeAvailableColour(bootColour);
+        }
     }
 
 
