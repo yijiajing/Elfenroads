@@ -3,6 +3,7 @@ package commands;
 // used during boot selection
 // will be sent by a player to the host to check if a boot selection is valid
 import enums.Colour;
+import gamemanager.GameManager;
 import networking.CommunicationsManager;
 
 import java.io.IOException;
@@ -34,6 +35,7 @@ public class ValidateBootCommand implements GameCommand {
         if (validated)
         {
             CommunicationsManager.recordColorChoice(bootColorChoice);
+            GameManager.getInstance().removeAvailableColour(bootColorChoice);
         }
         BootValidationResponseCommand cmd = new BootValidationResponseCommand(validated, bootColorChoice);
         try {coms.sendCommandToIndividual(cmd, senderName);}

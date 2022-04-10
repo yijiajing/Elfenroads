@@ -67,8 +67,19 @@ public class ChooseBootWindow extends JPanel {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     String localPlayerName = User.getInstance().getUsername();
-                    if (localPlayerIsCreator) // if we are the creator, we can assume that we are the first to join and take whatever boot we want.
+                    if (localPlayerIsCreator) // if we are the creator, we will still check whether someone has taken boot we want in the time it took us to choose.
                     {
+                        // we can simply re-check the available colors list to see if someone has sent in a boot choice since we loaded the window
+                        if (!GameManager.getInstance().getAvailableColours().contains(c))
+                        {
+                            // someone else took the color, so display the message and reinitialize the window.
+                            JOptionPane.showMessageDialog(null, "Too slow! That boot color is taken. Please try again.");
+                            // next, re-display the choose boot window with the updated choices
+                            ChooseBootWindow window = new ChooseBootWindow(GameManager.getInstance().getSessionID(), GameManager.getInstance().getAvailableColours());
+                            MainFrame.mainPanel.add(window, "choose-boot");
+                            MainFrame.cardLayout.show(MainFrame.mainPanel, "choose-boot");
+                        }
+
                         GameManager.getInstance().setThisPlayer(new Player(c, localPlayerName));
                         GameManager.getInstance().removeAvailableColour(c); // this line might be unecessary, but I'm just going to leave it
                         String localIP = GameManager.getInstance().getComs().getLocalAddress();

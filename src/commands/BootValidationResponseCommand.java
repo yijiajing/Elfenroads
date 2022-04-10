@@ -61,8 +61,6 @@ public class BootValidationResponseCommand implements GameCommand
             ChooseBootWindow window = new ChooseBootWindow(GameManager.getInstance().getSessionID(), GameManager.getInstance().getAvailableColours());
             MainFrame.mainPanel.add(window, "choose-boot");
             MainFrame.cardLayout.show(MainFrame.mainPanel, "choose-boot");
-
-
         }
     }
 
