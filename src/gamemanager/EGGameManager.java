@@ -10,6 +10,7 @@ import enums.GameVariant;
 import gamescreen.EGGameScreen;
 import gamescreen.GameScreen;
 import networking.GameState;
+import networking.ActionManager;
 import savegames.Savegame;
 import utils.GameRuleUtils;
 import windows.AuctionFrame;
@@ -91,8 +92,12 @@ public class EGGameManager extends GameManager {
         } else {
             LOGGER.info("In round " + gameState.getCurrentRound() + ", go to draw card phase");
             GameScreen.displayMessage("""
-                    New Round Start!
+                    New Round Start! You can 2 coins.
                     """);
+            //distribute 2 gold coins at the beginning of all rounds except for the first
+            gameState.getCurrentPlayer().addGoldCoins(2);
+            GameRuleUtils.updateRemoteGoldCoins(2);
+            
             gameState.setCurrentPhase(EGRoundPhaseType.DRAW_CARD_ONE);
             // Triggered only on one instance (the first player)
             if (isLocalPlayerTurn()) {
@@ -352,6 +357,11 @@ public class EGGameManager extends GameManager {
             if(gameState.getCurrentPhase() == EGRoundPhaseType.PLAN_ROUTES) {
             	auctionFrame.closeAuctionFrame();
             }
+            //if just enter the Move Phase, reset the hasMoved parameter to false.
+            if(gameState.getCurrentPhase() == EGRoundPhaseType.MOVE) {
+                ActionManager.getInstance().setBootMoved(false);
+            }
+            
             gameState.setToFirstPlayer();
             // the first player will take action
             if (isLocalPlayerTurn()) {
