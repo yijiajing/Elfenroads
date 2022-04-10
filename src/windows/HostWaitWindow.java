@@ -169,6 +169,13 @@ public class HostWaitWindow extends JPanel implements Runnable
                 if (prevPayload.equals(""))
                 {
                     aPlayers = GameSession.getPlayerNames(aId);
+                    // even if we just got here, let's check to see if there are enough players to start.
+                    if (aPlayers.size() >= GameSession.getGameParameters(aId).getInt("minSessionPlayers"))
+                    {
+                        wait_message.setText("YOU CAN NOW START THE GAME!!");
+                        start.setVisible(true);
+                    }
+
                     // set prevPayload for the next request
                     prevPayload = GameSession.getSessionDetailsReturnString(aId);
                 }
