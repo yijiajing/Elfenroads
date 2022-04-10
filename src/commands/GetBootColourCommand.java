@@ -37,11 +37,13 @@ public class GetBootColourCommand implements GameCommand {
                 // we haven't chosen a boot yet
                 SendBootColourCommand response = new SendBootColourCommand(null);
                 coms.sendGameCommandToPlayer(response, senderIP);
+                Logger.getGlobal().info("Telling " + senderIP + " that we have not selected a boot color yet.");
                 return;
             }
 
             Colour myColour = GameManager.getInstance().getThisPlayer().getColour();
             coms.sendGameCommandToPlayer(new SendBootColourCommand(myColour), senderIP);
+            Logger.getGlobal().info("Telling " + senderIP + " that we have not selected a boot color yet.");
         } catch (IOException e) {
             System.out.println("There was a problem sending the SendBootColourCommand.");
             e.printStackTrace();
