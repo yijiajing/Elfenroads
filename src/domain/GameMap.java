@@ -175,15 +175,15 @@ public class GameMap {
         mapGraph.addEdge(townMap.get("Wylhien"), townMap.get("Usselen"), createAndSaveRoad(RegionType.PLAIN, 134, 47));
         mapGraph.addEdge(townMap.get("Wylhien"), townMap.get("Parundia"), createAndSaveRoad(RegionType.PLAIN, 240, 107));
         mapGraph.addEdge(townMap.get("Wylhien"), townMap.get("Al'Baran"), createAndSaveRoad(RegionType.DESERT, 349, 122));
-        mapGraph.addEdge(townMap.get("Wylhien"), townMap.get("Usselen"), createAndSaveRoad(RegionType.RIVER, 154, 150));
+        mapGraph.addEdge(townMap.get("Wylhien"), townMap.get("Usselen"), createAndSaveRoad(RegionType.RIVER, 194, 90));
         mapGraph.addEdge(townMap.get("Parundia"), townMap.get("Usselen"), createAndSaveRoad(RegionType.WOODS, 164, 150));
         mapGraph.addEdge(townMap.get("Parundia"), townMap.get("Yttar"), createAndSaveRoad(RegionType.LAKE, 175, 230));
-        mapGraph.addEdge(townMap.get("Parundia"), townMap.get("Grangor"), createAndSaveRoad(RegionType.LAKE, 180, 250));
+        mapGraph.addEdge(townMap.get("Parundia"), townMap.get("Grangor"), createAndSaveRoad(RegionType.LAKE, 165, 290));
         mapGraph.addEdge(townMap.get("Parundia"), townMap.get("Al'Baran"), createAndSaveRoad(RegionType.DESERT, 350, 200));
         mapGraph.addEdge(townMap.get("Throtmanni"), townMap.get("Al'Baran"), createAndSaveRoad(RegionType.DESERT, 520, 195));
         mapGraph.addEdge(townMap.get("Yttar"), townMap.get("Usselen"), createAndSaveRoad(RegionType.WOODS, 70, 180));
         mapGraph.addEdge(townMap.get("Yttar"), townMap.get("Grangor"), createAndSaveRoad(RegionType.LAKE, 110, 300));
-        mapGraph.addEdge(townMap.get("Yttar"), townMap.get("Grangor"), createAndSaveRoad(RegionType.MOUNTAIN, 66, 320));
+        mapGraph.addEdge(townMap.get("Yttar"), townMap.get("Grangor"), createAndSaveRoad(RegionType.MOUNTAIN, 45, 320));
         mapGraph.addEdge(townMap.get("Mah'Davikia"), townMap.get("Grangor"), createAndSaveRoad(RegionType.MOUNTAIN, 43, 450));
         mapGraph.addEdge(townMap.get("Mah'Davikia"), townMap.get("Grangor"), createAndSaveRoad(RegionType.RIVER, 123, 490));
     }
