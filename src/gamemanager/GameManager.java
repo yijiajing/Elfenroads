@@ -221,13 +221,17 @@ public abstract class GameManager {
         }
     }
 
+    /**
+     * PHASE 4 OF ELFENLAND
+     * PHASE 6 OF ELFENGOLD
+     */
     public void planTravelRoutes() {
         if (gameState.getCurrentRound() <= gameState.getTotalRounds()
                 && (gameState.getCurrentPhase() == ELRoundPhaseType.PLAN_ROUTES
                 || gameState.getCurrentPhase() == EGRoundPhaseType.PLAN_ROUTES)
                 && isLocalPlayerTurn()) {
 
-            updateGameState();
+            updateGameScreen();
             System.out.println("Current phase: PLAN TRAVEL ROUTES");
 
             // display message
@@ -256,13 +260,17 @@ public abstract class GameManager {
         }
     }
 
+    /**
+     * PHASE 5 OF ELFENLAND
+     * PHASE 7 OF ELFENGOLD
+     */
     public void moveOnMap() {
         if (gameState.getCurrentRound() <= gameState.getTotalRounds()
                 && (gameState.getCurrentPhase() == ELRoundPhaseType.MOVE
                 || gameState.getCurrentPhase() == EGRoundPhaseType.MOVE)
                 && gameState.getCurrentPlayer().equals(thisPlayer)) {
 
-            updateGameState();
+            updateGameScreen();
             System.out.println("Current phase: MOVE ON MAP");
 
             // display message
@@ -278,7 +286,7 @@ public abstract class GameManager {
 
     public abstract void returnCountersPhase();
 
-    protected void updateGameState() {
+    protected void updateGameScreen() {
         GameScreen.getInstance().updateAll();
     }
 

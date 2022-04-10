@@ -385,7 +385,7 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
             case "Elfenland_Long": return GameVariant.ELFENLAND_LONG;
             case "Elfenland_Destination": return GameVariant.ELFENLAND_DESTINATION; // I know this one is different. It is different in the LS.
             case "Elfengold_Classic": return GameVariant.ELFENGOLD_CLASSIC;
-            case "Elfengold_TravelCards": return GameVariant.ELFENGOLD_TRAVEL_CARDS;
+            case "Elfengold_Destination": return GameVariant.ELFENGOLD_DESTINATION;
             case "Elfengold_RandomGold": return GameVariant.ELFENGOLD_RANDOM_GOLD;
             case "Elfengold_Witch": return GameVariant.ELFENGOLD_WITCH;
             default: return null; // if we set up the LS right, this will never happen

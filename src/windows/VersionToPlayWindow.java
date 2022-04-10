@@ -21,8 +21,8 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
     private JButton classicGame1;
     private JButton classicGame2;
     private JButton longGame;
-    private JButton destinationTown;
-    private JButton travelCards;
+    private JButton destinationTown1;
+    private JButton destinationTown2;
     private JButton rgtDistribution;
     private JButton elvenWitch;
     private JButton backButton;
@@ -54,7 +54,7 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
 
         classicGame1 = new JButton("Classic");
         longGame = new JButton("Long Game");
-        destinationTown = new JButton("Destination Town");
+        destinationTown1 = new JButton("Destination Town");
 
         classicGame1.addActionListener(new ActionListener(){
 
@@ -114,7 +114,7 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
             
         });
 
-        destinationTown.addActionListener(new ActionListener(){
+        destinationTown1.addActionListener(new ActionListener(){
 
             GameSession session = null;
 
@@ -146,7 +146,7 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
         });
 
         classicGame2 = new JButton("Classic");
-        travelCards = new JButton("Travel Cards");
+        destinationTown2 = new JButton("Destination Town");
         rgtDistribution = new JButton("Random Gold Token Distribution");
         elvenWitch = new JButton("The Elven Witch");
 
@@ -179,7 +179,7 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
             }
         });
 
-        travelCards.addActionListener(new ActionListener(){
+        destinationTown2.addActionListener(new ActionListener(){
 
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -189,10 +189,10 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
                 try
                 {
                     track1.play();
-                    session = new GameSession(User.getInstance(), "Elfengold_TravelCards", "My Save Game Name");
+                    session = new GameSession(User.getInstance(), "Elfengold_Destination", "My Save Game Name");
 
                     String localIP = NetworkUtils.getLocalIPAddPort();
-                    GameManager.init(Optional.empty(), session.getId(), GameVariant.ELFENGOLD_TRAVEL_CARDS, localIP);
+                    GameManager.init(Optional.empty(), session.getId(), GameVariant.ELFENGOLD_DESTINATION, localIP);
 
                     // prompt user to choose a boot colour
                     // this calls the ChooseBootWindow once all players have responded
@@ -287,15 +287,15 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
         classicGame1.setAlignmentX(CENTER_ALIGNMENT);
         elfenlandChoice.add(longGame);
         longGame.setAlignmentX(CENTER_ALIGNMENT);
-        elfenlandChoice.add(destinationTown);
-        destinationTown.setAlignmentX(CENTER_ALIGNMENT);
+        elfenlandChoice.add(destinationTown1);
+        destinationTown1.setAlignmentX(CENTER_ALIGNMENT);
 
         elfengoldChoice.add(elfengoldText);
         elfengoldText.setAlignmentX(CENTER_ALIGNMENT);
         elfengoldChoice.add(classicGame2);
         classicGame2.setAlignmentX(CENTER_ALIGNMENT);
-        elfengoldChoice.add(travelCards);
-        travelCards.setAlignmentX(CENTER_ALIGNMENT);
+        elfengoldChoice.add(destinationTown2);
+        destinationTown2.setAlignmentX(CENTER_ALIGNMENT);
         elfengoldChoice.add(rgtDistribution);
         rgtDistribution.setAlignmentX(CENTER_ALIGNMENT);
         elfengoldChoice.add(elvenWitch);
