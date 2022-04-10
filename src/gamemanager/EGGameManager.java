@@ -40,6 +40,7 @@ public class EGGameManager extends GameManager {
         if (gameState.getGameVariant() == GameVariant.ELFENGOLD_RANDOM_GOLD) {
             GoldTokenDeck goldTokenDeck = new GoldTokenDeck(sessionID);
             for (Town town : GameMap.getInstance().getTownList()) {
+                if (town.getName().equals("Elvenhold")) continue;
                 town.setGoldValueToken(goldTokenDeck.draw());
             }
         }
