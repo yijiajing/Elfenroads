@@ -228,9 +228,11 @@ public class GameState implements Serializable{
 
     public void incrementPassedPlayerCount() {
         passedPlayerCount++;
+        LOGGER.info("Passed player ct increments by 1, now " + passedPlayerCount);
     }
 
     public void clearPassedPlayerCount() {
+        LOGGER.info("Passed player ct cleared");
         passedPlayerCount = 0;
     }
 
