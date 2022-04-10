@@ -1,12 +1,11 @@
 package domain;
 
 import commands.DrawCardCommand;
-import commands.DrawCounterCommand;
 import enums.GameVariant;
 import enums.TravelCardType;
 import gamemanager.GameManager;
 import gamescreen.GameScreen;
-import networking.ActionManager;
+import gamemanager.ActionManager;
 import networking.GameState;
 import utils.GameRuleUtils;
 
@@ -15,8 +14,6 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
-
-import java.util.logging.*;
 
 public class TravelCardDeck extends Deck <CardUnit> {
 

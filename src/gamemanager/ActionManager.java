@@ -1,4 +1,4 @@
-package networking;
+package gamemanager;
 
 import commands.*;
 import domain.*;
@@ -7,8 +7,8 @@ import enums.ELRoundPhaseType;
 import enums.ObstacleType;
 import enums.TravelCardType;
 import enums.*;
-import gamemanager.GameManager;
 import gamescreen.EGGameScreen;
+import networking.GameState;
 import panel.ElfBootPanel;
 import gamescreen.GameScreen;
 import utils.GameRuleUtils;

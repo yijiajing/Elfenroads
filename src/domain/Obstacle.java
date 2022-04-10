@@ -1,9 +1,7 @@
 package domain;
 
-import enums.GameVariant;
-import utils.GameRuleUtils;
 import windows.MainFrame;
-import networking.ActionManager;
+import gamemanager.ActionManager;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;

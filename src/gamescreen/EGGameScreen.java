@@ -3,7 +3,7 @@ package gamescreen;
 import domain.*;
 import enums.GameVariant;
 import gamemanager.GameManager;
-import networking.ActionManager;
+import gamemanager.ActionManager;
 import networking.GameState;
 import panel.ScoreBoardPanel;
 import panel.DrawGoldDeckButton;

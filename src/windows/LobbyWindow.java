@@ -23,15 +23,11 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
     private static JButton createButton;
     private static JButton loadButton;
     private static JButton gamesButton;
-    private static JButton refreshButton;
     private JPanel buttons;
     private JPanel sessions;
+    private JScrollPane scrollPanel;
     private JLabel gameToJoin;
     private JLabel available;
-    private JLabel gameName;
-    private JLabel creator;
-    private JLabel numPlayers;
-    private Box gameInfo;
 
     private static String prevPayload = ""; // used for long polling requests
 
@@ -72,21 +68,44 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setSize((int) screenSize.getWidth(), (int) screenSize.getHeight());
 
+        // layout is necessary for JLayeredPane to be added to the JPanel
+        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+
         background_elvenroads = MainFrame.instance.getElfenroadsBackground();
 
+        background_elvenroads.setBounds(0, 0, getWidth(), getHeight());
+        background_elvenroads.setOpaque(false);
+       // add(background_elvenroads);
+
+        JLayeredPane layers = new JLayeredPane();
+        layers.setBounds(0, 0, getWidth(), getHeight());
+        layers.setOpaque(false);
+        background_elvenroads.add(layers);
+
         createButton = new JButton("CREATE NEW SESSION");
+        createButton.setPreferredSize(new Dimension(150, 70));
         loadButton = new JButton("LOAD SAVED SESSION");
+        loadButton.setPreferredSize(new Dimension(150, 70));
         gamesButton = new JButton("JOIN");
-
-
-        // add an action listener
 
         gameToJoin = new JLabel();
         gameToJoin.setText("");
-        sessions = new JPanel(new BorderLayout());
+
         available = new JLabel();
         available.setText("Available Sessions");
-        sessions.add(available,BorderLayout.PAGE_START);
+        available.setFont(new Font("Serif", Font.BOLD, 25));
+        available.setOpaque(false);
+        available.setBounds(getWidth()/2-100,getHeight()/3+100, 200,30);
+
+        sessions = new JPanel();
+        sessions.setBounds(getWidth()/4,getHeight()/3+150, getWidth()/2,120);
+        sessions.setOpaque(false);
+        scrollPanel = new JScrollPane(sessions);
+        scrollPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scrollPanel.setBounds(getWidth()/4,getHeight()/3+150, getWidth()/2,150);
+        scrollPanel.setOpaque(false);
+        scrollPanel.getViewport().setOpaque(false);
+        scrollPanel.setBorder(BorderFactory.createEmptyBorder());
 
         try{initializeGameInfo(sessions);}
         catch(IOException gameProblem)
@@ -99,7 +118,6 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
             @Override
             public void actionPerformed(ActionEvent e) 
             {
-                //t.stop();
                 track1.play();
                 flag = 1;
                 t.interrupt(); // kill the thread
@@ -117,43 +135,28 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
         });
         gamesButton.addActionListener(new ActionListener()
         {
-
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
-
-            }
+            public void actionPerformed(ActionEvent e) {}
         });
 
-
-
         buttons = new JPanel();
+        buttons.setBounds(0, getHeight()/3, getWidth(), 100);
+        buttons.setOpaque(false);
         buttons.add(createButton);
         buttons.add(loadButton);
-        GridBagLayout layout = new GridBagLayout();
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 0;
 
-        gbc.gridwidth = 3;
-        gbc.gridheight= 3;
-        background_elvenroads.setLayout(layout);
-        background_elvenroads.add(buttons,gbc);
-        gbc.gridy = 3;
-        background_elvenroads.add(sessions,gbc);
+        layers.add(buttons, -1);
+        layers.add(available, -1);
+        layers.add(scrollPanel, -1);
 
         add(background_elvenroads);
 
         t.start();
         stopper.start();
-
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-
-
-    }
+    public void actionPerformed(ActionEvent e) { }
 
     /**
      * designed to be called inside the LobbyWindow to display game information
@@ -241,8 +244,6 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
                 }
             }
 
-
-
             // TODO: add support to display other players as well, and any other additional info that would be helpful to the user
 
             // add the game info to labels
@@ -282,11 +283,20 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
                     }
                 }});
 
-
+//            JPanel session = new JPanel();
+//            session.setBorder(BorderFactory.createLineBorder(Color.black));
+//            session.add(playersInSessionLabel);
+//            session.add(playerCountLabel);
+//            session.add(creatorLabel);
+//            session.add(variantLabel);
+//            session.add(joinButton);
+//
+//            sessions.add(session);
 
             // initialize the box
             Box gameInfo = Box.createVerticalBox();
             gameInfo.setBorder(BorderFactory.createLineBorder(Color.black));
+            gameInfo.setOpaque(true);
             // add the button and the labels to the box
             gameInfo.add(playersInSessionLabel);
             gameInfo.add(playerCountLabel);
@@ -294,28 +304,33 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
             gameInfo.add(variantLabel);
             gameInfo.add(joinButton);
 
-            // add the box to the sessions panel
-            // sessions.add(gameInfo);
-
-            if (counter == 0)
-            {
-                sessions.add(gameInfo, BorderLayout.CENTER);
-            }
-            else if (counter == 1)
-            {
-                sessions.add(gameInfo, BorderLayout.LINE_END);
-            }
-
-            else if (counter == 2)
-            {
-                sessions.add(gameInfo, BorderLayout.LINE_START);
-            }
-
-            counter++;
-            sessions.repaint();
-            sessions.revalidate();
+            sessions.add(gameInfo);
+//
+//            // add the box to the sessions panel
+//            // sessions.add(gameInfo);
+//
+//            if (counter == 0)
+//            {
+//                sessions.add(gameInfo, BorderLayout.CENTER);
+//            }
+//            else if (counter == 1)
+//            {
+//                sessions.add(gameInfo, BorderLayout.LINE_END);
+//            }
+//
+//            else if (counter == 2)
+//            {
+//                sessions.add(gameInfo, BorderLayout.LINE_START);
+//            }
+//
+//            counter++;
+//            sessions.repaint();
+//            sessions.revalidate();
 
         }
+
+        sessions.repaint();
+        sessions.revalidate();
 
     }
 
