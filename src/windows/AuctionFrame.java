@@ -13,6 +13,7 @@ import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.GroupLayout.ParallelGroup;
@@ -284,6 +285,8 @@ public class AuctionFrame extends javax.swing.JFrame {
 
     private void EnterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EnterButtonActionPerformed
 
+        //addCounter(new TransportationCounter(CounterType.MAGICCLOUD, 70, 70));
+
         if (!GameManager.getInstance().isLocalPlayerTurn()) {
             displayMessage("You can only make a bid when it is your turn!");
             return;
@@ -316,6 +319,7 @@ public class AuctionFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_EnterButtonActionPerformed
 
     private void PassButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PassButtonActionPerformed
+        //removeFirstCounter();
         if (!GameManager.getInstance().isLocalPlayerTurn()) {
             displayMessage("You cannot end someone else's turn!");
             return;
@@ -398,7 +402,7 @@ public class AuctionFrame extends javax.swing.JFrame {
     }
 
     private void addCounterUIComponent(CounterUnit counterUnit) {
-        JLabel icon = counterUnit.getDisplay();
+        /*JLabel icon = counterUnit.getDisplay();
         icon.setSize(70, 70);
 
         icon.setVisible(true);
@@ -430,35 +434,132 @@ public class AuctionFrame extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1.setVisible(true);
         jScrollPane1.setViewportView(jPanel1);
-        jScrollPane1.setVisible(true);
-    }
+        jScrollPane1.setVisible(true);*/
 
-    public CounterUnit removeFirstCounter() {
-        assert listCounters.size() > 0;
-        jPanel1.removeAll();
-        CounterUnit counter = listCounters.remove(0);
+        //listCounters.add(counterUnit);
+        jPanel1 = new javax.swing.JPanel();
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        SequentialGroup sequentHor = jPanel1Layout.createSequentialGroup();
+        
+        ParallelGroup vertLayout = jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING);
+        //for (TransportationCounter )
+        
+        /*CounterUnit magic = new TransportationCounter(CounterType.MAGICCLOUD, 70, 70);
+        listCounters.add(magic);
+        JLabel icon = magic.getDisplay();
+            
+        icon.setVisible(true);
+        //icon.setBorder(BorderFactory.createBevelBorder(1));
+        javax.swing.JPanel cardJPanelO = new javax.swing.JPanel();
+            //javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(cardJPanel);
+            //cardJPanel.setLayout(jPanel2Layout);
+        cardJPanelO.setBorder(BorderFactory.createBevelBorder(1));
+            
+        cardJPanelO.add(icon);
+        cardJPanelO.setVisible(true);
+        sequentHor.addComponent(cardJPanelO, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            //.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED);
+        .addGap(75, 75,75);
+        vertLayout.addComponent(cardJPanelO, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE);*/
+        for (CounterUnit tc : listCounters){
+            
+            JLabel icon = tc.getDisplay();
+            
+            icon.setVisible(true);
+            //icon.setBorder(BorderFactory.createBevelBorder(1));
+            javax.swing.JPanel cardJPanel = new javax.swing.JPanel();
+            //javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(cardJPanel);
+            //cardJPanel.setLayout(jPanel2Layout);
+            cardJPanel.setBorder(BorderFactory.createBevelBorder(1));
+            
+            cardJPanel.add(icon);
+            cardJPanel.setVisible(true);
+            sequentHor.addComponent(cardJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED);
+            //.addGap(75, 75,75);
+            vertLayout.addComponent(cardJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE);
+        }
+        
+        
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(sequentHor
+            )
+                
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(vertLayout)
+                .addGap(0, 24, Short.MAX_VALUE))
+        );
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1.setVisible(true);
+        jScrollPane1.setViewportView(jPanel1);
+        jScrollPane1.setVisible(true);
 
         jScrollPane1.setViewportView(jPanel1);
 
         this.repaint();
         jPanel1.repaint();
 
-//        jPanel1 = new javax.swing.JPanel();
-//
-//        jScrollPane1.setViewportView(jPanel1);
-//
-//        this.repaint();
-//        jPanel1.repaint();
+        //removeFirstCounter();
 
+    }
 
-        jPanel1.removeAll();
-
-        for (CounterUnit cu : listCounters){
-            addCounterUIComponent(cu);
+    public CounterUnit removeFirstCounter() {
+        assert listCounters.size() > 0;
+        //jPanel1.removeAll();
+        //System.out.println(listCounters.size());
+        CounterUnit counter = listCounters.remove(0);
+        //System.out.println(listCounters.size());
+        ArrayList<CounterUnit> newlst = new ArrayList<>();
+        for (CounterUnit cu: listCounters){
+            newlst.add(cu);
         }
-        LOGGER.info("Removed the first counter " + counter);
+
+        listCounters.clear();
+        //listCounters.clear();
+
+        //jPanel1 = new JPanel();
+
+        //jScrollPane1.setViewportView(jPanel1);
+
+        //this.repaint();
+        //jPanel1.repaint();
+
+        jPanel1 = new javax.swing.JPanel();
+
+        jScrollPane1.setViewportView(jPanel1);
+
+        this.repaint();
+        jPanel1.repaint();
+
+
+        //jPanel1.removeAll();
+
+       for (CounterUnit cu : newlst){
+           System.out.println(newlst.size());
+            addCounter(cu);
+            //addCounter(newlst.get(1));
+            //newlst.remove(cu);
+        //    addCounterUIComponent(cu);
+           // break;
+    
+        }
+        //addListCounters(newlst);
+
+        //addCounter(newlst.get(0));
+        //LOGGER.info("Removed the first counter " + counter);
         return counter;
     }
+
+    /*public void addListCounters(ArrayList<CounterUnit> list){
+        for (CounterUnit cu: list){
+            //addCounter(cu);
+            
+        }
+    }*/
 
     public void setAuctionWindowCurr(){
         IncreaseLabel.setVisible(true);
