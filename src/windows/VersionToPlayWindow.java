@@ -66,7 +66,7 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
                 try 
                 {
                     track1.play();
-                    session = new GameSession(User.getInstance(), "Elfenland_Classic", "My Save Game Name");
+                    session = new GameSession(User.getInstance(), "Elfenland_Classic");
                     String localIP = NetworkUtils.getLocalIPAddPort();
                     GameManager.init(Optional.empty(), session.getId(), GameVariant.ELFENLAND_CLASSIC, localIP);
 
@@ -94,7 +94,7 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
                 try 
                 {
                     track1.play();
-                    session = new GameSession(User.getInstance(), "Elfenland_Long)", "My Save Game Name");
+                    session = new GameSession(User.getInstance(), "Elfenland_Long)");
 
                     String localIP = NetworkUtils.getLocalIPAddPort();
                     GameManager.init(Optional.empty(), session.getId(), GameVariant.ELFENLAND_LONG, localIP);
@@ -124,7 +124,7 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
                 try 
                 {
                     track1.play();
-                    session = new GameSession(User.getInstance(), "Elfenland_Destination", "My Save Game Name");
+                    session = new GameSession(User.getInstance(), "Elfenland_Destination");
 
                     String localIP = NetworkUtils.getLocalIPAddPort();
                     GameManager.init(Optional.empty(), session.getId(), GameVariant.ELFENLAND_DESTINATION, localIP);
@@ -160,7 +160,7 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
                 try
                 {
                     track1.play();
-                    session = new GameSession(User.getInstance(), "Elfengold_Classic", "My Save Game Name");
+                    session = new GameSession(User.getInstance(), "Elfengold_Classic");
 
                     String localIP = NetworkUtils.getLocalIPAddPort();
                     GameManager.init(Optional.empty(), session.getId(), GameVariant.ELFENGOLD_CLASSIC, localIP);
@@ -189,7 +189,7 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
                 try
                 {
                     track1.play();
-                    session = new GameSession(User.getInstance(), "Elfengold_Destination", "My Save Game Name");
+                    session = new GameSession(User.getInstance(), "Elfengold_Destination");
 
                     String localIP = NetworkUtils.getLocalIPAddPort();
                     GameManager.init(Optional.empty(), session.getId(), GameVariant.ELFENGOLD_DESTINATION, localIP);
@@ -218,7 +218,7 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
                 try
                 {
                     track1.play();
-                    session = new GameSession(User.getInstance(), "Elfengold_RandomGold", "My Save Game Name");
+                    session = new GameSession(User.getInstance(), "Elfengold_RandomGold");
 
                     String localIP = NetworkUtils.getLocalIPAddPort();
                     GameManager.init(Optional.empty(), session.getId(), GameVariant.ELFENGOLD_RANDOM_GOLD, localIP);
@@ -247,7 +247,7 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
                 try
                 {
                     track1.play();
-                    session = new GameSession(User.getInstance(), "Elfengold_Witch", "My Save Game Name");
+                    session = new GameSession(User.getInstance(), "Elfengold_Witch");
 
                     String localIP = NetworkUtils.getLocalIPAddPort();
                     GameManager.init(Optional.empty(), session.getId(), GameVariant.ELFENGOLD_WITCH, localIP);

@@ -22,9 +22,11 @@ public class TestAPI {
     public static void main (String [] args) throws IOException, Exception
 
     {
+        System.out.println(User.getAccessTokenUsingCreds("maex", "abc123_ABC123"));
         // deleteAllSessions();
         // testCreateUser("user_test", "abc123_ABC123");
 
+        /*
         initializeGameServiceWithStandardSettings("Elfenland_Classic", "Elfenland (Classic)" );
         initializeGameServiceWithStandardSettings("Elfenland_Long", "Elfenland (Long)");
         initializeGameServiceWithStandardSettings("Elfenland_Destination", "Elfenland (Destination)");
@@ -32,6 +34,8 @@ public class TestAPI {
         initializeGameServiceWithStandardSettings("Elfengold_Destination", "Elfengold (Destination)");
         initializeGameServiceWithStandardSettings("Elfengold_RandomGold", "Elfengold (Random Gold)");
         initializeGameServiceWithStandardSettings("Elfengold_Witch", "Elfengold (Witch)");
+
+         */
 
 
     }

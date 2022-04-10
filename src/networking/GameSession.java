@@ -28,23 +28,29 @@ public class GameSession {
      *
      * @param pCreator
      * @param pGameName
-     * @param pSaveGameName MUST BE EMPTY IF THERE IS NO EXISTING SAVEGAME
      * @throws Exception
      */
-    public GameSession(User pCreator, String pGameName, String pSaveGameName) throws Exception
+    public GameSession(User pCreator, String pGameName) throws Exception
     {
         creator = pCreator;
         gameName = pGameName;
-        saveGameName = pSaveGameName;
         // locationIP = NetworkUtils.ngrokAddrToPassToLS();
         // changed this 03/02 because ngrok addresses are changing. local multiplayer only for now
         locationIP = NetworkUtils.getLocalIPAddPort();
         createNewSession();
     }
 
+    /**
+     * alternate constructor to be called when we init a GameSession from a save
+     */
+    public GameSession(User pCreator, String pGameName, String pSaveGameName) throws Exception
+    {
+        creator = pCreator;
+        gameName = pGameName;
+        locationIP = NetworkUtils.getLocalIPAddPort();
+        createNewSessionFromSave();
+    }
 
-
-    // TODO: allow user to enter savegame name
     private void createNewSession() throws IOException
     {
         String token = creator.getAccessToken();
@@ -82,6 +88,50 @@ public class GameSession {
         id = content.toString();
         System.out.println("The session ID is " + id);
 
+    }
+
+    /**
+     * similar to the above method, except static and registers a gameSession from a savegame
+     * designed to be called when loading a game
+     * @pre the game is loaded from a file and has been registered as a savegame on the LS
+     * @pre saveGameName is not null
+     */
+    public void createNewSessionFromSave() throws IOException
+    {
+        // creates a new session using the savegameID (forked from a save)
+        String token = creator.getAccessToken();
+
+        URL url = new URL("http://35.182.122.111:4242/api/sessions?access_token=" + token + "&location=" + locationIP);
+
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("POST");
+        con.setRequestProperty("Content-Type", "application/json");
+
+        /* Payload support */
+        con.setDoOutput(true);
+        DataOutputStream out = new DataOutputStream(con.getOutputStream());
+        out.writeBytes("{\n");
+        out.writeBytes("    \"creator\": \"" + creator.getUsername() + "\",\n");
+        out.writeBytes("    \"game\": \"" + gameName + "\",\n");
+        out.writeBytes("    \"savegame\":" + saveGameName + "\"\"\n");
+        out.writeBytes("}");
+        out.flush();
+        out.close();
+
+        int status = con.getResponseCode();
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer content = new StringBuffer();
+        while((inputLine = in.readLine()) != null) {
+            content.append(inputLine);
+        }
+        in.close();
+        con.disconnect();
+        System.out.println("Response status: " + status);
+        System.out.println(content.toString());
+
+        id = content.toString();
+        System.out.println("The session ID is " + id);
     }
 
     public void launch() throws IOException
