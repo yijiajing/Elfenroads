@@ -61,6 +61,13 @@ public abstract class GameManager {
         else {
             gameState = GameState.initFromSave(savegame.get(), this);
             loaded = true;
+            // set up a session with the savegame id
+            try {GameSession loadedSession = new GameSession(User.getInstance(), savegame.get().getSaveGameID());}
+            catch (Exception e)
+            {
+                Logger.getGlobal().severe("There was a problem setting up the GameSession for the loaded game.");
+                e.printStackTrace();
+            }
         }
 
         coms = CommunicationsManager.init(this, sessionID, pLocalAddress);
