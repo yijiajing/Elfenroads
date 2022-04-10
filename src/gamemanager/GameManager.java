@@ -208,7 +208,7 @@ public abstract class GameManager {
             // update remote player travel card count
             NumTravelCardsCommand numTravelCardsCommand = new NumTravelCardsCommand();
             try {
-                coms.sendCommandToIndividual(numTravelCardsCommand, gameState.getCurrentPlayer().getName());
+                coms.sendGameCommandToAllPlayers(numTravelCardsCommand);
             } catch (IOException e) {
                 LOGGER.severe("There was a problem sending the command to update number of travel cards!");
                 e.printStackTrace();
