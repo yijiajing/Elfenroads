@@ -99,19 +99,14 @@ public class EGGameManager extends GameManager {
             }
         } else {
             LOGGER.info("In round " + gameState.getCurrentRound() + ", go to draw card phase");
-            GameScreen.displayMessage("""
-                    New Round Start! You can get 2 coins.
-                    """);
-            //distribute 2 gold coins at the beginning of all rounds except for the first
-            gameState.getCurrentPlayer().addGoldCoins(2);
-            GameRuleUtils.updateRemoteGoldCoins(2);
-            GameScreen.getInstance().updateAll();
+            GameScreen.displayMessage("New Round Start! You can get 2 coins.");
             
             gameState.setCurrentPhase(EGRoundPhaseType.DRAW_CARD_ONE);
             // Triggered only on one instance (the first player)
             if (isLocalPlayerTurn()) {
                 drawTravelCard();
             }
+            GameScreen.getInstance().updateAll();
         }
 
     }
@@ -156,6 +151,7 @@ public class EGGameManager extends GameManager {
             for (Player p: gameState.getPlayers()) {
                 p.addGoldCoins(2);
             }
+            GameScreen.getInstance().updateAll();
         }
         // distribute two items from the face-down counter pile
         CounterUnit counter1 = gameState.getCounterPile().draw();
