@@ -431,7 +431,7 @@ public class AuctionFrame extends javax.swing.JFrame {
             return;
         }
         if (localPlayerHasPassed) {
-            displayMessage("You cannot make further bids for this item as you have already passed once");
+            displayMessage("You cannot make further bids for this item \n as you have already passed once");
             return;
         }
 
@@ -439,7 +439,7 @@ public class AuctionFrame extends javax.swing.JFrame {
             int increaseAmount = Integer.parseInt(TextInput.getText());
 
             if (currentBid + increaseAmount > GameManager.getInstance().getThisPlayer().getGoldCoins()) {
-                displayMessage("You do not have enough gold coins to bid. Please lower your bid increase or pass the turn.");
+                displayMessage("You do not have enough gold coins to bid. \n Please lower your bid increase or pass the turn.");
                 return;
             }
 
@@ -453,7 +453,7 @@ public class AuctionFrame extends javax.swing.JFrame {
             displayMessage("You must enter a valid number!");
             LOGGER.warning("String cannot be converted to integer.");
         } catch (IOException e) {
-            LOGGER.severe("There was a problem sending the IncreaseBidCommand to all players.");
+            LOGGER.severe("There was a problem sending the IncreaseBidCommand \n to all players.");
         }
     }//GEN-LAST:event_EnterButtonActionPerformed
 
@@ -472,7 +472,7 @@ public class AuctionFrame extends javax.swing.JFrame {
             GameManager.getInstance().endTurn();
             displayMessage("You passed your turn. Waiting for other players to bid...");
         } catch (IOException e) {
-            LOGGER.severe("There was a problem sending the PassTurnCommand to all players.");
+            LOGGER.severe("There was a problem sending the PassTurnCommand \n to all players.");
             e.printStackTrace();
         }
         //IncreaseLabel.setVisible(false);
@@ -757,6 +757,7 @@ public class AuctionFrame extends javax.swing.JFrame {
     }
 
     public void displayMessage(String message){
+
         DisplayText.setText(message);
     }
 

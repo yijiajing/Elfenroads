@@ -1,6 +1,7 @@
 package panel;
 
 import domain.*;
+import enums.RegionType;
 import gamescreen.GameScreen;
 import networking.ActionManager;
 
@@ -23,8 +24,12 @@ public class CounterPanel extends JPanel {
         this.gameScreen = pScreen;
 
         gameScreen.addElement(this);
-
-        this.setBounds(this.x, this.y, gameScreen.getWidth() * 80 / 1440, gameScreen.getHeight() * 80 / 900);
+        if (road.getRegionType() == RegionType.RIVER || road.getRegionType() == RegionType.LAKE){
+            this.setBounds(this.x, this.y, gameScreen.getWidth() * 40 / 1440, gameScreen.getHeight() * 40 / 900);
+        } else {
+            this.setBounds(this.x, this.y, gameScreen.getWidth() * 80 / 1440, gameScreen.getHeight() * 80 / 900);
+        }
+        
         this.setOpaque(false);
         
         this.setLayout(new GridLayout(0,2));
