@@ -189,7 +189,7 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
                 try
                 {
                     track1.play();
-                    session = new GameSession(User.getInstance(), "Elfengold_Destination", "My Save Game Name");
+                    session = new GameSession(User.getInstance(), "Elfengold_TravelCards", "My Save Game Name");
 
                     String localIP = NetworkUtils.getLocalIPAddPort();
                     GameManager.init(Optional.empty(), session.getId(), GameVariant.ELFENGOLD_DESTINATION, localIP);

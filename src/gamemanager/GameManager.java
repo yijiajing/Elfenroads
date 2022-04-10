@@ -166,8 +166,10 @@ public abstract class GameManager {
             // Since players take turns, only one player will first reach endPhase from endTurn.
             // We then tell everyone to end phase.
             GameCommand endPhaseCommand = new EndPhaseCommand();
+            LOGGER.info("Executing end phase command locally");
             endPhaseCommand.execute(); // execute locally before sending to everyone else
             try {
+                LOGGER.info("Sending the end phase command to all players");
                 coms.sendGameCommandToAllPlayers(endPhaseCommand);
             } catch (IOException e) {
                 System.out.println("There was a problem sending the endPhaseCommand to all players.");
