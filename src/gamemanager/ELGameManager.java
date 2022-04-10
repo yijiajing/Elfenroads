@@ -235,6 +235,7 @@ public class ELGameManager extends GameManager {
     public void endPhase() {
         actionManager.clearSelection();
         int nextOrdinal = ((ELRoundPhaseType) gameState.getCurrentPhase()).ordinal() + 1;
+        gameState.clearPassedPlayerCount();
         if (nextOrdinal == ELRoundPhaseType.values().length) {
             // all phases are done, go to the next round
             endRound();
@@ -258,7 +259,6 @@ public class ELGameManager extends GameManager {
                 notifyTurnCommand.execute(); // notify themself to take action
             }
         }
-        gameState.clearPassedPlayerCount();
     }
 
     @Override
