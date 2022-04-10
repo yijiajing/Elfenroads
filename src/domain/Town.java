@@ -53,7 +53,7 @@ public class Town implements Comparable<Town> {
 
     public void setGoldValueToken(GoldValueToken goldValueToken) {
         this.goldValueToken = goldValueToken;
-        this.tokenPanel = new GoldValueTokenPanel(this, this.goldValueToken, this.x-10, this.y);
+        this.tokenPanel = new GoldValueTokenPanel(this, this.goldValueToken, this.x-20, this.y);
     }
 
     /**

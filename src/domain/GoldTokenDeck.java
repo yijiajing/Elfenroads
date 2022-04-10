@@ -1,5 +1,7 @@
 package domain;
 
+import enums.GameVariant;
+import gamescreen.GameScreen;
 import windows.MainFrame;
 
 public class GoldTokenDeck extends Deck<GoldValueToken> {
@@ -12,4 +14,5 @@ public class GoldTokenDeck extends Deck<GoldValueToken> {
         }
         shuffle();
     }
+
 }
