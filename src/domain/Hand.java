@@ -52,6 +52,10 @@ public class Hand {
 		return numTravelCards;
 	}
 
+	public int getCardListSize() {
+		return cardList.size();
+	}
+
 	public void updateNumTravelCards() {
 		numTravelCards = cardList.size();
 	}

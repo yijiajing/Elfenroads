@@ -84,7 +84,7 @@ public class ELGameManager extends GameManager {
 
         if (!(isLocalPlayerTurn() && gameState.getCurrentPhase() == ELRoundPhaseType.DEAL_CARDS)) return;
 
-        int numCards = thisPlayer.getHand().getNumTravelCards();
+        int numCards = thisPlayer.getHand().getCardListSize();
         for (int i = numCards; i < 8; i++) {
             thisPlayer.getHand().addUnit(gameState.getTravelCardDeck().draw());
         }
