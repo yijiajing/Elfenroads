@@ -40,7 +40,7 @@ public class EGGameManager extends GameManager {
         if (gameState.getGameVariant() == GameVariant.ELFENGOLD_RANDOM_GOLD) {
             GoldTokenDeck goldTokenDeck = new GoldTokenDeck(sessionID);
             for (Town town : GameMap.getInstance().getTownList()) {
-                if (town.getName().contains("Elvenhold")) { continue; }
+                if (town.getName().equals("Elvenhold")) continue;
                 town.setGoldValueToken(goldTokenDeck.draw());
             }
         }
@@ -83,6 +83,14 @@ public class EGGameManager extends GameManager {
             // Draw Card phase is ignored in the first round
             LOGGER.info("In the first round, go directly to choose face-up counter");
             gameState.setCurrentPhase(EGRoundPhaseType.CHOOSE_FACE_UP);
+
+            // inform player of their destination town
+            if (gameState.getGameVariant() == GameVariant.ELFENGOLD_DESTINATION) {
+                GameScreen.displayMessage("Your destination Town is " +
+                        thisPlayer.getDestinationTown().getName() + ". Please collect town pieces and have your travel " +
+                        "route end in a town as close as possible to the destination at the end of the game.");
+            }
+
             // Triggered only on one instance (the first player)
             if (isLocalPlayerTurn()) {
                 chooseFaceUpCounter();
@@ -113,12 +121,6 @@ public class EGGameManager extends GameManager {
             return;
         }
         updateGameScreen();
-
-        if (gameState.getGameVariant() == GameVariant.ELFENGOLD_DESTINATION && gameState.getCurrentPhase() == EGRoundPhaseType.DRAW_CARD_ONE) {
-            GameScreen.displayMessage("Your destination Town is " +
-                    thisPlayer.getDestinationTown().getName() + ". Please collect town pieces and have your travel " +
-                    "route end in a town as close as possible to the destination at the end of the game.");
-        }
 
         GameScreen.displayMessage("""
                 Please select a card to add to your hand. You may choose one of the face-up cards, 
@@ -349,7 +351,7 @@ public class EGGameManager extends GameManager {
             gameState.setCurrentPhase(EGRoundPhaseType.values()[nextOrdinal]);
             LOGGER.info("...Going to the next phase : " + gameState.getCurrentPhase());
             //if just enter Plan_Routes, close the auction window automatically
-            if(gameState.getCurrentPhase() == EGRoundPhaseType.PLAN_ROUTES) {
+            if (gameState.getCurrentPhase() == EGRoundPhaseType.PLAN_ROUTES) {
             	auctionFrame.closeAuctionFrame();
             }
             gameState.setToFirstPlayer();
