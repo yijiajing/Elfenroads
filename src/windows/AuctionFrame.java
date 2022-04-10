@@ -422,9 +422,9 @@ public class AuctionFrame extends javax.swing.JFrame {
 
     private void EnterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EnterButtonActionPerformed
 
-        addCounter(new TransportationCounter(CounterType.UNICORN, 70, 70));
+        /*addCounter(new TransportationCounter(CounterType.UNICORN, 70, 70));
         addCounter(new TransportationCounter(CounterType.MAGICCLOUD, 70, 70));
-        addCounter(new TransportationCounter(CounterType.GIANTPIG, 70, 70));
+        addCounter(new TransportationCounter(CounterType.GIANTPIG, 70, 70));*/
 
         if (!GameManager.getInstance().isLocalPlayerTurn()) {
             displayMessage("You can only make a bid when it is your turn!");
@@ -458,7 +458,7 @@ public class AuctionFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_EnterButtonActionPerformed
 
     private void PassButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PassButtonActionPerformed
-        removeFirstCounter();
+        //removeFirstCounter();
         if (!GameManager.getInstance().isLocalPlayerTurn()) {
             displayMessage("You cannot end someone else's turn!");
             return;
