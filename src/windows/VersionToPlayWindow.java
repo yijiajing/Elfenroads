@@ -146,7 +146,7 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
         });
 
         classicGame2 = new JButton("Classic");
-        travelCards = new JButton("Travel Cards");
+        destinationTown = new JButton("Destination Town");
         rgtDistribution = new JButton("Random Gold Token Distribution");
         elvenWitch = new JButton("The Elven Witch");
 
@@ -189,7 +189,7 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
                 try
                 {
                     track1.play();
-                    session = new GameSession(User.getInstance(), "Elfengold_TravelCards", "My Save Game Name");
+                    session = new GameSession(User.getInstance(), "Elfengold_Destination", "My Save Game Name");
 
                     String localIP = NetworkUtils.getLocalIPAddPort();
                     GameManager.init(Optional.empty(), session.getId(), GameVariant.ELFENGOLD_CLASSIC, localIP);
