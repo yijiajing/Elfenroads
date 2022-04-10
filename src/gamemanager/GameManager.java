@@ -84,6 +84,19 @@ public abstract class GameManager {
                 try
                 {
                     String idOfTheSession = GameSession.lookupSessionBySavegame(savegame.get().getSaveGameID());
+                    // if that returned null, the host has not created the session and we need to wait for him.
+                    if (idOfTheSession == null)
+                    {
+                        // tell the user that we need to wait until the game creator starts up the session
+                        JOptionPane.showMessageDialog(null, "You must wait for the original creator, " + savegame.get().getCreatorName() + " to load that game first. Going back to the LobbyWindow.");
+                        LobbyWindow reinitialized = new LobbyWindow();
+                        MainFrame.setLobbyWindow(reinitialized);
+                        MainFrame.mainPanel.add(reinitialized, "lobby");
+                        MainFrame.cardLayout.show(MainFrame.mainPanel, "lobby");
+                    }
+
+
+
                     // we found the session, so we can join it.
                     String localIP = NetworkUtils.getLocalIPAddPort();
                     GameSession.joinSession(MainFrame.loggedIn, idOfTheSession, localIP);
@@ -101,12 +114,6 @@ public abstract class GameManager {
                     Logger.getGlobal().info("There was a problem finding and joining a session with that saveGameID");
                     e.printStackTrace();
                 }
-                // otherwise, notify the user that he cannot play this save until the creator starts it up.
-                JOptionPane.showMessageDialog(null, "You must wait for" + savegame.get().getCreatorName() + "to load that game first. Going back to the LobbyWindow.");
-                LobbyWindow reinitialized = new LobbyWindow();
-                MainFrame.setLobbyWindow(reinitialized);
-                MainFrame.mainPanel.add(reinitialized, "lobby");
-                MainFrame.cardLayout.show(MainFrame.mainPanel, "lobby");
 
             }
         }
