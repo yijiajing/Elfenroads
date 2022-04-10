@@ -50,6 +50,8 @@ public class EGGameManager extends GameManager {
         for (int j = 0; j < 3; j++) {
             this.gameState.addFaceUpCardFromDeck();
         }
+
+        LOGGER.fine(gameState.getTravelCardDeck().toString());
     }
 
     @Override

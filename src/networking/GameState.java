@@ -369,6 +369,7 @@ public class GameState implements Serializable{
 
     public void incrementGoldCardDeckCount() {
         goldCardDeckCount++;
+        LOGGER.info("Incrementing the gold card deck count, now: " + goldCardDeckCount);
     }
 
     public void clearGoldCardDeck() {

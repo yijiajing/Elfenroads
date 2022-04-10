@@ -29,7 +29,7 @@ public class DrawCardCommand implements GameCommand {
         GameState gameState = GameState.instance();
         if (type != null) {
             gameState.removeFaceUpCard(type);
-        }else if(numCards == 1) {
+        } else if (numCards == 1) {
         	CardUnit drawnCard = gameState.getTravelCardDeck().draw();
         	if (drawnCard instanceof GoldCard) {
         		gameState.incrementGoldCardDeckCount();

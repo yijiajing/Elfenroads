@@ -132,7 +132,7 @@ public class TravelCardDeck extends Deck <CardUnit> {
                         && GameManager.getInstance().isLocalPlayerTurn()) {
 
                 	CardUnit drawn = GameState.instance().getTravelCardDeck().draw(); // draw a card
-                    // tell the other peers to remove the card from the pile
+                    // tell the other peers to remove the card from the deck
                     try {
                         GameManager.getInstance().getComs().sendGameCommandToAllPlayers(new DrawCardCommand(1, null));
                     } catch (IOException err) {
