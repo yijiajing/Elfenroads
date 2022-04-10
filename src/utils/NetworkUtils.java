@@ -174,7 +174,7 @@ public class NetworkUtils {
         for (InetAddress address : allAddresses)
         {
             Logger.getGlobal().info("Validating IP " + address.getHostAddress());
-            if (address.isLoopbackAddress() || !isValidIP(address.getHostAddress()) || !address.isReachable(2000)) // we don't want the loopback address or an invalid one, like a MAC address
+            if (address.isLoopbackAddress() || !isValidIP(address.getHostAddress()) || !beginsWithTen(address.getHostAddress())) // we don't want the loopback address or an invalid one, like a MAC address
             {
                 // do nothing and keep going
                 continue;
@@ -198,6 +198,7 @@ public class NetworkUtils {
         // Logger.getGlobal().info("There was a problem finding a valid local IP address for this computer.");
         // throw new Exception ("Could not find an IP that was not a loopback and was a valid IP.");
     }
+
 
     /**
      * used for adding a port onto an address since, the LS wants one
