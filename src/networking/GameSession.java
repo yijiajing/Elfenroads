@@ -735,4 +735,30 @@ public class GameSession {
         JSONObject details = getSessionDetails(sessionID);
         return details.getString("creator");
     }
+
+    /**
+     * looks for a game by its savegameID
+     * used to check to see if a savegame has been restarted in the LS
+     * @param saveGameID
+     * @return the ID of that session if it exists, or null if it doesn't
+     */
+    public static String lookupSessionBySavegame(String saveGameID) throws IOException
+    {
+        JSONObject sessions = getSessions();
+        // parse this, and see if anything matches
+        // first, use the key set to get sessions by ID:
+        for (String id : sessions.keySet())
+        {
+            // each of these entries is a whole session's info
+            // so we can get saveGameID
+            JSONObject thatSessionInfo = sessions.getJSONObject(id);
+            String thatSessionSaveGameName = thatSessionInfo.getString("savegameid");
+            if (thatSessionSaveGameName.equals(saveGameID))
+            {
+                return id;
+            }
+
+        }
+        return null;
+    }
 }

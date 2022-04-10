@@ -440,4 +440,8 @@ public class Savegame implements Serializable {
     public String getSaveGameID() {
         return saveGameID;
     }
+
+    public String getCreatorName() {
+        return creatorName;
+    }
 }

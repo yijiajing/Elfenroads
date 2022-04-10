@@ -22,7 +22,10 @@ public class TestAPI {
     public static void main (String [] args) throws IOException, Exception
 
     {
-        System.out.println(User.getAccessTokenUsingCreds("maex", "abc123_ABC123"));
+
+        System.out.println(getSessions());
+
+       //  System.out.println(User.getAccessTokenUsingCreds("maex", "abc123_ABC123"));
         // deleteAllSessions();
         // testCreateUser("user_test", "abc123_ABC123");
 

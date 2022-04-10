@@ -62,11 +62,22 @@ public abstract class GameManager {
             gameState = GameState.initFromSave(savegame.get(), this);
             loaded = true;
             // set up a session with the savegame id
-            try {GameSession loadedSession = new GameSession(User.getInstance(), savegame.get().getSaveGameID());}
-            catch (Exception e)
+            // if the local user is the creator, then we can start a session
+            if (User.getInstance().getUsername().equals(savegame.get().getCreatorName()))
             {
-                Logger.getGlobal().severe("There was a problem setting up the GameSession for the loaded game.");
-                e.printStackTrace();
+                try {GameSession loadedSession = new GameSession(User.getInstance(), savegame.get().getSaveGameID());}
+                catch (Exception e)
+                {
+                    Logger.getGlobal().severe("There was a problem setting up the GameSession for the loaded game.");
+                    e.printStackTrace();
+                }
+
+            }
+            else // if we were not the creator of the original session, we need to join the host.
+            {
+                // check if the session with the savegameid already exists. if so, join it
+                // otherwise, notify the user that he cannot play this save until the creator starts it up.
+
             }
         }
 
