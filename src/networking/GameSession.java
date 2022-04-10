@@ -707,6 +707,18 @@ public class GameSession {
         return playerNamesAndAddresses;
     }
 
+    /**
+     * will return an empty string if the game wasn't forked from a save
+     * @param sessionID
+     * @return
+     * @throws Exception
+     */
+    public static String getSaveGameID(String sessionID) throws Exception
+    {
+        JSONObject details = getSessionDetails(sessionID);
+        return details.getString("savegameid");
+    }
+
     public static boolean isCreator(User u, String sessionID) {
         try {
             JSONObject deets = getSessionDetails(sessionID);

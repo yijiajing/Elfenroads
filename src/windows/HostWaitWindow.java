@@ -211,6 +211,7 @@ public class HostWaitWindow extends JPanel implements Runnable
                 // Get session info
                 System.out.println(GameSession.getGameParameters(aId).getInt("minSessionPlayers"));
 
+
                 // Update UI
                 panel.repaint();
                 panel.revalidate();
