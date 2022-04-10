@@ -166,7 +166,7 @@ public final class GameRuleUtils {
 
     public static boolean isElfengoldVariant(GameVariant gameVariant) {
         return ((gameVariant == GameVariant.ELFENGOLD_CLASSIC) || (gameVariant == GameVariant.ELFENGOLD_WITCH) ||
-                (gameVariant == GameVariant.ELFENGOLD_RANDOM_GOLD) || (gameVariant == GameVariant.ELFENGOLD_TRAVEL_CARDS));
+                (gameVariant == GameVariant.ELFENGOLD_RANDOM_GOLD) || (gameVariant == GameVariant.ELFENGOLD_DESTINATION));
     }
 
     /**
@@ -176,7 +176,7 @@ public final class GameRuleUtils {
         GameVariant gameVariant = GameState.instance().getGameVariant();
 
         return ((gameVariant == GameVariant.ELFENGOLD_CLASSIC) || (gameVariant == GameVariant.ELFENGOLD_WITCH) ||
-                (gameVariant == GameVariant.ELFENGOLD_RANDOM_GOLD) || (gameVariant == GameVariant.ELFENGOLD_TRAVEL_CARDS));
+                (gameVariant == GameVariant.ELFENGOLD_RANDOM_GOLD) || (gameVariant == GameVariant.ELFENGOLD_DESTINATION));
     }
 
     public static boolean isElfengoldDrawCardsPhase() {
