@@ -6,6 +6,9 @@ import networking.GameSession;
 import windows.ChooseBootWindow;
 import windows.MainFrame;
 
+import java.io.IOException;
+import java.util.logging.Logger;
+
 /**
  * A command to send our boot colour to another player
  */
@@ -36,11 +39,20 @@ public class SendBootColourCommand implements GameCommand {
             GameManager.getInstance().removeAvailableColour(bootColour);
         }
         // if we have gotten all of the responses we need, we can show the boot window.
-        if (GameManager.getInstance().getBootNotifsReceived() == GameSession.getNumPlayers(GameManager.getInstance().getSessionID()))
+
+        try
         {
-            ChooseBootWindow window = new ChooseBootWindow(GameManager.getInstance().getSessionID(), GameManager.getInstance().getAvailableColours());
-            MainFrame.mainPanel.add(window, "choose-boot");
-            MainFrame.cardLayout.show(MainFrame.mainPanel, "choose-boot");
+            if (GameManager.getInstance().getBootNotifsReceived() == GameSession.getNumPlayers(GameManager.getInstance().getSessionID()))
+            {
+                ChooseBootWindow window = new ChooseBootWindow(GameManager.getInstance().getSessionID(), GameManager.getInstance().getAvailableColours());
+                MainFrame.mainPanel.add(window, "choose-boot");
+                MainFrame.cardLayout.show(MainFrame.mainPanel, "choose-boot");
+            }
+        }
+        catch (IOException e)
+        {
+            Logger.getGlobal().severe("There was a problem getting session information for session " + GameManager.getInstance().getSessionID() + " from the API.");
+            e.printStackTrace();
         }
 
     }
