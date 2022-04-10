@@ -42,7 +42,7 @@ public class SendBootColourCommand implements GameCommand {
 
         try
         {
-            if (GameManager.getInstance().getBootNotifsReceived() == GameSession.getNumPlayers(GameManager.getInstance().getSessionID()))
+            if (GameManager.getInstance().getBootNotifsReceived() == GameSession.getNumPlayers(GameManager.getInstance().getSessionID()) - 1)
             {
                 ChooseBootWindow window = new ChooseBootWindow(GameManager.getInstance().getSessionID(), GameManager.getInstance().getAvailableColours());
                 MainFrame.mainPanel.add(window, "choose-boot");
