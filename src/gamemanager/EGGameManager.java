@@ -305,8 +305,8 @@ public class EGGameManager extends GameManager {
 
         // all phases are done, go to the next round
         if (nextOrdinal == EGRoundPhaseType.values().length) {
-            endRound();
             gameState.clearPassedPlayerCount();
+            endRound();
         }
 
         // continue with plan routes phase if not all players have passed their turn
@@ -314,12 +314,12 @@ public class EGGameManager extends GameManager {
                 && gameState.getPassedPlayerCount() < gameState.getNumOfPlayers()) {
             LOGGER.info("Pass turn ct: " + gameState.getPassedPlayerCount() + ", staying at the PLAN ROUTES phase");
             gameState.setToFirstPlayer();
+            gameState.clearPassedPlayerCount();
             // the first player will take action
             if (isLocalPlayerTurn()) {
                 NotifyTurnCommand notifyTurnCommand = new NotifyTurnCommand(EGRoundPhaseType.PLAN_ROUTES);
                 notifyTurnCommand.execute(); // notify themself to take action
             }
-            gameState.clearPassedPlayerCount();
         }
 
         // just enter the auction phase, display auction frame for everyone
@@ -328,6 +328,7 @@ public class EGGameManager extends GameManager {
             gameState.setCurrentPhase(EGRoundPhaseType.AUCTION);
             LOGGER.info("...Going to the auction phase");
             gameState.setToFirstPlayer();
+            gameState.clearPassedPlayerCount();
             auction(); // display auction window for everyone
             if (isLocalPlayerTurn()) {
                 NotifyTurnCommand notifyTurnCommand = new NotifyTurnCommand(EGRoundPhaseType.AUCTION);
@@ -335,7 +336,6 @@ public class EGGameManager extends GameManager {
             } else {
                 auctionFrame.displayMessage("It is not your turn. Waiting for other players to bid...");
             }
-            gameState.clearPassedPlayerCount();
         }
 
         // continue with auction phase if not all counters have been auctioned
@@ -360,17 +360,17 @@ public class EGGameManager extends GameManager {
             	auctionFrame.closeAuctionFrame();
             }
             //if just enter the Move Phase, reset the hasMoved parameter to false.
-            if(gameState.getCurrentPhase() == EGRoundPhaseType.MOVE) {
+            if (gameState.getCurrentPhase() == EGRoundPhaseType.MOVE) {
                 ActionManager.getInstance().setBootMoved(false);
             }
             
             gameState.setToFirstPlayer();
+            gameState.clearPassedPlayerCount();
             // the first player will take action
             if (isLocalPlayerTurn()) {
                 NotifyTurnCommand notifyTurnCommand = new NotifyTurnCommand(gameState.getCurrentPhase());
                 notifyTurnCommand.execute(); // notify themself to take action
             }
-            gameState.clearPassedPlayerCount();
         }
     }
 
