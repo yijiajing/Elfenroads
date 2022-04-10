@@ -18,6 +18,7 @@ import javax.swing.JTextField;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.GroupLayout.ParallelGroup;
 import javax.swing.GroupLayout.SequentialGroup;
+import javax.swing.border.BevelBorder;
 
 import commands.IncreaseBidCommand;
 import commands.PassTurnCommand;
@@ -285,7 +286,9 @@ public class AuctionFrame extends javax.swing.JFrame {
 
     private void EnterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EnterButtonActionPerformed
 
-        //addCounter(new TransportationCounter(CounterType.MAGICCLOUD, 70, 70));
+        /*addCounter(new TransportationCounter(CounterType.UNICORN, 70, 70));
+        addCounter(new TransportationCounter(CounterType.MAGICCLOUD, 70, 70));
+        addCounter(new TransportationCounter(CounterType.GIANTPIG, 70, 70));*/
 
         if (!GameManager.getInstance().isLocalPlayerTurn()) {
             displayMessage("You can only make a bid when it is your turn!");
@@ -461,6 +464,7 @@ public class AuctionFrame extends javax.swing.JFrame {
             //.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED);
         .addGap(75, 75,75);
         vertLayout.addComponent(cardJPanelO, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE);*/
+        int i = 0;
         for (CounterUnit tc : listCounters){
             
             JLabel icon = tc.getDisplay();
@@ -471,6 +475,9 @@ public class AuctionFrame extends javax.swing.JFrame {
             //javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(cardJPanel);
             //cardJPanel.setLayout(jPanel2Layout);
             cardJPanel.setBorder(BorderFactory.createBevelBorder(1));
+            if (i==0){
+                cardJPanel.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED, new java.awt.Color(255,255,51), new java.awt.Color(255,255,51))); 
+            }
             
             cardJPanel.add(icon);
             cardJPanel.setVisible(true);
@@ -478,6 +485,7 @@ public class AuctionFrame extends javax.swing.JFrame {
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED);
             //.addGap(75, 75,75);
             vertLayout.addComponent(cardJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE);
+            i++;
         }
         
         
