@@ -25,7 +25,11 @@ public class MagicSpell extends CounterUnit{
 		super.initializeMouseListener();
 	}
 
-
-
-	
+	@Override
+	public String toString() {
+		return "MagicSpell{" +
+				"type=" + getType() +
+				"isSecret=" + isSecret +
+				'}';
+	}
 }
