@@ -348,11 +348,11 @@ public class AuctionFrame extends javax.swing.JFrame {
         DisplayText.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         DisplayText.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         DisplayText.setBorder(null);
-        DisplayText.addActionListener(new java.awt.event.ActionListener() {
+        /*DisplayText.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 DisplayTextActionPerformed(evt);
             }
-        });
+        });*/
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
