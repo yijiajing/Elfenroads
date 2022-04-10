@@ -29,7 +29,7 @@ public class TestAPI {
         initializeGameServiceWithStandardSettings("Elfenland_Long", "Elfenland (Long)");
         initializeGameServiceWithStandardSettings("Elfenland_Destination", "Elfenland (Destination)");
         initializeGameServiceWithStandardSettings("Elfengold_Classic", "Elfengold (Classic)");
-        initializeGameServiceWithStandardSettings("Elfengold_TravelCards", "Elfengold (Travel Cards)");
+        initializeGameServiceWithStandardSettings("Elfengold_Destination", "Elfengold (Destination)");
         initializeGameServiceWithStandardSettings("Elfengold_RandomGold", "Elfengold (Random Gold)");
         initializeGameServiceWithStandardSettings("Elfengold_Witch", "Elfengold (Witch)");
 
