@@ -105,6 +105,26 @@ public class Savegame implements Serializable {
     }
 
     /**
+     * reads in a savegame from a file
+     * @param f the save file selected from the file chooser
+     * @pre f is a .elf file (filtered by file chooser)
+     * @return
+     */
+    public static Savegame read(File f) throws Exception
+    {
+        FileInputStream reading = new FileInputStream(f);
+        ObjectInputStream readingObject = new ObjectInputStream(reading);
+        Savegame save = (Savegame) readingObject.readObject();
+
+        // close the streams
+        readingObject.close();
+        reading.close();
+
+        // return the read savegame
+        return save;
+    }
+
+    /**
      * @pre GameState instance is not null
      */
     public static void saveGameToFile() throws IOException

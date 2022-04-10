@@ -38,9 +38,8 @@ public class Town implements Comparable<Town> {
         this.panel = new TownPanel(name, this.x, this.y, width, height, pScreen, this);
         this.elfBootPanel = new ElfBootPanel(this, this.x-10, this.y+height, MainFrame.getInstance().getWidth()*13/144, MainFrame.getInstance().getHeight()/35, pScreen);
 
-        if (isElfengoldVariant(variant) && tokenValue > 0) {
-            this.goldValueToken = new GoldValueToken(tokenValue, MainFrame.getInstance().getWidth()/50, MainFrame.getInstance().getHeight()/40);
-            this.tokenPanel = new GoldValueTokenPanel(this, this.goldValueToken, this.x-10, this.y);
+        if (isElfengoldVariant(variant) && variant != GameVariant.ELFENGOLD_RANDOM_GOLD && tokenValue > 0) {
+            setGoldValueToken(new GoldValueToken(tokenValue, MainFrame.getInstance().getWidth()/50, MainFrame.getInstance().getHeight()/40));
         }
     }
 
@@ -50,6 +49,11 @@ public class Town implements Comparable<Town> {
 
     public TownPanel getPanel() {
         return panel;
+    }
+
+    public void setGoldValueToken(GoldValueToken goldValueToken) {
+        this.goldValueToken = goldValueToken;
+        this.tokenPanel = new GoldValueTokenPanel(this, this.goldValueToken, this.x-20, this.y);
     }
 
     /**

@@ -228,9 +228,11 @@ public class GameState implements Serializable{
 
     public void incrementPassedPlayerCount() {
         passedPlayerCount++;
+        LOGGER.info("Passed player ct increments by 1, now " + passedPlayerCount);
     }
 
     public void clearPassedPlayerCount() {
+        LOGGER.info("Passed player ct cleared");
         passedPlayerCount = 0;
     }
 
@@ -369,6 +371,7 @@ public class GameState implements Serializable{
 
     public void incrementGoldCardDeckCount() {
         goldCardDeckCount++;
+        LOGGER.info("Incrementing the gold card deck count, now: " + goldCardDeckCount);
     }
 
     public void clearGoldCardDeck() {

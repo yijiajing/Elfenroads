@@ -1,6 +1,7 @@
 package panel;
 
 import domain.*;
+import enums.RegionType;
 import gamescreen.GameScreen;
 import networking.ActionManager;
 
@@ -22,14 +23,18 @@ public class CounterPanel extends JPanel {
         this.road = road;
         this.gameScreen = pScreen;
 
-        CounterPanel cp = this;
-
         gameScreen.addElement(this);
-
-        this.setBounds(this.x, this.y, gameScreen.getWidth() * 80 / 1440, gameScreen.getHeight() * 80 / 900);
+        if (road.getRegionType() == RegionType.RIVER || road.getRegionType() == RegionType.LAKE){
+            this.setBounds(this.x, this.y, gameScreen.getWidth() * 40 / 1440, gameScreen.getHeight() * 40 / 900);
+            this.setLayout(new GridLayout(1,1));
+        } else {
+            this.setBounds(this.x, this.y, gameScreen.getWidth() * 80 / 1440, gameScreen.getHeight() * 80 / 900);
+            this.setLayout(new GridLayout(0,2));
+        }
+        
         this.setOpaque(false);
         
-        this.setLayout(new GridLayout(0,2));
+        
         
         this.addMouseListener(new MouseAdapter() {
             @Override
@@ -38,10 +43,6 @@ public class CounterPanel extends JPanel {
                 update();
             }
 
-
-
-
-            
             @Override
             public void mouseEntered(MouseEvent e) {
             	CounterPanel.this.setBorder(BorderFactory.createLineBorder(Color.WHITE));

@@ -97,8 +97,8 @@ public class ChooseCounterPopup extends JPanel {
             public void mouseClicked(MouseEvent e) {
                 counter.setSecret(false); // the user has chosen this counter to be face-up
                 ((EGGameScreen)GameScreen.getInstance()).hideCounterPopup();
-                ((EGGameManager)GameManager.getInstance()).sendCounters(counter1, counter2);
                 ActionManager.getInstance().setInExternalWindow(false);
+                ((EGGameManager)GameManager.getInstance()).sendCounters(counter1, counter2);
             }
         });
     }

@@ -13,10 +13,12 @@ import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.GroupLayout.ParallelGroup;
 import javax.swing.GroupLayout.SequentialGroup;
+import javax.swing.border.BevelBorder;
 
 import commands.IncreaseBidCommand;
 import commands.PassTurnCommand;
@@ -35,12 +37,7 @@ import networking.GameState;
  */
 public class AuctionFrame extends javax.swing.JFrame {
 
-    private javax.swing.GroupLayout jPanel1Layout;
-    private SequentialGroup sequentHor;
-    private ParallelGroup vertLayout;
-
-
-    private ArrayList<CounterUnit> listCounters = new ArrayList<CounterUnit>();
+    private final ArrayList<CounterUnit> listCounters = new ArrayList<>();
     private final Logger LOGGER = Logger.getLogger("Auction Frame");
     private int currentBid = 0;
     private Player highestBidPlayer = null;
@@ -51,7 +48,7 @@ public class AuctionFrame extends javax.swing.JFrame {
      */
     public AuctionFrame() {
         initComponents();
-        //ArrayList<TransportationCounter> listCounters = new ArrayList<TransportationCounter>(); 
+        //ArrayList<TransportationCounter> listCounters = new ArrayList<TransportationCounter>();
     }
 
     /**
@@ -63,7 +60,7 @@ public class AuctionFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        PassButton = new javax.swing.JButton();
+        /*PassButton = new javax.swing.JButton();
         EnterButton = new javax.swing.JButton();
         IncreaseLabel = new javax.swing.JLabel();
         CurrentBidPanel = new javax.swing.JLabel();
@@ -197,7 +194,7 @@ public class AuctionFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                .addContainerGap(271, Short.MAX_VALUE))*/
+                .addContainerGap(271, Short.MAX_VALUE))
         );
         //vertLayout = jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING);
         jPanel1Layout.setVerticalGroup(
@@ -208,8 +205,8 @@ public class AuctionFrame extends javax.swing.JFrame {
                                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))*/
-                                .addGap(0, 24, Short.MAX_VALUE))
-        );
+                                //.addGap(0, 24, Short.MAX_VALUE))
+        /*);
 
         jScrollPane1.setViewportView(jPanel1);
 
@@ -244,16 +241,16 @@ public class AuctionFrame extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(EnterButton, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(37, 37, 37))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 372, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(22, 22, 22))
             /*.addGroup(Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(displayText, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
                 )*/
 
-        );
+        /*);
         layout.setVerticalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -279,17 +276,162 @@ public class AuctionFrame extends javax.swing.JFrame {
                                 .addGap(44, 44, 44))
         );
 
+        pack();*/
+
+        PassButton = new javax.swing.JButton();
+        EnterButton = new javax.swing.JButton();
+        IncreaseLabel = new javax.swing.JLabel();
+        CurrentBidPanel = new javax.swing.JLabel();
+        TextInput = new javax.swing.JTextField();
+        CurrentBidOutput = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jPanel1 = new javax.swing.JPanel();
+        DisplayText = new javax.swing.JTextField();
+
+        //setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        PassButton.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        PassButton.setLabel("PASS");
+        PassButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PassButtonActionPerformed(evt);
+            }
+        });
+
+        EnterButton.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        EnterButton.setLabel("ENTER");
+        EnterButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EnterButtonActionPerformed(evt);
+            }
+        });
+
+        IncreaseLabel.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        IncreaseLabel.setText("Increase bid by:");
+
+        CurrentBidPanel.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        CurrentBidPanel.setText("Current bid:");
+
+        TextInput.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+
+        CurrentBidOutput.setEditable(false);
+        CurrentBidOutput.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        CurrentBidOutput.setBorder(null);
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel1.setText("gold coins");
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel2.setText("gold coins");
+
+        jScrollPane1.setBorder(null);
+        jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        jScrollPane1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 734, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 136, Short.MAX_VALUE)
+        );
+
+        jScrollPane1.setViewportView(jPanel1);
+
+        DisplayText.setEditable(false);
+        DisplayText.setColumns(20);
+        DisplayText.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        DisplayText.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        DisplayText.setBorder(null);
+        /*DisplayText.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DisplayTextActionPerformed(evt);
+            }
+        });*/
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(50, 50, 50)
+                .addComponent(PassButton, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(EnterButton, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(41, 41, 41))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(176, 176, 176)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(IncreaseLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(CurrentBidPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(TextInput, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel2))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(CurrentBidOutput, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel1))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(62, 62, 62)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 599, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(65, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(DisplayText, javax.swing.GroupLayout.PREFERRED_SIZE, 590, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(11, Short.MAX_VALUE)
+                .addComponent(DisplayText, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(65, 65, 65)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(CurrentBidPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(CurrentBidOutput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(IncreaseLabel)
+                    .addComponent(TextInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addGap(36, 36, 36)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(PassButton, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(EnterButton, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(44, 44, 44))
+        );
+
         pack();
+
+       
     }// </editor-fold>//GEN-END:initComponents
 
     private void EnterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EnterButtonActionPerformed
+
+        /*addCounter(new TransportationCounter(CounterType.UNICORN, 70, 70));
+        addCounter(new TransportationCounter(CounterType.MAGICCLOUD, 70, 70));
+        addCounter(new TransportationCounter(CounterType.GIANTPIG, 70, 70));
+        displayMessage("You do not have enough gold coins to bid. Please lower your bid increase or pass the turn.");*/
 
         if (!GameManager.getInstance().isLocalPlayerTurn()) {
             displayMessage("You can only make a bid when it is your turn!");
             return;
         }
         if (localPlayerHasPassed) {
-            displayMessage("You cannot make further bids for this item as you have already passed once");
+            displayMessage("You cannot make further bids for this item as you have already passed once.");
             return;
         }
 
@@ -316,6 +458,7 @@ public class AuctionFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_EnterButtonActionPerformed
 
     private void PassButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PassButtonActionPerformed
+        //removeFirstCounter();
         if (!GameManager.getInstance().isLocalPlayerTurn()) {
             displayMessage("You cannot end someone else's turn!");
             return;
@@ -398,7 +541,7 @@ public class AuctionFrame extends javax.swing.JFrame {
     }
 
     private void addCounterUIComponent(CounterUnit counterUnit) {
-        JLabel icon = counterUnit.getDisplay();
+        /*JLabel icon = counterUnit.getDisplay();
         icon.setSize(70, 70);
 
         icon.setVisible(true);
@@ -430,35 +573,137 @@ public class AuctionFrame extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1.setVisible(true);
         jScrollPane1.setViewportView(jPanel1);
+        jScrollPane1.setVisible(true);*/
+
+        //listCounters.add(counterUnit);
+        jPanel1 = new javax.swing.JPanel();
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        SequentialGroup sequentHor = jPanel1Layout.createSequentialGroup();
+        
+        ParallelGroup vertLayout = jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING);
+        //for (TransportationCounter )
+        
+        /*CounterUnit magic = new TransportationCounter(CounterType.MAGICCLOUD, 70, 70);
+        listCounters.add(magic);
+        JLabel icon = magic.getDisplay();
+            
+        icon.setVisible(true);
+        //icon.setBorder(BorderFactory.createBevelBorder(1));
+        javax.swing.JPanel cardJPanelO = new javax.swing.JPanel();
+            //javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(cardJPanel);
+            //cardJPanel.setLayout(jPanel2Layout);
+        cardJPanelO.setBorder(BorderFactory.createBevelBorder(1));
+            
+        cardJPanelO.add(icon);
+        cardJPanelO.setVisible(true);
+        sequentHor.addComponent(cardJPanelO, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            //.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED);
+        .addGap(75, 75,75);
+        vertLayout.addComponent(cardJPanelO, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE);*/
+        int i = 0;
+        for (CounterUnit tc : listCounters){
+            
+            JLabel icon = tc.getDisplay();
+            
+            icon.setVisible(true);
+            //icon.setBorder(BorderFactory.createBevelBorder(1));
+            javax.swing.JPanel cardJPanel = new javax.swing.JPanel();
+            //javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(cardJPanel);
+            //cardJPanel.setLayout(jPanel2Layout);
+            cardJPanel.setBorder(BorderFactory.createBevelBorder(1));
+            if (i==0){
+                cardJPanel.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED, new java.awt.Color(255,255,51), new java.awt.Color(255,255,51))); 
+            }
+            
+            cardJPanel.add(icon);
+            cardJPanel.setVisible(true);
+            sequentHor.addComponent(cardJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED);
+            //.addGap(75, 75,75);
+            vertLayout.addComponent(cardJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE);
+            i++;
+        }
+        
+        
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(sequentHor
+            )
+                
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(vertLayout)
+                .addGap(0, 24, Short.MAX_VALUE))
+        );
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1.setVisible(true);
+        jScrollPane1.setViewportView(jPanel1);
         jScrollPane1.setVisible(true);
+
+        jScrollPane1.setViewportView(jPanel1);
+
+        this.repaint();
+        jPanel1.repaint();
+
+        //removeFirstCounter();
+
     }
 
     public CounterUnit removeFirstCounter() {
         assert listCounters.size() > 0;
-        jPanel1.removeAll();
+        //jPanel1.removeAll();
+        //System.out.println(listCounters.size());
         CounterUnit counter = listCounters.remove(0);
+        //System.out.println(listCounters.size());
+        ArrayList<CounterUnit> newlst = new ArrayList<>();
+        for (CounterUnit cu: listCounters){
+            newlst.add(cu);
+        }
+
+        listCounters.clear();
+        //listCounters.clear();
+
+        //jPanel1 = new JPanel();
+
+        //jScrollPane1.setViewportView(jPanel1);
+
+        //this.repaint();
+        //jPanel1.repaint();
+
+        jPanel1 = new javax.swing.JPanel();
 
         jScrollPane1.setViewportView(jPanel1);
-        
+
         this.repaint();
         jPanel1.repaint();
 
-//        jPanel1 = new javax.swing.JPanel();
-//
-//        jScrollPane1.setViewportView(jPanel1);
-//
-//        this.repaint();
-//        jPanel1.repaint();
 
+        //jPanel1.removeAll();
 
-        jPanel1.removeAll();
-
-        for (CounterUnit cu : listCounters){
-            addCounterUIComponent(cu);
+       for (CounterUnit cu : newlst){
+           System.out.println(newlst.size());
+            addCounter(cu);
+            //addCounter(newlst.get(1));
+            //newlst.remove(cu);
+        //    addCounterUIComponent(cu);
+           // break;
+    
         }
-        LOGGER.info("Removed the first counter " + counter);
+        //addListCounters(newlst);
+
+        //addCounter(newlst.get(0));
+        //LOGGER.info("Removed the first counter " + counter);
         return counter;
     }
+
+    /*public void addListCounters(ArrayList<CounterUnit> list){
+        for (CounterUnit cu: list){
+            //addCounter(cu);
+            
+        }
+    }*/
 
     public void setAuctionWindowCurr(){
         IncreaseLabel.setVisible(true);
@@ -512,7 +757,13 @@ public class AuctionFrame extends javax.swing.JFrame {
     }
 
     public void displayMessage(String message){
-        displayText.setText(message);
+
+        DisplayText.setText(message);
+    }
+
+    public void closeAuctionFrame() {
+        this.setVisible(false);
+        this.dispose();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -530,7 +781,7 @@ public class AuctionFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
-    private JTextField displayText;
+    private JTextField DisplayText;
     //private SequentialGroup sequentHor;
     //private ParallelGroup vertLayout;
     // End of variables declaration//GEN-END:variables

@@ -213,9 +213,7 @@ public abstract class GameScreen extends JPanel implements Serializable {
             		catch (IOException e3) {e3.printStackTrace();}
             	}
                 // TODO: decide what to do after the game has been saved
-
             }
-
         });
 
         i3.addActionListener(new ActionListener(){
@@ -230,7 +228,6 @@ public abstract class GameScreen extends JPanel implements Serializable {
             public void actionPerformed(ActionEvent e) {
                 if (Desktop.isDesktopSupported()) {
                     try {
-
                         File myFile = new File("./assets/rules/Elfenland Rules.pdf");
                         Desktop.getDesktop().open(myFile);
                     } catch (IOException ex) {
@@ -244,7 +241,6 @@ public abstract class GameScreen extends JPanel implements Serializable {
             public void actionPerformed(ActionEvent e) {
                 if (Desktop.isDesktopSupported()) {
                     try {
-
                         File myFile = new File("./assets/rules/Elfengold Rules.pdf");
                         Desktop.getDesktop().open(myFile);
                     } catch (IOException ex) {
@@ -254,27 +250,19 @@ public abstract class GameScreen extends JPanel implements Serializable {
             }});
 
         i6.addActionListener(new ActionListener(){
-
             @Override
             public void actionPerformed(ActionEvent e) {
-
                 System.exit(0);
 
             }});
 
         i7.addActionListener(new ActionListener(){
-
             @Override
             public void actionPerformed(ActionEvent e) {
-
                 System.exit(0);
-                //remove(background_elvenroads);
-                //MainFrame.mainPanel.add(new LobbyWindow(), "lobby");
-                //MainFrame.cardLayout.show(MainFrame.mainPanel,"lobby");
-
             }
-
         });
+
         menu.add(i1);
         menu.add(i2);
         menu.add(i3);

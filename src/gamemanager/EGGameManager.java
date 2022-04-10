@@ -5,10 +5,12 @@ import commands.NotifyTurnCommand;
 import commands.ReturnCounterUnitCommand;
 import domain.*;
 import enums.EGRoundPhaseType;
+import enums.ELRoundPhaseType;
 import enums.GameVariant;
 import gamescreen.EGGameScreen;
 import gamescreen.GameScreen;
 import networking.GameState;
+import networking.ActionManager;
 import savegames.Savegame;
 import utils.GameRuleUtils;
 import windows.AuctionFrame;
@@ -26,13 +28,23 @@ public class EGGameManager extends GameManager {
     private CounterUnit prevCounterKept;
     private AuctionFrame auctionFrame;
 
+
     EGGameManager(Optional<Savegame> savegame, String sessionID, GameVariant variant, String pLocalAddress) {
         super(savegame, sessionID, variant, pLocalAddress);
+
         assert GameRuleUtils.isElfengoldVariant(variant);
     }
 
     @Override
     public void setUpNewGame() {
+        // randomly assign gold value tokens to towns
+        if (gameState.getGameVariant() == GameVariant.ELFENGOLD_RANDOM_GOLD) {
+            GoldTokenDeck goldTokenDeck = new GoldTokenDeck(sessionID);
+            for (Town town : GameMap.getInstance().getTownList()) {
+                if (town.getName().equals("Elvenhold")) continue;
+                town.setGoldValueToken(goldTokenDeck.draw());
+            }
+        }
         // initial preparation: deal five cards to each player; give each player 7 gold coins
         for (Player p: gameState.getPlayers()) {
             for (int i = 0; i < 5; i++) {
@@ -48,6 +60,20 @@ public class EGGameManager extends GameManager {
         for (int j = 0; j < 3; j++) {
             this.gameState.addFaceUpCardFromDeck();
         }
+
+        LOGGER.fine(gameState.getTravelCardDeck().toString());
+
+        // assign each player a destination town if applicable
+        if (gameState.getGameVariant() == GameVariant.ELFENGOLD_DESTINATION) {
+            TownCardDeck townCardDeck = new TownCardDeck(sessionID);
+            for (int i = 0; i < gameState.getNumOfPlayers(); i++) {
+                gameState.getPlayers().get(i).setDestinationTown(townCardDeck.getComponents().get(i).getTown());
+            }
+        }
+
+        for (Player p : gameState.getPlayers()) {
+            System.out.println(p.getDestinationTown());
+        }
     }
 
     @Override
@@ -58,6 +84,14 @@ public class EGGameManager extends GameManager {
             // Draw Card phase is ignored in the first round
             LOGGER.info("In the first round, go directly to choose face-up counter");
             gameState.setCurrentPhase(EGRoundPhaseType.CHOOSE_FACE_UP);
+
+            // inform player of their destination town
+            if (gameState.getGameVariant() == GameVariant.ELFENGOLD_DESTINATION) {
+                GameScreen.displayMessage("Your destination Town is " +
+                        thisPlayer.getDestinationTown().getName() + ". Please collect town pieces and have your travel " +
+                        "route end in a town as close as possible to the destination at the end of the game.");
+            }
+
             // Triggered only on one instance (the first player)
             if (isLocalPlayerTurn()) {
                 chooseFaceUpCounter();
@@ -66,29 +100,38 @@ public class EGGameManager extends GameManager {
         } else {
             LOGGER.info("In round " + gameState.getCurrentRound() + ", go to draw card phase");
             GameScreen.displayMessage("""
-                    New Round Start!
+                    New Round Start! You can get 2 coins.
                     """);
+            //distribute 2 gold coins at the beginning of all rounds except for the first
+            gameState.getCurrentPlayer().addGoldCoins(2);
+            GameRuleUtils.updateRemoteGoldCoins(2);
+            GameScreen.getInstance().updateAll();
+            
             gameState.setCurrentPhase(EGRoundPhaseType.DRAW_CARD_ONE);
             // Triggered only on one instance (the first player)
             if (isLocalPlayerTurn()) {
                 drawTravelCard();
-                GameScreen.getInstance().updateAll();
             }
         }
 
     }
 
+    /**
+     * PHASE 3
+     */
     public void drawTravelCard() {
         if (!(gameState.getCurrentRound() <= gameState.getTotalRounds()
                 && GameRuleUtils.isDrawCardsPhase()
                 && isLocalPlayerTurn())) {
             return;
         }
-        updateGameState();
+        updateGameScreen();
+
         GameScreen.displayMessage("""
                 Please select a card to add to your hand. You may choose one of the face-up cards, 
                 a card from the deck or take the entire gold card deck, shown on the right side of the screen.
                 """);
+
         // all logic is implemented in the mouse listeners of the cards
     }
 
@@ -147,6 +190,9 @@ public class EGGameManager extends GameManager {
         endTurn();
     }
 
+    /**
+     * PHASE 5
+     */
     public void auction() {
         if (!(gameState.getCurrentRound() <= gameState.getTotalRounds()
                 && gameState.getCurrentPhase() == EGRoundPhaseType.AUCTION)) {
@@ -154,19 +200,34 @@ public class EGGameManager extends GameManager {
             return;
         }
 
-        auctionFrame = new AuctionFrame();
+        Logger.getGlobal().info("Showing the auction frame.");
+        this.auctionFrame = new AuctionFrame();;
 
         CounterUnitPile pile = GameState.instance().getCounterPile();
         int numPlayers = GameState.instance().getNumOfPlayers();
+        Logger.getGlobal().info("Num of players is " + numPlayers);
         for (int i = 0; i < numPlayers; i++) {
             auctionFrame.addCounter(pile.draw());
             auctionFrame.addCounter(pile.draw());
         }
         auctionFrame.setVisible(true);
 
-//        endTurn();
+        auctionFrame.setVisible(true);
     }
 
+    /**
+     * PHASE 6
+     * Plan travel routes (inside GameManager superclass)
+     */
+
+    /**
+     * PHASE 7
+     * Move on the map (inside GameManager superclass)
+     */
+
+    /**
+     * PHASE 8
+     */
     @Override
     public void returnCountersPhase() {
         if (!(gameState.getCurrentRound() <= gameState.getTotalRounds()
@@ -244,8 +305,8 @@ public class EGGameManager extends GameManager {
 
         // all phases are done, go to the next round
         if (nextOrdinal == EGRoundPhaseType.values().length) {
-            endRound();
             gameState.clearPassedPlayerCount();
+            endRound();
         }
 
         // continue with plan routes phase if not all players have passed their turn
@@ -253,12 +314,12 @@ public class EGGameManager extends GameManager {
                 && gameState.getPassedPlayerCount() < gameState.getNumOfPlayers()) {
             LOGGER.info("Pass turn ct: " + gameState.getPassedPlayerCount() + ", staying at the PLAN ROUTES phase");
             gameState.setToFirstPlayer();
+            gameState.clearPassedPlayerCount();
             // the first player will take action
             if (isLocalPlayerTurn()) {
                 NotifyTurnCommand notifyTurnCommand = new NotifyTurnCommand(EGRoundPhaseType.PLAN_ROUTES);
                 notifyTurnCommand.execute(); // notify themself to take action
             }
-            gameState.clearPassedPlayerCount();
         }
 
         // just enter the auction phase, display auction frame for everyone
@@ -267,6 +328,7 @@ public class EGGameManager extends GameManager {
             gameState.setCurrentPhase(EGRoundPhaseType.AUCTION);
             LOGGER.info("...Going to the auction phase");
             gameState.setToFirstPlayer();
+            gameState.clearPassedPlayerCount();
             auction(); // display auction window for everyone
             if (isLocalPlayerTurn()) {
                 NotifyTurnCommand notifyTurnCommand = new NotifyTurnCommand(EGRoundPhaseType.AUCTION);
@@ -274,7 +336,6 @@ public class EGGameManager extends GameManager {
             } else {
                 auctionFrame.displayMessage("It is not your turn. Waiting for other players to bid...");
             }
-            gameState.clearPassedPlayerCount();
         }
 
         // continue with auction phase if not all counters have been auctioned
@@ -294,13 +355,22 @@ public class EGGameManager extends GameManager {
         else {
             gameState.setCurrentPhase(EGRoundPhaseType.values()[nextOrdinal]);
             LOGGER.info("...Going to the next phase : " + gameState.getCurrentPhase());
+            //if just enter Plan_Routes, close the auction window automatically
+            if (gameState.getCurrentPhase() == EGRoundPhaseType.PLAN_ROUTES) {
+            	auctionFrame.closeAuctionFrame();
+            }
+            //if just enter the Move Phase, reset the hasMoved parameter to false.
+            if (gameState.getCurrentPhase() == EGRoundPhaseType.MOVE) {
+                ActionManager.getInstance().setBootMoved(false);
+            }
+            
             gameState.setToFirstPlayer();
+            gameState.clearPassedPlayerCount();
             // the first player will take action
             if (isLocalPlayerTurn()) {
                 NotifyTurnCommand notifyTurnCommand = new NotifyTurnCommand(gameState.getCurrentPhase());
                 notifyTurnCommand.execute(); // notify themself to take action
             }
-            gameState.clearPassedPlayerCount();
         }
     }
 
@@ -312,9 +382,19 @@ public class EGGameManager extends GameManager {
         List<Player> winners = new ArrayList<>();
         winners.add(players.get(0));
 
-        //update scoreboard
+        // update scoreboard
         GameScreen.getInstance().updateAll();
 
+        // adjust final score of each player according to the destination town variant rule
+        if (gameState.getGameVariant() == GameVariant.ELFENGOLD_DESTINATION) {
+            for (Player p : players) {
+                int townsAway = GameMap.getInstance().getDistanceBetween(p.getCurrentTown(), p.getDestinationTown()) - 1;
+                int newScore = p.getScore() - townsAway;
+                p.setScore(newScore);
+            }
+        }
+
+        // calculate the winner - the player with the most points or most coins (in case of tie)
         for (Player p : players) {
             if (p.getScore() > winners.get(0).getScore()) {
                 winners.clear();
@@ -329,15 +409,26 @@ public class EGGameManager extends GameManager {
             }
         }
 
+        String destinations = "\n";
+        if (gameState.getGameVariant() == GameVariant.ELFENGOLD_DESTINATION) {
+            for (int i = 0; i < gameState.getNumOfPlayers(); i++) {
+                Player player = gameState.getPlayers().get(i);
+                String dest = player.getDestinationTown().getName();
+                String name = player.getName();
+                int townsAway = GameMap.getInstance().getDistanceBetween(player.getCurrentTown(), player.getDestinationTown()) - 1;
+                destinations += name + "'s destination is " + dest + "[Distance :" + townsAway + "].\n";
+            }
+        }
+
         assert winners.size() >= 1;
         if (winners.size() == 1) {
-            GameScreen.displayMessage(winners.get(0).getName() + " is the winner!");
+            GameScreen.displayMessage(winners.get(0).getName() + " is the winner!" + destinations);
         } else {
             String winnersNames = "";
             for (Player winner : winners) {
                 winnersNames = winnersNames.concat(" " + winner.getName());
             }
-            GameScreen.displayMessage("There is a tie. " + winnersNames + " are the winners!");
+            GameScreen.displayMessage("There is a tie. " + winnersNames + " are the winners!" + destinations);
         }
     }
 

@@ -153,15 +153,15 @@ public class CommunicationsManager {
     {
         ArrayList<Socket> senders = setUpSenders();
 
-        Logger.getGlobal().info("Sending the game command to the other users!");
+        Logger.getGlobal().info("Sending the game command " + command.getClass().getName() + " to the other users!");
         for (Socket otherPlayer : senders)
         {
             OutputStream out = otherPlayer.getOutputStream();
             ObjectOutputStream payload = new ObjectOutputStream(out);
             payload.writeObject(command);
-            Logger.getGlobal().info("Wrote the command to the payload.");
-            Logger.getGlobal().info("Flushed the payload.");
-            Logger.getGlobal().info("Closed the socket.");
+//            Logger.getGlobal().info("Wrote the command to the payload.");
+//            Logger.getGlobal().info("Flushed the payload.");
+//            Logger.getGlobal().info("Closed the socket.");
         }
     }
 
@@ -182,13 +182,13 @@ public class CommunicationsManager {
             Logger.getGlobal().info("There was a problem retrieving the local address.");
         }
 
-        Logger.getGlobal().info("Now connecting to... " + otherPlayerIP);
+//        Logger.getGlobal().info("Now connecting to... " + otherPlayerIP);
         String ip = NetworkUtils.getAddress(otherPlayerIP);
         int port = NetworkUtils.getPort(otherPlayerIP); // the port should always be 999. we will leave this just in case
         Socket thatPlayer = new Socket(ip, port);
-        Logger.getGlobal().info("Successfully initialized the connection to " + otherPlayerIP + "!");
+//        Logger.getGlobal().info("Successfully initialized the connection to " + otherPlayerIP + "!");
 
-        Logger.getGlobal().info("Sending the game command to the other user!");
+        Logger.getGlobal().info("Sending the game command " + command.getClass().getName() + " to the other user!");
         OutputStream out = thatPlayer.getOutputStream();
         ObjectOutputStream payload = new ObjectOutputStream(out);
         payload.writeObject(command);
@@ -211,6 +211,7 @@ public class CommunicationsManager {
         int port = NetworkUtils.getPort(otherPlayerAddressWithPort);
 
         Socket sendCmd = new Socket (otherPlayerAddressNoPort, port);
+        Logger.getGlobal().info("Sending the game command " + command.getClass().getName() + " to the other user!");
 
         OutputStream out = sendCmd.getOutputStream();
         ObjectOutputStream payload = new ObjectOutputStream(out);
@@ -224,7 +225,7 @@ public class CommunicationsManager {
      */
     public void updateFromListener()
     {
-        Logger.getGlobal().info("Received an update from the listener. Updating the game.");
+//        Logger.getGlobal().info("Received an update from the listener. Updating the game.");
 
         while (listener.getCommands().size() > 0)
         {
@@ -245,7 +246,7 @@ public class CommunicationsManager {
                 getAndExecuteFirstAddPlayerCommand();
                 // get the next AddPlayerCommand from the queue
             }
-            else if (GameRuleUtils.isElfengoldVariant(GameState.instance().getGameVariant()) && GameState.instance().getCurrentRound() == 1)
+            else if (GameRuleUtils.isElfengoldVariant(GameState.instance().getGameVariant()) && GameState.instance().getCurrentRound() == 1 || listener.getCommands().peekFirst() instanceof AddGoldCoinsCommand)
             {
                 GameCommand toExecute = listener.getCommands().poll();
                 toExecute.execute();

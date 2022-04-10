@@ -1,8 +1,6 @@
 package test;
 
-import domain.Player;
-import domain.TransportationCounter;
-import domain.TravelCard;
+import domain.*;
 import enums.Colour;
 import enums.CounterType;
 import enums.GameVariant;
@@ -53,6 +51,18 @@ public class TestGameScreen {
 
             Logger.getGlobal().info("Showing game screen");
             MainFrame.cardLayout.show(MainFrame.mainPanel, "gameScreen");
+
+
+            GoldTokenDeck goldTokenDeck = new GoldTokenDeck("123");
+            System.out.println(goldTokenDeck.getSize());
+
+
+            System.out.println(GameMap.getInstance().getTownList().size());
+
+            for (Town town : GameMap.getInstance().getTownList()) {
+                town.setGoldValueToken(goldTokenDeck.draw());
+            }
+
 
         } catch (Exception e) {
 
