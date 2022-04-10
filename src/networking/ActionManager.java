@@ -40,6 +40,7 @@ public class ActionManager {
     private Town selectedTown;
     private int cardsToBeDrawn = 0; // used when a player chooses to take 2 cards after moving to a new town in elfengold, or when Player choose not to make a move and draw 2 cards
     private boolean bootMoved = false; //identify whether a player has made a move in current Move phase.
+
     
     public static ActionManager init(GameState gameState, GameManager gameManager) {
         if (INSTANCE == null) {
@@ -381,6 +382,7 @@ public class ActionManager {
             ElfBootPanel destinationForCommand = selectedTown.getElfBootPanel();
 
             // boot has been successfully moved and is no longer selected
+            ActionManager.getInstance().setBootMoved(true);
             boot.setSelected(false);
 
             // now, construct a command
