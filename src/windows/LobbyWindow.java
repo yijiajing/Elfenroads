@@ -112,14 +112,6 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
         loadButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                /*track1.play();
-                flag = 1;
-                t.interrupt(); // kill the thread
-                remove(background_elvenroads);
-                MainFrame.mainPanel.add(new LoadGameWindow(), "load");
-                MainFrame.cardLayout.show(MainFrame.mainPanel,"load");
-                */
-
                 chooseSaveGame();
             }
         });
@@ -342,6 +334,7 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
         }
         else
         {
+            flag = 1;
             // the user has selected a .elf savegame file
             File saveFile = f.getSelectedFile(); // this file is a .elf file representing a savegame object
             try
