@@ -230,7 +230,8 @@ public class CommunicationsManager {
         {
             Logger.getGlobal().info("Queue looks like: " + listener.getCommands().stream().map(c -> c.getClass().toString()).collect(Collectors.toList()));
             // we always want to execute boot choice-related commands first
-            if (listener.getCommands().peek() instanceof GetBootColourCommand || listener.getCommands().peek() instanceof SendBootColourCommand)
+            GameCommand firstCommand = listener.getCommands().peek();
+            if (firstCommand instanceof GetBootColourCommand || firstCommand instanceof SendBootColourCommand || firstCommand instanceof BootValidationResponseCommand || firstCommand instanceof ValidateBootCommand)
             {
                 GameCommand toExecute = listener.getCommands().poll();
                 Logger.getGlobal().info("Executing a command related to the boot colour");
