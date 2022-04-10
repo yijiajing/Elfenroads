@@ -1,8 +1,13 @@
 package windows;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.util.logging.Logger;
+//import java.lang.System.Logger;
 import java.awt.*;
 
 public class LoadGameWindow extends JPanel {
@@ -18,10 +23,26 @@ public class LoadGameWindow extends JPanel {
     private JLabel players;
     private JLabel dateSaved;
 
-    LoadGameWindow(){
+    LoadGameWindow()
+    {
         MP3Player track1 = new MP3Player("./assets/Music/JLEX5AW-ui-medieval-click-heavy-positive-01.mp3");
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setSize((int) screenSize.getWidth(), (int) screenSize.getHeight());
+
+        JFileChooser f = new JFileChooser("./out/saves");
+        FileNameExtensionFilter filter = new FileNameExtensionFilter ("Savegame files", ".elf");
+        f.addChoosableFileFilter(filter);
+        //f.setFileFilter(filter);
+        f.showOpenDialog(null);
+        f.setFileSelectionMode(JFileChooser.FILES_ONLY);//.DIRECTORIES_ONLY); 
+        //f.showSaveDialog(null);
+
+        File selected = f.getSelectedFile();
+        Logger.getGlobal().info("Selected savegame file: " + selected.getAbsolutePath());
+
+        
+        System.out.println(f.getCurrentDirectory());
+        System.out.println(f.getSelectedFile());
 
         gamesPanel = new JPanel(new BorderLayout());
         gamePanel = new JPanel(new BorderLayout());
