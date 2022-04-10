@@ -2,6 +2,7 @@ package panel;
 
 import domain.CounterUnit;
 import domain.Player;
+import gamemanager.GameManager;
 import gamescreen.GameScreen;
 
 import javax.swing.*;
@@ -18,6 +19,7 @@ public class ScoreBoardPanel extends JPanel implements ObserverPanel {
     private Player aPlayer;
     private JLabel score;
     private JLabel gold;
+    private JLabel destination;
     private JPanel scoreCard;
     private JPanel countersCard;
 
@@ -40,6 +42,11 @@ public class ScoreBoardPanel extends JPanel implements ObserverPanel {
         score = new JLabel(Integer.toString(aPlayer.getScore()) + " pts");
         scoreCard.add(score);
         scoreCard.add(new JLabel(aPlayer.getColour().toString()));
+
+        if (pPlayer.getDestinationTown() != null && aPlayer.equals(GameManager.getInstance().getThisPlayer())) {
+            destination = new JLabel(aPlayer.getDestinationTown().getName());
+            scoreCard.add(destination);
+        }
 
         if (includeGold) {
             gold = new JLabel(aPlayer.getGoldCoins() + " gold coins");
