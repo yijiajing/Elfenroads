@@ -8,6 +8,7 @@ public class Hand {
 	private List<CardUnit> cardList;
 	private List<CounterUnit> counterList;
 	private Optional<Obstacle> obstacle;
+	private int numTravelCards;
 	
 	public Hand() {
 		cardList = new ArrayList<>();
@@ -43,8 +44,16 @@ public class Hand {
 		return this.cardList;
 	}
 
+	public void setNumTravelCards(int numTravelCards) {
+		this.numTravelCards = numTravelCards;
+	}
+
 	public int getNumTravelCards() {
-		return this.cardList.size();
+		return numTravelCards;
+	}
+
+	public void updateNumTravelCards() {
+		numTravelCards = cardList.size();
 	}
 	
 	public void clearCounters() {

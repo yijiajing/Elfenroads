@@ -40,6 +40,7 @@ public abstract class GameManager {
     // manages choosing a boot colour
     protected ArrayList<Colour> availableColours = new ArrayList<>();
     private int bootNotifsReceived;
+    private int cardNotifsReceived;
 
 
     GameManager(Optional<Savegame> savegame, String pSessionID, GameVariant variant, String pLocalAddress) {
@@ -201,7 +202,17 @@ public abstract class GameManager {
         LOGGER.info("Total: " + gameState.getTotalRounds() + ", Current: " + gameState.getCurrentRound());
         if (gameState.getCurrentRound() > gameState.getTotalRounds()) {
             LOGGER.info("Total: " + gameState.getTotalRounds() + ", Current: " + gameState.getCurrentRound());
-            endGame();
+            // update local player travel card count
+            thisPlayer.getHand().updateNumTravelCards();
+
+            // update remote player travel card count
+            NumTravelCardsCommand numTravelCardsCommand = new NumTravelCardsCommand();
+            try {
+                coms.sendCommandToIndividual(numTravelCardsCommand, gameState.getCurrentPlayer().getName());
+            } catch (IOException e) {
+                LOGGER.severe("There was a problem sending the command to update number of travel cards!");
+                e.printStackTrace();
+            }
             return;
         }
         actionManager.clearSelection();
@@ -371,5 +382,13 @@ public abstract class GameManager {
     public void receivedBootNotif()
     {
         bootNotifsReceived++;
+    }
+
+    public int getCardNotifsReceived() {
+        return cardNotifsReceived;
+    }
+
+    public void incrementCardNotifsReceived() {
+        this.cardNotifsReceived++;
     }
 }
