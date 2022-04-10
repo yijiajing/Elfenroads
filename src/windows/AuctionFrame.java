@@ -37,12 +37,7 @@ import networking.GameState;
  */
 public class AuctionFrame extends javax.swing.JFrame {
 
-    private javax.swing.GroupLayout jPanel1Layout;
-    private SequentialGroup sequentHor;
-    private ParallelGroup vertLayout;
-
-
-    private ArrayList<CounterUnit> listCounters = new ArrayList<CounterUnit>();
+    private final ArrayList<CounterUnit> listCounters = new ArrayList<>();
     private final Logger LOGGER = Logger.getLogger("Auction Frame");
     private int currentBid = 0;
     private Player highestBidPlayer = null;

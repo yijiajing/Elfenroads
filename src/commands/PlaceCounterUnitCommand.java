@@ -36,7 +36,7 @@ public class PlaceCounterUnitCommand implements GameCommand {
 
 	    @Override
 	    public void execute() {
-			Logger.getGlobal().info("Executing PlaceTransportationCounterCommand");
+			Logger.getGlobal().info("Executing PlaceTransportationCounterCommand, placing " + aCounterUnitType);
 			GameMap map = GameMap.getInstance();
 
 			Town startTown = map.getTown(start);

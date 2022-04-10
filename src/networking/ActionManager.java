@@ -97,10 +97,8 @@ public class ActionManager {
                 selectedCounter.setOwned(false);
                 gameState.getCounterPile().addDrawable(selectedCounter);
                 GameCommand exchangeCommand = new ExchangeCommand(selectedRoad, road, selectedCounter.isSecret());
-                GameCommand placeCounterUnitCommand = new PlaceCounterUnitCommand(selectedRoad, selectedCounter);
                 try {
                     gameManager.getComs().sendGameCommandToAllPlayers(exchangeCommand);
-                    gameManager.getComs().sendGameCommandToAllPlayers(placeCounterUnitCommand);
                     GameScreen.getInstance().updateAll();
                 } catch (IOException e) {
                     LOGGER.severe("The was a problem sending the command to place the exchange magic spell!");
