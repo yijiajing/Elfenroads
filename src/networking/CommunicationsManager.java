@@ -180,11 +180,11 @@ public class CommunicationsManager {
             Logger.getGlobal().info("There was a problem retrieving the local address.");
         }
 
-        Logger.getGlobal().info("Now connecting to... " + otherPlayerIP);
+//        Logger.getGlobal().info("Now connecting to... " + otherPlayerIP);
         String ip = NetworkUtils.getAddress(otherPlayerIP);
         int port = NetworkUtils.getPort(otherPlayerIP); // the port should always be 999. we will leave this just in case
         Socket thatPlayer = new Socket(ip, port);
-        Logger.getGlobal().info("Successfully initialized the connection to " + otherPlayerIP + "!");
+//        Logger.getGlobal().info("Successfully initialized the connection to " + otherPlayerIP + "!");
 
         Logger.getGlobal().info("Sending the game command " + command.getClass().getName() + " to the other user!");
         OutputStream out = thatPlayer.getOutputStream();
