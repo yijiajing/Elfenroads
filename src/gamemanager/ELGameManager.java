@@ -137,7 +137,7 @@ public class ELGameManager extends GameManager {
             updateGameScreen();
             System.out.println("Current phase: DRAW COUNTERS");
 
-            if (gameState.getGameVariant() == GameVariant.ELFENLAND_LONG) {
+            if (gameState.getGameVariant() == GameVariant.ELFENLAND_LONG && gameState.getCurrentPhase() == ELRoundPhaseType.DRAW_COUNTER_ONE) {
                 GameScreen.displayMessage("This is the long variant of Elfenland. You will go through 4 rounds instead of 3.");
             }
 
@@ -235,13 +235,14 @@ public class ELGameManager extends GameManager {
     public void endPhase() {
         actionManager.clearSelection();
         int nextOrdinal = ((ELRoundPhaseType) gameState.getCurrentPhase()).ordinal() + 1;
-        gameState.clearPassedPlayerCount();
         if (nextOrdinal == ELRoundPhaseType.values().length) {
             // all phases are done, go to the next round
+            gameState.clearPassedPlayerCount();
             endRound();
         } else if (gameState.getCurrentPhase() == ELRoundPhaseType.PLAN_ROUTES
                 && gameState.getPassedPlayerCount() < gameState.getNumOfPlayers()) {
             LOGGER.info("Pass turn ct: " + gameState.getPassedPlayerCount() + ", staying at the PLAN ROUTES phase");
+            gameState.clearPassedPlayerCount();
             // continue with plan routes phase if not all players have passed their turn
             gameState.setToFirstPlayer();
             // the first player will take action
@@ -252,6 +253,7 @@ public class ELGameManager extends GameManager {
         } else { // go to the next phase within the same round
             gameState.setCurrentPhase(ELRoundPhaseType.values()[nextOrdinal]);
             LOGGER.info("...Going to the next phase : " + gameState.getCurrentPhase());
+            gameState.clearPassedPlayerCount();
             gameState.setToFirstPlayer();
             // the first player will take action
             if (isLocalPlayerTurn()) {
