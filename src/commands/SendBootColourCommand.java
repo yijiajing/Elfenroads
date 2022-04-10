@@ -2,6 +2,7 @@ package commands;
 
 import gamemanager.GameManager;
 import enums.Colour;
+import networking.GameSession;
 import windows.ChooseBootWindow;
 import windows.MainFrame;
 
@@ -35,9 +36,12 @@ public class SendBootColourCommand implements GameCommand {
             GameManager.getInstance().removeAvailableColour(bootColour);
         }
         // if we have gotten all of the responses we need, we can show the boot window.
-        ChooseBootWindow window = new ChooseBootWindow(GameManager.getInstance().getSessionID(), GameManager.getInstance().getAvailableColours());
-        MainFrame.mainPanel.add(window, "choose-boot");
-        MainFrame.cardLayout.show(MainFrame.mainPanel, "choose-boot");
+        if (GameManager.getInstance().getBootNotifsReceived() == GameSession.getNumPlayers(GameManager.getInstance().getSessionID()))
+        {
+            ChooseBootWindow window = new ChooseBootWindow(GameManager.getInstance().getSessionID(), GameManager.getInstance().getAvailableColours());
+            MainFrame.mainPanel.add(window, "choose-boot");
+            MainFrame.cardLayout.show(MainFrame.mainPanel, "choose-boot");
+        }
 
     }
 
