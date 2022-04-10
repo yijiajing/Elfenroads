@@ -25,7 +25,7 @@ public class CounterPanel extends JPanel {
 
         gameScreen.addElement(this);
         if (road.getRegionType() == RegionType.RIVER || road.getRegionType() == RegionType.LAKE){
-            this.setBounds(this.x, this.y, gameScreen.getWidth() * 40 / 1440, gameScreen.getHeight() * 40 / 900);
+            this.setBounds(this.x, this.y, gameScreen.getWidth() * 50 / 1440, gameScreen.getHeight() * 40 / 900);
         } else {
             this.setBounds(this.x, this.y, gameScreen.getWidth() * 80 / 1440, gameScreen.getHeight() * 80 / 900);
         }
