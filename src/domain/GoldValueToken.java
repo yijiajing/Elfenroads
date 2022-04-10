@@ -3,7 +3,7 @@ package domain;
 import javax.swing.*;
 import java.awt.*;
 
-public class GoldValueToken {
+public class GoldValueToken extends Drawable {
 
     private int value;
     private int width;
@@ -11,6 +11,7 @@ public class GoldValueToken {
     private JLabel image;
 
     public GoldValueToken(int pValue, int pWidth, int pHeight) {
+        super("./assets/sprites/" + pValue + ".png");
         assert pValue > 0;
         this.value = pValue;
         this.width = pWidth;
