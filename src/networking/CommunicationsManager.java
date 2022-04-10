@@ -186,7 +186,7 @@ public class CommunicationsManager {
         Socket thatPlayer = new Socket(ip, port);
         Logger.getGlobal().info("Successfully initialized the connection to " + otherPlayerIP + "!");
 
-        Logger.getGlobal().info("Sending the game command to the other user!");
+        Logger.getGlobal().info("Sending the game command " + command.getClass().getName() + " to the other user!");
         OutputStream out = thatPlayer.getOutputStream();
         ObjectOutputStream payload = new ObjectOutputStream(out);
         payload.writeObject(command);
@@ -209,6 +209,7 @@ public class CommunicationsManager {
         int port = NetworkUtils.getPort(otherPlayerAddressWithPort);
 
         Socket sendCmd = new Socket (otherPlayerAddressNoPort, port);
+        Logger.getGlobal().info("Sending the game command " + command.getClass().getName() + " to the other user!");
 
         OutputStream out = sendCmd.getOutputStream();
         ObjectOutputStream payload = new ObjectOutputStream(out);
