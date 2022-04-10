@@ -31,7 +31,6 @@ public class SendBootColourCommand implements GameCommand {
         if (bootColour == null)
         {
             // do nothing
-            return;
         }
         // else remove the color
         else
