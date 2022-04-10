@@ -39,6 +39,7 @@ public abstract class GameManager {
 
     // manages choosing a boot colour
     protected ArrayList<Colour> availableColours = new ArrayList<>();
+    private int bootNotifsReceived;
 
 
     GameManager(Optional<Savegame> savegame, String pSessionID, GameVariant variant, String pLocalAddress) {
@@ -302,8 +303,9 @@ public abstract class GameManager {
                 showBootWindow(); // all colours are available, don't need to send any commands
             } else {
                 // ask the existing players for their colours
-                String localAddress = NetworkUtils.getLocalIPAddPort();
+                String localAddress = CommunicationsManager.getLocalAddress();
                 coms.sendGameCommandToAllPlayers(new GetBootColourCommand(localAddress));
+                // for players who are not the host, we should check the colors available at this time
             }
         } catch (IOException e) {
             System.out.println("There was a problem sending the command to get players' boot colours!");
@@ -322,8 +324,11 @@ public abstract class GameManager {
         return coms;
     }
 
+    public ArrayList<Colour> getAvailableColours() {
+        return availableColours;
+    }
 
-    public void removeAvailableColour(Colour c, String playerIP) {
+    public void removeAvailableColour(Colour c) {
         availableColours.remove(c);
 
         try {
@@ -359,4 +364,12 @@ public abstract class GameManager {
         return this.variant;
     }
 
+    public int getBootNotifsReceived() {
+        return bootNotifsReceived;
+    }
+
+    public void receivedBootNotif()
+    {
+        bootNotifsReceived++;
+    }
 }

@@ -338,6 +338,12 @@ public class GameSession {
         return players;
     }
 
+    public static int getNumPlayers(String id) throws IOException
+    {
+        String details = getSessionDetailsReturnString(id);
+        return getPlayersFromSessionDetails(details).size();
+    }
+
     /**
      * does the same thing as getSessionDetails, except using long polling
      * @param id the id of the session we would like information about

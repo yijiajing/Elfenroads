@@ -46,7 +46,11 @@ public class Player implements Comparable<Player> {
     public Player (SerializablePlayer loaded)
     {
         curTown = GameMap.getInstance().getTownByName(loaded.getCurrentTownName());
-        destinationTown = GameMap.getInstance().getTownByName(loaded.getDestinationTownName());
+
+        if (loaded.getDestinationTownName() != null)
+        {
+            destinationTown = GameMap.getInstance().getTownByName(loaded.getDestinationTownName());
+        }
         colour = loaded.getColor();
         name = loaded.getName();
         score = loaded.getScore();

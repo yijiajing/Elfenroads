@@ -314,7 +314,6 @@ public class EGGameManager extends GameManager {
                 && gameState.getPassedPlayerCount() < gameState.getNumOfPlayers()) {
             LOGGER.info("Pass turn ct: " + gameState.getPassedPlayerCount() + ", staying at the PLAN ROUTES phase");
             gameState.setToFirstPlayer();
-
             gameState.clearPassedPlayerCount();
 
             // the first player will take action
@@ -364,7 +363,7 @@ public class EGGameManager extends GameManager {
             	auctionFrame.closeAuctionFrame();
             }
             //if just enter the Move Phase, reset the hasMoved parameter to false.
-            if(gameState.getCurrentPhase() == EGRoundPhaseType.MOVE) {
+            if (gameState.getCurrentPhase() == EGRoundPhaseType.MOVE) {
                 ActionManager.getInstance().setBootMoved(false);
             }
             

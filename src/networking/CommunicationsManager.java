@@ -1,6 +1,7 @@
 package networking;
 
 import commands.*;
+import enums.Colour;
 import enums.GameVariant;
 import gamemanager.GameManager;
 import utils.GameRuleUtils;
@@ -35,6 +36,7 @@ public class CommunicationsManager {
     // private GameCommand lastCommandReceived; // this will be used to update the GameState/GameScreen with whatever command we just received
     // private Queue<GameCommand> toExecute;
     private static int drawCardCommandsExecuted; // used to help ensure the proper order of command execution
+
 
 
     private CommunicationsManager(GameManager pManagedBy, String gameSessionID, String pLocalAddress)
@@ -229,7 +231,8 @@ public class CommunicationsManager {
         {
             Logger.getGlobal().info("Queue looks like: " + listener.getCommands().stream().map(c -> c.getClass().toString()).collect(Collectors.toList()));
             // we always want to execute boot choice-related commands first
-            if (listener.getCommands().peek() instanceof GetBootColourCommand || listener.getCommands().peek() instanceof SendBootColourCommand)
+            GameCommand firstCommand = listener.getCommands().peek();
+            if (firstCommand instanceof GetBootColourCommand || firstCommand instanceof SendBootColourCommand || firstCommand instanceof BootValidationResponseCommand || firstCommand instanceof ValidateBootCommand)
             {
                 GameCommand toExecute = listener.getCommands().poll();
                 Logger.getGlobal().info("Executing a command related to the boot colour");
@@ -342,4 +345,35 @@ public class CommunicationsManager {
         Logger.getGlobal().info("Some unexpected behavior happened. The system was looking for a DrawCardCommand in the queue but there wasn't one.");
     }
 
+
+    // TODO: can we use methods like contains() and remove() with enum values?
+    /**
+     * will be called when another player tries to validate their color selection
+     * checks if the color is taken already
+     */
+    public boolean checkIfColorAvailable(Colour toCheck)
+    {
+        return getAvailableColors().contains(toCheck);
+    }
+
+    /**
+     * will be called when another player's boot choice is validated
+     * makes note of the fact when that color is taken
+     */
+    public static void recordColorChoice(Colour toCheck)
+    {
+        INSTANCE.getAvailableColors().remove(toCheck);
+    }
+
+    public ArrayList<Colour> getAvailableColors() {
+        return GameManager.getInstance().getAvailableColours();
+    }
+
+    public static CommunicationsManager getINSTANCE() {
+        return INSTANCE;
+    }
+
+    public static String getLocalAddress() {
+        return localAddress;
+    }
 }
