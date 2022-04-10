@@ -1,6 +1,7 @@
 package domain;
 
 import java.util.*;
+import java.util.logging.Logger;
 
 public abstract class Deck<E extends Drawable> {
 
@@ -25,6 +26,7 @@ public abstract class Deck<E extends Drawable> {
     protected Deck (String sessionID) // to initialize an empty deck
     {
         sessionID = sessionID.trim();
+        Logger.getGlobal().info("Session ID is " + sessionID);
         seed = Long.parseLong(sessionID);
         rand = new Random(seed);
         components = new LinkedList<>();
