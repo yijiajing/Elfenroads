@@ -313,7 +313,7 @@ public abstract class GameManager {
     }
 
 
-    public void removeAvailableColour(Colour c, String playerIP) {
+    public void removeAvailableColour(Colour c) {
         availableColours.remove(c);
 
         try {

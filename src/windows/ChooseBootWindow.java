@@ -1,6 +1,7 @@
 package windows;
 
 import commands.SendBootColourCommand;
+import commands.ValidateBootCommand;
 import gamemanager.GameManager;
 import domain.Player;
 import enums.Colour;
@@ -60,11 +61,17 @@ public class ChooseBootWindow extends JPanel {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     String localPlayerName = User.getInstance().getUsername();
-                    GameManager.getInstance().setThisPlayer(new Player(c, localPlayerName));
+                    // GameManager.getInstance().setThisPlayer(new Player(c, localPlayerName));
                     try {
-                        String localIP = NetworkUtils.getLocalIPAddPort();
+                        /*String localIP = NetworkUtils.getLocalIPAddPort();
                         GameManager.getInstance().removeAvailableColour(c, localIP);
                         GameManager.getInstance().getComs().sendGameCommandToAllPlayers(new SendBootColourCommand(c, localIP));
+                         */ // previous code
+                        // validate the boot choice with the host
+                        String hostName = GameSession.getCreatorName(sessionID);
+                        ValidateBootCommand cmd = new ValidateBootCommand(localPlayerName, c);
+                        // send the validateBootCommand. The response from the host will automatically execute.
+                        GameManager.getInstance().getComs().sendCommandToIndividual(cmd, hostName); // sent
                     } catch (Exception exception) {
                         exception.printStackTrace();
                     }

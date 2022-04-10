@@ -390,4 +390,5 @@ public class CommunicationsManager {
     public static CommunicationsManager getINSTANCE() {
         return INSTANCE;
     }
+
 }
