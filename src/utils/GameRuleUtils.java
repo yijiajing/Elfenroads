@@ -70,6 +70,7 @@ public final class GameRuleUtils {
                     	LOGGER.info("Current Player use a witch card to go over obstacle.");
                     	GameState.instance().getCurrentPlayer().removeGoldCoins(1);
                         GameRuleUtils.updateRemoteGoldCoins(-1);
+                        cards.add(witch);
                     }
                     return road;
                 }
@@ -87,6 +88,7 @@ public final class GameRuleUtils {
                         	LOGGER.info("Current Player use a witch card to go over obstacle.");
                         	GameState.instance().getCurrentPlayer().removeGoldCoins(1);
                             GameRuleUtils.updateRemoteGoldCoins(-1);
+                            cards.add(witch);
                         }
                         return road;
                     }
@@ -98,6 +100,7 @@ public final class GameRuleUtils {
                         	LOGGER.info("Current Player use a witch card to go over obstacle.");
                         	GameState.instance().getCurrentPlayer().removeGoldCoins(1);
                             GameRuleUtils.updateRemoteGoldCoins(-1);
+                            cards.add(witch);
                         }
                         return road;
                     }
@@ -118,6 +121,7 @@ public final class GameRuleUtils {
                         	LOGGER.info("Current Player use a witch card to go over obstacle.");
                         	GameState.instance().getCurrentPlayer().removeGoldCoins(1);
                             GameRuleUtils.updateRemoteGoldCoins(-1);
+                            cards.add(witch);
                         }
                     	return road;
                     }
@@ -143,13 +147,12 @@ public final class GameRuleUtils {
                 	LOGGER.info("Current Player use a witch card to go over obstacle.");
                 	GameState.instance().getCurrentPlayer().removeGoldCoins(1);
                     GameRuleUtils.updateRemoteGoldCoins(-1);
+                    cards.add(witch);
                 }
                 return road;
             }
         }
-        if(witch != null && hasWitch) {
-        	cards.add(witch);
-        }
+
         return null;
     }
 
