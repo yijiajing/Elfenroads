@@ -64,7 +64,7 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
         });
     }
 
-    LobbyWindow()
+    public LobbyWindow()
     {
         initThreads();
         prevPayload = "";

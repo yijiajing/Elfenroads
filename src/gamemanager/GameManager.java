@@ -7,14 +7,14 @@ import enums.EGRoundPhaseType;
 import enums.ELRoundPhaseType;
 import enums.GameVariant;
 import savegames.Savegame;
-import windows.ChooseBootWindow;
-import windows.MainFrame;
+import windows.*;
 import networking.*;
 import panel.ElfBootPanel;
 import gamescreen.GameScreen;
 import utils.GameRuleUtils;
 import utils.NetworkUtils;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -65,7 +65,12 @@ public abstract class GameManager {
             // if the local user is the creator, then we can start a session
             if (User.getInstance().getUsername().equals(savegame.get().getCreatorName()))
             {
-                try {GameSession loadedSession = new GameSession(User.getInstance(), savegame.get().getSaveGameID());}
+                try {
+                    GameSession loadedSession = new GameSession(User.getInstance(), savegame.get().getSaveGameID());
+                    sessionID = loadedSession.getId();
+                    MainFrame.mainPanel.add(new HostWaitWindow(sessionID), "hostWaitingRoom");
+                    MainFrame.cardLayout.show(MainFrame.mainPanel, "hostWaitingRoom");
+                }
                 catch (Exception e)
                 {
                     Logger.getGlobal().severe("There was a problem setting up the GameSession for the loaded game.");
@@ -76,7 +81,32 @@ public abstract class GameManager {
             else // if we were not the creator of the original session, we need to join the host.
             {
                 // check if the session with the savegameid already exists. if so, join it
+                try
+                {
+                    String idOfTheSession = GameSession.lookupSessionBySavegame(savegame.get().getSaveGameID());
+                    // we found the session, so we can join it.
+                    String localIP = NetworkUtils.getLocalIPAddPort();
+                    GameSession.joinSession(MainFrame.loggedIn, idOfTheSession, localIP);
+                    // now that we've joined, set the session ID to the proper value
+                    sessionID = idOfTheSession;
+                    // take the player to the waiting window (bypass boot selection)
+                    // initialize a new PlayerWaitWindow
+                    PlayerWaitWindow updated = new PlayerWaitWindow(GameManager.getInstance().getSessionID());
+                    MainFrame.setPlayerWaitWindow(updated);
+                    MainFrame.mainPanel.add(updated, "playerWaitingRoom");
+                    MainFrame.cardLayout.show(MainFrame.mainPanel, "playerWaitingRoom");
+                }
+                catch (Exception e)
+                {
+                    Logger.getGlobal().info("There was a problem finding and joining a session with that saveGameID");
+                    e.printStackTrace();
+                }
                 // otherwise, notify the user that he cannot play this save until the creator starts it up.
+                JOptionPane.showMessageDialog(null, "You must wait for" + savegame.get().getCreatorName() + "to load that game first. Going back to the LobbyWindow.");
+                LobbyWindow reinitialized = new LobbyWindow();
+                MainFrame.setLobbyWindow(reinitialized);
+                MainFrame.mainPanel.add(reinitialized, "lobby");
+                MainFrame.cardLayout.show(MainFrame.mainPanel, "lobby");
 
             }
         }
@@ -131,6 +161,14 @@ public abstract class GameManager {
      * should be put here.
      */
     public void launch() {
+
+        // if the game was loaded from a save, jump right into the GameScreen
+
+        if (isLoaded())
+        {
+            MainFrame.cardLayout.show((MainFrame.mainPanel), "gameScreen");
+        }
+
         LOGGER.info("We have all players' info ready, setting up the rounds");
         gameState.sortPlayers();
         gameState.setToFirstPlayer();
@@ -389,5 +427,9 @@ public abstract class GameManager {
     public void receivedBootNotif()
     {
         bootNotifsReceived++;
+    }
+
+    public boolean isLoaded() {
+        return loaded;
     }
 }
