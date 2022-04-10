@@ -4,11 +4,14 @@ import gamemanager.GameManager;
 import enums.GameVariant;
 import org.json.JSONObject;
 import networking.*;
+import savegames.Savegame;
 import utils.NetworkUtils;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.event.*;
 import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -109,13 +112,15 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
         loadButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                track1.play();
+                /*track1.play();
                 flag = 1;
                 t.interrupt(); // kill the thread
                 remove(background_elvenroads);
                 MainFrame.mainPanel.add(new LoadGameWindow(), "load");
                 MainFrame.cardLayout.show(MainFrame.mainPanel,"load");
+                */
 
+                chooseSaveGame();
             }
         });
         gamesButton.addActionListener(new ActionListener()
@@ -321,6 +326,38 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
         }
 
     }
+
+    private void chooseSaveGame()
+    {
+        JFileChooser f = new JFileChooser("./out/saves");
+        FileNameExtensionFilter filter = new FileNameExtensionFilter ("Savegame files", ".elf");
+        f.addChoosableFileFilter(filter);
+        f.setFileSelectionMode(JFileChooser.FILES_ONLY);//.DIRECTORIES_ONLY);
+        //f.setFileFilter(filter);
+        int selection = f.showOpenDialog(this);
+        // if the user cancelled without selecting something, go back to the lobby window
+        if (selection == JFileChooser.CANCEL_OPTION)
+        {
+
+        }
+        else
+        {
+            // the user has selected a .elf savegame file
+            File saveFile = f.getSelectedFile(); // this file is a .elf file representing a savegame object
+            try
+            {
+                Savegame loaded = Savegame.read(saveFile);
+                String localIP = NetworkUtils.getLocalIPAddPort();
+                GameManager.init(Optional.of(loaded), loaded.getSessionID(), loaded.getGameVariant(), localIP);
+            }
+            catch (Exception e)
+            {
+                Logger.getGlobal().severe("There was a problem reading in the savegame from " + saveFile.getAbsolutePath());
+                e.printStackTrace();
+            }
+        }
+    }
+
 
     @Override
     public void run() 
