@@ -41,8 +41,12 @@ public class ValidateBootCommand implements GameCommand {
             // remove the colour from this host's screen and reinitialize the window
             // next, re-display the choose boot window with the updated choices
             ChooseBootWindow window = new ChooseBootWindow(GameManager.getInstance().getSessionID(), GameManager.getInstance().getAvailableColours());
-            MainFrame.mainPanel.add(window, "choose-boot");
-            MainFrame.cardLayout.show(MainFrame.mainPanel, "choose-boot");
+            if (GameManager.getInstance().getThisPlayer() == null) // if we haven't chosen a boot color yet, update the choose boot window
+            {
+                MainFrame.mainPanel.add(window, "choose-boot");
+                MainFrame.cardLayout.show(MainFrame.mainPanel, "choose-boot");
+            }
+            // else, we don't care
 
         }
         BootValidationResponseCommand cmd = new BootValidationResponseCommand(validated, bootColorChoice);
