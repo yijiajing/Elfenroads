@@ -140,7 +140,7 @@ public abstract class GameManager {
 
         // initialize all the players now that the game has been launched and everyone is in
         try {
-            ArrayList<String> players = GameSession.getPlayerNames(sessionID);
+            // ArrayList<String> players = GameSession.getPlayerNames(sessionID);
             String localPlayerName = getThisPlayer().getName();
 
             AddPlayerCommand cmd = new AddPlayerCommand(localPlayerName, thisPlayer.getColour());
@@ -163,18 +163,15 @@ public abstract class GameManager {
     public void launch() {
 
         // if the game was loaded from a save, jump right into the GameScreen
-
-        if (isLoaded())
+        if (!loaded)
         {
-            MainFrame.cardLayout.show((MainFrame.mainPanel), "gameScreen");
+            LOGGER.info("We have all players' info ready, setting up the rounds");
+            gameState.sortPlayers();
+            gameState.setToFirstPlayer();
+            System.out.print(gameState.getPlayers());
+
+            setUpNewGame();
         }
-
-        LOGGER.info("We have all players' info ready, setting up the rounds");
-        gameState.sortPlayers();
-        gameState.setToFirstPlayer();
-        System.out.print(gameState.getPlayers());
-
-        if (!loaded) setUpNewGame();
 
         GameScreen.getInstance().draw();
         MainFrame.cardLayout.show(MainFrame.mainPanel, "gameScreen");
