@@ -42,13 +42,14 @@ public final class GameRuleUtils {
         boolean hasWitch = false;
         TravelCard witch = null;
         //check if the player has choose a witch card and has at lease one gold coin.
-        for(TravelCard card: cards) {
+        for (TravelCard card: cards) {
         	if(card.getType() == TravelCardType.WITCH && GameState.instance().getCurrentPlayer().getGoldCoins() >= 1) {
         		hasWitch = true;
         		witch = card;
-        		cards.remove(card);
+        		break;
         	}
         }
+        cards.remove(witch);
         
         for (Road road : roads) {
             // cannot move on a non-river and non-lake road without transportation counter
