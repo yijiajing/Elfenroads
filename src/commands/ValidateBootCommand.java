@@ -35,7 +35,7 @@ public class ValidateBootCommand implements GameCommand {
         {
             CommunicationsManager.recordColorChoice(bootColorChoice);
         }
-        BootValidationResponseCommand cmd = new BootValidationResponseCommand(validated);
+        BootValidationResponseCommand cmd = new BootValidationResponseCommand(validated, bootColorChoice);
         try {coms.sendCommandToIndividual(cmd, senderName);}
         catch (IOException e)
         {

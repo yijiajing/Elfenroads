@@ -36,7 +36,7 @@ public class BootValidationResponseCommand implements GameCommand
 
             // go to the next screen
             // take the player to either the host or player waiting window, depending on whether they are the host of the session
-            if (GameSession.isCreator(User.getInstance(), GameManager.getInstance().getSessionID()))) // the player is the host of the session
+            if (GameSession.isCreator(User.getInstance(), GameManager.getInstance().getSessionID())) // the player is the host of the session
             {
                 MainFrame.mainPanel.add(new HostWaitWindow(GameManager.getInstance().getSessionID()), "hostWaitingRoom");
                 MainFrame.cardLayout.show(MainFrame.mainPanel, "hostWaitingRoom");

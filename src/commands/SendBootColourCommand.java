@@ -22,7 +22,7 @@ public class SendBootColourCommand implements GameCommand {
      */
     @Override
     public void execute() {
-        GameManager.getInstance().removeAvailableColour(bootColour, senderIP);
+        GameManager.getInstance().removeAvailableColour(bootColour);
     }
 
 
