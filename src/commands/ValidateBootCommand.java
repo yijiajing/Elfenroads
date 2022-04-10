@@ -5,6 +5,8 @@ package commands;
 import enums.Colour;
 import gamemanager.GameManager;
 import networking.CommunicationsManager;
+import windows.ChooseBootWindow;
+import windows.MainFrame;
 
 import java.io.IOException;
 import java.util.logging.Logger;
@@ -36,6 +38,12 @@ public class ValidateBootCommand implements GameCommand {
         {
             CommunicationsManager.recordColorChoice(bootColorChoice);
             GameManager.getInstance().removeAvailableColour(bootColorChoice);
+            // remove the colour from this host's screen and reinitialize the window
+            // next, re-display the choose boot window with the updated choices
+            ChooseBootWindow window = new ChooseBootWindow(GameManager.getInstance().getSessionID(), GameManager.getInstance().getAvailableColours());
+            MainFrame.mainPanel.add(window, "choose-boot");
+            MainFrame.cardLayout.show(MainFrame.mainPanel, "choose-boot");
+
         }
         BootValidationResponseCommand cmd = new BootValidationResponseCommand(validated, bootColorChoice);
         try {coms.sendCommandToIndividual(cmd, senderName);}
