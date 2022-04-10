@@ -6,6 +6,7 @@ import networking.CommunicationsManager;
 import utils.NetworkUtils;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 /**
  * A command to request the boot colours of the other players
@@ -25,15 +26,17 @@ public class GetBootColourCommand implements GameCommand {
     @Override
     public void execute() {
         CommunicationsManager coms = GameManager.getInstance().getComs();
+        Logger.getGlobal().info("Someone requested our boot color.");
 
         try {
-            String localAddress = NetworkUtils.getLocalIPAddPort();
+            String localAddress = CommunicationsManager.getLocalAddress();
 
             // if we have not picked our color yet, we can tell the asker that
             if (GameManager.getInstance().getThisPlayer() == null)
             {
                 // we haven't chosen a boot yet
                 SendBootColourCommand response = new SendBootColourCommand(null);
+                coms.sendGameCommandToPlayer(response, senderIP);
                 return;
             }
 

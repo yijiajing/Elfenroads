@@ -293,7 +293,7 @@ public abstract class GameManager {
                 showBootWindow(); // all colours are available, don't need to send any commands
             } else {
                 // ask the existing players for their colours
-                String localAddress = NetworkUtils.getLocalIPAddPort();
+                String localAddress = CommunicationsManager.getLocalAddress();
                 coms.sendGameCommandToAllPlayers(new GetBootColourCommand(localAddress));
                 // for players who are not the host, we should check the colors available at this time
             }
