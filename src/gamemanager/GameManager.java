@@ -312,6 +312,9 @@ public abstract class GameManager {
         return coms;
     }
 
+    public ArrayList<Colour> getAvailableColours() {
+        return availableColours;
+    }
 
     public void removeAvailableColour(Colour c) {
         availableColours.remove(c);

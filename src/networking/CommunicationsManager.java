@@ -37,7 +37,6 @@ public class CommunicationsManager {
     // private Queue<GameCommand> toExecute;
     private static int drawCardCommandsExecuted; // used to help ensure the proper order of command execution
 
-    private ArrayList<Colour> availableColors; // will be null on all computers except the host of the session
 
 
     private CommunicationsManager(GameManager pManagedBy, String gameSessionID, String pLocalAddress)
@@ -53,12 +52,6 @@ public class CommunicationsManager {
         recordPlayerAddresses();
         // next, set up the ServerSocket to listen for game updates
         setUpListener();
-
-        // set up host-specific stuff
-        if (GameSession.isCreator(User.getInstance(), sessionID));
-        {
-            hostSpecificSetup();
-        }
     }
 
     public static CommunicationsManager init(GameManager pManagedBy, String gameSessionID, String pLocalAddress)
@@ -350,19 +343,6 @@ public class CommunicationsManager {
         Logger.getGlobal().info("Some unexpected behavior happened. The system was looking for a DrawCardCommand in the queue but there wasn't one.");
     }
 
-    /**
-     * will set up some stuff specific to the host, including the master list of boot choices
-     * this host will be responsible for validating everyone's elf boot choices
-     */
-    private void hostSpecificSetup()
-    {
-        // init the master availableColors list
-        availableColors = new ArrayList<>();
-        for (Colour col : Colour.values())
-        {
-            availableColors.add(col);
-        }
-    }
 
     // TODO: can we use methods like contains() and remove() with enum values?
     /**
@@ -384,11 +364,14 @@ public class CommunicationsManager {
     }
 
     public ArrayList<Colour> getAvailableColors() {
-        return availableColors;
+        return GameManager.getInstance().getAvailableColours();
     }
 
     public static CommunicationsManager getINSTANCE() {
         return INSTANCE;
     }
 
+    public static String getLocalAddress() {
+        return localAddress;
+    }
 }

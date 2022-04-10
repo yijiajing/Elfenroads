@@ -13,7 +13,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 
 public class ChooseBootWindow extends JPanel {
@@ -22,6 +24,8 @@ public class ChooseBootWindow extends JPanel {
     private String sessionID;
     private JPanel bootPanel;
     private JPanel textPanel;
+
+    private boolean localPlayerIsCreator;
 
     public ChooseBootWindow(String sessionID, ArrayList<Colour> availColours) {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -46,6 +50,8 @@ public class ChooseBootWindow extends JPanel {
         this.textPanel.add(text);
 
         displayAvailableColours(availColours);
+
+        localPlayerIsCreator = GameSession.isCreator(User.getInstance(), sessionID);
     }
 
 
@@ -61,42 +67,35 @@ public class ChooseBootWindow extends JPanel {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     String localPlayerName = User.getInstance().getUsername();
-                    // GameManager.getInstance().setThisPlayer(new Player(c, localPlayerName));
-                    try {
-                        /*String localIP = NetworkUtils.getLocalIPAddPort();
-                        GameManager.getInstance().removeAvailableColour(c, localIP);
-                        GameManager.getInstance().getComs().sendGameCommandToAllPlayers(new SendBootColourCommand(c, localIP));
-                         */ // previous code
-                        // validate the boot choice with the host
-                        String hostName = GameSession.getCreatorName(sessionID);
-                        ValidateBootCommand cmd = new ValidateBootCommand(localPlayerName, c);
-                        // send the validateBootCommand. The response from the host will automatically execute.
-                        GameManager.getInstance().getComs().sendCommandToIndividual(cmd, hostName); // sent
-                    } catch (Exception exception) {
-                        exception.printStackTrace();
-                    }
-
-                    // take the player to either the host or player waiting window, depending on whether they are the host of the session
-                    remove(background_elvenroads);
-                    if (GameSession.isCreator(User.getInstance(), sessionID)) // the player is the host of the session
+                    if (localPlayerIsCreator) // if we are the creator, we can assume that we are the first to join and take whatever boot we want.
                     {
+                        GameManager.getInstance().setThisPlayer(new Player(c, localPlayerName));
+                        GameManager.getInstance().removeAvailableColour(c); // this line might be unecessary, but I'm just going to leave it
+                        String localIP = GameManager.getInstance().getComs().getLocalAddress();
+                        try {
+                            GameManager.getInstance().getComs().sendGameCommandToAllPlayers(new SendBootColourCommand(c, localIP));
+                        } catch (IOException e2) {
+                            e2.printStackTrace();
+                        }
+
+                        remove(background_elvenroads);
                         MainFrame.mainPanel.add(new HostWaitWindow(sessionID), "hostWaitingRoom");
                         MainFrame.cardLayout.show(MainFrame.mainPanel, "hostWaitingRoom");
-                    }
-                    // the player is not the host of the session, so he should go to the playerWaitingRoom
-                    else
+
+                    } else // if we aren't the creator, we need to validate the boot selection with the creator
                     {
-                        // if we previously had a PlayerWaitWindow (meaning we were in a game before and then left,) we need to completely reinitialize it
-                        if (MainFrame.getPlayerWait() != null)
-                        {
-                            PlayerWaitWindow prev = MainFrame.getPlayerWait();
-                            MainFrame.mainPanel.remove(prev);
+                        try {
+                            // validate the boot choice with the host
+                            String hostName = GameSession.getCreatorName(sessionID);
+                            ValidateBootCommand cmd = new ValidateBootCommand(localPlayerName, c);
+                            // send the validateBootCommand. The response from the host will automatically execute.
+                            GameManager.getInstance().getComs().sendCommandToIndividual(cmd, hostName); // sent
+
+                            // we've sent the command. now, we can just wait for the response and handle everything else in the execute method of BootValidationResponseCommand
+                        } catch (IOException e3) {
+                            Logger.getGlobal().info("THere was a problem sending the command.");
+                            e3.printStackTrace();
                         }
-                        // initialize a new PlayerWaitWindow
-                        PlayerWaitWindow updated = new PlayerWaitWindow(sessionID);
-                        MainFrame.setPlayerWaitWindow(updated);
-                        MainFrame.mainPanel.add(updated, "playerWaitingRoom");
-                        MainFrame.cardLayout.show(MainFrame.mainPanel, "playerWaitingRoom");
                     }
                 }
 
