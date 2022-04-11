@@ -454,6 +454,19 @@ public class GameState implements Serializable{
                 SerializableTransportationCounter ctrDowncasted = (SerializableTransportationCounter) ctr;
                 counterPile.addDrawable(new TransportationCounter(ctrDowncasted));
             }
+
+            else if (ctr instanceof SerializableGoldPiece)
+            {
+                SerializableGoldPiece ctrDowncasted = (SerializableGoldPiece) ctr;
+                counterPile.addDrawable(new GoldPiece(ctrDowncasted));
+            }
+
+            else if (ctr instanceof SerializableMagicSpell)
+            {
+                SerializableMagicSpell ctrDowncasted = (SerializableMagicSpell) ctr;
+                counterPile.addDrawable(new MagicSpell(ctrDowncasted));
+            }
+            
             else // if ctr is an obstacle
             {
                 SerializableObstacle ctrDowncasted = (SerializableObstacle) ctr;
