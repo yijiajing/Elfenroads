@@ -3,12 +3,11 @@ package windows;
 import domain.CounterUnit;
 import domain.TransportationCounter;
 import enums.CounterType;
-import enums.CounterUnitType;
 import gamemanager.EGGameManager;
 import gamemanager.GameManager;
 import gamescreen.EGGameScreen;
 import gamescreen.GameScreen;
-import networking.ActionManager;
+import gamemanager.ActionManager;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,14 +1,12 @@
 package domain;
 
 import commands.DrawCardCommand;
-import commands.DrawCounterCommand;
 import enums.TravelCardType;
 import windows.MP3Player;
 import gamemanager.GameManager;
 import gamescreen.GameScreen;
-import windows.MP3Player;
 import windows.MainFrame;
-import networking.ActionManager;
+import gamemanager.ActionManager;
 import networking.GameState;
 import savegames.SerializableTravelCard;
 import utils.GameRuleUtils;
@@ -17,7 +15,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.logging.Logger;
 
 public class TravelCard extends CardUnit {

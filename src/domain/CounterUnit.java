@@ -7,7 +7,7 @@ import enums.*;
 import gamemanager.GameManager;
 import windows.MP3Player;
 import windows.MainFrame;
-import networking.ActionManager;
+import gamemanager.ActionManager;
 import networking.GameState;
 import gamescreen.GameScreen;
 import utils.GameRuleUtils;

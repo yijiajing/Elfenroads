@@ -30,15 +30,15 @@ public class StartWindow extends JPanel {
         background_elvenroads = new JLabel(new ImageIcon(background_image_resized));
 
         // startButton config
-        startButton = new JButton("Start");
+        startButton = new JButton("START");
+        startButton.setPreferredSize(new Dimension(150, 70));
         startButton.addActionListener(new ActionListener(){
 
             @Override
             public void actionPerformed(ActionEvent e) {
                 track1.play();
                 remove(background_elvenroads);
-                // MainFrame.mainPanel.add(new LoginWindow(), "login");
-                MainFrame.mainPanel.add(new LoginWindowNoNgrok(), "login");
+                MainFrame.mainPanel.add(new LoginWindow(), "login");
                 MainFrame.cardLayout.show(MainFrame.mainPanel,"login");
             }
             
@@ -46,7 +46,8 @@ public class StartWindow extends JPanel {
         
 
         // aboutButton config
-        aboutButton = new JButton("About");
+        aboutButton = new JButton("ABOUT");
+        aboutButton.setPreferredSize(new Dimension(150, 70));
         aboutButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -59,7 +60,8 @@ public class StartWindow extends JPanel {
         });
         
         // exitButton config
-        exitButton = new JButton("Exit");
+        exitButton = new JButton("EXIT");
+        exitButton.setPreferredSize(new Dimension(150, 70));
         exitButton.addActionListener(new ActionListener(){
 
             @Override
@@ -74,6 +76,7 @@ public class StartWindow extends JPanel {
 
         Font font = new Font("Arial", Font.BOLD, 16);
         buttons = new JPanel();
+        buttons.setOpaque(false);
         startButton.setFont(font);
         aboutButton.setFont(font);
         exitButton.setFont(font);

@@ -5,19 +5,16 @@ import domain.CounterUnit;
 import domain.Player;
 import domain.Road;
 import domain.TransportationCounter;
-import enums.CounterType;
-import gamemanager.EGGameManager;
 import gamemanager.GameManager;
 import gamescreen.EGGameScreen;
 import gamescreen.GameScreen;
-import networking.ActionManager;
+import gamemanager.ActionManager;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.logging.Logger;
 
 public class DoubleMagicSpellPopup extends JPanel {
