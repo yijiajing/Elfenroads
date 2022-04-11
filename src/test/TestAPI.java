@@ -24,30 +24,12 @@ public class TestAPI {
     public static void main (String [] args) throws IOException, Exception
 
     {
-        System.out.println(GameSession.getAllSessionID());
+
         deleteAllSessions();
+        System.out.println(User.getAccessTokenUsingCreds("Elfengold_Witch", "abc123_ABC123"));
 
-
-
-        // JSONObject details = GameSession.getSessionDetails()
     }
 
-        // System.out.println(getSessions());
-
-       //  System.out.println(User.getAccessTokenUsingCreds("maex", "abc123_ABC123"));
-        // deleteAllSessions();
-        // testCreateUser("user_test", "abc123_ABC123");
-
-        /*
-        initializeGameServiceWithStandardSettings("Elfenland_Classic", "Elfenland (Classic)" );
-        initializeGameServiceWithStandardSettings("Elfenland_Long", "Elfenland (Long)");
-        initializeGameServiceWithStandardSettings("Elfenland_Destination", "Elfenland (Destination)");
-        initializeGameServiceWithStandardSettings("Elfengold_Classic", "Elfengold (Classic)");
-        initializeGameServiceWithStandardSettings("Elfengold_Destination", "Elfengold (Destination)");
-        initializeGameServiceWithStandardSettings("Elfengold_RandomGold", "Elfengold (Random Gold)");
-        initializeGameServiceWithStandardSettings("Elfengold_Witch", "Elfengold (Witch)");
-
-         */
 
 
     public static void testCreateUser(String username, String password) throws IOException, Exception {
@@ -56,6 +38,17 @@ public class TestAPI {
         User.logout();
         User createNew = User.init(username, password);
         createNew.printTokenRelatedFields();
+    }
+
+    public static void initGameServices()
+    {
+        initializeGameServiceWithStandardSettings("Elfenland_Classic", "Elfenland (Classic)" );
+        initializeGameServiceWithStandardSettings("Elfenland_Long", "Elfenland (Long)");
+        initializeGameServiceWithStandardSettings("Elfenland_Destination", "Elfenland (Destination)");
+        initializeGameServiceWithStandardSettings("Elfengold_Classic", "Elfengold (Classic)");
+        initializeGameServiceWithStandardSettings("Elfengold_Destination", "Elfengold (Destination)");
+        initializeGameServiceWithStandardSettings("Elfengold_RandomGold", "Elfengold (Random Gold)");
+        initializeGameServiceWithStandardSettings("Elfengold_Witch", "Elfengold (Witch)");
     }
 
     public static void createASession(String variant)
