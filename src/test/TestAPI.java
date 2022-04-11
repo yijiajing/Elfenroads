@@ -1,6 +1,7 @@
 package test;
 
 import commands.GameCommand;
+import gamemanager.GameManager;
 import networking.DNSLookup;
 import networking.GameService;
 import networking.GameSession;
@@ -24,10 +25,27 @@ public class TestAPI {
     public static void main (String [] args) throws IOException, Exception
 
     {
+        String list = getPlayersListForLS();
+        System.out.println("\"players\": " + list + ",\n");
+    }
 
-        deleteAllSessions();
-        System.out.println(User.getAccessTokenUsingCreds("Elfengold_Destination", "abc123_ABC123"));
 
+    private static String getPlayersListForLS() throws Exception {
+        ArrayList<String> players = GameSession.getPlayerNames("7431402700796212744");
+        String out = "[";
+        int counter = 0;
+        int maxCounter = players.size() - 1;
+        for (String playerName : players) {
+            if (counter < maxCounter) {
+                out = out + "\"" + playerName + "\",";
+            } else // last player to add, so no comma at the end
+            {
+                out = out + "\"" + playerName + "\"";
+            }
+            counter++;
+        }
+
+        return out;
     }
 
 

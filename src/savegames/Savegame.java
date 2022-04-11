@@ -195,7 +195,7 @@ public class Savegame implements Serializable {
         String listOfPlayersForRegister = getPlayersListForLS();
         String token = User.getAccessTokenUsingCreds(gameName, "abc123_ABC123");
 
-        URL url = new URL("http://35.182.122.111:4242/api/gameservices/" + gameName + "/savegames/Savegameid1?access_token=" + token);
+        URL url = new URL("http://35.182.122.111:4242/api/gameservices/" + gameName + "/savegames/" + pSaveGameID + "?access_token=" + token);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("PUT");
         con.setRequestProperty("content-type", "application/json");
@@ -210,6 +210,8 @@ public class Savegame implements Serializable {
         out.writeBytes("}");
         out.flush();
         out.close();
+
+        Logger.getGlobal().info("The body of the request: \n" + out.toString());
 
         int status = con.getResponseCode();
         BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
@@ -432,7 +434,7 @@ public class Savegame implements Serializable {
         String out = "[";
         int counter = 0;
         int maxCounter = players.size() - 1;
-        for (String playerName : GameManager.getInstance().getGameState().getPlayerNames())
+        for (String playerName : players)
         {
             if (counter < maxCounter)
             {
@@ -440,7 +442,7 @@ public class Savegame implements Serializable {
             }
             else // last player to add, so no comma at the end
             {
-                out = out + "\"" + playerName + "\"";
+                out = out + "\"" + playerName + "\"]";
             }
             counter++;
         }
