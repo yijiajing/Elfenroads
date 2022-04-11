@@ -26,7 +26,7 @@ public class TestAPI {
     {
 
         deleteAllSessions();
-        System.out.println(User.getAccessTokenUsingCreds("Elfengold_Witch", "abc123_ABC123"));
+        System.out.println(User.getAccessTokenUsingCreds("Elfengold_Destination", "abc123_ABC123"));
 
     }
 
