@@ -186,7 +186,10 @@ public abstract class GameManager {
         GameScreen.getInstance().draw();
         MainFrame.cardLayout.show(MainFrame.mainPanel, "gameScreen");
 
-        initializeElfBoots();
+        if (!loaded)
+        {
+            initializeElfBoots();
+        }
         setUpRound();
     }
 
