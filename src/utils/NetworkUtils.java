@@ -187,7 +187,8 @@ public class NetworkUtils {
         }
 
         callCounter ++;
-        if (callCounter < 10)
+        // TODO: change
+        if (callCounter < 100)
         {
             Thread.sleep(2000);
             return getLocalIP(callCounter); // exhibits some weird behavior, so we will retry up to 5 times

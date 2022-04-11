@@ -570,4 +570,15 @@ public class GameState implements Serializable{
     public int getGoldCardDeckCount() {
     	return goldCardDeckCount;
     }
+
+    public ArrayList<String> getPlayerNames()
+    {
+        ArrayList<String> out = new ArrayList<>();
+        for (Player cur : getPlayers())
+        {
+            out.add(cur.getName());
+        }
+
+        return out;
+    }
 }
