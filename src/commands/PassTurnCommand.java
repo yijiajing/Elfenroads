@@ -19,6 +19,7 @@ public class PassTurnCommand implements GameCommand {
 
         if (gameState.getCurrentPhase() == EGRoundPhaseType.AUCTION) {
             AuctionFrame auctionFrame = ((EGGameManager) GameManager.getInstance()).getAuctionFrame();
+            if (auctionFrame.getNumCountersInAuction() == 0) return;
 
             if (gameState.getPassedPlayerCount() == gameState.getNumOfPlayers()) {
                 CounterUnit currentCounter = auctionFrame.removeFirstCounter();

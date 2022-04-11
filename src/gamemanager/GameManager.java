@@ -12,13 +12,11 @@ import networking.*;
 import panel.ElfBootPanel;
 import gamescreen.GameScreen;
 import utils.GameRuleUtils;
-import utils.NetworkUtils;
 
 import javax.swing.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -40,6 +38,7 @@ public abstract class GameManager {
     // manages choosing a boot colour
     protected ArrayList<Colour> availableColours = new ArrayList<>();
     private int bootNotifsReceived;
+    private int cardNotifsReceived;
 
 
     GameManager(Optional<Savegame> savegame, String pSessionID, GameVariant variant, String pLocalAddress) {
@@ -457,7 +456,17 @@ public abstract class GameManager {
         bootNotifsReceived++;
     }
 
-    public boolean isLoaded() {
+    public boolean isLoaded() 
+    {
         return loaded;
+    }
+    public int getCardNotifsReceived() 
+    {
+        return cardNotifsReceived;
+    }
+
+    public void incrementCardNotifsReceived() 
+    {
+        this.cardNotifsReceived++;
     }
 }

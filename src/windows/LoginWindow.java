@@ -1,20 +1,18 @@
 package windows;
 
-import networking.*;
+import networking.User;
 import utils.NetworkUtils;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 
+import static javax.swing.Box.createHorizontalStrut;
 import static javax.swing.Box.createVerticalStrut;
 
 
-public class LoginWindow extends JPanel implements Runnable{
+public class LoginWindow extends JPanel implements Runnable {
 
     private JLabel background_elvenroads;
     private static Box labelBox;
@@ -22,18 +20,13 @@ public class LoginWindow extends JPanel implements Runnable{
     private static Box boxPanel;
     private static JTextField usernameTextField;
     private static JPasswordField passwordTextField;
-    private static JTextField ngrokTextField;
     private static JLabel usernameLabel;
     private static JLabel passwordLabel;
-    private static JLabel ngrok;
     private static JButton loginButton;
     private static JButton backButton;
     private JPanel infoPanel;
 
     private static Box box_paste_button;
-    private static JButton ngrokLogin;
-    private static JButton ngrokSingup;
-    private static JButton pasteClipboardButton;
     private static JButton createNewAccountButton;
 
     private JLabel popup;
@@ -48,53 +41,46 @@ public class LoginWindow extends JPanel implements Runnable{
         t = new Thread(this);
     }
 
-    LoginWindow() 
-    {
-	initThread();
-	MP3Player track1 = new MP3Player("./assets/Music/JLEX5AW-ui-medieval-click-heavy-positive-01.mp3");
+    LoginWindow() {
+	    initThread();
+	    MP3Player track1 = new MP3Player("./assets/Music/JLEX5AW-ui-medieval-click-heavy-positive-01.mp3");
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setSize((int) screenSize.getWidth(), (int) screenSize.getHeight());
-
-        infoPanel = new JPanel(new BorderLayout());
+        setLayout(new BorderLayout());
 
         background_elvenroads = MainFrame.getInstance().getElfenroadsBackground();
 
-        GridBagLayout layout = new GridBagLayout();
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 0;
+        JLayeredPane layers = new JLayeredPane();
+        layers.setBounds(0, 0, getWidth(), getHeight());
+        layers.setOpaque(false);
+        background_elvenroads.add(layers);
 
-        gbc.gridwidth = 1;
-        gbc.gridheight= 3;
+        infoPanel = new JPanel(new BorderLayout());
+        infoPanel.setBounds(getWidth()/3, getHeight()/3+30, getWidth()/3, 100);
+        infoPanel.setOpaque(false);
 
         labelBox = Box.createVerticalBox();
         textFieldBox = Box.createVerticalBox();
 
-        usernameTextField = new JTextField(15);
-        passwordTextField = new JPasswordField(15);
-        ngrokTextField = new JTextField(20);
-        ngrok = new JLabel();
+        usernameTextField = new JTextField(25);
+        passwordTextField = new JPasswordField(25);
         usernameLabel = new JLabel();
         passwordLabel = new JLabel();
         popup = new JLabel();
+
         usernameLabel.setText("Username:");
+        usernameLabel.setFont(new Font("Serif", Font.BOLD, 20));
+
         passwordLabel.setText("Password:");
-        ngrok.setText("Ngrok token:");
+        passwordLabel.setFont(new Font("Serif", Font.BOLD, 20));
+
         loginButton = new JButton("Enter");
-        ngrokLogin = new JButton("ngrok LOGIN");
-        ngrokSingup = new JButton("ngrok SIGNUP");
+        loginButton.setPreferredSize(new Dimension(180, 50));
+        loginButton.setBounds(getWidth()/3+100, getHeight()/2, 180, 50);
+
         createNewAccountButton = new JButton("Create a new account");
-        pasteClipboardButton = new JButton("Paste ngrok token");
-
-        pasteClipboardButton.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e) 
-            {
-                ngrokTextField.paste();
-            }
-        });
-
+        createNewAccountButton.setPreferredSize(new Dimension(180, 50));
+        createNewAccountButton.setBounds(getWidth()/2+50, getHeight()/2, 180, 50);
         createNewAccountButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -102,43 +88,6 @@ public class LoginWindow extends JPanel implements Runnable{
                 MainFrame.mainPanel.add(new CreateAccountWindow(), "createAccount");
                 MainFrame.cardLayout.show(MainFrame.mainPanel, "createAccount");
             }
-        });
-
-        ngrokSingup.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e) 
-            {
-                try 
-                {
-                    Desktop.getDesktop().browse(new URI("https://dashboard.ngrok.com/signup"));
-
-                } 
-                catch (IOException | URISyntaxException e1) 
-                {
-                    e1.printStackTrace();
-                }
-            }
-            
-        });
-        
-        ngrokLogin.addActionListener(new ActionListener() 
-        {
-
-            @Override
-            public void actionPerformed(ActionEvent e) 
-            {
-                try 
-                {
-                    Desktop.getDesktop().browse(new URI("https://dashboard.ngrok.com/login"));
-                     
-                } 
-                catch (IOException | URISyntaxException e1) 
-                {
-                    e1.printStackTrace();
-                }  
-            }
-            
         });
 
         loginButton.addActionListener(new ActionListener()
@@ -151,7 +100,6 @@ public class LoginWindow extends JPanel implements Runnable{
                 
             	String username = usernameTextField.getText();
             	String password = passwordTextField.getText();
-                String token = ngrokTextField.getText();
             	boolean u = false;
             	try 
             	{
@@ -161,7 +109,6 @@ public class LoginWindow extends JPanel implements Runnable{
             	{
 					e1.printStackTrace();
 				}
-            	boolean p = NetworkUtils.isValidPassword(password);
                 try 
                 {
                     // first, make sure the username exists. if not, display the appropriate pop-up.
@@ -192,40 +139,9 @@ public class LoginWindow extends JPanel implements Runnable{
                     }
                     return;
                 }
-
-                // we have made it through the LS login, so the last error to check for is whether Ngrok is running properly
-
-                try 
-                {
-                    PlayerServer.startNgrok(token);
-                    track1.play();
-                } 
-                catch (IOException ngrokStartupProblem) 
-                {
-                    synchronized(t)
-                    {
-                        flag_ngrok = 1;
-                        initThread();
-                        t.start();
-                    }
-                    return;
-                }
-
-                if (!NetworkUtils.validateNgrok())
-                {
-                    synchronized(t)
-                    {
-                        flag_ngrok = 1;
-                        initThread();
-                        t.start();
-                    }
-                    return;
-                }
-
+                track1.play();
             	remove(background_elvenroads);
-                LobbyWindow lob = new LobbyWindow();
-                MainFrame.setLobbyWindow(lob);
-                MainFrame.mainPanel.add(lob, "lobby");
+                MainFrame.mainPanel.add(new LobbyWindow(), "lobby");
                 MainFrame.cardLayout.show(MainFrame.mainPanel,"lobby");
             }
             
@@ -238,7 +154,6 @@ public class LoginWindow extends JPanel implements Runnable{
             public void actionPerformed(ActionEvent e) {
                 String username = usernameTextField.getText();
                 String password = passwordTextField.getText();
-                String token = ngrokTextField.getText();
                 boolean u = false;
                 try 
             	{
@@ -264,12 +179,7 @@ public class LoginWindow extends JPanel implements Runnable{
                     }
 
                     // log into the LS
-
                     MainFrame.loggedIn = User.init(username, password);
-
-                    //MainFrame.loggedIn = null; // unecessary to set to null probably but I just want to make sure that we have no issues with User
-                    //MainFrame.loggedIn = User.init(username, password);
-
                 } 
                 catch (Exception loginProblem)
                 {
@@ -277,35 +187,6 @@ public class LoginWindow extends JPanel implements Runnable{
                     synchronized(t)
                     {
                         flag_password = 1;
-                        initThread();
-                        t.start();
-                    }
-                    return;
-                }
-
-                // we have made it through the LS login, so the last error to check for is whether Ngrok is running properly
-
-                try 
-                {
-                    PlayerServer.startNgrok(token);
-                    track1.play();
-                } 
-                catch (IOException ngrokStartupProblem) 
-                {
-                    synchronized(t)
-                    {
-                        flag_ngrok = 1;
-                        initThread();
-                        t.start();
-                    }
-                    return;
-                }
-
-                if (!NetworkUtils.validateNgrok())
-                {
-                    synchronized(t)
-                    {
-                        flag_ngrok = 1;
                         initThread();
                         t.start();
                     }
@@ -321,36 +202,29 @@ public class LoginWindow extends JPanel implements Runnable{
 
         labelBox.add(usernameLabel);
         usernameLabel.setAlignmentX(LEFT_ALIGNMENT);
-        labelBox.add(createVerticalStrut(10)); // small separation between lines
+        labelBox.add(createVerticalStrut(30)); // small separation between lines
         labelBox.add(passwordLabel);
         passwordLabel.setAlignmentX(LEFT_ALIGNMENT);
-        labelBox.add(createVerticalStrut(10));
-        labelBox.add(ngrok);
-        ngrok.setAlignmentX(LEFT_ALIGNMENT);
+        //labelBox.add(createVerticalStrut(10));
 
         textFieldBox.add(usernameTextField);
         textFieldBox.add(passwordTextField);
-        textFieldBox.add(ngrokTextField);
 
         boxPanel = Box.createHorizontalBox();
         boxPanel.add(labelBox);
+        boxPanel.add(createHorizontalStrut(15));
         boxPanel.add(textFieldBox);
-        boxPanel.add(loginButton);
-        boxPanel.add(ngrokLogin);
-        boxPanel.add(ngrokSingup);
-        boxPanel.add(pasteClipboardButton);
-        boxPanel.add(createNewAccountButton);
 
         box_paste_button = Box.createHorizontalBox();
-        box_paste_button.add(pasteClipboardButton);
         box_paste_button.add(popup);
         popup.setAlignmentX(RIGHT_ALIGNMENT);
         
         infoPanel.add(boxPanel,BorderLayout.CENTER);
         infoPanel.add(box_paste_button,BorderLayout.SOUTH);
 
-        background_elvenroads.setLayout(layout);
-        background_elvenroads.add(infoPanel,gbc);
+        layers.add(infoPanel);
+        layers.add(loginButton);
+        layers.add(createNewAccountButton);
 
         add(background_elvenroads);
 
@@ -406,32 +280,7 @@ public class LoginWindow extends JPanel implements Runnable{
              }
          }
  
-         // Print error message for wron ngrok token
-         // commented out because we are not using ngrok at the moment
 
-         /*
-         else if (flag_ngrok == 1)
-         {
-             synchronized(t)
-             {        
-                 flag_error++;
-                 popup.setText("Ngrok did not start properly. Please check your token input and try again. ERROR#" + flag_error);
-                 try
-                 {
-                     t.sleep(3000);
-                 } 
-                 catch (InterruptedException e) 
-                 {
-                     // TODO Auto-generated catch block
-                     e.printStackTrace();
-                 }
-                 popup.setText(null);
-         
-                 flag_ngrok = 0;
-                 t.stop();
-             }
-         }
-         */
  
      }
 

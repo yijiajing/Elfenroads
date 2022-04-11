@@ -494,6 +494,25 @@ public class AuctionFrame extends javax.swing.JFrame {
         //TextInput.setVisible(true);
     }//GEN-LAST:event_PassButtonActionPerformed
 
+    public void takeAction() {
+        // auto-pass the turn if there is no more counter or the player has already passed
+        if (getNumCountersInAuction() == 0 || localPlayerHasPassed) {
+            PassTurnCommand command = new PassTurnCommand();
+            command.execute();
+            try {
+                GameManager.getInstance().getComs().sendGameCommandToAllPlayers(command);
+                GameManager.getInstance().endTurn();
+            } catch (IOException e) {
+                Logger.getGlobal().severe("There was a problem sending the PassTurnCommand to all players.");
+                e.printStackTrace();
+            }
+        }
+        // notify the player to take action
+        else {
+            displayMessage("It is your turn. Please bid or pass your turn.");
+        }
+    }
+
     /**
      * @param args the command line arguments
      */

@@ -2,20 +2,15 @@ package gamescreen;
 
 import commands.SaveGameCommand;
 import domain.*;
-import enums.CounterType;
 import enums.GameVariant;
 import enums.EGRoundPhaseType;
-import gamemanager.GameManager;
 import panel.ShowHintButton;
 import windows.ChatBoxGUI;
-import windows.ChatBoxGUI;
-import networking.ActionManager;
+import gamemanager.ActionManager;
 import networking.GameState;
 import savegames.Savegame;
 import panel.EndTurnButton;
-import panel.ShowHintButton;
 import panel.ObserverPanel;
-import panel.ScoreBoardPanel;
 import utils.GameRuleUtils;
 
 import javax.swing.*;
@@ -27,7 +22,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 
 public abstract class GameScreen extends JPanel implements Serializable {
 

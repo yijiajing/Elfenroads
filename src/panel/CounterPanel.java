@@ -3,7 +3,7 @@ package panel;
 import domain.*;
 import enums.RegionType;
 import gamescreen.GameScreen;
-import networking.ActionManager;
+import gamemanager.ActionManager;
 
 import javax.swing.*;
 import java.awt.*;

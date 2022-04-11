@@ -84,7 +84,7 @@ public class ELGameManager extends GameManager {
 
         if (!(isLocalPlayerTurn() && gameState.getCurrentPhase() == ELRoundPhaseType.DEAL_CARDS)) return;
 
-        int numCards = thisPlayer.getHand().getNumTravelCards();
+        int numCards = thisPlayer.getHand().getCardListSize();
         for (int i = numCards; i < 8; i++) {
             thisPlayer.getHand().addUnit(gameState.getTravelCardDeck().draw());
         }
@@ -137,7 +137,7 @@ public class ELGameManager extends GameManager {
             updateGameScreen();
             System.out.println("Current phase: DRAW COUNTERS");
 
-            if (gameState.getGameVariant() == GameVariant.ELFENLAND_LONG) {
+            if (gameState.getGameVariant() == GameVariant.ELFENLAND_LONG && gameState.getCurrentPhase() == ELRoundPhaseType.DRAW_COUNTER_ONE) {
                 GameScreen.displayMessage("This is the long variant of Elfenland. You will go through 4 rounds instead of 3.");
             }
 
@@ -233,14 +233,33 @@ public class ELGameManager extends GameManager {
      */
     @Override
     public void endPhase() {
+        LOGGER.info("Entering end phase");
         actionManager.clearSelection();
+        if (gameState.getCurrentPhase() == ELRoundPhaseType.MOVE) {
+            // update local player travel card count
+            thisPlayer.getHand().updateNumTravelCards();
+
+            LOGGER.info("Sending NumTravelCardsCommand");
+            // update remote player travel card count
+            NumTravelCardsCommand numTravelCardsCommand = new NumTravelCardsCommand();
+            try {
+                coms.sendGameCommandToAllPlayers(numTravelCardsCommand);
+            } catch (IOException e) {
+                LOGGER.severe("There was a problem sending the command to update number of travel cards!");
+                e.printStackTrace();
+            }
+        }
+
         int nextOrdinal = ((ELRoundPhaseType) gameState.getCurrentPhase()).ordinal() + 1;
         if (nextOrdinal == ELRoundPhaseType.values().length) {
             // all phases are done, go to the next round
+            LOGGER.info("all phases are done, go to the next round");
+            gameState.clearPassedPlayerCount();
             endRound();
         } else if (gameState.getCurrentPhase() == ELRoundPhaseType.PLAN_ROUTES
                 && gameState.getPassedPlayerCount() < gameState.getNumOfPlayers()) {
             LOGGER.info("Pass turn ct: " + gameState.getPassedPlayerCount() + ", staying at the PLAN ROUTES phase");
+            gameState.clearPassedPlayerCount();
             // continue with plan routes phase if not all players have passed their turn
             gameState.setToFirstPlayer();
             // the first player will take action
@@ -251,6 +270,7 @@ public class ELGameManager extends GameManager {
         } else { // go to the next phase within the same round
             gameState.setCurrentPhase(ELRoundPhaseType.values()[nextOrdinal]);
             LOGGER.info("...Going to the next phase : " + gameState.getCurrentPhase());
+            gameState.clearPassedPlayerCount();
             gameState.setToFirstPlayer();
             // the first player will take action
             if (isLocalPlayerTurn()) {
@@ -258,7 +278,6 @@ public class ELGameManager extends GameManager {
                 notifyTurnCommand.execute(); // notify themself to take action
             }
         }
-        gameState.clearPassedPlayerCount();
     }
 
     @Override
@@ -287,7 +306,7 @@ public class ELGameManager extends GameManager {
                 winners.clear();
                 winners.add(p);
             } else if (p.getScore() == winners.get(0).getScore()) {
-                if (p.getHand().getNumTravelCards() < winners.get(0).getHand().getNumTravelCards()) {
+                if (p.getHand().getNumTravelCards() > winners.get(0).getHand().getNumTravelCards()) {
                     winners.clear();
                     winners.add(p);
                 } else if (p.getHand().getNumTravelCards() == winners.get(0).getHand().getNumTravelCards() && p != winners.get(0)) {
