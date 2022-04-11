@@ -23,6 +23,10 @@ public class TestAPI {
     public static void main (String [] args) throws IOException, Exception
 
     {
+
+        System.out.println(User.getAccessTokenUsingCreds("Elfenland_Classic", "abc123_ABC123"));
+
+
        //  System.out.println(GameSession.getAllSessionID());
 
         String saveGameID = "Savegameid1";

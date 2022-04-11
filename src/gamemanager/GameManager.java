@@ -61,6 +61,7 @@ public abstract class GameManager {
         else {
             gameState = GameState.initFromSave(savegame.get(), this);
             loaded = true;
+            actionManager = ActionManager.init(gameState, this);
             // set up a session with the savegame id
             // if the local user is the creator, then we can start a session
             if (User.getInstance().getUsername().equals(savegame.get().getCreatorName()))
