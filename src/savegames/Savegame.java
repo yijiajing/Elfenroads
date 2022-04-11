@@ -173,12 +173,15 @@ public class Savegame implements Serializable {
         for (Player cur : pGameState.getPlayers())
         {
             SerializablePlayer toAdd = new SerializablePlayer(cur);
+            Logger.getGlobal().info("Saving player " + toAdd.getName() + " of color " + toAdd.getColor());
             if (pGameState.getCurrentPlayer().equals(cur))
             {
+                Logger.getGlobal().info(toAdd.getName() + " is the current player before saving.");
                 currentPlayer = toAdd;
             }
             if (GameManager.getInstance().getThisPlayer().equals(cur))
             {
+                Logger.getGlobal().info(toAdd.getName() + " is thisPlayer before saving.");
                 thisPlayer = toAdd;
             }
             players.add(toAdd);

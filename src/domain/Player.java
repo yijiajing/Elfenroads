@@ -45,6 +45,7 @@ public class Player implements Comparable<Player> {
      */
     public Player (SerializablePlayer loaded)
     {
+        Logger.getGlobal().info("Loading player " + loaded.getName() + " of color " + loaded.getColor());
         curTown = GameMap.getInstance().getTownByName(loaded.getCurrentTownName());
 
         if (loaded.getDestinationTownName() != null)
@@ -184,24 +185,32 @@ public class Player implements Comparable<Player> {
             if (ctr instanceof SerializableObstacle)
             {
                 SerializableObstacle counterDowncasted = (SerializableObstacle) ctr;
-                hand.addUnit(new Obstacle(counterDowncasted));
+                Obstacle toAdd = new Obstacle(counterDowncasted);
+                Logger.getGlobal().info("Loading " + toAdd.getType() + " into " + loaded.getName() + "'s hand.");
+                hand.addUnit(toAdd);
             }
 
             else if (ctr instanceof SerializableMagicSpell)
             {
                 SerializableMagicSpell counterDowncasted = (SerializableMagicSpell) ctr;
-                hand.addUnit(new MagicSpell(counterDowncasted));
+                MagicSpell toAdd = new MagicSpell(counterDowncasted);
+                Logger.getGlobal().info("Loading " + toAdd.getType() + " into " + loaded.getName() + "'s hand.");
+                hand.addUnit(toAdd);
             }
 
             else if (ctr instanceof SerializableGoldPiece)
             {
                 SerializableGoldPiece counterDowncasted = (SerializableGoldPiece) ctr;
-                hand.addUnit(new GoldPiece(counterDowncasted));
+                GoldPiece toAdd = new GoldPiece(counterDowncasted);
+                Logger.getGlobal().info("Loading " + toAdd.getType() + " into " + loaded.getName() + "'s hand.");
+                hand.addUnit(toAdd);
             }
             else // if ctr is a transportation counter
             {
                 SerializableTransportationCounter counterDowncasted = (SerializableTransportationCounter) ctr;
-                hand.addUnit(new TransportationCounter(counterDowncasted));
+                TransportationCounter toAdd = new TransportationCounter(counterDowncasted);
+                Logger.getGlobal().info("Loading " + toAdd.getType() + " into " + loaded.getName() + "'s hand.");
+                hand.addUnit(toAdd);
             }
         }
 
@@ -211,12 +220,16 @@ public class Player implements Comparable<Player> {
             if (crd instanceof SerializableTravelCard)
             {
                 SerializableTravelCard crdDowncasted = (SerializableTravelCard) crd;
-                hand.addUnit(new TravelCard(crdDowncasted));
+                TravelCard toAdd = new TravelCard(crdDowncasted);
+                hand.addUnit(toAdd);
+                Logger.getGlobal().info("Loading " + toAdd + " into " + loaded.getName() + "'s hand.");
             }
             else if (crd instanceof SerializableGoldCard)
             {
                 SerializableGoldCard crdDowncasted = (SerializableGoldCard) crd;
-                hand.addUnit(new GoldCard(crdDowncasted));
+                GoldCard toAdd = new GoldCard(crdDowncasted);
+                hand.addUnit(toAdd);
+                Logger.getGlobal().info("Loading " + toAdd + " into " + loaded.getName() + "'s hand.");
             }
             else // was not a gold card or a travel card
             {
@@ -227,9 +240,10 @@ public class Player implements Comparable<Player> {
         if (loadedObstacle != null)
         {
             hand.addUnit(new Obstacle(loadedObstacle));
+            Logger.getGlobal().info("Adding an obstacle to " + loaded.getName() + "'s hand.");
         }
 
-        // done loading in the player's hand
+        Logger.getGlobal().info("Done loading " + loaded.getName() + " 's hand.");
 
     }
 }

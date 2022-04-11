@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 
 public class SerializablePlayer implements Serializable, Comparable<Player> {
 
@@ -72,21 +73,29 @@ public class SerializablePlayer implements Serializable, Comparable<Player> {
             if (cur instanceof TransportationCounter)
             {
                 TransportationCounter curDowncasted = (TransportationCounter) cur;
-                counters.add(new SerializableTransportationCounter(curDowncasted));
+                SerializableTransportationCounter toAdd = new SerializableTransportationCounter(curDowncasted);
+                counters.add(toAdd);
+                Logger.getGlobal().info("Saving a " + toAdd.getType());
             }
             else if (cur instanceof GoldPiece) {
                 GoldPiece curDowncasted = (GoldPiece) cur;
-                counters.add(new SerializableGoldPiece(curDowncasted));
+                SerializableGoldPiece toAdd = new SerializableGoldPiece(curDowncasted);
+                counters.add(toAdd);
+                Logger.getGlobal().info("Saving a " + toAdd.getType());
             }
             else if (cur instanceof MagicSpell) {
                 MagicSpell curDowncasted = (MagicSpell) cur;
-                counters.add(new SerializableMagicSpell(curDowncasted));
+                SerializableMagicSpell toAdd = new SerializableMagicSpell(curDowncasted);
+                counters.add(toAdd);
+                Logger.getGlobal().info("Saving a " + toAdd.getType());
             }
 
             else // for Elfengold, cur could also be an obstacle
             {
                 Obstacle curDowncasted = (Obstacle) cur;
-                counters.add(new SerializableObstacle(curDowncasted));
+                SerializableObstacle toAdd = new SerializableObstacle(curDowncasted);
+                counters.add(toAdd);
+                Logger.getGlobal().info("Saving a " + toAdd.getType());
             }
         }
 
@@ -113,15 +122,18 @@ public class SerializablePlayer implements Serializable, Comparable<Player> {
             if (cur instanceof TravelCard)
             {
                 TravelCard curDowncasted = (TravelCard) cur;
-                cards.add(new SerializableTravelCard(curDowncasted));
+                SerializableTravelCard toAdd = new SerializableTravelCard(curDowncasted);
+                cards.add(toAdd);
+                Logger.getGlobal().info("Saving a " + toAdd.getType());
             }
             else // cur is a gold card
             {
                 GoldCard curDowncasted = (GoldCard) cur;
-                cards.add(new SerializableGoldCard(curDowncasted));
+                SerializableGoldCard toAdd = new SerializableGoldCard(curDowncasted);
+                cards.add(toAdd);
+                Logger.getGlobal().info("Saving a gold card");
             }
 
-            // do we do anything with gold cards?
         }
     }
 

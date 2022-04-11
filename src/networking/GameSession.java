@@ -200,7 +200,7 @@ public class GameSession {
         {
             // if a session has been launched already, it must be deleted by the game service admin
             Logger.getGlobal().info("I see you are calling GameSession.delete(). This method is not well-adapted to be used in the actual game code.");
-            token = User.getAccessTokenUsingCreds("Elfenland_Classic", "abc123_ABC123");
+            token = User.getAccessTokenUsingCreds("Elfengold_Witch", "abc123_ABC123");
         }
         else
         {
@@ -749,7 +749,6 @@ public class GameSession {
      */
     public static String lookupSessionBySavegame(String saveGameID) throws IOException
     {
-
         // parse this, and see if anything matches
         // first, use the key set to get sessions by ID:
         for (String id : getAllSessionID())
