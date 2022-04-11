@@ -235,7 +235,7 @@ public class CommunicationsManager {
             GameCommand firstCommand = listener.getCommands().peek();
 
             // if loaded game, execute in whatever order.
-            if (GameManager.getInstance().isLoaded())
+            if (managedBy.isLoaded())
             {
                 GameCommand toExecute = listener.getCommands().poll();
                 toExecute.execute();
