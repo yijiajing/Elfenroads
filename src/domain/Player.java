@@ -57,8 +57,10 @@ public class Player implements Comparable<Player> {
         score = loaded.getScore();
         goldCoins = loaded.getGoldCoins();
 
+        hand = new Hand();
+
         loadTownsVisited(loaded);
-        loadHand(loaded);
+        // loadHand(loaded);
     }
 
     public String getCurrentTownName() {
@@ -170,7 +172,7 @@ public class Player implements Comparable<Player> {
         }
     }
 
-    private void loadHand(SerializablePlayer loaded)
+    public void loadHand(SerializablePlayer loaded)
     {
         ArrayList<SerializableCounterUnit> counters = loaded.getCounters();
         ArrayList<SerializableCardUnit> cards = loaded.getCards();
@@ -187,6 +189,7 @@ public class Player implements Comparable<Player> {
                 SerializableObstacle counterDowncasted = (SerializableObstacle) ctr;
                 Obstacle toAdd = new Obstacle(counterDowncasted);
                 Logger.getGlobal().info("Loading " + toAdd.getType() + " into " + loaded.getName() + "'s hand.");
+                toAdd.setOwned(true);
                 hand.addUnit(toAdd);
             }
 
@@ -195,6 +198,7 @@ public class Player implements Comparable<Player> {
                 SerializableMagicSpell counterDowncasted = (SerializableMagicSpell) ctr;
                 MagicSpell toAdd = new MagicSpell(counterDowncasted);
                 Logger.getGlobal().info("Loading " + toAdd.getType() + " into " + loaded.getName() + "'s hand.");
+                toAdd.setOwned(true);
                 hand.addUnit(toAdd);
             }
 
@@ -203,6 +207,7 @@ public class Player implements Comparable<Player> {
                 SerializableGoldPiece counterDowncasted = (SerializableGoldPiece) ctr;
                 GoldPiece toAdd = new GoldPiece(counterDowncasted);
                 Logger.getGlobal().info("Loading " + toAdd.getType() + " into " + loaded.getName() + "'s hand.");
+                toAdd.setOwned(true);
                 hand.addUnit(toAdd);
             }
             else // if ctr is a transportation counter
@@ -210,6 +215,7 @@ public class Player implements Comparable<Player> {
                 SerializableTransportationCounter counterDowncasted = (SerializableTransportationCounter) ctr;
                 TransportationCounter toAdd = new TransportationCounter(counterDowncasted);
                 Logger.getGlobal().info("Loading " + toAdd.getType() + " into " + loaded.getName() + "'s hand.");
+                toAdd.setOwned(true);
                 hand.addUnit(toAdd);
             }
         }
@@ -221,6 +227,7 @@ public class Player implements Comparable<Player> {
             {
                 SerializableTravelCard crdDowncasted = (SerializableTravelCard) crd;
                 TravelCard toAdd = new TravelCard(crdDowncasted);
+                toAdd.setOwned(true);
                 hand.addUnit(toAdd);
                 Logger.getGlobal().info("Loading " + toAdd + " into " + loaded.getName() + "'s hand.");
             }
@@ -239,7 +246,9 @@ public class Player implements Comparable<Player> {
 
         if (loadedObstacle != null)
         {
-            hand.addUnit(new Obstacle(loadedObstacle));
+            Obstacle toAdd = new Obstacle(loadedObstacle);
+            toAdd.setOwned(true);
+            hand.addUnit(toAdd);
             Logger.getGlobal().info("Adding an obstacle to " + loaded.getName() + "'s hand.");
         }
 

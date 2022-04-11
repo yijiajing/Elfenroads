@@ -3,6 +3,7 @@ package savegames;
 import com.sun.jdi.connect.Transport;
 import domain.*;
 import enums.Colour;
+import gamemanager.GameManager;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -45,16 +46,19 @@ public class SerializablePlayer implements Serializable, Comparable<Player> {
         score = original.getScore();
 
         // add the counters, cards, and obstacles
-        saveCounters(original);
-        saveCards(original);
-        saveObstacle(original);
+
+        if (original.equals(GameManager.getInstance().getThisPlayer()))
+        {
+            saveCounters(original);
+            saveCards(original);
+            saveObstacle(original);
+        }
 
     }
 
     private void saveVisitedTownNames (Player original)
     {
         Set<Town> visited = original.getTownsVisited();
-        ArrayList<String> visitedNames = new ArrayList<String>();
         visitedTownNames = new ArrayList<>();
 
         for (Town cur : visited)
