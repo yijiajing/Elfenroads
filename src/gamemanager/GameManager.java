@@ -39,6 +39,8 @@ public abstract class GameManager {
     protected ArrayList<Colour> availableColours = new ArrayList<>();
     private int bootNotifsReceived;
 
+    // for game creator only
+    private int bootsValidated;
 
     GameManager(Optional<Savegame> savegame, String pSessionID, GameVariant variant, String pLocalAddress) {
         MainFrame.mainPanel.add(GameScreen.init(MainFrame.getInstance(), variant), "gameScreen");
@@ -47,6 +49,7 @@ public abstract class GameManager {
 
         // start a new game if there is no state to be loaded
         if (savegame.isEmpty()) {
+            bootsValidated = 0;
             gameState = GameState.init(pSessionID, variant);
             actionManager = ActionManager.init(gameState, this);
 
@@ -369,5 +372,14 @@ public abstract class GameManager {
     public void receivedBootNotif()
     {
         bootNotifsReceived++;
+    }
+
+    public void bootValidated()
+    {
+        bootsValidated++;
+    }
+
+    public int getBootsValidated() {
+        return bootsValidated;
     }
 }

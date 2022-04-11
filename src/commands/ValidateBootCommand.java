@@ -36,6 +36,7 @@ public class ValidateBootCommand implements GameCommand {
         // if the boot was validated, consider it selected
         if (validated)
         {
+            GameManager.getInstance().bootValidated(); // using this to keep track of whether everyone has chosen their boots
             CommunicationsManager.recordColorChoice(bootColorChoice);
             GameManager.getInstance().removeAvailableColour(bootColorChoice);
             // remove the colour from this host's screen and reinitialize the window

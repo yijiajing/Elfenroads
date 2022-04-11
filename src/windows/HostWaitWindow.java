@@ -178,8 +178,17 @@ public class HostWaitWindow extends JPanel implements Runnable
                     // even if we just got here, let's check to see if there are enough players to start.
                     if (aPlayers.size() >= GameSession.getGameParameters(aId).getInt("minSessionPlayers"))
                     {
-                        wait_message.setText("YOU CAN NOW START THE GAME!!");
-                        start.setVisible(true);
+                        // if we have all of the players but not everyone has selected their boots yet, we need to say that.
+                        if (GameManager.getInstance().getBootsValidated() < aPlayers.size() - 1)
+                        {
+                            wait_message.setText("WAITING FOR PLAYERS TO SELECT BOOTS...");
+                        }
+                        else
+                        {
+                            wait_message.setText("YOU CAN NOW START THE GAME!!");
+                            start.setVisible(true);
+                        }
+
                     }
 
                     // set prevPayload for the next request
