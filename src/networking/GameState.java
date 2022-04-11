@@ -92,12 +92,17 @@ public class GameState implements Serializable{
         gameVariant = loadedState.getGameVariant();
         currentRound = loadedState.getCurrentRound();
         currentPhase = loadedState.getCurrentPhase();
+
+        Logger.getGlobal().info("Current phase upon load: " + currentPhase);
+        Logger.getGlobal().info("Current round upon load: " + currentRound);
+
         passedPlayerCount = loadedState.getPassedPlayerCount();
         goldCardDeckCount = loadedState.getGoldCardDeckCount();
         // load the counters and cards
 
         // load all of the players from the savegame
         loadPlayers(pGameManager);
+        Logger.getGlobal().info("Upon gamestate initialization, the current player is " + currentPlayer.getName());
 
         // load the travel card deck and counter pile
         loadTravelCardDeck();
