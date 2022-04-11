@@ -64,9 +64,9 @@ public class LSSavegame {
 
     // register a savegame
 
-    public static void registerSaveGame()
+    public static void registerSaveGame(String gameName, String sessionID)
     {
-
+        //
     }
 
     // delete a specific savegame

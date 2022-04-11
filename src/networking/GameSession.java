@@ -113,7 +113,7 @@ public class GameSession {
         out.writeBytes("{\n");
         out.writeBytes("    \"creator\": \"" + creator.getUsername() + "\",\n");
         out.writeBytes("    \"game\": \"" + gameName + "\",\n");
-        out.writeBytes("    \"savegame\":" + saveGameName + "\"\"\n");
+        out.writeBytes("    \"savegame\":\"" + saveGameName + "\"\\n");
         out.writeBytes("}");
         out.flush();
         out.close();

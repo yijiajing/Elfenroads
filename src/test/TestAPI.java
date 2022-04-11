@@ -23,6 +23,11 @@ public class TestAPI {
 
     {
 
+        String saveGameName = "Poop";
+        System.out.println("    \"savegame\":" + saveGameName + "\"\"\n");
+
+        System.out.println(User.getAccessTokenUsingCreds("Elfenland_Classic", "abc123_ABC123"));
+
         // System.out.println(getSessions());
 
        //  System.out.println(User.getAccessTokenUsingCreds("maex", "abc123_ABC123"));
