@@ -23,10 +23,10 @@ public class TestAPI {
 
     {
 
-        System.out.println(getSessions());
+        // System.out.println(getSessions());
 
        //  System.out.println(User.getAccessTokenUsingCreds("maex", "abc123_ABC123"));
-        // deleteAllSessions();
+        deleteAllSessions();
         // testCreateUser("user_test", "abc123_ABC123");
 
         /*
