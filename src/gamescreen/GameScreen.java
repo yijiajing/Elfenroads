@@ -7,6 +7,7 @@ import enums.EGRoundPhaseType;
 import networking.CommunicationsManager;
 import networking.GameSession;
 import networking.User;
+import panel.MenuPanel;
 import panel.ShowHintButton;
 import windows.ChatBoxGUI;
 import gamemanager.ActionManager;
@@ -276,6 +277,8 @@ public abstract class GameScreen extends JPanel implements Serializable {
                 // clear all singletons
                 GameManager.clear();
                 GameMap.clear();
+                menu.setVisible(false);
+                submenu.setVisible(false);
                 GameScreen.clear();
                 CommunicationsManager.clear();
                 User.logout();
