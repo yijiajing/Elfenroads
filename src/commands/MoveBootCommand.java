@@ -39,6 +39,7 @@ public class MoveBootCommand implements GameCommand, Serializable {
         ElfBootPanel startPanel = startTown.getElfBootPanel();
         ElfBootPanel destinationPanel = destinationTown.getElfBootPanel();
         Player sender = gameState.getPlayerByColour(colorBootMoved);
+        sender.getTownsVisited().add(destinationTown);
 
         // update the current town of the player who moved
 //      1.  sender.setCurrentTownAndIncrementScore(destinationTown);
