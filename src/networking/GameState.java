@@ -432,7 +432,11 @@ public class GameState implements Serializable{
         travelCardDeck = TravelCardDeck.getEmpty(loadedState.getSessionID());
        for (SerializableCardUnit crd : loadedState.getTravelCardDeck())
        {
-           travelCardDeck.addDrawable(new TravelCard((SerializableTravelCard) crd));
+           if (crd instanceof SerializableGoldCard) {
+               travelCardDeck.addDrawable(new GoldCard((SerializableGoldCard) crd));
+           } else {
+               travelCardDeck.addDrawable(new TravelCard((SerializableTravelCard) crd));
+           }
        }
     }
 

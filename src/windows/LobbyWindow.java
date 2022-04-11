@@ -93,7 +93,7 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
         available.setText("Available Sessions");
         available.setFont(new Font("Serif", Font.BOLD, 25));
         available.setOpaque(false);
-        available.setBounds(getWidth()/2-100,getHeight()/3+100, 200,30);
+        available.setBounds(getWidth()/2-100,getHeight()/3+100, 250,30);
 
         sessions = new JPanel();
         sessions.setBounds(getWidth()/4,getHeight()/3+150, getWidth()/2,120);
