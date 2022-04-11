@@ -103,7 +103,7 @@ public class ChooseBootWindow extends JPanel {
 
                             // we've sent the command. now, we can just wait for the response and handle everything else in the execute method of BootValidationResponseCommand
                         } catch (IOException e3) {
-                            Logger.getGlobal().info("THere was a problem sending the command.");
+                            Logger.getGlobal().info("There was a problem sending the command.");
                             e3.printStackTrace();
                         }
                     }
