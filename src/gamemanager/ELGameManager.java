@@ -233,10 +233,27 @@ public class ELGameManager extends GameManager {
      */
     @Override
     public void endPhase() {
+        LOGGER.info("Entering end phase");
         actionManager.clearSelection();
+        if (gameState.getCurrentPhase() == ELRoundPhaseType.MOVE) {
+            // update local player travel card count
+            thisPlayer.getHand().updateNumTravelCards();
+
+            LOGGER.info("Sending NumTravelCardsCommand");
+            // update remote player travel card count
+            NumTravelCardsCommand numTravelCardsCommand = new NumTravelCardsCommand();
+            try {
+                coms.sendGameCommandToAllPlayers(numTravelCardsCommand);
+            } catch (IOException e) {
+                LOGGER.severe("There was a problem sending the command to update number of travel cards!");
+                e.printStackTrace();
+            }
+        }
+
         int nextOrdinal = ((ELRoundPhaseType) gameState.getCurrentPhase()).ordinal() + 1;
         if (nextOrdinal == ELRoundPhaseType.values().length) {
             // all phases are done, go to the next round
+            LOGGER.info("all phases are done, go to the next round");
             gameState.clearPassedPlayerCount();
             endRound();
         } else if (gameState.getCurrentPhase() == ELRoundPhaseType.PLAN_ROUTES
@@ -289,7 +306,7 @@ public class ELGameManager extends GameManager {
                 winners.clear();
                 winners.add(p);
             } else if (p.getScore() == winners.get(0).getScore()) {
-                if (p.getHand().getNumTravelCards() < winners.get(0).getHand().getNumTravelCards()) {
+                if (p.getHand().getNumTravelCards() > winners.get(0).getHand().getNumTravelCards()) {
                     winners.clear();
                     winners.add(p);
                 } else if (p.getHand().getNumTravelCards() == winners.get(0).getHand().getNumTravelCards() && p != winners.get(0)) {
