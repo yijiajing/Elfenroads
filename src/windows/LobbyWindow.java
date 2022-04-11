@@ -206,6 +206,23 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
         for (String id : gameIDs)
         {
             // get game info
+
+            // if this game is from a savegame, don't show it
+
+            try
+            {
+                   if (GameSession.isFromSavegame(id))
+                   {
+                       // continue and don't display
+                       continue;
+                   }
+            }
+            catch (IOException e)
+            {
+                Logger.getGlobal().info("There was a problem determining whether session " + id + " was from a savegame.");
+            }
+
+
             JSONObject sessionDetails = GameSession.getSessionDetails(id);
             JSONObject sessionParameters = sessionDetails.getJSONObject("gameParameters");
             ArrayList<String> playerList = GameSession.getPlayerNames(id);

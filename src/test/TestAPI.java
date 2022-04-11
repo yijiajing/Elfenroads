@@ -25,8 +25,16 @@ public class TestAPI {
     public static void main (String [] args) throws IOException, Exception
 
     {
-        String list = getPlayersListForLS();
-        System.out.println("\"players\": " + list + ",\n");
+        //String list = getPlayersListForLS();
+        //System.out.println("\"players\": " + list + ",\n");
+
+        for (String id : GameSession.getAllSessionID())
+        {
+            // System.out.println(getSessionDetails(id));
+            JSONObject details = getSessionDetails(id);
+            String savegameid = details.getString("savegameid");
+            Logger.getGlobal().info("Session with id " + id + " and savegameid " + savegameid + " is forked from a savegame: " + GameSession.isFromSavegame(id));
+        }
     }
 
 

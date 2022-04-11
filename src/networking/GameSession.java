@@ -764,4 +764,20 @@ public class GameSession {
         }
         return null;
     }
+
+    public static boolean isFromSavegame(String sessionID) throws IOException
+    {
+        for (String id : getAllSessionID())
+        {
+            if (id.equals(sessionID))
+            {
+                return !GameSession.getSessionDetails(id).getString("savegameid").equals("");
+            }
+        }
+
+
+        Logger.getGlobal().info("Could not find that session.");
+        return false;
+
+    }
 }
