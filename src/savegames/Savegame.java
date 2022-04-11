@@ -9,11 +9,16 @@ import enums.MagicSpellType;
 import enums.RoundPhaseType;
 import enums.TravelCardType;
 import gamemanager.GameManager;
+import networking.CommunicationsManager;
 import networking.GameSession;
 import networking.GameState;
+import networking.User;
 import utils.GameRuleUtils;
+import windows.LobbyWindow;
 
 import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,6 +41,8 @@ public class Savegame implements Serializable {
     private String sessionID; // saves session ID (will be different once we load, but we can use this one to set up the decks and piles anyway)
     private String saveGameID; // saves savegameid for later
     private String creatorName; // used to determine who can create the session upon load
+
+    private String gameName; // the game name in the LS (we can obtain this using the variant)
 
     // fields turned into serializable version
     private ArrayList<SerializablePlayer> players;
@@ -63,6 +70,8 @@ public class Savegame implements Serializable {
         currentPhase = pState.getCurrentPhase();
         passedPlayerCount = pState.getPassedPlayerCount();
         sessionID = GameManager.getInstance().getSessionID();
+        gameName = LobbyWindow.variantToGameName(gameVariant);
+
 
 
 
@@ -86,12 +95,20 @@ public class Savegame implements Serializable {
         // we will omit elf boots, since we can figure that out upon load by looking at each player, his current town, and his color
 
         // generate a saveGameID and register a savegame to the LS
-        // TODO generate saveGameID()
-        saveGameID = "Savegameid1";
+        // we will use the session ID as the savegameid. It's the easiest thing to do
+        saveGameID = sessionID;
         try {creatorName = GameSession.getCreatorName(sessionID);}
         catch (Exception e)
         {
             Logger.getGlobal().info("There was a problem recording the creator name to save to the file.");
+        }
+
+        // register at the LS
+        try {registerSavegame(saveGameID);}
+        catch (IOException e)
+        {
+            Logger.getGlobal().severe("There was a problem registering the savegame at the LS.");
+            e.printStackTrace();
         }
     }
 
@@ -153,7 +170,8 @@ public class Savegame implements Serializable {
         }
 
         // now, we can write the game to a file
-        String saveGameFilepath = dirPath + "/" + GameManager.getInstance().getSessionID() + "_ROUND" + save.getCurrentRound() + ".elf";
+        // we will save the file according to a certain convention
+        String saveGameFilepath = dirPath + "/" + GameManager.getInstance().getSessionID() + "_" + GameManager.getInstance().getGameState().getGameVariant() + "_ROUND" + GameManager.getInstance().getGameState().getCurrentRound();
         // first, we need to create the file itself so that we can write to it
         File saved = new File(saveGameFilepath);
         if (saved.exists()) // should be triggered every time
@@ -167,6 +185,44 @@ public class Savegame implements Serializable {
         stuff.close();
 
     }
+
+    /**
+     * registers the savegame at the LS (will allow us to load it later.)
+     */
+    public static void registerSavegame(String pSaveGameID) throws IOException
+    {
+        String gameName = LobbyWindow.variantToGameName(GameManager.getInstance().getGameState().getGameVariant());
+        String listOfPlayersForRegister = getPlayersListForLS();
+        String token = User.getAccessTokenUsingCreds(gameName, "abc123_ABC123");
+
+        URL url = new URL("http://35.182.122.111:4242/api/gameservices/" + gameName + "/savegames/Savegameid1?access_token=" + token);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("PUT");
+        con.setRequestProperty("content-type", "application/json");
+
+        /* Payload support */
+        con.setDoOutput(true);
+        DataOutputStream out = new DataOutputStream(con.getOutputStream());
+        out.writeBytes("{\n");
+        out.writeBytes("\"gamename\": \"" + gameName + "\",\n");
+        out.writeBytes("\"players\": " + getPlayersListForLS() + ",\n");
+        out.writeBytes("\"savegameid\": \""+ pSaveGameID + "\"\n");
+        out.writeBytes("}");
+        out.flush();
+        out.close();
+
+        int status = con.getResponseCode();
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer content = new StringBuffer();
+        while((inputLine = in.readLine()) != null) {
+            content.append(inputLine);
+        }
+        in.close();
+        con.disconnect();
+    }
+
+
 
     private void savePlayers (GameState pGameState)
     {
@@ -367,6 +423,32 @@ public class Savegame implements Serializable {
     }
 
     /**
+     * constructs the players list as a string in a way that we can use to pass to the LS
+     * will have to look like: ["player1name", "player2name"]
+     */
+    private static String getPlayersListForLS()
+    {
+        ArrayList<String> players = GameManager.getInstance().getGameState().getPlayerNames();
+        String out = "[";
+        int counter = 0;
+        int maxCounter = players.size() - 1;
+        for (String playerName : GameManager.getInstance().getGameState().getPlayerNames())
+        {
+            if (counter < maxCounter)
+            {
+                out = out + "\"" + playerName + "\",";
+            }
+            else // last player to add, so no comma at the end
+            {
+                out = out + "\"" + playerName + "\"";
+            }
+            counter++;
+        }
+
+        return out;
+    }
+
+    /**
      * @pre players have been saved already
      */
     public SerializablePlayer getPlayerByName(String name)
@@ -448,5 +530,9 @@ public class Savegame implements Serializable {
 
     public String getCreatorName() {
         return creatorName;
+    }
+
+    public String getGameName() {
+        return gameName;
     }
 }
