@@ -23,9 +23,5 @@ public class NumTravelCardsCommand implements GameCommand {
 
         // update number of travel cards of the sender
         GameState.instance().getPlayerByName(senderName).getHand().setNumTravelCards(numTravelCards);
-
-        if (gameManager.getCardNotifsReceived() == GameState.instance().getNumOfPlayers() - 1) {
-            gameManager.endGame();
-        }
     }
 }

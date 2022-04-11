@@ -234,6 +234,20 @@ public class ELGameManager extends GameManager {
     @Override
     public void endPhase() {
         actionManager.clearSelection();
+        if (gameState.getCurrentPhase() == ELRoundPhaseType.MOVE) {
+            // update local player travel card count
+            thisPlayer.getHand().updateNumTravelCards();
+
+            // update remote player travel card count
+            NumTravelCardsCommand numTravelCardsCommand = new NumTravelCardsCommand();
+            try {
+                coms.sendGameCommandToAllPlayers(numTravelCardsCommand);
+            } catch (IOException e) {
+                LOGGER.severe("There was a problem sending the command to update number of travel cards!");
+                e.printStackTrace();
+            }
+        }
+
         int nextOrdinal = ((ELRoundPhaseType) gameState.getCurrentPhase()).ordinal() + 1;
         if (nextOrdinal == ELRoundPhaseType.values().length) {
             // all phases are done, go to the next round
