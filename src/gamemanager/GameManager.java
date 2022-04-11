@@ -7,13 +7,13 @@ import enums.EGRoundPhaseType;
 import enums.ELRoundPhaseType;
 import enums.GameVariant;
 import savegames.Savegame;
-import windows.ChooseBootWindow;
-import windows.MainFrame;
+import windows.*;
 import networking.*;
 import panel.ElfBootPanel;
 import gamescreen.GameScreen;
 import utils.GameRuleUtils;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -60,6 +60,64 @@ public abstract class GameManager {
         else {
             gameState = GameState.initFromSave(savegame.get(), this);
             loaded = true;
+            actionManager = ActionManager.init(gameState, this);
+            // set up a session with the savegame id
+            // if the local user is the creator, then we can start a session
+            if (User.getInstance().getUsername().equals(savegame.get().getCreatorName()))
+            {
+                try {
+                    // TODO: don't hardcode this
+                    Logger.getGlobal().info("The savegame ID we should create a session for is " + savegame.get().getSaveGameID());
+                    GameSession loadedSession = new GameSession(User.getInstance(), "Elfenland_Classic", savegame.get().getSaveGameID());
+                    sessionID = loadedSession.getId();
+                    MainFrame.mainPanel.add(new HostWaitWindow(sessionID), "hostWaitingRoom");
+                    MainFrame.cardLayout.show(MainFrame.mainPanel, "hostWaitingRoom");
+                }
+                catch (Exception e)
+                {
+                    Logger.getGlobal().severe("There was a problem setting up the GameSession for the loaded game.");
+                    e.printStackTrace();
+                }
+
+            }
+            else // if we were not the creator of the original session, we need to join the host.
+            {
+                // check if the session with the savegameid already exists. if so, join it
+                try
+                {
+                    String idOfTheSession = GameSession.lookupSessionBySavegame(savegame.get().getSaveGameID());
+                    // if that returned null, the host has not created the session and we need to wait for him.
+                    if (idOfTheSession == null)
+                    {
+                        // tell the user that we need to wait until the game creator starts up the session
+                        JOptionPane.showMessageDialog(null, "You must wait for the original creator, " + savegame.get().getCreatorName() + ", to load that game first. Going back to the LobbyWindow.");
+                        LobbyWindow reinitialized = new LobbyWindow();
+                        MainFrame.setLobbyWindow(reinitialized);
+                        MainFrame.mainPanel.add(reinitialized, "lobby");
+                        MainFrame.cardLayout.show(MainFrame.mainPanel, "lobby");
+                    }
+
+
+
+                    // we found the session, so we can join it.
+                    String localIP = NetworkUtils.getLocalIPAddPort();
+                    GameSession.joinSession(MainFrame.loggedIn, idOfTheSession, localIP);
+                    // now that we've joined, set the session ID to the proper value
+                    sessionID = idOfTheSession;
+                    // take the player to the waiting window (bypass boot selection)
+                    // initialize a new PlayerWaitWindow
+                    PlayerWaitWindow updated = new PlayerWaitWindow(sessionID);
+                    MainFrame.setPlayerWaitWindow(updated);
+                    MainFrame.mainPanel.add(updated, "playerWaitingRoom");
+                    MainFrame.cardLayout.show(MainFrame.mainPanel, "playerWaitingRoom");
+                }
+                catch (Exception e)
+                {
+                    Logger.getGlobal().info("There was a problem finding and joining a session with that saveGameID");
+                    e.printStackTrace();
+                }
+
+            }
         }
 
         coms = CommunicationsManager.init(this, sessionID, pLocalAddress);
@@ -91,7 +149,7 @@ public abstract class GameManager {
 
         // initialize all the players now that the game has been launched and everyone is in
         try {
-            ArrayList<String> players = GameSession.getPlayerNames(sessionID);
+            // ArrayList<String> players = GameSession.getPlayerNames(sessionID);
             String localPlayerName = getThisPlayer().getName();
 
             AddPlayerCommand cmd = new AddPlayerCommand(localPlayerName, thisPlayer.getColour());
@@ -112,18 +170,28 @@ public abstract class GameManager {
      * should be put here.
      */
     public void launch() {
-        LOGGER.info("We have all players' info ready, setting up the rounds");
-        gameState.sortPlayers();
-        gameState.setToFirstPlayer();
-        System.out.print(gameState.getPlayers());
 
-        if (!loaded) setUpNewGame();
+        // if the game was loaded from a save, jump right into the GameScreen
+        if (!loaded)
+        {
+            LOGGER.info("We have all players' info ready, setting up the rounds");
+            gameState.sortPlayers();
+            gameState.setToFirstPlayer();
+            System.out.print(gameState.getPlayers());
+
+            setUpNewGame();
+        }
 
         GameScreen.getInstance().draw();
         MainFrame.cardLayout.show(MainFrame.mainPanel, "gameScreen");
 
-        initializeElfBoots();
-        setUpRound();
+        if (!loaded) {
+            initializeElfBoots();
+            setUpRound();
+        } else {
+            setUpRoundFromSaved();
+        }
+
     }
 
     /**
@@ -149,6 +217,22 @@ public abstract class GameManager {
     public abstract void setUpNewGame();
 
     public abstract void setUpRound();
+
+    public void setUpRoundFromSaved() {
+        // inform player of their destination town
+        if (gameState.getGameVariant() == GameVariant.ELFENGOLD_DESTINATION) {
+            GameScreen.displayMessage("Your destination Town is " +
+                    thisPlayer.getDestinationTown().getName() + ". Please collect town pieces and have your travel " +
+                    "route end in a town as close as possible to the destination at the end of the game.");
+        }
+
+        // Triggered only on one instance (the first player)
+        if (isLocalPlayerTurn()) {
+            NotifyTurnCommand cmd = new NotifyTurnCommand(gameState.getCurrentPhase());
+            cmd.execute();
+            GameScreen.getInstance().updateAll();
+        }
+    }
 
     public abstract void returnCounter(CounterUnit toKeep);
 
@@ -372,11 +456,17 @@ public abstract class GameManager {
         bootNotifsReceived++;
     }
 
-    public int getCardNotifsReceived() {
+    public boolean isLoaded() 
+    {
+        return loaded;
+    }
+    public int getCardNotifsReceived() 
+    {
         return cardNotifsReceived;
     }
 
-    public void incrementCardNotifsReceived() {
+    public void incrementCardNotifsReceived() 
+    {
         this.cardNotifsReceived++;
     }
 }

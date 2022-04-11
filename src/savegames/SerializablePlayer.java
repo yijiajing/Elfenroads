@@ -74,6 +74,15 @@ public class SerializablePlayer implements Serializable, Comparable<Player> {
                 TransportationCounter curDowncasted = (TransportationCounter) cur;
                 counters.add(new SerializableTransportationCounter(curDowncasted));
             }
+            else if (cur instanceof GoldPiece) {
+                GoldPiece curDowncasted = (GoldPiece) cur;
+                counters.add(new SerializableGoldPiece(curDowncasted));
+            }
+            else if (cur instanceof MagicSpell) {
+                MagicSpell curDowncasted = (MagicSpell) cur;
+                counters.add(new SerializableMagicSpell(curDowncasted));
+            }
+
             else // for Elfengold, cur could also be an obstacle
             {
                 Obstacle curDowncasted = (Obstacle) cur;

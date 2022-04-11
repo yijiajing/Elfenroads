@@ -9,6 +9,7 @@ import enums.MagicSpellType;
 import enums.RoundPhaseType;
 import enums.TravelCardType;
 import gamemanager.GameManager;
+import networking.GameSession;
 import networking.GameState;
 import utils.GameRuleUtils;
 
@@ -33,6 +34,8 @@ public class Savegame implements Serializable {
     private int goldCardDeckCount;
 
     private String sessionID; // saves session ID (will be different once we load, but we can use this one to set up the decks and piles anyway)
+    private String saveGameID; // saves savegameid for later
+    private String creatorName; // used to determine who can create the session upon load
 
     // fields turned into serializable version
     private ArrayList<SerializablePlayer> players;
@@ -62,6 +65,7 @@ public class Savegame implements Serializable {
         sessionID = GameManager.getInstance().getSessionID();
 
 
+
         // now, handle the non-serializable fields
         savePlayers(pState);
         saveTravelCardDeck(pState);
@@ -79,8 +83,16 @@ public class Savegame implements Serializable {
         }
 
         saveStuffOnRoads();
-
         // we will omit elf boots, since we can figure that out upon load by looking at each player, his current town, and his color
+
+        // generate a saveGameID and register a savegame to the LS
+        // TODO generate saveGameID()
+        saveGameID = "Savegameid1";
+        try {creatorName = GameSession.getCreatorName(sessionID);}
+        catch (Exception e)
+        {
+            Logger.getGlobal().info("There was a problem recording the creator name to save to the file.");
+        }
     }
 
     /**
@@ -95,6 +107,7 @@ public class Savegame implements Serializable {
         FileInputStream reading = new FileInputStream("./out/saves/" + filename);
         ObjectInputStream readingObject = new ObjectInputStream(reading);
         Savegame save = (Savegame) readingObject.readObject();
+
 
         // close the streams
         readingObject.close();
@@ -146,8 +159,9 @@ public class Savegame implements Serializable {
         if (saved.exists()) // should be triggered every time
         {
             saved.createNewFile();
+            saved = new File(saveGameFilepath);
         }
-        FileOutputStream write = new FileOutputStream(saveGameFilepath);
+        FileOutputStream write = new FileOutputStream(saved);
         ObjectOutputStream stuff = new ObjectOutputStream(write);
         stuff.writeObject(save);
         stuff.close();
@@ -423,5 +437,13 @@ public class Savegame implements Serializable {
 
     public HashMap<Integer, ArrayList<SerializableCounterUnit>> getStuffOnRoads() {
         return stuffOnRoads;
+    }
+
+    public String getSaveGameID() {
+        return saveGameID;
+    }
+
+    public String getCreatorName() {
+        return creatorName;
     }
 }

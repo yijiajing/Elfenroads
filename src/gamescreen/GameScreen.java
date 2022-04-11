@@ -1,5 +1,6 @@
 package gamescreen;
 
+import commands.SaveGameCommand;
 import domain.*;
 import enums.GameVariant;
 import enums.EGRoundPhaseType;
@@ -203,7 +204,13 @@ public abstract class GameScreen extends JPanel implements Serializable {
             		GameScreen.this.displayMessage("You cannot save at this point.");
             	}else {
             		GameState gamestateToSave = GameState.instance();
-            		try {Savegame.saveGameToFile();}
+            		try
+                    {
+                        // save the game and force everyone else to as well
+                        Savegame.saveGameToFile();
+                        SaveGameCommand cmd = new SaveGameCommand();
+                        GameManager.getInstance().getComs().sendGameCommandToAllPlayers(cmd);
+                    }
             		catch (IOException e3) {e3.printStackTrace();}
             	}
                 // TODO: decide what to do after the game has been saved

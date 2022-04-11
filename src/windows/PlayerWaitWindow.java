@@ -249,7 +249,18 @@ public class PlayerWaitWindow extends JPanel implements Runnable
              */
         }
 
-        GameManager.getInstance().initPlayers();
+        // if the game has been loaded, we should jump directly to launch()
+        if (!GameManager.getInstance().isLoaded())
+        {
+            Logger.getGlobal().info("The game is not forked from a savegame, so we will go now to initialize the players.");
+            GameManager.getInstance().initPlayers();
+        }
+
+        else // the game was loaded
+        {
+            Logger.getGlobal().info("The game is from a loaded game, so we will jump directly into launch()");
+            GameManager.getInstance().launch();
+        }
 
 
     }

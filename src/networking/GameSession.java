@@ -28,23 +28,30 @@ public class GameSession {
      *
      * @param pCreator
      * @param pGameName
-     * @param pSaveGameName MUST BE EMPTY IF THERE IS NO EXISTING SAVEGAME
      * @throws Exception
      */
-    public GameSession(User pCreator, String pGameName, String pSaveGameName) throws Exception
+    public GameSession(User pCreator, String pGameName) throws Exception
     {
         creator = pCreator;
         gameName = pGameName;
-        saveGameName = pSaveGameName;
         // locationIP = NetworkUtils.ngrokAddrToPassToLS();
         // changed this 03/02 because ngrok addresses are changing. local multiplayer only for now
         locationIP = NetworkUtils.getLocalIPAddPort();
         createNewSession();
     }
 
+    /**
+     * alternate constructor to be called when we init a GameSession from a save
+     */
+    public GameSession(User pCreator, String pGameName, String pSaveGameName) throws Exception
+    {
+        creator = pCreator;
+        gameName = pGameName;
+        locationIP = NetworkUtils.getLocalIPAddPort();
+        saveGameName = pSaveGameName;
+        createNewSessionFromSave();
+    }
 
-
-    // TODO: allow user to enter savegame name
     private void createNewSession() throws IOException
     {
         String token = creator.getAccessToken();
@@ -82,6 +89,54 @@ public class GameSession {
         id = content.toString();
         System.out.println("The session ID is " + id);
 
+    }
+
+    /**
+     * similar to the above method, except static and registers a gameSession from a savegame
+     * designed to be called when loading a game
+     * @pre the game is loaded from a file and has been registered as a savegame on the LS
+     * @pre saveGameName is not null
+     */
+    public void createNewSessionFromSave() throws IOException
+    {
+        // creates a new session using the savegameID (forked from a save)
+        String token = creator.getAccessToken();
+
+        URL url = new URL("http://35.182.122.111:4242/api/sessions?access_token=" + token + "&location=" + locationIP);
+
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("POST");
+        con.setRequestProperty("Content-Type", "application/json");
+
+        Logger.getGlobal().info("Creator is " + creator.getUsername());
+        Logger.getGlobal().info("Game name is " + gameName);
+        Logger.getGlobal().info("Save game name is " + saveGameName);
+
+        /* Payload support */
+        con.setDoOutput(true);
+        DataOutputStream out = new DataOutputStream(con.getOutputStream());
+        out.writeBytes("{\n");
+        out.writeBytes("    \"creator\": \"" + creator.getUsername() + "\",\n");
+        out.writeBytes("    \"game\": \"" + gameName + "\",\n");
+        out.writeBytes("    \"savegame\":\"" + saveGameName + "\"\n");
+        out.writeBytes("}");
+        out.flush();
+        out.close();
+
+        int status = con.getResponseCode();
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer content = new StringBuffer();
+        while((inputLine = in.readLine()) != null) {
+            content.append(inputLine);
+        }
+        in.close();
+        con.disconnect();
+        System.out.println("Response status: " + status);
+        System.out.println(content.toString());
+
+        id = content.toString();
+        System.out.println("The session ID is " + id);
     }
 
     public void launch() throws IOException
@@ -145,7 +200,7 @@ public class GameSession {
         {
             // if a session has been launched already, it must be deleted by the game service admin
             Logger.getGlobal().info("I see you are calling GameSession.delete(). This method is not well-adapted to be used in the actual game code.");
-            token = User.getAccessTokenUsingCreds("Elfengold_Classic", "abc123_ABC123");
+            token = User.getAccessTokenUsingCreds("Elfenland_Classic", "abc123_ABC123");
         }
         else
         {
@@ -657,6 +712,18 @@ public class GameSession {
         return playerNamesAndAddresses;
     }
 
+    /**
+     * will return an empty string if the game wasn't forked from a save
+     * @param sessionID
+     * @return
+     * @throws Exception
+     */
+    public static String getSaveGameID(String sessionID) throws Exception
+    {
+        JSONObject details = getSessionDetails(sessionID);
+        return details.getString("savegameid");
+    }
+
     public static boolean isCreator(User u, String sessionID) {
         try {
             JSONObject deets = getSessionDetails(sessionID);
@@ -672,5 +739,30 @@ public class GameSession {
     {
         JSONObject details = getSessionDetails(sessionID);
         return details.getString("creator");
+    }
+
+    /**
+     * looks for a game by its savegameID
+     * used to check to see if a savegame has been restarted in the LS
+     * @param saveGameID
+     * @return the ID of that session if it exists, or null if it doesn't
+     */
+    public static String lookupSessionBySavegame(String saveGameID) throws IOException
+    {
+
+        // parse this, and see if anything matches
+        // first, use the key set to get sessions by ID:
+        for (String id : getAllSessionID())
+        {
+            // each of these entries is a whole session's info
+            // so we can get saveGameID
+            String thatSessionSaveGameName = GameSession.getSessionDetails(id).getString("savegameid");
+            if (thatSessionSaveGameName.equals(saveGameID))
+            {
+                return id;
+            }
+
+        }
+        return null;
     }
 }

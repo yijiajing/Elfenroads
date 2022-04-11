@@ -60,7 +60,7 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
         });
     }
 
-    LobbyWindow()
+    public LobbyWindow()
     {
         initThreads();
         prevPayload = "";
@@ -367,7 +367,7 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
             case "Elfengold_Destination": return GameVariant.ELFENGOLD_DESTINATION;
             case "Elfengold_RandomGold": return GameVariant.ELFENGOLD_RANDOM_GOLD;
             case "Elfengold_Witch": return GameVariant.ELFENGOLD_WITCH;
-            
+
             default: return null; // if we set up the LS right, this will never happen
         }
     }
