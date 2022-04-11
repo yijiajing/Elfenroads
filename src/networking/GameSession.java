@@ -749,14 +749,13 @@ public class GameSession {
      */
     public static String lookupSessionBySavegame(String saveGameID) throws IOException
     {
-        JSONObject sessions = getSessions();
+
         // parse this, and see if anything matches
         // first, use the key set to get sessions by ID:
-        for (String id : sessions.keySet())
+        for (String id : getAllSessionID())
         {
             // each of these entries is a whole session's info
             // so we can get saveGameID
-            JSONObject thatSessionInfo = sessions.getJSONObject(id);
             String thatSessionSaveGameName = GameSession.getSessionDetails(id).getString("savegameid");
             if (thatSessionSaveGameName.equals(saveGameID))
             {
