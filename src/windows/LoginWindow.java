@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import static javax.swing.Box.createHorizontalStrut;
 import static javax.swing.Box.createVerticalStrut;
 
 
@@ -211,6 +212,7 @@ public class LoginWindow extends JPanel implements Runnable {
 
         boxPanel = Box.createHorizontalBox();
         boxPanel.add(labelBox);
+        boxPanel.add(createHorizontalStrut(15));
         boxPanel.add(textFieldBox);
 
         box_paste_button = Box.createHorizontalBox();

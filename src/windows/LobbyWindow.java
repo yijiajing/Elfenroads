@@ -201,8 +201,6 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
         // parse the String response and turn it into a list of String ids
         ArrayList<String> gameIDs = GameSession.getSessionIDFromSessions(getSessionsResponse);
 
-        int counter = 0;
-
         // iterate through the IDs and get info for each game & add it to the display
         // if there are no sessions, just clear everything
         for (String id : gameIDs)
@@ -281,20 +279,11 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
                     }
                 }});
 
-//            JPanel session = new JPanel();
-//            session.setBorder(BorderFactory.createLineBorder(Color.black));
-//            session.add(playersInSessionLabel);
-//            session.add(playerCountLabel);
-//            session.add(creatorLabel);
-//            session.add(variantLabel);
-//            session.add(joinButton);
-//
-//            sessions.add(session);
-
             // initialize the box
             Box gameInfo = Box.createVerticalBox();
             gameInfo.setBorder(BorderFactory.createLineBorder(Color.black));
             gameInfo.setOpaque(true);
+
             // add the button and the labels to the box
             gameInfo.add(playersInSessionLabel);
             gameInfo.add(playerCountLabel);
@@ -303,33 +292,10 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
             gameInfo.add(joinButton);
 
             sessions.add(gameInfo);
-//
-//            // add the box to the sessions panel
-//            // sessions.add(gameInfo);
-//
-//            if (counter == 0)
-//            {
-//                sessions.add(gameInfo, BorderLayout.CENTER);
-//            }
-//            else if (counter == 1)
-//            {
-//                sessions.add(gameInfo, BorderLayout.LINE_END);
-//            }
-//
-//            else if (counter == 2)
-//            {
-//                sessions.add(gameInfo, BorderLayout.LINE_START);
-//            }
-//
-//            counter++;
-//            sessions.repaint();
-//            sessions.revalidate();
-
         }
 
         sessions.repaint();
         sessions.revalidate();
-
     }
 
     private void chooseSaveGame()
