@@ -91,7 +91,7 @@ public abstract class GameManager {
                     if (idOfTheSession == null)
                     {
                         // tell the user that we need to wait until the game creator starts up the session
-                        JOptionPane.showMessageDialog(null, "You must wait for the original creator, " + savegame.get().getCreatorName() + " to load that game first. Going back to the LobbyWindow.");
+                        JOptionPane.showMessageDialog(null, "You must wait for the original creator, " + savegame.get().getCreatorName() + ", to load that game first. Going back to the LobbyWindow.");
                         LobbyWindow reinitialized = new LobbyWindow();
                         MainFrame.setLobbyWindow(reinitialized);
                         MainFrame.mainPanel.add(reinitialized, "lobby");
@@ -186,11 +186,13 @@ public abstract class GameManager {
         GameScreen.getInstance().draw();
         MainFrame.cardLayout.show(MainFrame.mainPanel, "gameScreen");
 
-        if (!loaded)
-        {
+        if (!loaded) {
             initializeElfBoots();
+            setUpRound();
+        } else {
+            setUpRoundFromSaved();
         }
-        setUpRound();
+
     }
 
     /**
@@ -216,6 +218,22 @@ public abstract class GameManager {
     public abstract void setUpNewGame();
 
     public abstract void setUpRound();
+
+    public void setUpRoundFromSaved() {
+        // inform player of their destination town
+        if (gameState.getGameVariant() == GameVariant.ELFENGOLD_DESTINATION) {
+            GameScreen.displayMessage("Your destination Town is " +
+                    thisPlayer.getDestinationTown().getName() + ". Please collect town pieces and have your travel " +
+                    "route end in a town as close as possible to the destination at the end of the game.");
+        }
+
+        // Triggered only on one instance (the first player)
+        if (isLocalPlayerTurn()) {
+            NotifyTurnCommand cmd = new NotifyTurnCommand(gameState.getCurrentPhase());
+            cmd.execute();
+            GameScreen.getInstance().updateAll();
+        }
+    }
 
     public abstract void returnCounter(CounterUnit toKeep);
 
