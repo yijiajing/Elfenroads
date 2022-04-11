@@ -25,7 +25,7 @@ public class TestAPI {
     {
 
         System.out.println(User.getAccessTokenUsingCreds("Elfenland_Classic", "abc123_ABC123"));
-
+        deleteAllSessions();
 
        //  System.out.println(GameSession.getAllSessionID());
 
