@@ -54,7 +54,7 @@ public class EGGameScreen extends GameScreen {
     {
         Logger.getGlobal().info("Initializing...");
         initializeMapImage();
-        initializeRoundCardImage(1);
+        initializeRoundCardImage(GameState.instance().getCurrentRound());
         initializeTransportationCounters();
         initializeBackgroundPanels();
         initializeCardPanels();

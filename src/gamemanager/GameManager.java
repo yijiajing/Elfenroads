@@ -98,8 +98,6 @@ public abstract class GameManager {
                         MainFrame.cardLayout.show(MainFrame.mainPanel, "lobby");
                     }
 
-
-
                     // we found the session, so we can join it.
                     String localIP = NetworkUtils.getLocalIPAddPort();
                     GameSession.joinSession(MainFrame.loggedIn, idOfTheSession, localIP);
@@ -188,8 +186,10 @@ public abstract class GameManager {
 
         if (!loaded) {
             initializeElfBoots();
+            Logger.getGlobal().info("Setting up round, no saved game.");
             setUpRound();
         } else {
+            Logger.getGlobal().info("Setting up round from saved game.");
             setUpRoundFromSaved();
         }
 
@@ -227,8 +227,11 @@ public abstract class GameManager {
                     "route end in a town as close as possible to the destination at the end of the game.");
         }
 
+        Logger.getGlobal().info("In setUpRoundFromSaved()");
+
         // Triggered only on one instance (the first player)
         if (isLocalPlayerTurn()) {
+            Logger.getGlobal().info("Executing notify turn command locally with phase " + gameState.getCurrentPhase());
             NotifyTurnCommand cmd = new NotifyTurnCommand(gameState.getCurrentPhase());
             cmd.execute();
             GameScreen.getInstance().updateAll();

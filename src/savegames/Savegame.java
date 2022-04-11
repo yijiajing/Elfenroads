@@ -64,8 +64,6 @@ public class Savegame implements Serializable {
         passedPlayerCount = pState.getPassedPlayerCount();
         sessionID = GameManager.getInstance().getSessionID();
 
-
-
         // now, handle the non-serializable fields
         savePlayers(pState);
         saveTravelCardDeck(pState);
@@ -252,6 +250,7 @@ public class Savegame implements Serializable {
         for (TravelCard crd : pGameState.getFaceUpCards())
         {
             faceUpCards.add(new SerializableTravelCard(crd));
+            Logger.getGlobal().info(crd.getType().toString());
         }
     }
 
