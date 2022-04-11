@@ -108,6 +108,7 @@ public class Savegame implements Serializable {
         ObjectInputStream readingObject = new ObjectInputStream(reading);
         Savegame save = (Savegame) readingObject.readObject();
 
+
         // close the streams
         readingObject.close();
         reading.close();
