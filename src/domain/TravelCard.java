@@ -26,6 +26,9 @@ public class TravelCard extends CardUnit {
     public TravelCard(TravelCardType type, int resizeWidth, int resizeHeight) {
         super(resizeWidth, resizeHeight, "T0" + (type.ordinal() + 1));
         this.type = type;
+        if (type == TravelCardType.WITCH){
+            track1 = new MP3Player("./assets/Music/Witch Broom Flying Sound.mp3");
+        }
         this.getMiniDisplay().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
