@@ -71,7 +71,7 @@ public class Town implements Comparable<Town> {
         List<Player> players = GameState.instance().getPlayers();
 
         for (Player p : players) {
-            if (p.getTownsVisited().contains(this)) {
+            if (!p.getTownsVisited().contains(this)) {
                 townPieces.add(new TownPiece(p.getColour(), this));
             }
         }
