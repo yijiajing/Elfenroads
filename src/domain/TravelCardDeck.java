@@ -151,10 +151,17 @@ public class TravelCardDeck extends Deck <CardUnit> {
                             GameManager.getInstance().endTurn();
                         }
                     } else if (ActionManager.getInstance().getCardsToBeDrawn() > 0) { // player is taking travel cards after moving their boot in EG
-                        GameManager.getInstance().getThisPlayer().getHand().addUnit(drawn); // add to player's hand
-                        GameScreen.getInstance().updateAll(); // update GUI
+                        if (drawn instanceof GoldCard) { // if the card drawn is a gold card, the current player's turn does not end
+                            //if drawn is a gold card, add to Gold deck and draw another one
+                            GameState.instance().incrementGoldCardDeckCount();
+                            GameScreen.displayMessage("You drew a gold card! Choose another card or take the Gold Card Deck");
+                            GameScreen.getInstance().updateAll(); // update GUI
 
-                        ActionManager.getInstance().decrementCardsToBeDrawn();
+                        } else {
+                            GameManager.getInstance().getThisPlayer().getHand().addUnit(drawn); // add to player's hand
+                            GameScreen.getInstance().updateAll(); // update GUI
+                            ActionManager.getInstance().decrementCardsToBeDrawn();
+                        }
 
                         if (ActionManager.getInstance().getCardsToBeDrawn() == 0 && !ActionManager.getInstance().getBootMoved()) {
                             GameManager.getInstance().endTurn();
