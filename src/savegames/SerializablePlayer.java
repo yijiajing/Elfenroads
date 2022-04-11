@@ -59,7 +59,6 @@ public class SerializablePlayer implements Serializable, Comparable<Player> {
     private void saveVisitedTownNames (Player original)
     {
         Set<Town> visited = original.getTownsVisited();
-        ArrayList<String> visitedNames = new ArrayList<String>();
         visitedTownNames = new ArrayList<>();
 
         for (Town cur : visited)
