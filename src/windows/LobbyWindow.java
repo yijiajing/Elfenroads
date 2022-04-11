@@ -72,10 +72,8 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
         background_elvenroads = MainFrame.instance.getElfenroadsBackground();
-
         background_elvenroads.setBounds(0, 0, getWidth(), getHeight());
         background_elvenroads.setOpaque(false);
-       // add(background_elvenroads);
 
         JLayeredPane layers = new JLayeredPane();
         layers.setBounds(0, 0, getWidth(), getHeight());
@@ -83,9 +81,9 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
         background_elvenroads.add(layers);
 
         createButton = new JButton("CREATE NEW SESSION");
-        createButton.setPreferredSize(new Dimension(150, 70));
+        createButton.setPreferredSize(new Dimension(170, 70));
         loadButton = new JButton("LOAD SAVED SESSION");
-        loadButton.setPreferredSize(new Dimension(150, 70));
+        loadButton.setPreferredSize(new Dimension(170, 70));
         gamesButton = new JButton("JOIN");
 
         gameToJoin = new JLabel();
