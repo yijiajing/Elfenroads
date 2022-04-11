@@ -13,6 +13,8 @@ import panel.EndTurnButton;
 import panel.ObserverPanel;
 import utils.GameRuleUtils;
 import gamemanager.*;
+import windows.MainFrame;
+import windows.StartWindow;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -265,7 +267,9 @@ public abstract class GameScreen extends JPanel implements Serializable {
         i6.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.exit(0);
+                // go back to the main menu
+                MainFrame.mainPanel.add(new StartWindow(), "start");
+                MainFrame.cardLayout.show(MainFrame.mainPanel, "start");
 
             }});
 
