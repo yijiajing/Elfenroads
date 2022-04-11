@@ -22,7 +22,7 @@ public class SaveGameCommand implements GameCommand {
     @Override
     public void execute() {
         // save the game, and notify about who forced the exit
-        JOptionPane.showMessageDialog(null, saverName + " has saved the game, so you must save and exit as well.");
+        JOptionPane.showMessageDialog(null, saverName + " has saved the game, which has automatically saved it on your computer as well.");
         try {Savegame.saveGameToFile();}
         catch (Exception e)
         {
