@@ -90,7 +90,7 @@ public class ScoreBoardPanel extends JPanel implements ObserverPanel {
             }
         });
 
-        aScreen.addObserverPanel(this);
+//        aScreen.addObserverPanel(this);
     }
 
 
