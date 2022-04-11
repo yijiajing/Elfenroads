@@ -47,7 +47,8 @@ public class ValidateBootCommand implements GameCommand {
                 MainFrame.mainPanel.add(window, "choose-boot");
                 MainFrame.cardLayout.show(MainFrame.mainPanel, "choose-boot");
             }
-            // else, we don't care
+            // signal to the HostWaitWindow
+            MainFrame.getHostWait().enoughBootsSent();
 
         }
         BootValidationResponseCommand cmd = new BootValidationResponseCommand(validated, bootColorChoice);
