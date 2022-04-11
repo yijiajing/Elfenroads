@@ -46,7 +46,7 @@ public class EndTurnButton extends JButton {
                     track1.play();
                 } else if (GameState.instance().getCurrentPhase() == EGRoundPhaseType.MOVE && !ActionManager.getInstance().getBootMoved()) {
                 	// if the Player end his turn in Move phase without moving a boot, he can draw 2 cards.
-                	GameScreen.displayMessage("You haven't make a move! Now you may draw 2 cards from the supply.");
+                	GameScreen.displayMessage("You haven't made a move! Now you may draw 2 cards from the supply.");
  
                 	ActionManager.getInstance().setCardsToBeDrawn(2);
                 	

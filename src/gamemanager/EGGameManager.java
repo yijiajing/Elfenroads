@@ -234,7 +234,7 @@ public class EGGameManager extends GameManager {
         // no need to return the counters if we are at the end of the game
         if (gameState.getCurrentRound() == gameState.getTotalRounds()
                 || thisPlayer.getHand().getCounters().size() <= 2) {
-            LOGGER.info("Did not return counters because there is no counter or the end of the game, or the player have 2 or less counters");
+            LOGGER.info("Did not return counters because there is no counter or the end of the game, or the player has 2 or less counters");
             endTurn();
             return;
         }
@@ -326,7 +326,7 @@ public class EGGameManager extends GameManager {
             gameState.setToFirstPlayer();
             gameState.clearPassedPlayerCount();
 
-            auction(); // display auction window for everyonexs
+            auction(); // display auction window for everyone
 
             if (isLocalPlayerTurn()) {
                 NotifyTurnCommand notifyTurnCommand = new NotifyTurnCommand(EGRoundPhaseType.AUCTION);
