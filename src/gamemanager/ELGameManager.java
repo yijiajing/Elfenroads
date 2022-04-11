@@ -291,7 +291,7 @@ public class ELGameManager extends GameManager {
         // adjust final score of each player according to the destination town variant rule
         if (gameState.getGameVariant() == GameVariant.ELFENLAND_DESTINATION) {
             for (Player p : players) {
-                int townsAway = GameMap.getInstance().getDistanceBetween(p.getCurrentTown(), p.getDestinationTown()) - 1;
+                int townsAway = GameMap.getInstance().getDistanceBetween(p.getCurrentTown(), p.getDestinationTown());
                 int newScore = p.getScore() - townsAway;
                 p.setScore(newScore);
             }

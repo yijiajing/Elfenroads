@@ -23,7 +23,7 @@ public class DrawGoldDeckButton extends JButton {
 		this.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				MP3Player track = new MP3Player("./assets/Music/JLEX5AW-ui-medieval-click-heavy-positive-01.mp3");
+				MP3Player track = new MP3Player(".assets/Music/Bag-of-coins-D-www.fesliyanstudios.com.mp3");
 				track.play();
 				if (GameRuleUtils.isDrawCardsPhase() && GameManager.getInstance().isLocalPlayerTurn()) {
 					if (!(pState.getGoldCardDeckCount() > 0)) {

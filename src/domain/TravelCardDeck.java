@@ -80,10 +80,12 @@ public class TravelCardDeck extends Deck <CardUnit> {
 
         super(sessionID);
         // initialize the deck image
-        ImageIcon imageIcon = new ImageIcon("./assets/sprites/grey.png");
+        ImageIcon imageIcon = new ImageIcon("./assets/sprites/grey_deck.png");
         Image image = imageIcon.getImage();
         Image imageResized = image.getScaledInstance(GameScreen.getInstance().getWidth()*130/1440-40, GameScreen.getInstance().getHeight()/5-50, java.awt.Image.SCALE_SMOOTH);
         this.deckImage = new JLabel(new ImageIcon(imageResized));
+
+        initializeMouseListener();
 
         // has no cards
     }
@@ -149,10 +151,17 @@ public class TravelCardDeck extends Deck <CardUnit> {
                             GameManager.getInstance().endTurn();
                         }
                     } else if (ActionManager.getInstance().getCardsToBeDrawn() > 0) { // player is taking travel cards after moving their boot in EG
-                        GameManager.getInstance().getThisPlayer().getHand().addUnit(drawn); // add to player's hand
-                        GameScreen.getInstance().updateAll(); // update GUI
+                        if (drawn instanceof GoldCard) { // if the card drawn is a gold card, the current player's turn does not end
+                            //if drawn is a gold card, add to Gold deck and draw another one
+                            GameState.instance().incrementGoldCardDeckCount();
+                            GameScreen.displayMessage("You drew a gold card! Choose another card or take the Gold Card Deck");
+                            GameScreen.getInstance().updateAll(); // update GUI
 
-                        ActionManager.getInstance().decrementCardsToBeDrawn();
+                        } else {
+                            GameManager.getInstance().getThisPlayer().getHand().addUnit(drawn); // add to player's hand
+                            GameScreen.getInstance().updateAll(); // update GUI
+                            ActionManager.getInstance().decrementCardsToBeDrawn();
+                        }
 
                         if (ActionManager.getInstance().getCardsToBeDrawn() == 0 && !ActionManager.getInstance().getBootMoved()) {
                             GameManager.getInstance().endTurn();

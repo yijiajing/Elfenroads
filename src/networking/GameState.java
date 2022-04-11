@@ -399,6 +399,7 @@ public class GameState implements Serializable{
 
             if (toLoad.equals(loadedState.getThisPlayer()))
             {
+                loaded.loadHand(toLoad);
                 pGameManager.setThisPlayerLoaded(loaded, this);
                 Logger.getGlobal().info("ThisPlayer from the savegame is " + loaded.getName() + " with color " + loaded.getColor());
                 // we continue since setThisPlayer adds the player to the list automatically
@@ -568,5 +569,16 @@ public class GameState implements Serializable{
     
     public int getGoldCardDeckCount() {
     	return goldCardDeckCount;
+    }
+
+    public ArrayList<String> getPlayerNames()
+    {
+        ArrayList<String> out = new ArrayList<>();
+        for (Player cur : getPlayers())
+        {
+            out.add(cur.getName());
+        }
+
+        return out;
     }
 }
