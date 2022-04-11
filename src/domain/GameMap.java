@@ -204,4 +204,6 @@ public class GameMap {
         return roadList.get(index);
     }
 
+    public static void clear() {INSTANCE = null;}
+
 }

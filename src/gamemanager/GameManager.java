@@ -471,4 +471,6 @@ public abstract class GameManager {
     {
         this.cardNotifsReceived++;
     }
+
+    public static void clear() {INSTANCE = null;}
 }

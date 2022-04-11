@@ -4,6 +4,9 @@ import commands.SaveGameCommand;
 import domain.*;
 import enums.GameVariant;
 import enums.EGRoundPhaseType;
+import networking.CommunicationsManager;
+import networking.GameSession;
+import networking.User;
 import panel.ShowHintButton;
 import windows.ChatBoxGUI;
 import gamemanager.ActionManager;
@@ -270,6 +273,13 @@ public abstract class GameScreen extends JPanel implements Serializable {
                 // go back to the main menu
                 MainFrame.mainPanel.add(new StartWindow(), "start");
                 MainFrame.cardLayout.show(MainFrame.mainPanel, "start");
+                // clear all singletons
+                GameManager.clear();
+                GameMap.clear();
+                GameScreen.clear();
+                CommunicationsManager.clear();
+                User.logout();
+                ActionManager.clear();
 
             }});
 
@@ -335,4 +345,6 @@ public abstract class GameScreen extends JPanel implements Serializable {
     {
         return prevMessage;
     }
+
+    public static void clear() {INSTANCE = null;}
 }

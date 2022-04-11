@@ -581,4 +581,6 @@ public class GameState implements Serializable{
 
         return out;
     }
+
+    public void clear () {instance = null;}
 }

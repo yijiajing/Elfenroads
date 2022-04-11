@@ -376,4 +376,6 @@ public class CommunicationsManager {
     public static String getLocalAddress() {
         return localAddress;
     }
+
+    public static void clear () {INSTANCE = null;}
 }

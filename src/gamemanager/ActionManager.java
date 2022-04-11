@@ -471,4 +471,6 @@ public class ActionManager {
     public void setBootMoved(boolean pBootMoved) {
     	bootMoved = pBootMoved;
     }
+
+    public static void clear() {INSTANCE = null;}
 }
