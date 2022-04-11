@@ -757,7 +757,7 @@ public class GameSession {
             // each of these entries is a whole session's info
             // so we can get saveGameID
             JSONObject thatSessionInfo = sessions.getJSONObject(id);
-            String thatSessionSaveGameName = thatSessionInfo.getString("savegameid");
+            String thatSessionSaveGameName = GameSession.getSessionDetails(id).getString(saveGameID);
             if (thatSessionSaveGameName.equals(saveGameID))
             {
                 return id;
