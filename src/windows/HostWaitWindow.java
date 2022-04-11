@@ -155,6 +155,36 @@ public class HostWaitWindow extends JPanel implements Runnable
         add(background_elvenroads);
     }
 
+    public void enoughBootsSent()
+    {
+        // when a validateBootCommand is executed, it will check to see if
+        // 1. there are enough players in the game to start
+        // 2. everyone has selected their boots
+
+        // if not enough players, don't do anything
+        try
+        {
+            List<String> aPlayers = GameSession.getPlayerNames(aId);
+            if (aPlayers.size() >= GameSession.getGameParameters(aId).getInt("minSessionPlayers"))
+            {
+                // if we have enough players to start the game, check if everyone has sent in their boots
+                if (GameManager.getInstance().getBootsValidated() < aPlayers.size() - 1)
+                {
+                    wait_message.setText("PLAYER(S) SELECTING BOOTS...");
+                }
+                else // if there are enough players to start the game, and everyone has sent in their boots
+                {
+                    wait_message.setText("YOU CAN NOW START THE GAME!!");
+                    start.setVisible(true);
+                }
+            }
+        }
+        catch (Exception e){e.printStackTrace();}
+
+
+
+    }
+
     @Override
     public void run() 
     {
@@ -181,7 +211,7 @@ public class HostWaitWindow extends JPanel implements Runnable
                         // if we have all of the players but not everyone has selected their boots yet, we need to say that.
                         if (GameManager.getInstance().getBootsValidated() < aPlayers.size() - 1)
                         {
-                            wait_message.setText("WAITING FOR PLAYERS TO SELECT BOOTS...");
+                            wait_message.setText("WAITING FOR BOOT SELECTION...");
                         }
                         else
                         {
@@ -207,24 +237,6 @@ public class HostWaitWindow extends JPanel implements Runnable
                     {
                         // since our API calls are very carefully structured, we can assume that any IOException here is probably called by a timeout on the long poll
                         // so, we can just resend the request
-                        // check the boot numbers in here--we might as well.
-
-                        aPlayers = GameSession.getPlayerNames(aId);
-                        // even if we just got here, let's check to see if there are enough players to start.
-                        if (aPlayers.size() >= GameSession.getGameParameters(aId).getInt("minSessionPlayers"))
-                        {
-                            // if we have all of the players but not everyone has selected their boots yet, we need to say that.
-                            if (GameManager.getInstance().getBootsValidated() < aPlayers.size() - 1)
-                            {
-                                wait_message.setText("WAITING FOR PLAYERS TO SELECT BOOTS...");
-                            }
-                            else
-                            {
-                                wait_message.setText("YOU CAN NOW START THE GAME!!");
-                                start.setVisible(true);
-                            }
-
-                        }
                         Logger.getGlobal().info("The request timed out. Resending it.");
                         String getSessionDetailsResponse = GameSession.getSessionDetails(aId, prevPayload);
                         prevPayload = getSessionDetailsResponse;
@@ -260,17 +272,8 @@ public class HostWaitWindow extends JPanel implements Runnable
                 // Check if there are enough players to start the game
                 if (aPlayers.size() >= GameSession.getGameParameters(aId).getInt("minSessionPlayers"))
                 {
-                    // if we have all of the players but not everyone has selected their boots yet, we need to say that.
-                    if (GameManager.getInstance().getBootsValidated() < aPlayers.size() - 1)
-                    {
-                        wait_message.setText("WAITING FOR PLAYERS TO SELECT BOOTS...");
-                    }
-                    else
-                    {
-                        wait_message.setText("YOU CAN NOW START THE GAME!!");
-                        start.setVisible(true);
-                    }
-
+                    wait_message.setText("YOU CAN NOW START THE GAME!!");
+                    start.setVisible(true);
                 }
  
                 else

@@ -22,6 +22,7 @@ public class MainFrame extends JFrame
     // we need to store these to be able to remove and fully reinitialize them later
     private static LobbyWindow lobby;
     private static PlayerWaitWindow playerWait;
+    private static HostWaitWindow hostWait;
 
     private MainFrame()
     {
@@ -135,11 +136,20 @@ public class MainFrame extends JFrame
         playerWait = pPlayerWaitWindow;
     }
 
+    public static void setHostWaitWindow(HostWaitWindow pHostWaitWindow)
+    {
+        hostWait = pHostWaitWindow;
+    }
+
     public static LobbyWindow getLobby() {
         return lobby;
     }
 
     public static PlayerWaitWindow getPlayerWait() {
         return playerWait;
+    }
+
+    public static HostWaitWindow getHostWait() {
+        return hostWait;
     }
 }

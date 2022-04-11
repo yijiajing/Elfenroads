@@ -89,8 +89,10 @@ public class ChooseBootWindow extends JPanel {
                         }
 
                         remove(background_elvenroads);
-                        MainFrame.mainPanel.add(new HostWaitWindow(sessionID), "hostWaitingRoom");
-                        MainFrame.cardLayout.show(MainFrame.mainPanel, "hostWaitingRoom");
+                        HostWaitWindow updated = new HostWaitWindow(sessionID);
+                        MainFrame.setHostWaitWindow(updated);
+                        MainFrame.mainPanel.add(updated, "hostWait");
+                        MainFrame.cardLayout.show(MainFrame.mainPanel, "hostWait");
 
                     } else // if we aren't the creator, we need to validate the boot selection with the creator
                     {
