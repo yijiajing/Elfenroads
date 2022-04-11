@@ -85,6 +85,8 @@ public class TravelCardDeck extends Deck <CardUnit> {
         Image imageResized = image.getScaledInstance(GameScreen.getInstance().getWidth()*130/1440-40, GameScreen.getInstance().getHeight()/5-50, java.awt.Image.SCALE_SMOOTH);
         this.deckImage = new JLabel(new ImageIcon(imageResized));
 
+        initializeMouseListener();
+
         // has no cards
     }
 
