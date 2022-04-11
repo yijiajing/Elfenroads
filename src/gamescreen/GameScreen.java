@@ -122,10 +122,21 @@ public abstract class GameScreen extends JPanel implements Serializable {
     public abstract void addPanelToScreen();
 
     public void drawTownPieces() {
-        // put town pieces on every town except for Elvenhold
+
+        boolean loaded = GameManager.getInstance().isLoaded();
+
         for (Town t : GameMap.getInstance().getTownList()) {
             if (!t.getName().equalsIgnoreCase("Elvenhold")) {
-                t.initializeTownPieces();
+
+                if (loaded) {
+                    // put town pieces on the unvisited towns from the saved game
+                    t.initializeTownPiecesLoadedGame();
+                }
+
+                else {
+                    // put town pieces on every town except for Elvenhold
+                    t.initializeTownPieces();
+                }
             }
         }
     }
