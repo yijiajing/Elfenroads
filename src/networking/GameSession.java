@@ -48,6 +48,7 @@ public class GameSession {
         creator = pCreator;
         gameName = pGameName;
         locationIP = NetworkUtils.getLocalIPAddPort();
+        saveGameName = pSaveGameName;
         createNewSessionFromSave();
     }
 
@@ -107,13 +108,17 @@ public class GameSession {
         con.setRequestMethod("POST");
         con.setRequestProperty("Content-Type", "application/json");
 
+        Logger.getGlobal().info("Creator is " + creator.getUsername());
+        Logger.getGlobal().info("Game name is " + gameName);
+        Logger.getGlobal().info("Save game name is " + saveGameName);
+
         /* Payload support */
         con.setDoOutput(true);
         DataOutputStream out = new DataOutputStream(con.getOutputStream());
         out.writeBytes("{\n");
         out.writeBytes("    \"creator\": \"" + creator.getUsername() + "\",\n");
         out.writeBytes("    \"game\": \"" + gameName + "\",\n");
-        out.writeBytes("    \"savegame\":\"" + saveGameName + "\"\\n");
+        out.writeBytes("    \"savegame\":\"" + saveGameName + "\"\n");
         out.writeBytes("}");
         out.flush();
         out.close();

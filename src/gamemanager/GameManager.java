@@ -67,6 +67,7 @@ public abstract class GameManager {
             {
                 try {
                     // TODO: don't hardcode this
+                    Logger.getGlobal().info("The savegame ID we should create a session for is " + savegame.get().getSaveGameID());
                     GameSession loadedSession = new GameSession(User.getInstance(), "Elfenland_Classic", savegame.get().getSaveGameID());
                     sessionID = loadedSession.getId();
                     MainFrame.mainPanel.add(new HostWaitWindow(sessionID), "hostWaitingRoom");

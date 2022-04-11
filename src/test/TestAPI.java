@@ -24,14 +24,14 @@ public class TestAPI {
     {
 
         String saveGameName = "Poop";
-        System.out.println("    \"savegame\":" + saveGameName + "\"\"\n");
+       System.out.print("    \"savegame\":\"" + saveGameName + "\"\n");
 
         System.out.println(User.getAccessTokenUsingCreds("Elfenland_Classic", "abc123_ABC123"));
 
         // System.out.println(getSessions());
 
        //  System.out.println(User.getAccessTokenUsingCreds("maex", "abc123_ABC123"));
-        deleteAllSessions();
+        // deleteAllSessions();
         // testCreateUser("user_test", "abc123_ABC123");
 
         /*
