@@ -71,13 +71,11 @@ public class TravelCard extends CardUnit {
         super(MainFrame.getInstance().getWidth() * 130 / 1440, MainFrame.getInstance().getHeight() * 2 / 10, "T0" + loaded.getFilepathNumber());
         owned = false;
         type = loaded.getType();
-
-        // init listener
-        this.getDisplay().addMouseListener(new MouseAdapter() {
+        this.getMiniDisplay().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 track1.play();
-                if (!isOwned() && GameRuleUtils.isElfengoldDrawCardsPhase()) {
+                if (!isOwned() && (GameRuleUtils.isElfengoldDrawCardsPhase() || ActionManager.getInstance().getCardsToBeDrawn() > 0)) {
                     GameState.instance().getFaceUpCards().remove(TravelCard.this);
                     GameManager.getInstance().getThisPlayer().getHand().addUnit(TravelCard.this);
                     GameState.instance().addFaceUpCardFromDeck();
@@ -95,10 +93,20 @@ public class TravelCard extends CardUnit {
                         System.out.println("Error: there was a problem sending the DrawCardCommand to the other peers.");
                     }
 
-                    GameManager.getInstance().endTurn();
-                } else {
-                    ActionManager.getInstance().addSelectedCard(TravelCard.this);
+                    if (ActionManager.getInstance().getCardsToBeDrawn() > 0) {
+                        ActionManager.getInstance().decrementCardsToBeDrawn();
+                    }
+
+                    if (ActionManager.getInstance().getCardsToBeDrawn() == 0  && !ActionManager.getInstance().getBootMoved()) {
+                        GameManager.getInstance().endTurn();
+                    }
                 }
+            }
+        });
+        this.getDisplay().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                ActionManager.getInstance().addSelectedCard(TravelCard.this);
             }
         });
     }

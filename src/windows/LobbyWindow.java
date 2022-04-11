@@ -60,7 +60,7 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
         });
     }
 
-    LobbyWindow()
+    public LobbyWindow()
     {
         initThreads();
         prevPayload = "";
@@ -93,7 +93,7 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
         available.setText("Available Sessions");
         available.setFont(new Font("Serif", Font.BOLD, 25));
         available.setOpaque(false);
-        available.setBounds(getWidth()/2-100,getHeight()/3+100, 200,30);
+        available.setBounds(getWidth()/2-100,getHeight()/3+100, 250,30);
 
         sessions = new JPanel();
         sessions.setBounds(getWidth()/4,getHeight()/3+150, getWidth()/2,120);
@@ -367,7 +367,7 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
             case "Elfengold_Destination": return GameVariant.ELFENGOLD_DESTINATION;
             case "Elfengold_RandomGold": return GameVariant.ELFENGOLD_RANDOM_GOLD;
             case "Elfengold_Witch": return GameVariant.ELFENGOLD_WITCH;
-            
+
             default: return null; // if we set up the LS right, this will never happen
         }
     }
@@ -388,6 +388,21 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
             case "Elfengold_Destination": return "Elfengold (Destination)";
             case "Elfengold_RandomGold": return "Elfengold (Random Gold)";
             case "Elfengold_Witch": return "Elfengold (Witch)";
+            default: return null;
+        }
+    }
+
+    public static String variantToGameName(GameVariant variant)
+    {
+        switch (variant)
+        {
+            case ELFENLAND_CLASSIC: return "Elfenland_Classic";
+            case ELFENLAND_LONG: return "Elfenland_Long";
+            case ELFENLAND_DESTINATION: return "Elfenland_Destination";
+            case ELFENGOLD_CLASSIC: return "Elfengold_Classic";
+            case ELFENGOLD_DESTINATION: return "Elfengold_Destination";
+            case ELFENGOLD_RANDOM_GOLD: return "Elfengold_RandomGold";
+            case ELFENGOLD_WITCH: return "Elfengold_Witch";
             default: return null;
         }
     }

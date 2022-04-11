@@ -1,5 +1,6 @@
 package gamescreen;
 
+import commands.SaveGameCommand;
 import domain.*;
 import enums.GameVariant;
 import enums.EGRoundPhaseType;
@@ -11,6 +12,7 @@ import savegames.Savegame;
 import panel.EndTurnButton;
 import panel.ObserverPanel;
 import utils.GameRuleUtils;
+import gamemanager.*;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -120,10 +122,21 @@ public abstract class GameScreen extends JPanel implements Serializable {
     public abstract void addPanelToScreen();
 
     public void drawTownPieces() {
-        // put town pieces on every town except for Elvenhold
+
+        boolean loaded = GameManager.getInstance().isLoaded();
+
         for (Town t : GameMap.getInstance().getTownList()) {
             if (!t.getName().equalsIgnoreCase("Elvenhold")) {
-                t.initializeTownPieces();
+
+                if (loaded) {
+                    // put town pieces on the unvisited towns from the saved game
+                    t.initializeTownPiecesLoadedGame();
+                }
+
+                else {
+                    // put town pieces on every town except for Elvenhold
+                    t.initializeTownPieces();
+                }
             }
         }
     }
@@ -203,7 +216,13 @@ public abstract class GameScreen extends JPanel implements Serializable {
             		GameScreen.this.displayMessage("You cannot save at this point.");
             	}else {
             		GameState gamestateToSave = GameState.instance();
-            		try {Savegame.saveGameToFile();}
+            		try
+                    {
+                        // save the game and force everyone else to as well
+                        Savegame.saveGameToFile();
+                        SaveGameCommand cmd = new SaveGameCommand();
+                        GameManager.getInstance().getComs().sendGameCommandToAllPlayers(cmd);
+                    }
             		catch (IOException e3) {e3.printStackTrace();}
             	}
                 // TODO: decide what to do after the game has been saved

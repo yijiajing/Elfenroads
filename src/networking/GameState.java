@@ -92,12 +92,17 @@ public class GameState implements Serializable{
         gameVariant = loadedState.getGameVariant();
         currentRound = loadedState.getCurrentRound();
         currentPhase = loadedState.getCurrentPhase();
+
+        Logger.getGlobal().info("Current phase upon load: " + currentPhase);
+        Logger.getGlobal().info("Current round upon load: " + currentRound);
+
         passedPlayerCount = loadedState.getPassedPlayerCount();
         goldCardDeckCount = loadedState.getGoldCardDeckCount();
         // load the counters and cards
 
         // load all of the players from the savegame
         loadPlayers(pGameManager);
+        Logger.getGlobal().info("Upon gamestate initialization, the current player is " + currentPlayer.getName());
 
         // load the travel card deck and counter pile
         loadTravelCardDeck();
@@ -388,12 +393,15 @@ public class GameState implements Serializable{
 
             if (toLoad.equals(loadedState.getCurrentPlayer()))
             {
+                Logger.getGlobal().info("The current player from the savegame is " + loaded.getName() + " with color " + loaded.getColor());
                 setCurrentPlayer(loaded);
             }
 
             if (toLoad.equals(loadedState.getThisPlayer()))
             {
+                loaded.loadHand(toLoad);
                 pGameManager.setThisPlayerLoaded(loaded, this);
+                Logger.getGlobal().info("ThisPlayer from the savegame is " + loaded.getName() + " with color " + loaded.getColor());
                 // we continue since setThisPlayer adds the player to the list automatically
                 continue;
             }
@@ -427,7 +435,11 @@ public class GameState implements Serializable{
         travelCardDeck = TravelCardDeck.getEmpty(loadedState.getSessionID());
        for (SerializableCardUnit crd : loadedState.getTravelCardDeck())
        {
-           travelCardDeck.addDrawable(new TravelCard((SerializableTravelCard) crd));
+           if (crd instanceof SerializableGoldCard) {
+               travelCardDeck.addDrawable(new GoldCard((SerializableGoldCard) crd));
+           } else {
+               travelCardDeck.addDrawable(new TravelCard((SerializableTravelCard) crd));
+           }
        }
     }
 
@@ -445,6 +457,19 @@ public class GameState implements Serializable{
                 SerializableTransportationCounter ctrDowncasted = (SerializableTransportationCounter) ctr;
                 counterPile.addDrawable(new TransportationCounter(ctrDowncasted));
             }
+
+            else if (ctr instanceof SerializableGoldPiece)
+            {
+                SerializableGoldPiece ctrDowncasted = (SerializableGoldPiece) ctr;
+                counterPile.addDrawable(new GoldPiece(ctrDowncasted));
+            }
+
+            else if (ctr instanceof SerializableMagicSpell)
+            {
+                SerializableMagicSpell ctrDowncasted = (SerializableMagicSpell) ctr;
+                counterPile.addDrawable(new MagicSpell(ctrDowncasted));
+            }
+
             else // if ctr is an obstacle
             {
                 SerializableObstacle ctrDowncasted = (SerializableObstacle) ctr;
@@ -544,5 +569,16 @@ public class GameState implements Serializable{
     
     public int getGoldCardDeckCount() {
     	return goldCardDeckCount;
+    }
+
+    public ArrayList<String> getPlayerNames()
+    {
+        ArrayList<String> out = new ArrayList<>();
+        for (Player cur : getPlayers())
+        {
+            out.add(cur.getName());
+        }
+
+        return out;
     }
 }

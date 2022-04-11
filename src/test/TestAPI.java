@@ -1,10 +1,13 @@
 package test;
 
 import commands.GameCommand;
+import gamemanager.GameManager;
 import networking.DNSLookup;
 import networking.GameService;
 import networking.GameSession;
 import networking.User;
+import org.json.JSONObject;
+import savegames.Savegame;
 import utils.NetworkUtils;
 
 import java.io.IOException;
@@ -22,19 +25,30 @@ public class TestAPI {
     public static void main (String [] args) throws IOException, Exception
 
     {
-        // deleteAllSessions();
-        // testCreateUser("user_test", "abc123_ABC123");
-
-        initializeGameServiceWithStandardSettings("Elfenland_Classic", "Elfenland (Classic)" );
-        initializeGameServiceWithStandardSettings("Elfenland_Long", "Elfenland (Long)");
-        initializeGameServiceWithStandardSettings("Elfenland_Destination", "Elfenland (Destination)");
-        initializeGameServiceWithStandardSettings("Elfengold_Classic", "Elfengold (Classic)");
-        initializeGameServiceWithStandardSettings("Elfengold_Destination", "Elfengold (Destination)");
-        initializeGameServiceWithStandardSettings("Elfengold_RandomGold", "Elfengold (Random Gold)");
-        initializeGameServiceWithStandardSettings("Elfengold_Witch", "Elfengold (Witch)");
-
-
+        String list = getPlayersListForLS();
+        System.out.println("\"players\": " + list + ",\n");
     }
+
+
+    private static String getPlayersListForLS() throws Exception {
+        ArrayList<String> players = GameSession.getPlayerNames("7431402700796212744");
+        String out = "[";
+        int counter = 0;
+        int maxCounter = players.size() - 1;
+        for (String playerName : players) {
+            if (counter < maxCounter) {
+                out = out + "\"" + playerName + "\",";
+            } else // last player to add, so no comma at the end
+            {
+                out = out + "\"" + playerName + "\"";
+            }
+            counter++;
+        }
+
+        return out;
+    }
+
+
 
     public static void testCreateUser(String username, String password) throws IOException, Exception {
 
@@ -42,6 +56,17 @@ public class TestAPI {
         User.logout();
         User createNew = User.init(username, password);
         createNew.printTokenRelatedFields();
+    }
+
+    public static void initGameServices()
+    {
+        initializeGameServiceWithStandardSettings("Elfenland_Classic", "Elfenland (Classic)" );
+        initializeGameServiceWithStandardSettings("Elfenland_Long", "Elfenland (Long)");
+        initializeGameServiceWithStandardSettings("Elfenland_Destination", "Elfenland (Destination)");
+        initializeGameServiceWithStandardSettings("Elfengold_Classic", "Elfengold (Classic)");
+        initializeGameServiceWithStandardSettings("Elfengold_Destination", "Elfengold (Destination)");
+        initializeGameServiceWithStandardSettings("Elfengold_RandomGold", "Elfengold (Random Gold)");
+        initializeGameServiceWithStandardSettings("Elfengold_Witch", "Elfengold (Witch)");
     }
 
     public static void createASession(String variant)
