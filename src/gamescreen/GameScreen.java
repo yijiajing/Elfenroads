@@ -12,6 +12,7 @@ import savegames.Savegame;
 import panel.EndTurnButton;
 import panel.ObserverPanel;
 import utils.GameRuleUtils;
+import gamemanager.*;
 
 import javax.swing.*;
 import javax.swing.border.Border;

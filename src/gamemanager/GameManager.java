@@ -7,6 +7,7 @@ import enums.EGRoundPhaseType;
 import enums.ELRoundPhaseType;
 import enums.GameVariant;
 import savegames.Savegame;
+import utils.NetworkUtils;
 import windows.*;
 import networking.*;
 import panel.ElfBootPanel;
