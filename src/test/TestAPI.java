@@ -6,6 +6,7 @@ import networking.GameService;
 import networking.GameSession;
 import networking.User;
 import org.json.JSONObject;
+import savegames.Savegame;
 import utils.NetworkUtils;
 
 import java.io.IOException;
@@ -23,37 +24,10 @@ public class TestAPI {
     public static void main (String [] args) throws IOException, Exception
 
     {
-
-        System.out.println(User.getAccessTokenUsingCreds("Elfenland_Classic", "abc123_ABC123"));
+        System.out.println(GameSession.getAllSessionID());
         deleteAllSessions();
 
-       //  System.out.println(GameSession.getAllSessionID());
 
-        String saveGameID = "Savegameid1";
-        JSONObject sessions = getSessions();
-        // parse this, and see if anything matches
-        // first, use the key set to get sessions by ID:
-        for (String id : getAllSessionID())
-        {
-            // each of these entries is a whole session's info
-            // so we can get saveGameID
-            // JSONObject thatSessionInfo = sessions.getJSONObject(id);
-            JSONObject details = GameSession.getSessionDetails(id);
-            String saveGameID2 = details.getString("savegameid");
-            System.out.println(saveGameID2);
-            // System.out.print(details);
-            // System.out.println(thatSessionInfo);
-            // System.out.println(thatSessionInfo.keySet());
-            // System.out.println(thatSessionInfo.getString(id));
-            // String thatSessionSaveGameName = thatSessionInfo.getString("savegameid");
-            /*if (thatSessionSaveGameName.equals(saveGameID))
-            {
-                // System.out.println("The game has id " + id);
-            }
-
-             */
-
-        }
 
         // JSONObject details = GameSession.getSessionDetails()
     }

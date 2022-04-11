@@ -68,8 +68,11 @@ public abstract class GameManager {
             {
                 try {
                     // TODO: don't hardcode this
+                    // TODO: do the the other TODO
                     Logger.getGlobal().info("The savegame ID we should create a session for is " + savegame.get().getSaveGameID());
-                    GameSession loadedSession = new GameSession(User.getInstance(), "Elfenland_Classic", savegame.get().getSaveGameID());
+                    Logger.getGlobal().info("The game variant of the savegame is " + savegame.get().getGameVariant());
+                    // GameSession loadedSession = new GameSession(User.getInstance(), LobbyWindow.variantToGameName(savegame.get().getGameVariant()), savegame.get().getSaveGameID());
+                    GameSession loadedSession = new GameSession(User.getInstance(), "Elfengold_Witch", savegame.get().getSaveGameID());
                     sessionID = loadedSession.getId();
                     MainFrame.mainPanel.add(new HostWaitWindow(sessionID), "hostWaitingRoom");
                     MainFrame.cardLayout.show(MainFrame.mainPanel, "hostWaitingRoom");

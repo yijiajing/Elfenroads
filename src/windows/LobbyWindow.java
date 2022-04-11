@@ -392,6 +392,21 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
         }
     }
 
+    public static String variantToGameName(GameVariant variant)
+    {
+        switch (variant)
+        {
+            case ELFENLAND_CLASSIC: return "Elfenland_Classic";
+            case ELFENLAND_LONG: return "Elfenland_Long";
+            case ELFENLAND_DESTINATION: return "Elfenland_Destination";
+            case ELFENGOLD_CLASSIC: return "Elfengold_Classic";
+            case ELFENGOLD_DESTINATION: return "Elfengold_Destination";
+            case ELFENGOLD_RANDOM_GOLD: return "Elfengold_RandomGold";
+            case ELFENGOLD_WITCH: return "Elfengold_Witch";
+            default: return null;
+        }
+    }
+
 
 
 }

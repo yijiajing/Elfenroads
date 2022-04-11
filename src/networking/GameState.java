@@ -393,12 +393,14 @@ public class GameState implements Serializable{
 
             if (toLoad.equals(loadedState.getCurrentPlayer()))
             {
+                Logger.getGlobal().info("The current player from the savegame is " + loaded.getName() + " with color " + loaded.getColor());
                 setCurrentPlayer(loaded);
             }
 
             if (toLoad.equals(loadedState.getThisPlayer()))
             {
                 pGameManager.setThisPlayerLoaded(loaded, this);
+                Logger.getGlobal().info("ThisPlayer from the savegame is " + loaded.getName() + " with color " + loaded.getColor());
                 // we continue since setThisPlayer adds the player to the list automatically
                 continue;
             }
@@ -466,7 +468,7 @@ public class GameState implements Serializable{
                 SerializableMagicSpell ctrDowncasted = (SerializableMagicSpell) ctr;
                 counterPile.addDrawable(new MagicSpell(ctrDowncasted));
             }
-            
+
             else // if ctr is an obstacle
             {
                 SerializableObstacle ctrDowncasted = (SerializableObstacle) ctr;
