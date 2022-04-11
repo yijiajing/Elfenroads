@@ -66,7 +66,8 @@ public abstract class GameManager {
             if (User.getInstance().getUsername().equals(savegame.get().getCreatorName()))
             {
                 try {
-                    GameSession loadedSession = new GameSession(User.getInstance(), savegame.get().getSaveGameID());
+                    // TODO: don't hardcode this
+                    GameSession loadedSession = new GameSession(User.getInstance(), "Elfenland_Classic", savegame.get().getSaveGameID());
                     sessionID = loadedSession.getId();
                     MainFrame.mainPanel.add(new HostWaitWindow(sessionID), "hostWaitingRoom");
                     MainFrame.cardLayout.show(MainFrame.mainPanel, "hostWaitingRoom");
