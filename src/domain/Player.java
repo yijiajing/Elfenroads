@@ -57,8 +57,10 @@ public class Player implements Comparable<Player> {
         score = loaded.getScore();
         goldCoins = loaded.getGoldCoins();
 
+        hand = new Hand();
+
         loadTownsVisited(loaded);
-        loadHand(loaded);
+        // loadHand(loaded);
     }
 
     public String getCurrentTownName() {
@@ -170,7 +172,7 @@ public class Player implements Comparable<Player> {
         }
     }
 
-    private void loadHand(SerializablePlayer loaded)
+    public void loadHand(SerializablePlayer loaded)
     {
         ArrayList<SerializableCounterUnit> counters = loaded.getCounters();
         ArrayList<SerializableCardUnit> cards = loaded.getCards();
