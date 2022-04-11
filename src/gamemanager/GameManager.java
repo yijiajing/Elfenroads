@@ -106,7 +106,7 @@ public abstract class GameManager {
                     sessionID = idOfTheSession;
                     // take the player to the waiting window (bypass boot selection)
                     // initialize a new PlayerWaitWindow
-                    PlayerWaitWindow updated = new PlayerWaitWindow(GameManager.getInstance().getSessionID());
+                    PlayerWaitWindow updated = new PlayerWaitWindow(sessionID);
                     MainFrame.setPlayerWaitWindow(updated);
                     MainFrame.mainPanel.add(updated, "playerWaitingRoom");
                     MainFrame.cardLayout.show(MainFrame.mainPanel, "playerWaitingRoom");
