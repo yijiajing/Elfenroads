@@ -1,11 +1,9 @@
 package domain;
 
 import enums.Colour;
-import windows.MainFrame;
 import networking.*;
 import savegames.*;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -25,13 +23,12 @@ public class Player implements Comparable<Player> {
     private int score;
     private String name;
     private Town destinationTown;
-    
+
     private Hand hand; //The Hand of this Player, including hand of CardUnit and hand of CounterUnit
 
     private int goldCoins;
 
-    public Player(Colour pColour, String pName)
-    {
+    public Player(Colour pColour, String pName) {
         this.curTown = GameMap.getInstance().getTownByName("Elvenhold");
         townsVisited.add(GameMap.getInstance().getTownByName("Elvenhold"));
         this.colour = pColour;
@@ -41,15 +38,14 @@ public class Player implements Comparable<Player> {
 
     /**
      * loads a player from a savegame SerializablePlayer object
+     *
      * @param loaded the player to load
      */
-    public Player (SerializablePlayer loaded)
-    {
+    public Player(SerializablePlayer loaded) {
         Logger.getGlobal().info("Loading player " + loaded.getName() + " of color " + loaded.getColor());
         curTown = GameMap.getInstance().getTownByName(loaded.getCurrentTownName());
 
-        if (loaded.getDestinationTownName() != null)
-        {
+        if (loaded.getDestinationTownName() != null) {
             destinationTown = GameMap.getInstance().getTownByName(loaded.getDestinationTownName());
         }
         colour = loaded.getColor();
@@ -81,7 +77,7 @@ public class Player implements Comparable<Player> {
     }
 
     public int getScore() {
-    	return score;
+        return score;
     }
 
     public void setScore(int score) {
@@ -92,26 +88,33 @@ public class Player implements Comparable<Player> {
         return this.colour;
     }
 
-    public java.awt.Color getColor(){
+    public java.awt.Color getColor() {
         java.awt.Color c = null;
 
-        switch(colour){
-            case BLACK : return Color.BLACK;
-            case BLUE : return Color.BLUE;
-            case RED : return Color.RED;
-            case YELLOW : return Color.YELLOW;
-            case GREEN : return Color.GREEN;
-            case PURPLE : return Color.MAGENTA;
-            default : return Color.WHITE;
+        switch (colour) {
+            case BLACK:
+                return Color.BLACK;
+            case BLUE:
+                return Color.BLUE;
+            case RED:
+                return Color.RED;
+            case YELLOW:
+                return Color.YELLOW;
+            case GREEN:
+                return Color.GREEN;
+            case PURPLE:
+                return Color.MAGENTA;
+            default:
+                return Color.WHITE;
 
         }
         //RED, YELLOW, BLUE, BLACK, GREEN, PURPLE
         //return null;
-        
+
     }
 
     public ElfBoot getBoot() {
-        for (ElfBoot boot: GameState.instance().getElfBoots()) {
+        for (ElfBoot boot : GameState.instance().getElfBoots()) {
             if (boot.getColour() == colour) {
                 return boot;
             }
@@ -119,9 +122,13 @@ public class Player implements Comparable<Player> {
         return null;
     }
 
-    public Hand getHand() { return this.hand; }
+    public Hand getHand() {
+        return this.hand;
+    }
 
-    public boolean hasObstacle () {return this.hand.hasObstacle();}
+    public boolean hasObstacle() {
+        return this.hand.hasObstacle();
+    }
 
     public String getName() {
         return name;
@@ -162,18 +169,15 @@ public class Player implements Comparable<Player> {
     }
 
     // METHODS USED FOR READING IN A PLAYER FROM A SAVEGAME
-    private void loadTownsVisited(SerializablePlayer loaded)
-    {
+    private void loadTownsVisited(SerializablePlayer loaded) {
         // townsVisited already initialized before the constructor, so we don't need the declaration in this method
 
-        for (String townName : loaded.getVisitedTownNames())
-        {
+        for (String townName : loaded.getVisitedTownNames()) {
             townsVisited.add(GameMap.getInstance().getTownByName(townName));
         }
     }
 
-    public void loadHand(SerializablePlayer loaded)
-    {
+    public void loadHand(SerializablePlayer loaded) {
         ArrayList<SerializableCounterUnit> counters = loaded.getCounters();
         ArrayList<SerializableCardUnit> cards = loaded.getCards();
         SerializableObstacle loadedObstacle = loaded.getObstacle();
@@ -182,35 +186,26 @@ public class Player implements Comparable<Player> {
 
         // load each part of the hand
         // load counters
-        for (SerializableCounterUnit ctr : counters)
-        {
-            if (ctr instanceof SerializableObstacle)
-            {
+        for (SerializableCounterUnit ctr : counters) {
+            if (ctr instanceof SerializableObstacle) {
                 SerializableObstacle counterDowncasted = (SerializableObstacle) ctr;
                 Obstacle toAdd = new Obstacle(counterDowncasted);
                 Logger.getGlobal().info("Loading " + toAdd.getType() + " into " + loaded.getName() + "'s hand.");
                 toAdd.setOwned(true);
                 hand.addUnit(toAdd);
-            }
-
-            else if (ctr instanceof SerializableMagicSpell)
-            {
+            } else if (ctr instanceof SerializableMagicSpell) {
                 SerializableMagicSpell counterDowncasted = (SerializableMagicSpell) ctr;
                 MagicSpell toAdd = new MagicSpell(counterDowncasted);
                 Logger.getGlobal().info("Loading " + toAdd.getType() + " into " + loaded.getName() + "'s hand.");
                 toAdd.setOwned(true);
                 hand.addUnit(toAdd);
-            }
-
-            else if (ctr instanceof SerializableGoldPiece)
-            {
+            } else if (ctr instanceof SerializableGoldPiece) {
                 SerializableGoldPiece counterDowncasted = (SerializableGoldPiece) ctr;
                 GoldPiece toAdd = new GoldPiece(counterDowncasted);
                 Logger.getGlobal().info("Loading " + toAdd.getType() + " into " + loaded.getName() + "'s hand.");
                 toAdd.setOwned(true);
                 hand.addUnit(toAdd);
-            }
-            else // if ctr is a transportation counter
+            } else // if ctr is a transportation counter
             {
                 SerializableTransportationCounter counterDowncasted = (SerializableTransportationCounter) ctr;
                 TransportationCounter toAdd = new TransportationCounter(counterDowncasted);
@@ -221,31 +216,25 @@ public class Player implements Comparable<Player> {
         }
 
         // load cards
-        for (SerializableCardUnit crd : cards)
-        {
-            if (crd instanceof SerializableTravelCard)
-            {
+        for (SerializableCardUnit crd : cards) {
+            if (crd instanceof SerializableTravelCard) {
                 SerializableTravelCard crdDowncasted = (SerializableTravelCard) crd;
                 TravelCard toAdd = new TravelCard(crdDowncasted);
                 toAdd.setOwned(true);
                 hand.addUnit(toAdd);
                 Logger.getGlobal().info("Loading " + toAdd + " into " + loaded.getName() + "'s hand.");
-            }
-            else if (crd instanceof SerializableGoldCard)
-            {
+            } else if (crd instanceof SerializableGoldCard) {
                 SerializableGoldCard crdDowncasted = (SerializableGoldCard) crd;
                 GoldCard toAdd = new GoldCard(crdDowncasted);
                 hand.addUnit(toAdd);
                 Logger.getGlobal().info("Loading " + toAdd + " into " + loaded.getName() + "'s hand.");
-            }
-            else // was not a gold card or a travel card
+            } else // was not a gold card or a travel card
             {
                 Logger.getGlobal().info("The card we are trying to load from the player's hand is a " + crd.getClass());
             }
         }
 
-        if (loadedObstacle != null)
-        {
+        if (loadedObstacle != null) {
             Obstacle toAdd = new Obstacle(loadedObstacle);
             toAdd.setOwned(true);
             hand.addUnit(toAdd);

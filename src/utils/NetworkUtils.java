@@ -20,25 +20,23 @@ public class NetworkUtils {
 
     // a class to hold some static utility methods that don't really fit anywhere else
 
-
     /**
      * from max's code
      * makes sure a (potential) LS password conforms to the constraints of the system
+     *
      * @param password
      * @return
      */
-    public static boolean isValidPassword(String password)
-    {
+    public static boolean isValidPassword(String password) {
         return Pattern.compile("(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,32}").matcher(password).find();
     }
 
     /**
-     * @pre we have validated ngrok setup using validateNgrok()
      * @return
      * @throws IOException
+     * @pre we have validated ngrok setup using validateNgrok()
      */
-    public static String getServerInfo() throws IOException
-    {
+    public static String getServerInfo() throws IOException {
         URL url = new URL("http://127.0.0.1:4040/api/tunnels");
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
@@ -47,7 +45,7 @@ public class NetworkUtils {
         BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
         String inputLine;
         StringBuffer content = new StringBuffer();
-        while((inputLine = in.readLine()) != null) {
+        while ((inputLine = in.readLine()) != null) {
             content.append(inputLine);
         }
         in.close();
@@ -95,9 +93,7 @@ public class NetworkUtils {
             } else {
                 return false;
             }
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             return false;
         }
     }
@@ -106,13 +102,13 @@ public class NetworkUtils {
      * this will call getServerInfo and get the full ngrok address with the port and everything.
      * it will have to do some sanitizing of the output, and then
      * it will split it and return the ip and the port, ready for the Socket constructor
-     * @pre ngrok is up and running, has been validated by validateNgrok()
+     *
      * @return an array: element at index 0 is the ip and element at index 1 is the port, both are String
+     * @pre ngrok is up and running, has been validated by validateNgrok()
      */
-    public static String[] tokenizeNgrokAddr() throws IOException
-    {
+    public static String[] tokenizeNgrokAddr() throws IOException {
         String fullAddr = getServerInfo();
-        String [] tokenized = fullAddr.split(":");
+        String[] tokenized = fullAddr.split(":");
 
         // at this point we have an array of something like:
         // {"tcp", "//4.tcp.ngrok.io", "14714"}
@@ -122,7 +118,7 @@ public class NetworkUtils {
 
         // now fill in the return array
         String port = tokenized[2];
-        String [] results = new String[2];
+        String[] results = new String[2];
         results[0] = ip.trim(); // trim whitespaces just in case
         results[1] = port.trim();
 
@@ -130,9 +126,8 @@ public class NetworkUtils {
     }
 
     // DNS lookup part based on code from https://github.com/DoctorLai/DNSLookup
-    public static String ngrokAddrToPassToLS() throws IOException
-    {
-        String [] info = tokenizeNgrokAddr();
+    public static String ngrokAddrToPassToLS() throws IOException {
+        String[] info = tokenizeNgrokAddr();
         String dns = info[0];
         String port = info[1];
 
@@ -143,15 +138,11 @@ public class NetworkUtils {
 
         String ip;
 
-        try
-        {
+        try {
             InetAddress add;
             add = InetAddress.getByName(dns);
             ip = add.getHostAddress();
-        }
-
-        catch (UnknownHostException e)
-        {
+        } catch (UnknownHostException e) {
             System.out.println("Failed to get the address!");
             e.printStackTrace();
             return null;
@@ -169,27 +160,22 @@ public class NetworkUtils {
 
         InetAddress local = InetAddress.getLocalHost();
         String localHostname = local.getHostName();
-        InetAddress [] allAddresses = InetAddress.getAllByName(localHostname);
+        InetAddress[] allAddresses = InetAddress.getAllByName(localHostname);
 
-        for (InetAddress address : allAddresses)
-        {
+        for (InetAddress address : allAddresses) {
             Logger.getGlobal().info("Validating IP " + address.getHostAddress());
             if (address.isLoopbackAddress() || !isValidIP(address.getHostAddress()) || !beginsWithTen(address.getHostAddress())) // we don't want the loopback address or an invalid one, like a MAC address
             {
                 // do nothing and keep going
                 continue;
-            }
-
-            else
-            {
+            } else {
                 return address.getHostAddress();
             }
         }
 
-        callCounter ++;
+        callCounter++;
         // TODO: change
-        if (callCounter < 100)
-        {
+        if (callCounter < 100) {
             Thread.sleep(2000);
             return getLocalIP(callCounter); // exhibits some weird behavior, so we will retry up to 5 times
         }
@@ -205,11 +191,11 @@ public class NetworkUtils {
      * used for adding a port onto an address since, the LS wants one
      * for now, we are going to use port 999
      * if, for some reason, we want to use a different port, we can overload this method and take port as argument
+     *
      * @return the local IP address with a port tacked onto it, to send to the LobbyService
      * @throws UnknownHostException
      */
-    public static String getLocalIPAddPort() throws Exception
-    {
+    public static String getLocalIPAddPort() throws Exception {
         // hardcode port 999. this is what everyone will use
         String port = "999";
         // tack the desired port onto the local IP address to make it valid for the LS
@@ -221,25 +207,24 @@ public class NetworkUtils {
 
     /**
      * based on code from https://www.geeksforgeeks.org/md5-hash-in-java/
+     *
      * @param input the stuff to hash (will be a payload for long polling)
      * @return the hashed version of the stuff
      */
-    public static String md5Hash(String input)
-    {
+    public static String md5Hash(String input) {
         MessageDigest md5 = null;
         try {
             md5 = MessageDigest.getInstance("MD5");
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-        byte [] stuff = md5.digest(input.getBytes());
-        BigInteger num = new BigInteger (1, stuff);
+        byte[] stuff = md5.digest(input.getBytes());
+        BigInteger num = new BigInteger(1, stuff);
 
         String hash = num.toString(16);
 
         // bit extend the hash to 32 bits
-        while (hash.length() < 32)
-        {
+        while (hash.length() < 32) {
             hash = "0" + hash;
         }
         return hash;
@@ -247,45 +232,38 @@ public class NetworkUtils {
 
     /**
      * @param address: a valid IP address in the format IP: port, returned from an API call to the LS
-     * will be called in CommunicationsManager.setUpSenders()
+     *                 will be called in CommunicationsManager.setUpSenders()
      * @return the IP address (without the port)
      */
-    public static String getAddress(String address)
-    {
-        String [] wholeThingSplit = address.split(":");
+    public static String getAddress(String address) {
+        String[] wholeThingSplit = address.split(":");
         return wholeThingSplit[0];
     }
 
     /**
-     *
      * @param address a valid IP address in the format IP:port, returned from an API call to the LS
-     * will be called in CommunicationsManager.setUpSenders()
+     *                will be called in CommunicationsManager.setUpSenders()
      * @return the port number
      */
-    public static int getPort(String address)
-    {
-        String [] wholeThingSplit = address.split(":");
+    public static int getPort(String address) {
+        String[] wholeThingSplit = address.split(":");
         return Integer.parseInt(wholeThingSplit[1]);
     }
 
     /**
      * taken from LocationValidator.java at github.com/kartoffelquadrat/LobbyService
      * we need this to make sure our getLocalAddress method returns the correct, valid IP and not the MAC address or something (it has happened)
+     *
      * @param ip the address to check
      * @return
      */
-    public static boolean isValidIP(String ip)
-    {
+    public static boolean isValidIP(String ip) {
         return Pattern.compile("(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|" +
                 "2[0-4][0-9]|25[0-5])").matcher(ip).find();
     }
 
-    public static boolean beginsWithTen(String ip)
-    {
-       return ip.startsWith("10");
+    public static boolean beginsWithTen(String ip) {
+        return ip.startsWith("10");
     }
-
-
-
 
 }

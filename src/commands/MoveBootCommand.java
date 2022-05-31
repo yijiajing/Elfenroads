@@ -18,8 +18,7 @@ public class MoveBootCommand implements GameCommand, Serializable {
     private final String destination;
     private final Colour colorBootMoved;
 
-    public MoveBootCommand (ElfBootPanel pStart, ElfBootPanel pDestination, ElfBoot pMoved)
-    {
+    public MoveBootCommand(ElfBootPanel pStart, ElfBootPanel pDestination, ElfBoot pMoved) {
         colorBootMoved = pMoved.getColour();
         start = pStart.getTown().getName();
         destination = pDestination.getTown().getName();
@@ -29,8 +28,7 @@ public class MoveBootCommand implements GameCommand, Serializable {
     /**
      * @pre the move has been validated by the ActionManager
      */
-    public void execute()
-    {
+    public void execute() {
         Logger.getGlobal().info("Executing MoveBootCommand, start: " + start + ", dest: " + destination + ", color: " + colorBootMoved);
         GameState gameState = GameState.instance();
         GameMap map = GameMap.getInstance();

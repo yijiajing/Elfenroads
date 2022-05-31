@@ -9,14 +9,13 @@ import networking.GameState;
 import java.io.IOException;
 import java.util.logging.Logger;
 
-public class AddPlayerCommand implements GameCommand{
+public class AddPlayerCommand implements GameCommand {
 
     // encodes the info of the player that the receiving computer needs to add to his game
     private Colour color;
     private String name;
 
-    public AddPlayerCommand(String playerName, Colour playerColor)
-    {
+    public AddPlayerCommand(String playerName, Colour playerColor) {
         name = playerName;
         color = playerColor;
     }

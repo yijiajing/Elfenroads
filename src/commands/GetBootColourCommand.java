@@ -32,8 +32,7 @@ public class GetBootColourCommand implements GameCommand {
             String localAddress = CommunicationsManager.getLocalAddress();
 
             // if we have not picked our color yet, we can tell the asker that
-            if (GameManager.getInstance().getThisPlayer() == null)
-            {
+            if (GameManager.getInstance().getThisPlayer() == null) {
                 // we haven't chosen a boot yet
                 SendBootColourCommand response = new SendBootColourCommand(null);
                 coms.sendGameCommandToPlayer(response, senderIP);

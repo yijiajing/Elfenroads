@@ -3,30 +3,25 @@ package commands;
 import domain.Player;
 import enums.Colour;
 import gamemanager.GameManager;
-import networking.GameSession;
 import networking.User;
 import windows.ChooseBootWindow;
-import windows.HostWaitWindow;
 import windows.MainFrame;
 import windows.PlayerWaitWindow;
 
 import javax.swing.*;
 
 // sent by the host after he receives a boot validation command
-public class BootValidationResponseCommand implements GameCommand
-{
+public class BootValidationResponseCommand implements GameCommand {
     private boolean validated;
     private Colour colorChosen;
 
-    public BootValidationResponseCommand(boolean pValidated, Colour pChosenColor)
-    {
+    public BootValidationResponseCommand(boolean pValidated, Colour pChosenColor) {
         validated = pValidated;
         colorChosen = pChosenColor;
     }
 
     @Override
     public void execute() {
-        // TODO: implement
         // will be executed on the receiving machine
         // when the user receives his boot information, he can now set his boot.
 
@@ -39,8 +34,7 @@ public class BootValidationResponseCommand implements GameCommand
 
             // the player is not the host of the session, so he should go to the playerWaitingRoom
             // if we previously had a PlayerWaitWindow (meaning we were in a game before and then left,) we need to completely reinitialize it
-            if (MainFrame.getPlayerWait() != null)
-            {
+            if (MainFrame.getPlayerWait() != null) {
                 PlayerWaitWindow prev = MainFrame.getPlayerWait();
                 MainFrame.mainPanel.remove(prev);
             }
@@ -49,9 +43,7 @@ public class BootValidationResponseCommand implements GameCommand
             MainFrame.setPlayerWaitWindow(updated);
             MainFrame.mainPanel.add(updated, "playerWaitingRoom");
             MainFrame.cardLayout.show(MainFrame.mainPanel, "playerWaitingRoom");
-        }
-
-        else // if the boot choice was rejected, the user will get a pop-up and have to start over.
+        } else // if the boot choice was rejected, the user will get a pop-up and have to start over.
         {
             // we know now that this boot color is not available, so remove it before we re-display the choose boot window
             GameManager.getInstance().removeAvailableColour(colorChosen);

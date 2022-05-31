@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
-import java.util.Optional;
 
 public final class GameRuleUtils {
 
