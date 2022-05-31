@@ -193,7 +193,7 @@ public class Savegame implements Serializable {
         String listOfPlayersForRegister = getPlayersListForLS();
         String token = User.getAccessTokenUsingCreds(gameName, "abc123_ABC123");
 
-        URL url = new URL("http://35.182.122.111:4242/api/gameservices/" + gameName + "/savegames/" + pSaveGameID + "?access_token=" + token);
+        URL url = new URL("http://3.99.137.208:4242/api/gameservices/" + gameName + "/savegames/" + pSaveGameID + "?access_token=" + token);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("PUT");
         con.setRequestProperty("content-type", "application/json");

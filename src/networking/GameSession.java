@@ -57,7 +57,7 @@ public class GameSession {
         String token = creator.getAccessToken();
 
 
-        URL url = new URL("http://35.182.122.111:4242/api/sessions?access_token=" + token + "&location=" + locationIP);
+        URL url = new URL("http://3.99.137.208:4242/api/sessions?access_token=" + token + "&location=" + locationIP);
 
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("POST");
@@ -102,7 +102,7 @@ public class GameSession {
         // creates a new session using the savegameID (forked from a save)
         String token = creator.getAccessToken();
 
-        URL url = new URL("http://35.182.122.111:4242/api/sessions?access_token=" + token + "&location=" + locationIP);
+        URL url = new URL("http://3.99.137.208:4242/api/sessions?access_token=" + token + "&location=" + locationIP);
 
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("POST");
@@ -143,7 +143,7 @@ public class GameSession {
     {
         String creatorToken = creator.getAccessToken();
 
-        URL url = new URL("http://35.182.122.111:4242/api/sessions/" + id + "?access_token=" + creatorToken);
+        URL url = new URL("http://3.99.137.208:4242/api/sessions/" + id + "?access_token=" + creatorToken);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("POST");
 
@@ -169,7 +169,7 @@ public class GameSession {
     {
         String creatorToken = creator.getAccessToken();
 
-        URL url = new URL("http://35.182.122.111:4242/api/sessions/" + sessionID + "?access_token=" + creatorToken);
+        URL url = new URL("http://3.99.137.208:4242/api/sessions/" + sessionID + "?access_token=" + creatorToken);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("POST");
 
@@ -215,7 +215,7 @@ public class GameSession {
             }
         }
 
-        URL url = new URL("http://35.182.122.111:4242/api/sessions/" + sessionID + "?access_token=" + token);
+        URL url = new URL("http://3.99.137.208:4242/api/sessions/" + sessionID + "?access_token=" + token);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("DELETE");
         con.setRequestProperty("authorization", "Basic YmdwLWNsaWVudC1uYW1lOmJncC1jbGllbnQtcHc=");
@@ -318,7 +318,7 @@ public class GameSession {
 
     public static JSONObject getSessionDetails(String id) throws IOException
     {
-        URL url = new URL("http://35.182.122.111:4242/api/sessions/" + id);
+        URL url = new URL("http://3.99.137.208:4242/api/sessions/" + id);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
 
@@ -341,7 +341,7 @@ public class GameSession {
 
     public static String getSessionsReturnString() throws IOException
     {
-        URL url = new URL("http://35.182.122.111:4242/api/sessions");
+        URL url = new URL("http://3.99.137.208:4242/api/sessions");
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
 
@@ -362,7 +362,7 @@ public class GameSession {
 
     public static String getSessionDetailsReturnString (String id) throws IOException
     {
-        URL url = new URL("http://35.182.122.111:4242/api/sessions/" + id);
+        URL url = new URL("http://3.99.137.208:4242/api/sessions/" + id);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
 
@@ -409,7 +409,7 @@ public class GameSession {
     {
         String hashedPrevPayload = NetworkUtils.md5Hash(prevPayload.toString());
 
-        URL url = new URL("http://35.182.122.111:4242/api/sessions/" + id + "?hash=" + hashedPrevPayload);
+        URL url = new URL("http://3.99.137.208:4242/api/sessions/" + id + "?hash=" + hashedPrevPayload);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
 
@@ -445,7 +445,7 @@ public class GameSession {
     {
         String prevPayloadHashed = NetworkUtils.md5Hash(prevPayload);
 
-        URL url = new URL("http://35.182.122.111:4242/api/sessions" + "?hash=" + prevPayloadHashed);
+        URL url = new URL("http://3.99.137.208:4242/api/sessions" + "?hash=" + prevPayloadHashed);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
 
@@ -478,7 +478,7 @@ public class GameSession {
     public static String getSessions(String prevPayload, Thread longPollThread) throws IOException, InterruptedException {
         String prevPayloadHashed = NetworkUtils.md5Hash(prevPayload);
 
-        URL url = new URL("http://35.182.122.111:4242/api/sessions" + "?hash=" + prevPayloadHashed);
+        URL url = new URL("http://3.99.137.208:4242/api/sessions" + "?hash=" + prevPayloadHashed);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
 
@@ -588,7 +588,7 @@ public class GameSession {
 
     public static JSONObject getSessions() throws IOException
     {
-        URL url = new URL("http://35.182.122.111:4242/api/sessions");
+        URL url = new URL("http://3.99.137.208:4242/api/sessions");
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
 
@@ -639,7 +639,7 @@ public class GameSession {
         // 03/02 changing to pass local address to ls instead
         String ip = pLocalIP;
 
-        URL url = new URL("http://35.182.122.111:4242/api/sessions/" + sessionID + "/players/" + joiner.getUsername() + "?location=" + ip + "&access_token=" + token);
+        URL url = new URL("http://3.99.137.208:4242/api/sessions/" + sessionID + "/players/" + joiner.getUsername() + "?location=" + ip + "&access_token=" + token);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("PUT");
 
@@ -671,7 +671,7 @@ public class GameSession {
         }
         String token = leaver.getAccessToken();
 
-        URL url = new URL("http://35.182.122.111:4242/api/sessions/" + sessionID + "/players/" + leaver.getUsername() + "?location=" + ip + "&access_token=" + token);
+        URL url = new URL("http://3.99.137.208:4242/api/sessions/" + sessionID + "/players/" + leaver.getUsername() + "?location=" + ip + "&access_token=" + token);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("DELETE");
 

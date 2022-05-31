@@ -34,7 +34,7 @@ public class LSSavegame {
         // we will just use the admin credentials for this. no reason to restrict it
         String adminToken = User.getAccessTokenUsingCreds("maex", "abc123_ABC123");
 
-        URL url = new URL("http://35.182.122.111:4242/api/gameservices/" + gameServiceName + "/savegames?access_token=" + adminToken);
+        URL url = new URL("http://3.99.137.208:4242/api/gameservices/" + gameServiceName + "/savegames?access_token=" + adminToken);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
 
