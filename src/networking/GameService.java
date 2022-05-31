@@ -53,7 +53,7 @@ public class GameService {
         else
         {
             // this method will make a call to Users and create a user with the service role
-            URL url = new URL("http://35.182.122.111:4242/api/users/" + gameServiceName + "?access_token=" + adminToken);
+            URL url = new URL("http://3.99.137.208:4242/api/users/" + gameServiceName + "?access_token=" + adminToken);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("PUT");
             con.setRequestProperty("Content-Type", "application/json");
@@ -92,7 +92,7 @@ public class GameService {
     public void createGameService() throws IOException
     {
         String token = gameServiceUser.getAccessToken();
-        URL url = new URL("http://35.182.122.111:4242/api/gameservices/" + gameServiceName + "?access_token=" + token);
+        URL url = new URL("http://3.99.137.208:4242/api/gameservices/" + gameServiceName + "?access_token=" + token);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("PUT");
         con.setRequestProperty("Content-Type", "application/json");

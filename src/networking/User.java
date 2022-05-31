@@ -111,7 +111,7 @@ public class User {
 
         String adminToken = getAccessTokenUsingCreds(adminUsername, adminPassword);
 
-        URL url = new URL("http://35.182.122.111:4242/api/users/" + newUsername + "?access_token=" + adminToken);
+        URL url = new URL("http://3.99.137.208:4242/api/users/" + newUsername + "?access_token=" + adminToken);
 
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("PUT");
@@ -154,7 +154,7 @@ public class User {
 
         String adminToken = getAccessTokenUsingCreds(adminUsername, adminPassword);
 
-        URL url = new URL("http://35.182.122.111:4242/api/users/" + newUsername + "?access_token=" + adminToken);
+        URL url = new URL("http://3.99.137.208:4242/api/users/" + newUsername + "?access_token=" + adminToken);
 
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("PUT");
@@ -188,7 +188,7 @@ public class User {
 
     public int authenticate() throws IOException
     {
-        URL url = new URL("http://35.182.122.111:4242/oauth/token?grant_type=password&username=" + username + "&password=" + password);
+        URL url = new URL("http://3.99.137.208:4242/oauth/token?grant_type=password&username=" + username + "&password=" + password);
 
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setDoOutput(true);
@@ -296,7 +296,7 @@ public class User {
         String adminToken = getAccessTokenUsingCreds("maex", "abc123_ABC123");
 
         // now make the main API call
-        URL url = new URL("http://35.182.122.111:4242/api/users/" + username + "?access_token=" + adminToken);
+        URL url = new URL("http://3.99.137.208:4242/api/users/" + username + "?access_token=" + adminToken);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
 
@@ -369,7 +369,7 @@ public class User {
 
     {
         
-    	URL url = new URL("http://35.182.122.111:4242/api/users?access_token=" + adminToken);
+    	URL url = new URL("http://3.99.137.208:4242/api/users?access_token=" + adminToken);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
 
@@ -472,7 +472,7 @@ public class User {
      */
     public static String getAccessTokenUsingCreds(String username, String password) throws IOException
     {
-        URL url = new URL("http://35.182.122.111:4242/oauth/token?grant_type=password&username=" + username + "&password=" + password);
+        URL url = new URL("http://3.99.137.208:4242/oauth/token?grant_type=password&username=" + username + "&password=" + password);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("POST");
 
