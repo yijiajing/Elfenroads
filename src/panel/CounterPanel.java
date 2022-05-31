@@ -33,9 +33,7 @@ public class CounterPanel extends JPanel {
         }
         
         this.setOpaque(false);
-        
-        
-        
+
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {

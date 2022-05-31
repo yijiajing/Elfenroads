@@ -55,21 +55,6 @@ public class DoubleMagicSpellPopup extends JPanel {
         add(counterPanel);
     }
 
-    // TODO delete, just for testing
-    public static void main(String[] args) {
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        JFrame frame = new JFrame();
-        frame.setSize((int) screenSize.getWidth(), (int) screenSize.getHeight());
-        frame.setVisible(true);
-        frame.setLayout(new CardLayout());
-
-        JLayeredPane boardGame_Layers = new JLayeredPane();
-        boardGame_Layers.setBounds(0,0,(int) screenSize.getWidth(), (int) screenSize.getHeight());
-        boardGame_Layers.add(new DoubleMagicSpellPopup());
-
-        frame.add(boardGame_Layers);
-    }
-
     private void addMouseListener(TransportationCounter counter, JLabel image) {
         image.addMouseListener(new MouseAdapter() {
             @Override

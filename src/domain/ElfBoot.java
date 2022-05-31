@@ -30,18 +30,21 @@ public class ElfBoot extends JLabel {
 
         ImageIcon bootIcon = new ImageIcon(filepathToRepo + "/assets/boppels-and-boots/boot-" + this.colour + ".png");
         Image bootImage = bootIcon.getImage();
-        Image bootResized = bootImage.getScaledInstance(width*15/1440, height*15/900,  java.awt.Image.SCALE_SMOOTH);
+        Image bootResized = bootImage.getScaledInstance(width * 15 / 1440, height * 15 / 900, java.awt.Image.SCALE_SMOOTH);
         this.bootImage = new JLabel(new ImageIcon(bootResized));
-//        this.bootImage.addMouseListener(new ElfBootController(pGameScreen, this));
     }
 
-    public boolean isSelected() { return this.selected; }
+    public boolean isSelected() {
+        return this.selected;
+    }
 
     public void setSelected(boolean pSelected) {
         this.selected = pSelected;
     }
 
-    public ElfBootPanel getCurPanel() { return this.curPanel; }
+    public ElfBootPanel getCurPanel() {
+        return this.curPanel;
+    }
 
     public void setCurPanel(ElfBootPanel pCurPanel) {
         this.curPanel.removeBootFromPanel(this);
@@ -55,7 +58,11 @@ public class ElfBoot extends JLabel {
         GameScreen.getInstance().notifyObservers();
     }
 
-    public JLabel getImage() { return this.bootImage; }
+    public JLabel getImage() {
+        return this.bootImage;
+    }
 
-    public Colour getColour() { return this.colour; }
+    public Colour getColour() {
+        return this.colour;
+    }
 }

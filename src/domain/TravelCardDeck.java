@@ -15,18 +15,18 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 
-public class TravelCardDeck extends Deck <CardUnit> {
+public class TravelCardDeck extends Deck<CardUnit> {
 
     private GameVariant variant;
     private JLabel deckImage;
 
-    public TravelCardDeck (String sessionID, GameVariant variant) {
+    public TravelCardDeck(String sessionID, GameVariant variant) {
         super(sessionID);
 
         // initialize the deck image
         ImageIcon imageIcon = new ImageIcon("./assets/sprites/grey_deck.png");
         Image image = imageIcon.getImage();
-        Image imageResized = image.getScaledInstance(GameScreen.getInstance().getWidth()*130/1440-35, GameScreen.getInstance().getHeight()/5-40, java.awt.Image.SCALE_SMOOTH);
+        Image imageResized = image.getScaledInstance(GameScreen.getInstance().getWidth() * 130 / 1440 - 35, GameScreen.getInstance().getHeight() / 5 - 40, java.awt.Image.SCALE_SMOOTH);
         this.deckImage = new JLabel(new ImageIcon(imageResized));
 
         this.variant = variant;
@@ -47,21 +47,21 @@ public class TravelCardDeck extends Deck <CardUnit> {
             //add 6 witch cards only if the gamevariant is elfengold_witch
             if (type.equals(TravelCardType.WITCH)) {
                 if (variant == GameVariant.ELFENGOLD_WITCH) {
-                	for(int i = 0; i < 6; i++) {
-                		components.add(new TravelCard(TravelCardType.WITCH,GameScreen.getInstance().getWidth()*130/1440, GameScreen.getInstance().getHeight()/5));
-                	}
-                }else {
-                	continue;
+                    for (int i = 0; i < 6; i++) {
+                        components.add(new TravelCard(TravelCardType.WITCH, GameScreen.getInstance().getWidth() * 130 / 1440, GameScreen.getInstance().getHeight() / 5));
+                    }
+                } else {
+                    continue;
                 }
             }
 
             if (type.equals(TravelCardType.RAFT)) {
                 for (int i = 0; i < numRafts; i++) {
-                    components.add(new TravelCard(type, GameScreen.getInstance().getWidth()*130/1440, GameScreen.getInstance().getHeight()/5));
+                    components.add(new TravelCard(type, GameScreen.getInstance().getWidth() * 130 / 1440, GameScreen.getInstance().getHeight() / 5));
                 }
             } else {
                 for (int i = 0; i < numOtherTypes; i++) {
-                    components.add(new TravelCard(type, GameScreen.getInstance().getWidth()*130/1440, GameScreen.getInstance().getHeight()/5));
+                    components.add(new TravelCard(type, GameScreen.getInstance().getWidth() * 130 / 1440, GameScreen.getInstance().getHeight() / 5));
                 }
             }
         }
@@ -75,14 +75,13 @@ public class TravelCardDeck extends Deck <CardUnit> {
      * construct an empty travel card deck
      * private for safety--we only want to use this when we are loading games
      */
-    private TravelCardDeck(String sessionID)
-    {
+    private TravelCardDeck(String sessionID) {
 
         super(sessionID);
         // initialize the deck image
         ImageIcon imageIcon = new ImageIcon("./assets/sprites/grey_deck.png");
         Image image = imageIcon.getImage();
-        Image imageResized = image.getScaledInstance(GameScreen.getInstance().getWidth()*130/1440-40, GameScreen.getInstance().getHeight()/5-50, java.awt.Image.SCALE_SMOOTH);
+        Image imageResized = image.getScaledInstance(GameScreen.getInstance().getWidth() * 130 / 1440 - 40, GameScreen.getInstance().getHeight() / 5 - 50, java.awt.Image.SCALE_SMOOTH);
         this.deckImage = new JLabel(new ImageIcon(imageResized));
 
         initializeMouseListener();
@@ -93,10 +92,10 @@ public class TravelCardDeck extends Deck <CardUnit> {
     /**
      * A special case constructor to get an empty TravelCardDeck
      * this is necessary for loading games, since we need to initialize the TravelCardDeck without all of the cards in it
+     *
      * @return a TravelCardDeck with no components
      */
-    public static TravelCardDeck getEmpty(String pSessionID)
-    {
+    public static TravelCardDeck getEmpty(String pSessionID) {
         return new TravelCardDeck(pSessionID);
     }
 
@@ -104,7 +103,7 @@ public class TravelCardDeck extends Deck <CardUnit> {
         // Add gold cards for Elfengold
         if (GameRuleUtils.isElfengoldVariant(variant)) {
             for (int i = 0; i < 7; i++) {
-                components.add(new GoldCard(GameScreen.getInstance().getWidth()*130/1440, GameScreen.getInstance().getHeight()/5));
+                components.add(new GoldCard(GameScreen.getInstance().getWidth() * 130 / 1440, GameScreen.getInstance().getHeight() / 5));
             }
         }
         shuffle();
@@ -130,7 +129,7 @@ public class TravelCardDeck extends Deck <CardUnit> {
                 if ((GameRuleUtils.isDrawCardsPhase() || ActionManager.getInstance().getCardsToBeDrawn() > 0)
                         && GameManager.getInstance().isLocalPlayerTurn()) {
 
-                	CardUnit drawn = GameState.instance().getTravelCardDeck().draw(); // draw a card
+                    CardUnit drawn = GameState.instance().getTravelCardDeck().draw(); // draw a card
                     // tell the other peers to remove the card from the deck
                     try {
                         GameManager.getInstance().getComs().sendGameCommandToAllPlayers(new DrawCardCommand(1, null));

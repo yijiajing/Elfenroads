@@ -225,7 +225,6 @@ public abstract class GameScreen extends JPanel implements Serializable {
                     }
             		catch (IOException e3) {e3.printStackTrace();}
             	}
-                // TODO: decide what to do after the game has been saved
             }
         });
 

@@ -16,6 +16,7 @@ import java.util.logging.Logger;
 public class SendBootColourCommand implements GameCommand {
 
     private Colour bootColour;
+
     public SendBootColourCommand(Colour pBootColour) {
         this.bootColour = pBootColour;
     }
@@ -28,28 +29,22 @@ public class SendBootColourCommand implements GameCommand {
 
         GameManager.getInstance().receivedBootNotif(); // increments the counter
         // if the response bootColour is null, then we can do nothing
-        if (bootColour == null)
-        {
+        if (bootColour == null) {
             // do nothing
         }
         // else remove the color
-        else
-        {
+        else {
             GameManager.getInstance().removeAvailableColour(bootColour);
         }
         // if we have gotten all of the responses we need, we can show the boot window.
 
-        try
-        {
-            if (GameManager.getInstance().getBootNotifsReceived() == GameSession.getNumPlayers(GameManager.getInstance().getSessionID()) - 1)
-            {
+        try {
+            if (GameManager.getInstance().getBootNotifsReceived() == GameSession.getNumPlayers(GameManager.getInstance().getSessionID()) - 1) {
                 ChooseBootWindow window = new ChooseBootWindow(GameManager.getInstance().getSessionID(), GameManager.getInstance().getAvailableColours());
                 MainFrame.mainPanel.add(window, "choose-boot");
                 MainFrame.cardLayout.show(MainFrame.mainPanel, "choose-boot");
             }
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             Logger.getGlobal().severe("There was a problem getting session information for session " + GameManager.getInstance().getSessionID() + " from the API.");
             e.printStackTrace();
         }

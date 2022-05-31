@@ -26,7 +26,7 @@ public class TravelCard extends CardUnit {
     public TravelCard(TravelCardType type, int resizeWidth, int resizeHeight) {
         super(resizeWidth, resizeHeight, "T0" + (type.ordinal() + 1));
         this.type = type;
-        if (type == TravelCardType.WITCH){
+        if (type == TravelCardType.WITCH) {
             track1 = new MP3Player("./assets/Music/Witch Broom Flying Sound.mp3");
         }
         this.getMiniDisplay().addMouseListener(new MouseAdapter() {
@@ -55,7 +55,7 @@ public class TravelCard extends CardUnit {
                         ActionManager.getInstance().decrementCardsToBeDrawn();
                     }
 
-                    if (ActionManager.getInstance().getCardsToBeDrawn() == 0  && !ActionManager.getInstance().getBootMoved()) {
+                    if (ActionManager.getInstance().getCardsToBeDrawn() == 0 && !ActionManager.getInstance().getBootMoved()) {
                         GameManager.getInstance().endTurn();
                     }
                 }
@@ -69,8 +69,7 @@ public class TravelCard extends CardUnit {
         });
     }
 
-    public TravelCard (SerializableTravelCard loaded)
-    {
+    public TravelCard(SerializableTravelCard loaded) {
         super(MainFrame.getInstance().getWidth() * 130 / 1440, MainFrame.getInstance().getHeight() * 2 / 10, "T0" + loaded.getFilepathNumber());
         owned = false;
         type = loaded.getType();
@@ -100,7 +99,7 @@ public class TravelCard extends CardUnit {
                         ActionManager.getInstance().decrementCardsToBeDrawn();
                     }
 
-                    if (ActionManager.getInstance().getCardsToBeDrawn() == 0  && !ActionManager.getInstance().getBootMoved()) {
+                    if (ActionManager.getInstance().getCardsToBeDrawn() == 0 && !ActionManager.getInstance().getBootMoved()) {
                         GameManager.getInstance().endTurn();
                     }
                 }

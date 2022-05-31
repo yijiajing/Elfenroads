@@ -9,8 +9,7 @@ public abstract class Drawable {
     ImageIcon icon;
     JLabel display; // the GUI element that actually shows the Drawable
 
-    protected Drawable(String pImageFilepath)
-    {
+    protected Drawable(String pImageFilepath) {
         imageFilepath = pImageFilepath;
         icon = new ImageIcon(imageFilepath);
     }
@@ -18,8 +17,8 @@ public abstract class Drawable {
     public JLabel getDisplay() {
         return display;
     }
-    
+
     public String getImageFilePath() {
-    	return this.imageFilepath;
+        return this.imageFilepath;
     }
 }

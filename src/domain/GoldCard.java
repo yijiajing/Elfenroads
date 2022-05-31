@@ -9,9 +9,8 @@ public class GoldCard extends CardUnit {
         super(resizeWidth, resizeHeight, "Gold");
     }
 
-    public GoldCard (SerializableGoldCard loaded)
-    {
-        super(MainFrame.getInstance().getWidth() * 130 / 1440, MainFrame.getInstance().getHeight() * 2 / 10 , "Gold");
+    public GoldCard(SerializableGoldCard loaded) {
+        super(MainFrame.getInstance().getWidth() * 130 / 1440, MainFrame.getInstance().getHeight() * 2 / 10, "Gold");
     }
 
 }

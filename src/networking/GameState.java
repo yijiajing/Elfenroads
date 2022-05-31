@@ -448,7 +448,7 @@ public class GameState implements Serializable{
      */
     private void loadCounterPile()
     {
-        counterPile = CounterUnitPile.getEmpty(loadedState.getSessionID()); // TODO: decide whether to use the old or new session ID for this. this is the old one.
+        counterPile = CounterUnitPile.getEmpty(loadedState.getSessionID());
         for (SerializableCounterUnit ctr : loadedState.getCounterPile())
         {
             // load each counter from the savegame

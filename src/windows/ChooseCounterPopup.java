@@ -73,23 +73,6 @@ public class ChooseCounterPopup extends JPanel {
         ActionManager.getInstance().setInExternalWindow(true);
     }
 
-
-    // TODO delete, just for testing
-    public static void main(String[] args) {
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        JFrame frame = new JFrame();
-        frame.setSize((int) screenSize.getWidth(), (int) screenSize.getHeight());
-        frame.setVisible(true);
-        frame.setLayout(new CardLayout());
-
-        JLayeredPane boardGame_Layers = new JLayeredPane();
-        boardGame_Layers.setBounds(0,0,(int) screenSize.getWidth(), (int) screenSize.getHeight());
-        boardGame_Layers.add(new ChooseCounterPopup(new TransportationCounter(CounterType.DRAGON,5,5),
-                new TransportationCounter(CounterType.MAGICCLOUD, 5,5)));
-
-        frame.add(boardGame_Layers);
-    }
-
     private void addMouseListener(CounterUnit counter, JLabel image) {
         image.addMouseListener(new MouseAdapter() {
             @Override
