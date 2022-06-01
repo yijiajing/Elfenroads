@@ -34,8 +34,7 @@ public class CreateAccountWindow extends JPanel {
     private static JButton createAccountAndLoginButton;
     private static JButton backButton;
 
-    CreateAccountWindow()
-    {
+    CreateAccountWindow() {
 
         MP3Player music = new MP3Player("./assets/Music/JLEX5AW-ui-medieval-click-heavy-positive-01.mp3");
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -120,30 +119,22 @@ public class CreateAccountWindow extends JPanel {
                     return;
                 }
 
-                if (alreadyUser)
-                {
+                if (alreadyUser) {
                     System.out.println("A user with the chosen username already exists in the LS.");
                     return;
-                }
-
-                else if (!NetworkUtils.isValidPassword(password))
-                {
+                } else if (!NetworkUtils.isValidPassword(password)) {
                     System.out.println("The password you chose is not valid! Please try again.");
                     return;
-                }
-
-                else if (!confirmPw.equals(password))
-                {
+                } else if (!confirmPw.equals(password)) {
                     System.out.println("Your password and confirmation must match. Please try again.");
                     return;
                 }
 
-                // TODO: allow the user to pick his role?
                 try {
                     User.registerNewPlayer(username, password);
                     MainFrame.loggedIn = User.init(username, password);
                     MainFrame.mainPanel.add(new LobbyWindow(), "lobby");
-                    MainFrame.cardLayout.show(MainFrame.mainPanel,"lobby");
+                    MainFrame.cardLayout.show(MainFrame.mainPanel, "lobby");
                 } catch (Exception ex) {
                     System.out.print("Error: there was a problem creating a user. Please try again.");
                     ex.printStackTrace();
@@ -173,31 +164,23 @@ public class CreateAccountWindow extends JPanel {
                     return;
                 }
 
-                if (alreadyUser)
-                {
+                if (alreadyUser) {
                     System.out.println("A user with the chosen username already exists in the LS.");
                     return;
-                }
-
-                else if (!NetworkUtils.isValidPassword(password))
-                {
+                } else if (!NetworkUtils.isValidPassword(password)) {
                     System.out.println("The password you chose is not valid! Please try again.");
                     return;
-                }
-
-                else if (!confirmPw.equals(password))
-                {
+                } else if (!confirmPw.equals(password)) {
                     System.out.println("Your password and confirmation must match. Please try again.");
                     return;
                 }
 
-                // TODO: allow the user to pick his role?
                 try {
                     music.play();
                     User.registerNewPlayer(username, password);
                     MainFrame.loggedIn = User.init(username, password);
                     MainFrame.mainPanel.add(new LobbyWindow(), "lobby");
-                    MainFrame.cardLayout.show(MainFrame.mainPanel,"lobby");
+                    MainFrame.cardLayout.show(MainFrame.mainPanel, "lobby");
                 } catch (Exception ex) {
                     System.out.print("Error: there was a problem creating a user. Please try again.");
                     ex.printStackTrace();
@@ -214,19 +197,5 @@ public class CreateAccountWindow extends JPanel {
             }
         });
 
-
-
-
-
     }
-
-
-
-
-
-
-
-
-
-
 }

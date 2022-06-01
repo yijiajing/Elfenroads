@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 /**
- *
  * @author philb
  */
 public class ChatBoxGUI extends javax.swing.JFrame {
@@ -57,18 +56,18 @@ public class ChatBoxGUI extends javax.swing.JFrame {
         javax.swing.GroupLayout ChatPanelLayout = new javax.swing.GroupLayout(ChatPanel);
         ChatPanel.setLayout(ChatPanelLayout);
         ChatPanelLayout.setHorizontalGroup(
-            ChatPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(ChatPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane2)
-                .addContainerGap())
+                ChatPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(ChatPanelLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jScrollPane2)
+                                .addContainerGap())
         );
         ChatPanelLayout.setVerticalGroup(
-            ChatPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(ChatPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE)
-                .addContainerGap())
+                ChatPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(ChatPanelLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE)
+                                .addContainerGap())
         );
 
         inputTextArea.setColumns(20);
@@ -85,8 +84,7 @@ public class ChatBoxGUI extends javax.swing.JFrame {
 
             @Override
             public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_ENTER)
-                {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     e.consume();
                     sendMessage();
                 }
@@ -109,37 +107,37 @@ public class ChatBoxGUI extends javax.swing.JFrame {
         javax.swing.GroupLayout TextPanelLayout = new javax.swing.GroupLayout(TextPanel);
         TextPanel.setLayout(TextPanelLayout);
         TextPanelLayout.setHorizontalGroup(
-            TextPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(TextPanelLayout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 353, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(sendButton)
-                .addGap(0, 20, Short.MAX_VALUE))
+                TextPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(TextPanelLayout.createSequentialGroup()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 353, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(sendButton)
+                                .addGap(0, 20, Short.MAX_VALUE))
         );
         TextPanelLayout.setVerticalGroup(
-            TextPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, TextPanelLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, TextPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(sendButton)
-                .addGap(22, 22, 22))
+                TextPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, TextPanelLayout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, TextPanelLayout.createSequentialGroup()
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(sendButton)
+                                .addGap(22, 22, 22))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(ChatPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(TextPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(ChatPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(TextPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(ChatPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(TextPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addComponent(ChatPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(TextPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -149,45 +147,38 @@ public class ChatBoxGUI extends javax.swing.JFrame {
         sendMessage();
     }
 
-    private void sendMessage()
-    {
+    private void sendMessage() {
         ChatMessageCommand msg = new ChatMessageCommand(inputTextArea.getText(), GameManager.getInstance().getThisPlayer());
         msg.execute();
-        try {GameManager.getInstance().getComs().sendGameCommandToAllPlayers(msg);}
-        catch (IOException e)
-        {
+        try {
+            GameManager.getInstance().getComs().sendGameCommandToAllPlayers(msg);
+        } catch (IOException e) {
             Logger.getGlobal().info("There was a problem sending the chat message.");
         }
     }
 
-    public void displayMessage(String message)
-    {
+    public void displayMessage(String message) {
         String presenttxt = jTextArea1.getText();
         String input = inputTextArea.getText();
         jTextArea1.setText(presenttxt + message + "\n");
     }
 
-    public static ChatBoxGUI init()
-    {
-        if (INSTANCE == null)
-        {
+    public static ChatBoxGUI init() {
+        if (INSTANCE == null) {
             INSTANCE = new ChatBoxGUI();
         }
         return INSTANCE;
     }
 
-    public static void showChat()
-    {
+    public static void showChat() {
         INSTANCE.setVisible(true);
     }
 
-    public static void hideChat()
-    {
+    public static void hideChat() {
         INSTANCE.setVisible(false);
     }
 
-    public static void clearInputArea()
-    {
+    public static void clearInputArea() {
         INSTANCE.getInputTextArea().setText("");
     }
 
@@ -195,7 +186,9 @@ public class ChatBoxGUI extends javax.swing.JFrame {
         return inputTextArea;
     }
 
-    public static ChatBoxGUI getInstance() {return INSTANCE;}
+    public static ChatBoxGUI getInstance() {
+        return INSTANCE;
+    }
 
     /**
      * @param args the command line arguments
@@ -204,7 +197,7 @@ public class ChatBoxGUI extends javax.swing.JFrame {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -232,7 +225,7 @@ public class ChatBoxGUI extends javax.swing.JFrame {
         });
     }
 
-                   
+
 }
 
     

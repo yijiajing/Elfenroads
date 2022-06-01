@@ -4,18 +4,13 @@ package windows;
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 
-import java.awt.Component;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
-import javax.swing.GroupLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.GroupLayout.Alignment;
 import javax.swing.GroupLayout.ParallelGroup;
 import javax.swing.GroupLayout.SequentialGroup;
 import javax.swing.border.BevelBorder;
@@ -23,16 +18,12 @@ import javax.swing.border.BevelBorder;
 import commands.IncreaseBidCommand;
 import commands.PassTurnCommand;
 import domain.Player;
-import domain.TransportationCounter;
 import gamemanager.GameManager;
-import gamescreen.GameScreen;
 import networking.CommunicationsManager;
 import domain.CounterUnit;
-import enums.CounterType;
 import networking.GameState;
 
 /**
- *
  * @author philb
  */
 public class AuctionFrame extends javax.swing.JFrame {
@@ -205,7 +196,7 @@ public class AuctionFrame extends javax.swing.JFrame {
                                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))*/
-                                //.addGap(0, 24, Short.MAX_VALUE))
+        //.addGap(0, 24, Short.MAX_VALUE))
         /*);
 
         jScrollPane1.setViewportView(jPanel1);
@@ -333,12 +324,12 @@ public class AuctionFrame extends javax.swing.JFrame {
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 734, Short.MAX_VALUE)
+                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 734, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 136, Short.MAX_VALUE)
+                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 136, Short.MAX_VALUE)
         );
 
         jScrollPane1.setViewportView(jPanel1);
@@ -357,66 +348,66 @@ public class AuctionFrame extends javax.swing.JFrame {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(50, 50, 50)
-                .addComponent(PassButton, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(EnterButton, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(41, 41, 41))
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(176, 176, 176)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(IncreaseLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(CurrentBidPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(TextInput, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel2))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(CurrentBidOutput, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel1))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(62, 62, 62)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 599, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(65, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(DisplayText, javax.swing.GroupLayout.PREFERRED_SIZE, 590, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(50, 50, 50)
+                                .addComponent(PassButton, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(EnterButton, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(41, 41, 41))
+                        .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addGap(176, 176, 176)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                        .addComponent(IncreaseLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(CurrentBidPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addGroup(layout.createSequentialGroup()
+                                                                .addComponent(TextInput, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                                .addComponent(jLabel2))
+                                                        .addGroup(layout.createSequentialGroup()
+                                                                .addComponent(CurrentBidOutput, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                                .addComponent(jLabel1))))
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addGap(62, 62, 62)
+                                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 599, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addContainerGap(65, Short.MAX_VALUE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(DisplayText, javax.swing.GroupLayout.PREFERRED_SIZE, 590, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(11, Short.MAX_VALUE)
-                .addComponent(DisplayText, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(65, 65, 65)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(CurrentBidPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(CurrentBidOutput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(IncreaseLabel)
-                    .addComponent(TextInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
-                .addGap(36, 36, 36)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(PassButton, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(EnterButton, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(44, 44, 44))
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addContainerGap(11, Short.MAX_VALUE)
+                                .addComponent(DisplayText, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(65, 65, 65)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(CurrentBidPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(CurrentBidOutput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel1))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(IncreaseLabel)
+                                        .addComponent(TextInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel2))
+                                .addGap(36, 36, 36)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(PassButton, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(EnterButton, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(44, 44, 44))
         );
 
         pack();
 
-       
+
     }// </editor-fold>//GEN-END:initComponents
 
     private void EnterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EnterButtonActionPerformed
@@ -551,9 +542,10 @@ public class AuctionFrame extends javax.swing.JFrame {
     /**
      * Add a counter to the display of the auction window
      * ************* Important the size of the counter should be 70x70 **********
+     *
      * @param counterUnit
      */
-    public void addCounter(CounterUnit counterUnit){
+    public void addCounter(CounterUnit counterUnit) {
         LOGGER.info("Adding a " + counterUnit.getType() + " to auction frame, existing counters: " + listCounters);
         listCounters.add(counterUnit);
         addCounterUIComponent(counterUnit);
@@ -598,7 +590,7 @@ public class AuctionFrame extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         SequentialGroup sequentHor = jPanel1Layout.createSequentialGroup();
-        
+
         ParallelGroup vertLayout = jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING);
         //for (TransportationCounter )
         
@@ -620,41 +612,41 @@ public class AuctionFrame extends javax.swing.JFrame {
         .addGap(75, 75,75);
         vertLayout.addComponent(cardJPanelO, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE);*/
         int i = 0;
-        for (CounterUnit tc : listCounters){
-            
+        for (CounterUnit tc : listCounters) {
+
             JLabel icon = tc.getDisplay();
-            
+
             icon.setVisible(true);
             //icon.setBorder(BorderFactory.createBevelBorder(1));
             javax.swing.JPanel cardJPanel = new javax.swing.JPanel();
             //javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(cardJPanel);
             //cardJPanel.setLayout(jPanel2Layout);
             cardJPanel.setBorder(BorderFactory.createBevelBorder(1));
-            if (i==0){
-                cardJPanel.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED, new java.awt.Color(255,255,51), new java.awt.Color(255,255,51))); 
+            if (i == 0) {
+                cardJPanel.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED, new java.awt.Color(255, 255, 51), new java.awt.Color(255, 255, 51)));
             }
-            
+
             cardJPanel.add(icon);
             cardJPanel.setVisible(true);
             sequentHor.addComponent(cardJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED);
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED);
             //.addGap(75, 75,75);
             vertLayout.addComponent(cardJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE);
             i++;
         }
-        
-        
+
+
         jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(sequentHor
-            )
-                
+                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(sequentHor
+                        )
+
         );
         jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(vertLayout)
-                .addGap(0, 24, Short.MAX_VALUE))
+                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(vertLayout)
+                                .addGap(0, 24, Short.MAX_VALUE))
         );
         jPanel1.setLayout(jPanel1Layout);
         jPanel1.setVisible(true);
@@ -677,7 +669,7 @@ public class AuctionFrame extends javax.swing.JFrame {
         CounterUnit counter = listCounters.remove(0);
         //System.out.println(listCounters.size());
         ArrayList<CounterUnit> newlst = new ArrayList<>();
-        for (CounterUnit cu: listCounters){
+        for (CounterUnit cu : listCounters) {
             newlst.add(cu);
         }
 
@@ -701,14 +693,14 @@ public class AuctionFrame extends javax.swing.JFrame {
 
         //jPanel1.removeAll();
 
-       for (CounterUnit cu : newlst){
-           System.out.println(newlst.size());
+        for (CounterUnit cu : newlst) {
+            System.out.println(newlst.size());
             addCounter(cu);
             //addCounter(newlst.get(1));
             //newlst.remove(cu);
-        //    addCounterUIComponent(cu);
-           // break;
-    
+            //    addCounterUIComponent(cu);
+            // break;
+
         }
         //addListCounters(newlst);
 
@@ -724,7 +716,7 @@ public class AuctionFrame extends javax.swing.JFrame {
         }
     }*/
 
-    public void setAuctionWindowCurr(){
+    public void setAuctionWindowCurr() {
         IncreaseLabel.setVisible(true);
         EnterButton.setVisible(true);
         PassButton.setVisible(true);
@@ -732,7 +724,7 @@ public class AuctionFrame extends javax.swing.JFrame {
         jLabel2.setVisible(true);
     }
 
-    public void setAuctionWindowNotCurr(){
+    public void setAuctionWindowNotCurr() {
         IncreaseLabel.setVisible(false);
         EnterButton.setVisible(false);
         PassButton.setVisible(false);
@@ -740,7 +732,7 @@ public class AuctionFrame extends javax.swing.JFrame {
         jLabel2.setVisible(false);
     }
 
-    public void resetBidStatus(){
+    public void resetBidStatus() {
         currentBid = 0;
         CurrentBidOutput.setText("");
         highestBidPlayer = null;
@@ -748,7 +740,7 @@ public class AuctionFrame extends javax.swing.JFrame {
         GameState.instance().clearPassedPlayerCount();
     }
 
-    public void setAuction(int num){
+    public void setAuction(int num) {
 
         //CurrentBidPanel.setText(this.);
 
@@ -775,7 +767,7 @@ public class AuctionFrame extends javax.swing.JFrame {
         return listCounters.size();
     }
 
-    public void displayMessage(String message){
+    public void displayMessage(String message) {
 
         DisplayText.setText(message);
     }

@@ -9,24 +9,25 @@ import javazoom.jl.player.advanced.AdvancedPlayer;
 
 public class MP3Player {
     private String filename;
-    private Player player; 
-    
+    private Player player;
+
 
     // constructor that takes the name of an MP3 file
     public MP3Player(String filename) {
         this.filename = filename;
     }
 
-    public void close() { if (player != null) player.close(); }
+    public void close() {
+        if (player != null) player.close();
+    }
 
     // play the MP3 file to the sound card
     public void playReapeated() {
         try {
-            FileInputStream fis     = new FileInputStream(filename);
+            FileInputStream fis = new FileInputStream(filename);
             BufferedInputStream bis = new BufferedInputStream(fis);
             player = new Player(bis);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.out.println("Problem playing file " + filename);
             System.out.println(e);
         }
@@ -34,28 +35,27 @@ public class MP3Player {
         // run in new thread to play in background
         new Thread() {
             public void run() {
-                try { do
-                    {
-                      FileInputStream buff = new FileInputStream(filename);
-                      AdvancedPlayer prehravac = new AdvancedPlayer(buff);
-                      prehravac.play();
-                    }while(true); }
-                catch (Exception e) { System.out.println(e); }
+                try {
+                    do {
+                        FileInputStream buff = new FileInputStream(filename);
+                        AdvancedPlayer prehravac = new AdvancedPlayer(buff);
+                        prehravac.play();
+                    } while (true);
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
             }
         }.start();
-    
 
-        
 
     }
 
     public void play() {
         try {
-            FileInputStream fis     = new FileInputStream(filename);
+            FileInputStream fis = new FileInputStream(filename);
             BufferedInputStream bis = new BufferedInputStream(fis);
             player = new Player(bis);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.out.println("Problem playing file " + filename);
             System.out.println(e);
         }
@@ -63,15 +63,12 @@ public class MP3Player {
         // run in new thread to play in background
         new Thread() {
             public void run() {
-                try { player.play(); }
-                catch (Exception e) { System.out.println(e); }
+                try {
+                    player.play();
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
             }
         }.start();
-    
-
-        
-
     }
-    
-    
 }

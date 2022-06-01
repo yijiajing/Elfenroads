@@ -1,8 +1,6 @@
 package windows;
 
 import domain.CounterUnit;
-import domain.TransportationCounter;
-import enums.CounterType;
 import gamemanager.EGGameManager;
 import gamemanager.GameManager;
 import gamescreen.EGGameScreen;
@@ -23,21 +21,21 @@ public class ChooseCounterPopup extends JPanel {
     public ChooseCounterPopup(CounterUnit counter1, CounterUnit counter2) {
         setLayout(new FlowLayout(FlowLayout.CENTER, 0, 40));
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        setBounds((int) screenSize.getWidth()/4, (int) screenSize.getHeight()/6, (int) screenSize.getWidth()/2, (int) screenSize.getHeight()/2);
+        setBounds((int) screenSize.getWidth() / 4, (int) screenSize.getHeight() / 6, (int) screenSize.getWidth() / 2, (int) screenSize.getHeight() / 2);
         setOpaque(true);
 
         JPanel textPanel = new JPanel();
         JLabel text = new JLabel();
         text.setText(
                 """
-                <html>
-                Both of these counters are being added to your hand.<br><br>
-                You must decide which counter you would like to reveal<br>
-                to other players and which one you want to keep hidden.<br><br>
-                Click on the counter you wish to place face-up<br>
-                and the other counter will be placed face-down.
-                </html>
-                """);
+                        <html>
+                        Both of these counters are being added to your hand.<br><br>
+                        You must decide which counter you would like to reveal<br>
+                        to other players and which one you want to keep hidden.<br><br>
+                        Click on the counter you wish to place face-up<br>
+                        and the other counter will be placed face-down.
+                        </html>
+                        """);
 
         text.setFont(new Font("Serif", Font.PLAIN, 25));
         textPanel.add(text);
@@ -48,16 +46,16 @@ public class ChooseCounterPopup extends JPanel {
 
         // image for counter 1
         ImageIcon counterIcon1 = new ImageIcon(counter1.getImageFilePath());
-        Image counterIcon1Resized = counterIcon1.getImage().getScaledInstance(screenSize.width/10,
-                screenSize.height/6,  java.awt.Image.SCALE_SMOOTH);
+        Image counterIcon1Resized = counterIcon1.getImage().getScaledInstance(screenSize.width / 10,
+                screenSize.height / 6, java.awt.Image.SCALE_SMOOTH);
         JLabel counterImage1 = new JLabel(new ImageIcon(counterIcon1Resized));
         this.counter1 = counter1;
         addMouseListener(counter1, counterImage1);
 
         // image for counter 2
         ImageIcon counterIcon2 = new ImageIcon(counter2.getImageFilePath());
-        Image counterIcon2Resized = counterIcon2.getImage().getScaledInstance(screenSize.width/10,
-               screenSize.height/6,  java.awt.Image.SCALE_SMOOTH);
+        Image counterIcon2Resized = counterIcon2.getImage().getScaledInstance(screenSize.width / 10,
+                screenSize.height / 6, java.awt.Image.SCALE_SMOOTH);
         JLabel counterImage2 = new JLabel(new ImageIcon(counterIcon2Resized));
         this.counter2 = counter2;
         addMouseListener(counter2, counterImage2);
@@ -78,9 +76,9 @@ public class ChooseCounterPopup extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 counter.setSecret(false); // the user has chosen this counter to be face-up
-                ((EGGameScreen)GameScreen.getInstance()).hideCounterPopup();
+                ((EGGameScreen) GameScreen.getInstance()).hideCounterPopup();
                 ActionManager.getInstance().setInExternalWindow(false);
-                ((EGGameManager)GameManager.getInstance()).sendCounters(counter1, counter2);
+                ((EGGameManager) GameManager.getInstance()).sendCounters(counter1, counter2);
             }
         });
     }

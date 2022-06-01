@@ -22,7 +22,7 @@ public class DoubleMagicSpellPopup extends JPanel {
     public DoubleMagicSpellPopup() {
         setLayout(new FlowLayout(FlowLayout.CENTER, 0, 40));
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        setBounds((int) screenSize.getWidth()/4, (int) screenSize.getHeight()/6, (int) screenSize.getWidth()/2, (int) screenSize.getHeight()/2);
+        setBounds((int) screenSize.getWidth() / 4, (int) screenSize.getHeight() / 6, (int) screenSize.getWidth() / 2, (int) screenSize.getHeight() / 2);
         setOpaque(true);
 
         JPanel textPanel = new JPanel();
@@ -34,7 +34,7 @@ public class DoubleMagicSpellPopup extends JPanel {
         textPanel.setVisible(true);
 
         JPanel counterPanel = new JPanel();
-        counterPanel.setPreferredSize(new Dimension((int) screenSize.getWidth()/3, (int) screenSize.getHeight()/2));
+        counterPanel.setPreferredSize(new Dimension((int) screenSize.getWidth() / 3, (int) screenSize.getHeight() / 2));
         counterPanel.setVisible(true);
 
         Player thisPlayer = GameManager.getInstance().getThisPlayer();
@@ -43,8 +43,8 @@ public class DoubleMagicSpellPopup extends JPanel {
             if (u instanceof TransportationCounter && ActionManager.getInstance().getSelectedRoad().canPlaceCounter()) {
                 TransportationCounter counter = (TransportationCounter) u;
                 ImageIcon counterIcon = new ImageIcon(counter.getImageFilePath());
-                Image counterIconResized = counterIcon.getImage().getScaledInstance(screenSize.width/10,
-                        screenSize.height/6,  java.awt.Image.SCALE_SMOOTH);
+                Image counterIconResized = counterIcon.getImage().getScaledInstance(screenSize.width / 10,
+                        screenSize.height / 6, java.awt.Image.SCALE_SMOOTH);
                 JLabel counterImage = new JLabel(new ImageIcon(counterIconResized));
                 counterPanel.add(counterImage);
                 addMouseListener(counter, counterImage);

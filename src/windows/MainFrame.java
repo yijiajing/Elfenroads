@@ -1,8 +1,6 @@
 package windows;
 
-import enums.GameVariant;
 import gamemanager.GameManager;
-import gamescreen.GameScreen;
 import networking.GameSession;
 import networking.PlayerServer;
 import networking.User;
@@ -12,8 +10,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.logging.Logger;
 
-public class MainFrame extends JFrame
-{
+public class MainFrame extends JFrame {
     public static CardLayout cardLayout;
     public static JPanel mainPanel;
     public static User loggedIn;
@@ -23,20 +20,17 @@ public class MainFrame extends JFrame
     private static LobbyWindow lobby;
     private static PlayerWaitWindow playerWait;
 
-    private MainFrame()
-    {
+    private MainFrame() {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setSize((int) screenSize.getWidth(), (int) screenSize.getHeight());
 
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
-        addWindowListener(new WindowAdapter()
-        {
+        addWindowListener(new WindowAdapter() {
             @Override
-            public void windowClosing(WindowEvent event)
-            {
+            public void windowClosing(WindowEvent event) {
                 exitGame();
-                PlayerServer.stopNgrok();;
+                PlayerServer.stopNgrok();
                 dispose();
                 System.exit(0);
             }
@@ -51,38 +45,8 @@ public class MainFrame extends JFrame
         setVisible(true);
     }
 
-    /**
-     * This constructor is for testing purposes only
-     * When running TestGameScreen, comment out the real constructor and use this one instead
-     **/
-//    private MainFrame() {
-//        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-//        setSize((int) screenSize.getWidth(), (int) screenSize.getHeight());
-//
-//        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-//
-//        addWindowListener(new WindowAdapter()
-//        {
-//            @Override
-//            public void windowClosing(WindowEvent event)
-//            {
-//                exitGame();
-//                PlayerServer.stopNgrok();;
-//                dispose();
-//                System.exit(0);
-//            }
-//        });
-//
-//        cardLayout = new CardLayout();
-//        mainPanel = new JPanel(cardLayout);
-//
-//        add(mainPanel);
-//        setVisible(true);
-//    }
-
     // Everything starts here
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         MainFrame mainFrame = getInstance();
         cardLayout.show(mainPanel, "start");
         MP3Player track1 = new MP3Player("./assets/Music/alexander-nakarada-adventure.mp3");
@@ -110,28 +74,22 @@ public class MainFrame extends JFrame
      * will be called when the main window is closed.
      * will leave any sessions the player is in.
      */
-    public static void exitGame()
-    {
+    public static void exitGame() {
         // if the user was logged into the LS and in a session, leave the session
-        try
-        {
+        try {
             GameSession.leaveSession(User.getInstance(), GameManager.getInstance().getSessionID());
-        }
-        catch (Exception e) // if the user wasn't logged in and in a session, we don't really have to do anything
-        // TODO: handle the case where the User is the host of the session
+        } catch (Exception e) // if the user wasn't logged in and in a session, we don't really have to do anything
         {
             Logger.getGlobal().info("User wasn't logged in or wasn't in a session, so nothing needed to be done upon close.");
         }
 
     }
 
-    public static void setLobbyWindow(LobbyWindow pLobbyWindow)
-    {
+    public static void setLobbyWindow(LobbyWindow pLobbyWindow) {
         lobby = pLobbyWindow;
     }
 
-    public static void setPlayerWaitWindow(PlayerWaitWindow pPlayerWaitWindow)
-    {
+    public static void setPlayerWaitWindow(PlayerWaitWindow pPlayerWaitWindow) {
         playerWait = pPlayerWaitWindow;
     }
 

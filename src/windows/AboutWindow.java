@@ -13,13 +13,13 @@ import javax.swing.JPanel;
 public class AboutWindow extends JPanel {
 
     private JLabel background_elvenroads;
-    
+
     private JPanel buttons;
     private JButton elfenlandRulesButton;
     private JButton elfengoldRulesButton;
     private JButton backButton;
-    
-    public AboutWindow(){
+
+    public AboutWindow() {
         MP3Player track1 = new MP3Player("./assets/Music/JLEX5AW-ui-medieval-click-heavy-positive-01.mp3");
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setSize((int) screenSize.getWidth(), (int) screenSize.getHeight());
@@ -41,10 +41,9 @@ public class AboutWindow extends JPanel {
                         // no application registered for PDFs
                     }
                 }
-                
+
             }
 
-            
         });
 
         //Elfengold rules button
@@ -62,10 +61,9 @@ public class AboutWindow extends JPanel {
                         // no application registered for PDFs
                     }
                 }
-                
+
             }
 
-            
         });
 
         //Back button
@@ -77,7 +75,7 @@ public class AboutWindow extends JPanel {
                 track1.play();
                 remove(background_elvenroads);
                 MainFrame.mainPanel.add(new StartWindow(), "start");
-                MainFrame.cardLayout.show(MainFrame.mainPanel,"start");
+                MainFrame.cardLayout.show(MainFrame.mainPanel, "start");
             }
 
         });
@@ -91,9 +89,9 @@ public class AboutWindow extends JPanel {
         gbc.gridy = 0;
 
         gbc.gridwidth = 1;
-        gbc.gridheight= 3;
+        gbc.gridheight = 3;
         background_elvenroads.setLayout(layout);
-        background_elvenroads.add(buttons,gbc);
+        background_elvenroads.add(buttons, gbc);
 
         add(background_elvenroads);
     }

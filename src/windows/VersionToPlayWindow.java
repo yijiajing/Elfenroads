@@ -11,8 +11,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Optional;
 
-public class VersionToPlayWindow extends JPanel implements ActionListener{
-    
+public class VersionToPlayWindow extends JPanel implements ActionListener {
+
     private JLabel background_elvenroads;
     private JPanel choicesPanel;
     private Box choicesBox;
@@ -29,7 +29,7 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
     private JLabel elfenlandText;
     private JLabel elfengoldText;
 
-    VersionToPlayWindow(){
+    VersionToPlayWindow() {
         MP3Player track1 = new MP3Player("./assets/Music/JLEX5AW-ui-medieval-click-heavy-positive-01.mp3");
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setSize((int) screenSize.getWidth(), (int) screenSize.getHeight());
@@ -42,7 +42,7 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
         gbc.gridy = 0;
 
         gbc.gridwidth = 1;
-        gbc.gridheight= 3;
+        gbc.gridheight = 3;
 
         choicesPanel = new JPanel(new BorderLayout());
         choicesBox = Box.createHorizontalBox();
@@ -56,15 +56,14 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
         longGame = new JButton("Long Game");
         destinationTown1 = new JButton("Destination Town");
 
-        classicGame1.addActionListener(new ActionListener(){
+        classicGame1.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
                 GameSession session = null;
 
                 // TODO : add panel for user to input their game name and save game name
-                try 
-                {
+                try {
                     track1.play();
                     session = new GameSession(User.getInstance(), "Elfenland_Classic");
                     String localIP = NetworkUtils.getLocalIPAddPort();
@@ -74,9 +73,7 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
                     // this calls the ChooseBootWindow once all players have responded
                     GameManager.getInstance().requestAvailableColours();
 
-                } 
-                catch (Exception problem) 
-                {
+                } catch (Exception problem) {
                     problem.printStackTrace();
                     return;
                 }
@@ -84,15 +81,14 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
             }
         });
 
-        longGame.addActionListener(new ActionListener(){
+        longGame.addActionListener(new ActionListener() {
 
             GameSession session = null;
 
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                try 
-                {
+                try {
                     track1.play();
                     session = new GameSession(User.getInstance(), "Elfenland_Long");
 
@@ -103,26 +99,23 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
                     // this calls the ChooseBootWindow once all players have responded
                     GameManager.getInstance().requestAvailableColours();
 
-                } 
-                catch (Exception problem) 
-                {
+                } catch (Exception problem) {
                     problem.printStackTrace();
                     return;
                 }
-                
+
             }
-            
+
         });
 
-        destinationTown1.addActionListener(new ActionListener(){
+        destinationTown1.addActionListener(new ActionListener() {
 
             GameSession session = null;
 
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                try 
-                {
+                try {
                     track1.play();
                     session = new GameSession(User.getInstance(), "Elfenland_Destination");
 
@@ -133,14 +126,12 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
                     // this calls the ChooseBootWindow once all players have responded
                     GameManager.getInstance().requestAvailableColours();
 
-                } 
-                catch (Exception problem) 
-                {
+                } catch (Exception problem) {
                     problem.printStackTrace();
                     return;
                 }
-                
-                
+
+
             }
 
         });
@@ -150,15 +141,14 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
         rgtDistribution = new JButton("Random Gold Token Distribution");
         elvenWitch = new JButton("The Elven Witch");
 
-        classicGame2.addActionListener(new ActionListener(){
+        classicGame2.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
                 GameSession session = null;
 
                 // TODO : add panel for user to input their game name and save game name
-                try
-                {
+                try {
                     track1.play();
                     session = new GameSession(User.getInstance(), "Elfengold_Classic");
 
@@ -169,9 +159,7 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
                     // this calls the ChooseBootWindow once all players have responded
                     GameManager.getInstance().requestAvailableColours();
 
-                }
-                catch (Exception problem)
-                {
+                } catch (Exception problem) {
                     problem.printStackTrace();
                     return;
                 }
@@ -179,15 +167,14 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
             }
         });
 
-        destinationTown2.addActionListener(new ActionListener(){
+        destinationTown2.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
                 GameSession session = null;
 
                 // TODO : add panel for user to input their game name and save game name
-                try
-                {
+                try {
                     track1.play();
                     session = new GameSession(User.getInstance(), "Elfengold_Destination");
 
@@ -198,9 +185,7 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
                     // this calls the ChooseBootWindow once all players have responded
                     GameManager.getInstance().requestAvailableColours();
 
-                }
-                catch (Exception problem)
-                {
+                } catch (Exception problem) {
                     problem.printStackTrace();
                     return;
                 }
@@ -208,15 +193,14 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
             }
         });
 
-        rgtDistribution.addActionListener(new ActionListener(){
+        rgtDistribution.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
                 GameSession session = null;
 
                 // TODO : add panel for user to input their game name and save game name
-                try
-                {
+                try {
                     track1.play();
                     session = new GameSession(User.getInstance(), "Elfengold_RandomGold");
 
@@ -227,9 +211,7 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
                     // this calls the ChooseBootWindow once all players have responded
                     GameManager.getInstance().requestAvailableColours();
 
-                }
-                catch (Exception problem)
-                {
+                } catch (Exception problem) {
                     problem.printStackTrace();
                     return;
                 }
@@ -237,15 +219,14 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
             }
         });
 
-        elvenWitch.addActionListener(new ActionListener(){
+        elvenWitch.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
                 GameSession session = null;
 
                 // TODO : add panel for user to input their game name and save game name
-                try
-                {
+                try {
                     track1.play();
                     session = new GameSession(User.getInstance(), "Elfengold_Witch");
 
@@ -256,9 +237,7 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
                     // this calls the ChooseBootWindow once all players have responded
                     GameManager.getInstance().requestAvailableColours();
 
-                }
-                catch (Exception problem)
-                {
+                } catch (Exception problem) {
                     problem.printStackTrace();
                     return;
                 }
@@ -309,7 +288,7 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
         choicesPanel.add(choicesBox, BorderLayout.CENTER);
 
         background_elvenroads.setLayout(layout);
-        background_elvenroads.add(choicesPanel,gbc);
+        background_elvenroads.add(choicesPanel, gbc);
 
         background_elvenroads.add(backButton);
         add(background_elvenroads);
@@ -319,7 +298,7 @@ public class VersionToPlayWindow extends JPanel implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         // TODO Auto-generated method stub
-        
+
     }
-    
+
 }

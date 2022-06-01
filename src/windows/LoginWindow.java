@@ -36,14 +36,13 @@ public class LoginWindow extends JPanel implements Runnable {
     private int flag_ngrok = 0;
     private int flag_error = 0;
 
-    private void initThread()
-    {
+    private void initThread() {
         t = new Thread(this);
     }
 
     LoginWindow() {
-	    initThread();
-	    MP3Player track1 = new MP3Player("./assets/Music/JLEX5AW-ui-medieval-click-heavy-positive-01.mp3");
+        initThread();
+        MP3Player track1 = new MP3Player("./assets/Music/JLEX5AW-ui-medieval-click-heavy-positive-01.mp3");
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setSize((int) screenSize.getWidth(), (int) screenSize.getHeight());
         setLayout(new BorderLayout());
@@ -56,7 +55,7 @@ public class LoginWindow extends JPanel implements Runnable {
         background_elvenroads.add(layers);
 
         infoPanel = new JPanel(new BorderLayout());
-        infoPanel.setBounds(getWidth()/3, getHeight()/3+30, getWidth()/3, 100);
+        infoPanel.setBounds(getWidth() / 3, getHeight() / 3 + 30, getWidth() / 3, 100);
         infoPanel.setOpaque(false);
 
         labelBox = Box.createVerticalBox();
@@ -76,11 +75,11 @@ public class LoginWindow extends JPanel implements Runnable {
 
         loginButton = new JButton("Enter");
         loginButton.setPreferredSize(new Dimension(180, 50));
-        loginButton.setBounds(getWidth()/3+100, getHeight()/2, 180, 50);
+        loginButton.setBounds(getWidth() / 3 + 100, getHeight() / 2, 180, 50);
 
         createNewAccountButton = new JButton("Create a new account");
         createNewAccountButton.setPreferredSize(new Dimension(180, 50));
-        createNewAccountButton.setBounds(getWidth()/2+50, getHeight()/2, 180, 50);
+        createNewAccountButton.setBounds(getWidth() / 2 + 50, getHeight() / 2, 180, 50);
         createNewAccountButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -90,49 +89,39 @@ public class LoginWindow extends JPanel implements Runnable {
             }
         });
 
-        loginButton.addActionListener(new ActionListener()
-        {
+        loginButton.addActionListener(new ActionListener() {
 
             @SuppressWarnings("deprecation")
-			@Override
-            public void actionPerformed(ActionEvent e) 
-            {
-                
-            	String username = usernameTextField.getText();
-            	String password = passwordTextField.getText();
-            	boolean u = false;
-            	try 
-            	{
-					u = User.doesUsernameExist(username);
-				} 
-            	catch (Exception e1) // TODO: create a custom exception for the one raised in doesUsernameExist and edit this to catch both an IOException and the custom one
-            	{
-					e1.printStackTrace();
-				}
-                try 
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                String username = usernameTextField.getText();
+                String password = passwordTextField.getText();
+                boolean u = false;
+                try {
+                    u = User.doesUsernameExist(username);
+                } catch (Exception e1) // TODO: create a custom exception for the one raised in doesUsernameExist and edit this to catch both an IOException and the custom one
                 {
+                    e1.printStackTrace();
+                }
+                try {
                     // first, make sure the username exists. if not, display the appropriate pop-up.
-                    if (!u)
-                    {
-                        synchronized(t)
-                        {
+                    if (!u) {
+                        synchronized (t) {
                             flag_username = 1;
                             initThread();
                             t.start();
                         }
-                        return;     
+                        return;
                     }
 
                     // log into the LS
                     MainFrame.loggedIn = null; // unecessary to set to null probably but I just want to make sure that we have no issues with User
                     MainFrame.loggedIn = User.init(username, password);
 
-                } 
-                catch (Exception loginProblem)
-                {
+                } catch (Exception loginProblem) {
                     loginProblem.printStackTrace();
-                    synchronized(t)
-                    {
+                    synchronized (t) {
                         flag_password = 1;
                         initThread();
                         t.start();
@@ -140,11 +129,11 @@ public class LoginWindow extends JPanel implements Runnable {
                     return;
                 }
                 track1.play();
-            	remove(background_elvenroads);
+                remove(background_elvenroads);
                 MainFrame.mainPanel.add(new LobbyWindow(), "lobby");
-                MainFrame.cardLayout.show(MainFrame.mainPanel,"lobby");
+                MainFrame.cardLayout.show(MainFrame.mainPanel, "lobby");
             }
-            
+
         });
 
         // making it so that the user can log in by pressing enter
@@ -155,37 +144,29 @@ public class LoginWindow extends JPanel implements Runnable {
                 String username = usernameTextField.getText();
                 String password = passwordTextField.getText();
                 boolean u = false;
-                try 
-            	{
-					u = User.doesUsernameExist(username);
-				} 
-            	catch (Exception e1) // TODO: create a custom exception for the one raised in doesUsernameExist and edit this to catch both an IOException and the custom one
-            	{
-					e1.printStackTrace();
-				}
-            	boolean p = NetworkUtils.isValidPassword(password);
-                try 
+                try {
+                    u = User.doesUsernameExist(username);
+                } catch (Exception e1) // TODO: create a custom exception for the one raised in doesUsernameExist and edit this to catch both an IOException and the custom one
                 {
+                    e1.printStackTrace();
+                }
+                boolean p = NetworkUtils.isValidPassword(password);
+                try {
                     // first, make sure the username exists. if not, display the appropriate pop-up.
-                    if (!u)
-                    {
-                        synchronized(t)
-                        {
+                    if (!u) {
+                        synchronized (t) {
                             flag_username = 1;
                             initThread();
                             t.start();
                         }
-                        return;     
+                        return;
                     }
 
                     // log into the LS
                     MainFrame.loggedIn = User.init(username, password);
-                } 
-                catch (Exception loginProblem)
-                {
+                } catch (Exception loginProblem) {
                     loginProblem.printStackTrace();
-                    synchronized(t)
-                    {
+                    synchronized (t) {
                         flag_password = 1;
                         initThread();
                         t.start();
@@ -193,12 +174,12 @@ public class LoginWindow extends JPanel implements Runnable {
                     return;
                 }
 
-            	remove(background_elvenroads);
+                remove(background_elvenroads);
                 MainFrame.mainPanel.add(new LobbyWindow(), "lobby");
-                MainFrame.cardLayout.show(MainFrame.mainPanel,"lobby");
+                MainFrame.cardLayout.show(MainFrame.mainPanel, "lobby");
             }
         });
-        
+
 
         labelBox.add(usernameLabel);
         usernameLabel.setAlignmentX(LEFT_ALIGNMENT);
@@ -218,9 +199,9 @@ public class LoginWindow extends JPanel implements Runnable {
         box_paste_button = Box.createHorizontalBox();
         box_paste_button.add(popup);
         popup.setAlignmentX(RIGHT_ALIGNMENT);
-        
-        infoPanel.add(boxPanel,BorderLayout.CENTER);
-        infoPanel.add(box_paste_button,BorderLayout.SOUTH);
+
+        infoPanel.add(boxPanel, BorderLayout.CENTER);
+        infoPanel.add(box_paste_button, BorderLayout.SOUTH);
 
         layers.add(infoPanel);
         layers.add(loginButton);
@@ -230,58 +211,41 @@ public class LoginWindow extends JPanel implements Runnable {
 
     }
 
-     // Method executed by Thread t
-     @Override
-     public void run() 
-     {
-         // Print error message for wrong username
-         if (flag_username == 1)
-         {
-             synchronized(t)
-             {        
-                 flag_error++;
-                 popup.setText("That username does not exist in the LS system. Please try again. ERROR#" + flag_error);
-                 try
-                 {
-                     t.sleep(3000);
-                 } 
-                 catch (InterruptedException e) 
-                 {
-                     // TODO Auto-generated catch block
-                     e.printStackTrace();
-                 }
-                 popup.setText(null);
-         
-                 flag_username = 0;
-                 t.stop();
-             }
-         }
- 
-         // print error message for wrong password
-         else if(flag_password == 1)
-         {
-             synchronized(t)
-             {        
-                 flag_error++;
-                 popup.setText("The password entered is incorrect. Please try again. ERROR#" + flag_error);
-                 try
-                 {
-                     t.sleep(3000);
-                 } 
-                 catch (InterruptedException e) 
-                 {
-                     // TODO Auto-generated catch block
-                     e.printStackTrace();
-                 }
-                 popup.setText(null);
-         
-                 flag_password = 0;
-                 t.stop();
-             }
-         }
- 
+    // Method executed by Thread t
+    @Override
+    public void run() {
+        // Print error message for wrong username
+        if (flag_username == 1) {
+            synchronized (t) {
+                flag_error++;
+                popup.setText("That username does not exist in the LS system. Please try again. ERROR#" + flag_error);
+                try {
+                    t.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                popup.setText(null);
 
- 
-     }
+                flag_username = 0;
+                t.stop();
+            }
+        }
 
+        // print error message for wrong password
+        else if (flag_password == 1) {
+            synchronized (t) {
+                flag_error++;
+                popup.setText("The password entered is incorrect. Please try again. ERROR#" + flag_error);
+                try {
+                    t.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                popup.setText(null);
+
+                flag_password = 0;
+                t.stop();
+            }
+        }
+    }
 }

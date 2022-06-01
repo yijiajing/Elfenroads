@@ -37,18 +37,18 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
 
     static MP3Player track1 = new MP3Player("./assets/Music/JLEX5AW-ui-medieval-click-heavy-positive-01.mp3");
 
-    private void initThreads()
-    {
+    private void initThreads() {
         t = new Thread(this);
         stopper = new Thread(new Runnable() {
             @Override
             public void run() {
-                while (true)
-                {
-                    try{Thread.sleep(500);}
-                    catch (InterruptedException e3) {e3.printStackTrace();}
-                    if (flag == 1)
-                    {
+                while (true) {
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e3) {
+                        e3.printStackTrace();
+                    }
+                    if (flag == 1) {
                         Logger.getGlobal().info("Attempting to stop the main update thread.");
                         t.stop();
                         break;
@@ -60,8 +60,7 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
         });
     }
 
-    public LobbyWindow()
-    {
+    public LobbyWindow() {
         initThreads();
         prevPayload = "";
         flag = 0;
@@ -93,35 +92,33 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
         available.setText("Available Sessions");
         available.setFont(new Font("Serif", Font.BOLD, 25));
         available.setOpaque(false);
-        available.setBounds(getWidth()/2-100,getHeight()/3+100, 250,30);
+        available.setBounds(getWidth() / 2 - 100, getHeight() / 3 + 100, 250, 30);
 
         sessions = new JPanel();
-        sessions.setBounds(getWidth()/4,getHeight()/3+150, getWidth()/2,120);
+        sessions.setBounds(getWidth() / 4, getHeight() / 3 + 150, getWidth() / 2, 120);
         sessions.setOpaque(false);
         scrollPanel = new JScrollPane(sessions);
         scrollPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        scrollPanel.setBounds(getWidth()/4,getHeight()/3+150, getWidth()/2,150);
+        scrollPanel.setBounds(getWidth() / 4, getHeight() / 3 + 150, getWidth() / 2, 150);
         scrollPanel.setOpaque(false);
         scrollPanel.getViewport().setOpaque(false);
         scrollPanel.setBorder(BorderFactory.createEmptyBorder());
 
-        try{initializeGameInfo(sessions);}
-        catch(IOException gameProblem)
-        {
+        try {
+            initializeGameInfo(sessions);
+        } catch (IOException gameProblem) {
             gameProblem.printStackTrace();
         }
 
-        createButton.addActionListener(new ActionListener()
-        {
+        createButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) 
-            {
+            public void actionPerformed(ActionEvent e) {
                 track1.play();
                 flag = 1;
                 t.interrupt(); // kill the thread
                 remove(background_elvenroads);
                 MainFrame.mainPanel.add(new VersionToPlayWindow(), "version");
-                MainFrame.cardLayout.show(MainFrame.mainPanel,"version");
+                MainFrame.cardLayout.show(MainFrame.mainPanel, "version");
             }
 
         });
@@ -131,14 +128,14 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
                 chooseSaveGame();
             }
         });
-        gamesButton.addActionListener(new ActionListener()
-        {
+        gamesButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {}
+            public void actionPerformed(ActionEvent e) {
+            }
         });
 
         buttons = new JPanel();
-        buttons.setBounds(0, getHeight()/3, getWidth(), 100);
+        buttons.setBounds(0, getHeight() / 3, getWidth(), 100);
         buttons.setOpaque(false);
         buttons.add(createButton);
         buttons.add(loadButton);
@@ -154,14 +151,14 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) { }
+    public void actionPerformed(ActionEvent e) {
+    }
 
     /**
      * designed to be called inside the LobbyWindow to display game information
      * can be called multiple times--it will clear the games displayed and reset every time
      */
-    public static void initializeGameInfo(JPanel sessions) throws IOException
-    {
+    public static void initializeGameInfo(JPanel sessions) throws IOException {
         String getSessionsResponse = null;
 
         if (prevPayload.equals("")) // when we first get into the window, we will have to make a synchronous api call to show the information
@@ -169,22 +166,18 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
             Logger.getGlobal().info("Sending the first long polling request now...");
             getSessionsResponse = GameSession.getSessionsReturnString();
             prevPayload = getSessionsResponse;
-        }
-
-        else // if it is not our first request
+        } else // if it is not our first request
         {// get a list of game sessions by ID
             try {
                 getSessionsResponse = GameSession.getSessions(prevPayload, t);
                 Logger.getGlobal().info("Sending another long poll request...");
             } catch (Exception e) {
                 // if interruptedException, return.
-                if (e instanceof InterruptedException)
-                {
+                if (e instanceof InterruptedException) {
                     return;
                 }
                 // else, re-call the long polling method (it was probably a timeout)
-                else
-                {
+                else {
                     getSessionsResponse = GameSession.getSessions(prevPayload);
                 }
             }
@@ -203,22 +196,17 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
 
         // iterate through the IDs and get info for each game & add it to the display
         // if there are no sessions, just clear everything
-        for (String id : gameIDs)
-        {
+        for (String id : gameIDs) {
             // get game info
 
             // if this game is from a savegame, don't show it
 
-            try
-            {
-                   if (GameSession.isFromSavegame(id))
-                   {
-                       // continue and don't display
-                       continue;
-                   }
-            }
-            catch (IOException e)
-            {
+            try {
+                if (GameSession.isFromSavegame(id)) {
+                    // continue and don't display
+                    continue;
+                }
+            } catch (IOException e) {
                 Logger.getGlobal().info("There was a problem determining whether session " + id + " was from a savegame.");
             }
 
@@ -229,8 +217,7 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
             int numPlayers = playerList.size();
             int maxPlayers = Integer.parseInt(sessionParameters.get("maxSessionPlayers").toString());
             // we don't want to display sessions that have already been launched, since we cannot join them anyway
-            if (GameSession.isLaunched(id) || numPlayers == maxPlayers)
-            {
+            if (GameSession.isLaunched(id) || numPlayers == maxPlayers) {
                 continue;
             }
 
@@ -244,20 +231,14 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
 
             String players = "";
 
-            for (String player : playerList)
-            {
+            for (String player : playerList) {
                 // conditionals to avoid having a trailing whitespace in the String
-                if (players.equals(""))
-                {
+                if (players.equals("")) {
                     players = players + player;
-                }
-                else
-                {
+                } else {
                     players = players + ", " + player;
                 }
             }
-
-            // TODO: add support to display other players as well, and any other additional info that would be helpful to the user
 
             // add the game info to labels
             JLabel creatorLabel = new JLabel("Creator: " + creator);
@@ -268,14 +249,11 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
             // initialize join button
             JButton joinButton = new JButton("JOIN");
 
-            joinButton.addActionListener(new ActionListener() 
-            {
+            joinButton.addActionListener(new ActionListener() {
                 @Override
-                public void actionPerformed(ActionEvent e) 
-                {
+                public void actionPerformed(ActionEvent e) {
                     // join the game
-                    try 
-                    {
+                    try {
                         //t.stop();
                         track1.play();
                         flag = 1;
@@ -288,13 +266,12 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
                         // this calls the ChooseBootWindow once all players have responded
                         GameManager.getInstance().requestAvailableColours();
 
-                    } 
-                    catch (Exception ex) 
-                    {
+                    } catch (Exception ex) {
                         System.out.println("There was a problem attempting to join the session with User" + User.getInstance().getUsername());
                         ex.printStackTrace();
                     }
-                }});
+                }
+            });
 
             // initialize the box
             Box gameInfo = Box.createVerticalBox();
@@ -315,32 +292,25 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
         sessions.revalidate();
     }
 
-    private void chooseSaveGame()
-    {
+    private void chooseSaveGame() {
         JFileChooser f = new JFileChooser("./out/saves");
-        FileNameExtensionFilter filter = new FileNameExtensionFilter ("Savegame files", ".elf");
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Savegame files", ".elf");
         f.addChoosableFileFilter(filter);
         f.setFileSelectionMode(JFileChooser.FILES_ONLY);//.DIRECTORIES_ONLY);
         //f.setFileFilter(filter);
         int selection = f.showOpenDialog(this);
         // if the user cancelled without selecting something, go back to the lobby window
-        if (selection == JFileChooser.CANCEL_OPTION)
-        {
+        if (selection == JFileChooser.CANCEL_OPTION) {
 
-        }
-        else
-        {
+        } else {
             flag = 1;
             // the user has selected a .elf savegame file
             File saveFile = f.getSelectedFile(); // this file is a .elf file representing a savegame object
-            try
-            {
+            try {
                 Savegame loaded = Savegame.read(saveFile);
                 String localIP = NetworkUtils.getLocalIPAddPort();
                 GameManager.init(Optional.of(loaded), loaded.getSessionID(), loaded.getGameVariant(), localIP);
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Logger.getGlobal().severe("There was a problem reading in the savegame from " + saveFile.getAbsolutePath());
                 e.printStackTrace();
             }
@@ -349,18 +319,15 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
 
 
     @Override
-    public void run() 
-    {
-        // TODO Auto-generated method stub
-        while (true)
-        {System.out.println("thread alive");
-        if (flag == 1){break;}
-            try 
-            {
-                initializeGameInfo(sessions);
+    public void run() {
+        while (true) {
+            System.out.println("thread alive");
+            if (flag == 1) {
+                break;
             }
-            catch (IOException e)
-            {
+            try {
+                initializeGameInfo(sessions);
+            } catch (IOException e) {
                 e.printStackTrace();
             }
 
@@ -370,60 +337,79 @@ public class LobbyWindow extends JPanel implements ActionListener, Runnable {
 
     /**
      * turns a String into a value from the GameVariant enum
+     *
      * @param variant the variant as a String, obtained from the LS
      * @return
      */
-    public static GameVariant interpretVariant(String variant)
-    {
-        switch (variant)
-        {
-            case "Elfenland_Classic": return GameVariant.ELFENLAND_CLASSIC;
-            case "Elfenland_Long": return GameVariant.ELFENLAND_LONG;
-            case "Elfenland_Destination": return GameVariant.ELFENLAND_DESTINATION; // I know this one is different. It is different in the LS.
-            case "Elfengold_Classic": return GameVariant.ELFENGOLD_CLASSIC;
-            case "Elfengold_Destination": return GameVariant.ELFENGOLD_DESTINATION;
-            case "Elfengold_RandomGold": return GameVariant.ELFENGOLD_RANDOM_GOLD;
-            case "Elfengold_Witch": return GameVariant.ELFENGOLD_WITCH;
+    public static GameVariant interpretVariant(String variant) {
+        switch (variant) {
+            case "Elfenland_Classic":
+                return GameVariant.ELFENLAND_CLASSIC;
+            case "Elfenland_Long":
+                return GameVariant.ELFENLAND_LONG;
+            case "Elfenland_Destination":
+                return GameVariant.ELFENLAND_DESTINATION; // I know this one is different. It is different in the LS.
+            case "Elfengold_Classic":
+                return GameVariant.ELFENGOLD_CLASSIC;
+            case "Elfengold_Destination":
+                return GameVariant.ELFENGOLD_DESTINATION;
+            case "Elfengold_RandomGold":
+                return GameVariant.ELFENGOLD_RANDOM_GOLD;
+            case "Elfengold_Witch":
+                return GameVariant.ELFENGOLD_WITCH;
 
-            default: return null; // if we set up the LS right, this will never happen
+            default:
+                return null; // if we set up the LS right, this will never happen
         }
     }
 
     /**
      * when we fetch the game information for a session , we get the gameName and not the gameDisplayName. The displayName is prettier, so we'll translate it before showing it on the sessions info box
+     *
      * @param gameName the game name retrieved from the LS
      * @return
      */
-    public static String gameNameToDisplayName(String gameName)
-    {
-        switch (gameName)
-        {
-            case "Elfenland_Classic": return "Elfenland (Classic)";
-            case "Elfenland_Long": return "Elfenland (Long)";
-            case "Elfenland_Destination": return "Elfenland (Destination)";
-            case "Elfengold_Classic": return "Elfengold (Classic)";
-            case "Elfengold_Destination": return "Elfengold (Destination)";
-            case "Elfengold_RandomGold": return "Elfengold (Random Gold)";
-            case "Elfengold_Witch": return "Elfengold (Witch)";
-            default: return null;
+    public static String gameNameToDisplayName(String gameName) {
+        switch (gameName) {
+            case "Elfenland_Classic":
+                return "Elfenland (Classic)";
+            case "Elfenland_Long":
+                return "Elfenland (Long)";
+            case "Elfenland_Destination":
+                return "Elfenland (Destination)";
+            case "Elfengold_Classic":
+                return "Elfengold (Classic)";
+            case "Elfengold_Destination":
+                return "Elfengold (Destination)";
+            case "Elfengold_RandomGold":
+                return "Elfengold (Random Gold)";
+            case "Elfengold_Witch":
+                return "Elfengold (Witch)";
+            default:
+                return null;
         }
     }
 
-    public static String variantToGameName(GameVariant variant)
-    {
-        switch (variant)
-        {
-            case ELFENLAND_CLASSIC: return "Elfenland_Classic";
-            case ELFENLAND_LONG: return "Elfenland_Long";
-            case ELFENLAND_DESTINATION: return "Elfenland_Destination";
-            case ELFENGOLD_CLASSIC: return "Elfengold_Classic";
-            case ELFENGOLD_DESTINATION: return "Elfengold_Destination";
-            case ELFENGOLD_RANDOM_GOLD: return "Elfengold_RandomGold";
-            case ELFENGOLD_WITCH: return "Elfengold_Witch";
-            default: return null;
+    public static String variantToGameName(GameVariant variant) {
+        switch (variant) {
+            case ELFENLAND_CLASSIC:
+                return "Elfenland_Classic";
+            case ELFENLAND_LONG:
+                return "Elfenland_Long";
+            case ELFENLAND_DESTINATION:
+                return "Elfenland_Destination";
+            case ELFENGOLD_CLASSIC:
+                return "Elfengold_Classic";
+            case ELFENGOLD_DESTINATION:
+                return "Elfengold_Destination";
+            case ELFENGOLD_RANDOM_GOLD:
+                return "Elfengold_RandomGold";
+            case ELFENGOLD_WITCH:
+                return "Elfengold_Witch";
+            default:
+                return null;
         }
     }
-
 
 
 }

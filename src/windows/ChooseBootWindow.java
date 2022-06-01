@@ -7,7 +7,6 @@ import domain.Player;
 import enums.Colour;
 import networking.GameSession;
 import networking.User;
-import utils.NetworkUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,7 +15,6 @@ import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Logger;
-
 
 public class ChooseBootWindow extends JPanel {
 
@@ -37,13 +35,13 @@ public class ChooseBootWindow extends JPanel {
         this.sessionID = sessionID;
 
         this.bootPanel = new JPanel();
-        this.bootPanel.setBounds(0, MainFrame.mainPanel.getHeight()*4/10,
-                MainFrame.mainPanel.getWidth(), MainFrame.mainPanel.getHeight()/3);
+        this.bootPanel.setBounds(0, MainFrame.mainPanel.getHeight() * 4 / 10,
+                MainFrame.mainPanel.getWidth(), MainFrame.mainPanel.getHeight() / 3);
         this.bootPanel.setOpaque(false);
 
         this.textPanel = new JPanel();
-        this.textPanel.setBounds(0, MainFrame.mainPanel.getHeight()*3/10,
-                MainFrame.mainPanel.getWidth(), MainFrame.mainPanel.getHeight()/10);
+        this.textPanel.setBounds(0, MainFrame.mainPanel.getHeight() * 3 / 10,
+                MainFrame.mainPanel.getWidth(), MainFrame.mainPanel.getHeight() / 10);
         this.textPanel.setOpaque(false);
         JLabel text = new JLabel("Please choose from one of the available boot colours below.");
         text.setFont(new Font("Serif", Font.PLAIN, 30));
@@ -59,8 +57,8 @@ public class ChooseBootWindow extends JPanel {
 
         for (Colour c : colours) {
             ImageIcon bootIcon = new ImageIcon("./assets/boppels-and-boots/boot-" + c + ".png");
-            Image bootResized = bootIcon.getImage().getScaledInstance(MainFrame.mainPanel.getWidth()/11,
-                    MainFrame.mainPanel.getHeight()/7,  java.awt.Image.SCALE_SMOOTH);
+            Image bootResized = bootIcon.getImage().getScaledInstance(MainFrame.mainPanel.getWidth() / 11,
+                    MainFrame.mainPanel.getHeight() / 7, java.awt.Image.SCALE_SMOOTH);
             JLabel bootImage = new JLabel(new ImageIcon(bootResized));
 
             bootImage.addMouseListener(new MouseListener() {
@@ -70,8 +68,7 @@ public class ChooseBootWindow extends JPanel {
                     if (localPlayerIsCreator) // if we are the creator, we will still check whether someone has taken boot we want in the time it took us to choose.
                     {
                         // we can simply re-check the available colors list to see if someone has sent in a boot choice since we loaded the window
-                        if (!GameManager.getInstance().getAvailableColours().contains(c))
-                        {
+                        if (!GameManager.getInstance().getAvailableColours().contains(c)) {
                             // someone else took the color, so display the message and reinitialize the window.
                             JOptionPane.showMessageDialog(null, "Too slow! That boot color is taken. Please try again.");
                             // next, re-display the choose boot window with the updated choices
