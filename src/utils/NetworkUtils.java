@@ -263,7 +263,7 @@ public class NetworkUtils {
     }
 
     public static boolean beginsWithTen(String ip) {
-        return ip.startsWith("192");
+        return ip.startsWith("10");
     }
 
 }
