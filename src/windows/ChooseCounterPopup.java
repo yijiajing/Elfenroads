@@ -27,15 +27,7 @@ public class ChooseCounterPopup extends JPanel {
         JPanel textPanel = new JPanel();
         JLabel text = new JLabel();
         text.setText(
-                """
-                        <html>
-                        Both of these counters are being added to your hand.<br><br>
-                        You must decide which counter you would like to reveal<br>
-                        to other players and which one you want to keep hidden.<br><br>
-                        Click on the counter you wish to place face-up<br>
-                        and the other counter will be placed face-down.
-                        </html>
-                        """);
+                "<html>Both of these counters are being added to your hand.<br><br> You must decide which counter you would like to reveal<br> to other players and which one you want to keep hidden.<br><br> Click on the counter you wish to place face-up<br> and the other counter will be placed face-down. </html> ");
 
         text.setFont(new Font("Serif", Font.PLAIN, 25));
         textPanel.add(text);

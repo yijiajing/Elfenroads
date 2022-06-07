@@ -62,9 +62,7 @@ public class ELGameManager extends GameManager {
         gameState.setCurrentPhase(ELRoundPhaseType.DEAL_CARDS);
         gameState.setToFirstPlayer();
         gameState.getTravelCardDeck().shuffle(); // only shuffle once at the beginning of each round
-        GameScreen.displayMessage("""
-                New Round Start!
-                """);
+        GameScreen.displayMessage("New Round Start!");
         // Triggered only on one instance (the first player)
         if (isLocalPlayerTurn()) {
             distributeTravelCards(); // distribute cards to each player (PHASE 1)
@@ -184,10 +182,7 @@ public class ELGameManager extends GameManager {
 
         actionManager.clearSelection();
 
-        GameScreen.displayMessage("""
-                The round is over! All of your transportation counters must be returned except for one. 
-                Please select the transportation counter from your hand that you wish to keep.
-                """);
+        GameScreen.displayMessage("The round is over! All of your transportation counters must be returned except for one. Please select the transportation counter from your hand that you wish to keep. ");
 
         // once the player clicks a transportation counter it will call returnAllCountersExceptOne()
     }

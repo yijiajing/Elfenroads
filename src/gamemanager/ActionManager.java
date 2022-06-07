@@ -197,11 +197,7 @@ public class ActionManager {
                 } else {
                     LOGGER.info("Started an exchange, just selected a road on " + selectedRoad.getRegionType());
                     inExchange = true;
-                    GameScreen.displayMessage("""
-                            You just started an Exchange! Please click on another road with which you would like to 
-                            exchange the transportation counter on the road you just selected. You must make certain 
-                            that the exchanged transportation counters are legal on the roads they are exchanged to.
-                            """);
+                    GameScreen.displayMessage("You just started an Exchange! Please click on another road with which you would like to exchange the transportation counter on the road you just selected. You must make certain that the exchanged transportation counters are legal on the roads they are exchanged to.");
                 }
             } else if (counter.getType() == MagicSpellType.DOUBLE) {
                 if (selectedRoad.placeDouble(counter)) {

@@ -120,10 +120,7 @@ public class EGGameManager extends GameManager {
         }
         updateGameScreen();
 
-        GameScreen.displayMessage("""
-                Please select a card to add to your hand. You may choose one of the face-up cards, 
-                a card from the deck or take the entire gold card deck, shown on the right side of the screen.
-                """);
+        GameScreen.displayMessage("Please select a card to add to your hand. You may choose one of the face-up cards, a card from the deck or take the entire gold card deck, shown on the right side of the screen.");
 
         // all logic is implemented in the mouse listeners of the cards
     }
@@ -241,11 +238,7 @@ public class EGGameManager extends GameManager {
 
         actionManager.clearSelection();
 
-        GameScreen.displayMessage("""
-                The round is over! All of your counters must be returned except for two. Please select two items 
-                (any combination of transportation counters, gold pieces, obstacles or magic spells) from your hand 
-                that you wish to keep.
-                """);
+        GameScreen.displayMessage("The round is over! All of your counters must be returned except for two. Please select two items (any combination of transportation counters, gold pieces, obstacles or magic spells) from your hand that you wish to keep. ");
 
         // once the player clicks a transportation counter it will call returnCounter()
     }
