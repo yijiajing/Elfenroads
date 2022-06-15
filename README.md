@@ -1,5 +1,27 @@
 # Elfenroads
 
+- [Meta Information](#meta-information)
+    * [Description](#description)
+    * [Rulebooks](#rulebooks)
+    * [Language & Framework](#language---framework)
+- [How to Run](#how-to-run)
+- [Screenshots - A Glimpse of Elfenroads](#screenshots---a-glimpse-of-elfenroads)
+    * [Login](#login)
+    * [Lobby](#lobby)
+    * [Variant selection](#variant-selection)
+    * [Boots selection](#boots-selection)
+    * [Wait room](#wait-room)
+    * [Basic UI setup](#basic-ui-setup)
+    * [Pick Travel Card / Transportation Counters](#pick-travel-card---transportation-counters)
+    * [Place Transportation Counters](#place-transportation-counters)
+    * [Leaderboard](#leaderboard)
+    * [Pop-up messages](#pop-up-messages)
+    * [Drop-down menu](#drop-down-menu)
+    * [Chat](#chat)
+    * [Auction](#auction)
+    * [Special Travel Card & Transportation Counters](#special-travel-card---transportation-counters)
+- [Backend Information](#backend-information)
+
 ## Meta Information
 
 ### Description
@@ -77,8 +99,8 @@ Messages appear at the beginning of each game phase as a quick guide.
 
 ![message](assets/images/message1.png)
 ![message](assets/images/message2.png)
-![message](assets/images/message3.png)
-![message](assets/images/message4.png)
+<img src="assets/images/message3.png" width="200">
+<img src="assets/images/message4.png" width="300">
 
 ### Drop-down menu
 ![menu](assets/images/menu.png)
