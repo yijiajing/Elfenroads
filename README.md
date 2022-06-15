@@ -5,7 +5,7 @@
     * [Rulebooks](#rulebooks)
     * [Language & Framework](#language--framework)
 - [How to Run](#how-to-run)
-- [Screenshots - A Glimpse of Elfenroads](#screenshots--a-glimpse-of-elfenroads)
+- [Screenshots - A Glimpse of Elfenroads](#screenshots---a-glimpse-of-elfenroads)
     * [Login](#login)
     * [Lobby](#lobby)
     * [Variant selection](#variant-selection)
