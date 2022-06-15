@@ -82,7 +82,7 @@ public class CounterUnitPile extends Deck<CounterUnit> {
                     components.add(new Obstacle(ObstacleType.EGTREE, width, height));
                     components.add(new Obstacle(ObstacleType.SEAMONSTER, width, height));
                     components.add(new MagicSpell(MagicSpellType.DOUBLE, width, height));
-                    components.add(new MagicSpell(MagicSpellType.EXCHANGE, width, height));
+                    components.add(new MagicSpell(MagicSpellType.DOUBLE, width, height));
                 }
                 if (i < 4) {
                     components.add(new TransportationCounter(CounterType.DRAGON, width, height));
@@ -95,6 +95,7 @@ public class CounterUnitPile extends Deck<CounterUnit> {
                     components.add(new TransportationCounter(CounterType.ELFCYCLE, width,height));
                     components.add(new TransportationCounter(CounterType.TROLLWAGON, width,height));
                 }
+                components.add(new MagicSpell(MagicSpellType.DOUBLE, width, height));
                 components.add(new TransportationCounter(CounterType.GIANTPIG, width,height));
             }
         } else {
