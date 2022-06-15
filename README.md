@@ -85,6 +85,7 @@ Messages appear at the beginning of each game phase as a quick guide.
 
 ### Chat
 Chat with other players in real time!
+
 ![chat](assets/images/chat.gif)
 
 ### Auction
