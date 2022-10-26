@@ -41,7 +41,7 @@ An exciting race starts among the elves to find out who will make the best use o
 ### Language & Framework
 Java, Swing, Minueto
 
-## How to Run: Jar from command line
+## How to Run: .jar From Command Line
 1. Navigate to the latest release on the right side of the GitHub web UI
 2. Download play.sh and release.zip. Make sure they are in the same directory.
 3. Add run permissions to play.sh (Unix: chmod +x play.sh)
