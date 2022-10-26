@@ -44,9 +44,10 @@ Java, Swing, Minueto
 ## How to Run: .jar From Command Line
 1. Navigate to the latest release on the right side of the GitHub web UI
 2. Download play.sh and release.zip. Make sure they are in the same directory.
-3. Add run permissions to play.sh (Unix: chmod +x play.sh)
-4. Run play.sh
-NOTE: When running a second time, you can just navigate to release and run the .jar file itself (Unix: java -jar Elfenroads.jar)
+3. Add run permissions to play.sh (Unix: `chmod +x play.sh`)
+4. Run play.sh (Unix: `./play.sh`)
+NOTE: When running a second time, you can just navigate to release and run the .jar file itself (Unix: `java -jar Elfenroads.jar`)
+Requires Java 15 or later.
 
 ## How to Run: IntelliJ
 1. Clone this repository onto your local machine
