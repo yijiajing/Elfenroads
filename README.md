@@ -4,8 +4,9 @@
     * [Description](#description)
     * [Rulebooks](#rulebooks)
     * [Language & Framework](#language--framework)
-- [How to Run: Jar from command line](#how-to-run-jar-from-command-line)
-- [How to Run: IntelliJ](#how-to-run-intellij)
+- [How to Run](#how-to-run)
+    * [Jar From Command Line] (#how-to-run-.jar-from-command-line)
+    * [IntelliJ] (#how-to-run-intellij)
 - [Screenshots - A Glimpse of Elfenroads](#screenshots---a-glimpse-of-elfenroads)
     * [Login](#login)
     * [Lobby](#lobby)
@@ -41,7 +42,9 @@ An exciting race starts among the elves to find out who will make the best use o
 ### Language & Framework
 Java, Swing, Minueto
 
-## How to Run: .jar From Command Line
+## How to Run
+
+### How to Run: .jar From Command Line
 1. Navigate to the latest release on the right side of the GitHub web UI
 2. Download play.sh and release.zip. Make sure they are in the same directory.
 3. Add run permissions to play.sh (Unix: `chmod +x play.sh`)
@@ -49,7 +52,7 @@ Java, Swing, Minueto
 NOTE: When running a second time, you can just navigate to release and run the .jar file itself (Unix: `java -jar Elfenroads.jar`)
 Requires Java 15 or later.
 
-## How to Run: IntelliJ
+### How to Run: IntelliJ
 1. Clone this repository onto your local machine
 2. Build the project with `Java SE 15`. In IntelliJ IDEA, go to `File` --> `Project Structure` --> `Project` --> set `SDK` and `Language Level`.
 3. Run `windows/MainFrame.java`. In IntelliJ IDEA, you can go to `MainFrame.java` and press <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>F10</kbd> on Windows or <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>R</kbd> on a Mac.
