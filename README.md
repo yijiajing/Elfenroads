@@ -5,7 +5,7 @@
     * [Rulebooks](#rulebooks)
     * [Language & Framework](#language--framework)
 - [How to Run](#how-to-run)
-    * [Jar From Command Line] (#how-to-run-.jar-from-command-line)
+    * [.jar] (#how-to-run-.jar-from-command-line)
     * [IntelliJ] (#how-to-run-intellij)
 - [Screenshots - A Glimpse of Elfenroads](#screenshots---a-glimpse-of-elfenroads)
     * [Login](#login)
