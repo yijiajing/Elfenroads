@@ -1,0 +1,3 @@
+# used to fix the language breakdown stuff (Linguist)
+
+/lib/* linguist-vendored
